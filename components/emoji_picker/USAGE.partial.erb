@@ -1,0 +1,77 @@
+<%# Basic emoji picker (icon only, hidden input) %>
+<%= render "shared/components/emoji_picker/emoji_picker" %>
+
+<%# With visible input field %>
+<%= render "shared/components/emoji_picker/emoji_picker",
+  id: "emoji_with_input",
+  name: "reaction",
+  show_input: true,
+  placeholder: "Choose an emoji..." %>
+
+<%# Pre-selected emoji %>
+<%= render "shared/components/emoji_picker/emoji_picker",
+  id: "preset_emoji",
+  name: "mood",
+  value: "😊" %>
+
+<%# Auto-submit on selection (for forms) %>
+<%= render "shared/components/emoji_picker/emoji_picker",
+  id: "auto_submit_emoji",
+  name: "reaction",
+  auto_submit: true,
+  show_input: true %>
+
+<%# Insert mode (for chat/textarea) %>
+<%= render "shared/components/emoji_picker/emoji_picker",
+  id: "chat_emoji",
+  insert_mode: true,
+  target_selector: "#message_content" %>
+
+<%# Different button sizes %>
+<%= render "shared/components/emoji_picker/emoji_picker",
+  id: "small_picker",
+  button_size: :sm %>
+
+<%= render "shared/components/emoji_picker/emoji_picker",
+  id: "large_picker",
+  button_size: :lg %>
+
+<%# Different button styles %>
+<%= render "shared/components/emoji_picker/emoji_picker",
+  id: "ghost_picker",
+  button_style: :ghost %>
+
+<%= render "shared/components/emoji_picker/emoji_picker",
+  id: "outline_picker",
+  button_style: :outline %>
+
+<%= render "shared/components/emoji_picker/emoji_picker",
+  id: "solid_picker",
+  button_style: :solid %>
+
+<%# Different picker positions %>
+<%= render "shared/components/emoji_picker/emoji_picker",
+  id: "left_picker",
+  picker_position: :left %>
+
+<%= render "shared/components/emoji_picker/emoji_picker",
+  id: "right_picker",
+  picker_position: :right %>
+
+<%# Custom classes %>
+<%= render "shared/components/emoji_picker/emoji_picker",
+  id: "custom_picker",
+  classes: "p-2 bg-neutral-50 dark:bg-neutral-800 rounded-lg",
+  button_size: :md,
+  button_classes: "!h-auto !w-auto !rounded-lg border border-neutral-400/30 bg-neutral-800 !p-2 !text-xs font-medium !text-white shadow-sm transition-all duration-100 ease-in-out hover:!bg-neutral-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-600 disabled:cursor-not-allowed dark:bg-white dark:!text-neutral-800 dark:hover:!bg-neutral-100 dark:focus-visible:outline-neutral-200" %>
+
+<%# Full example with form %>
+<form action="/reactions" method="post" class="flex items-center gap-3">
+  <%= render "shared/components/emoji_picker/emoji_picker",
+    id: "form_emoji",
+    name: "reaction[emoji]",
+    auto_submit: true,
+    show_input: true,
+    placeholder: "Add reaction...",
+    button_style: :outline %>
+</form>

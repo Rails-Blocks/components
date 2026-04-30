@@ -1,0 +1,11 @@
+{
+  "component": "clipboard",
+  "implementation": "erb_template",
+  "files": [
+    {
+      "path": "clipboard/_clipboard.html.erb",
+      "relative_path": "_clipboard.html.erb",
+      "checksum": "7454533ba9839258bae889e14648927225922ffebd078d3b31f4857988099545"
+    }
+  ]
+}

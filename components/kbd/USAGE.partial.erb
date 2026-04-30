@@ -1,0 +1,120 @@
+<!-- Single key -->
+<%= render "shared/components/kbd/kbd",
+  key: "A" %>
+
+<!-- Key combination with string -->
+<%= render "shared/components/kbd/kbd",
+  key: "Ctrl+S" %>
+
+<!-- Key combination with array -->
+<%= render "shared/components/kbd/kbd",
+  key: ["Ctrl", "Shift", "P"] %>
+
+<!-- Different sizes -->
+<%= render "shared/components/kbd/kbd",
+  key: "Esc",
+  size: "xs" %>
+
+<%= render "shared/components/kbd/kbd",
+  key: "Esc",
+  size: "sm" %>
+
+<%= render "shared/components/kbd/kbd",
+  key: "Esc",
+  size: "md" %>
+
+<%= render "shared/components/kbd/kbd",
+  key: "Esc",
+  size: "lg" %>
+
+<!-- Variants -->
+<%= render "shared/components/kbd/kbd",
+  key: "Enter",
+  variant: "default" %>
+
+<%= render "shared/components/kbd/kbd",
+  key: "Enter",
+  variant: "light" %>
+
+<%= render "shared/components/kbd/kbd",
+  key: "Enter",
+  variant: "dark" %>
+
+<%= render "shared/components/kbd/kbd",
+  key: "Enter",
+  variant: "outline" %>
+
+<!-- Without visible separator -->
+<%= render "shared/components/kbd/kbd",
+  key: ["⌘", "K"],
+  show_separator: false %>
+
+<!-- OS-aware shortcut (shows ⌘ on Mac, Ctrl on others) -->
+<%= render "shared/components/kbd/kbd",
+  key: "S",
+  os_aware: true,
+  mac_key: "⌘",
+  non_mac_key: "Ctrl" %>
+
+<!-- OS-aware with multiple keys -->
+<%= render "shared/components/kbd/kbd",
+  key: ["Shift", "P"],
+  os_aware: true,
+  mac_key: "⌘",
+  non_mac_key: "Ctrl" %>
+
+<!-- Common shortcuts -->
+<%= render "shared/components/kbd/kbd",
+  key: "S",
+  os_aware: true,
+  mac_key: "⌘",
+  non_mac_key: "Ctrl" %>
+
+<%= render "shared/components/kbd/kbd",
+  key: "C",
+  os_aware: true,
+  mac_key: "⌘",
+  non_mac_key: "Ctrl" %>
+
+<%= render "shared/components/kbd/kbd",
+  key: "V",
+  os_aware: true,
+  mac_key: "⌘",
+  non_mac_key: "Ctrl" %>
+
+<!-- Special keys with symbols -->
+<%= render "shared/components/kbd/kbd",
+  key: "⌘" %>
+
+<%= render "shared/components/kbd/kbd",
+  key: "⌥" %>
+
+<%= render "shared/components/kbd/kbd",
+  key: "⇧" %>
+
+<%= render "shared/components/kbd/kbd",
+  key: "⌃" %>
+
+<%= render "shared/components/kbd/kbd",
+  key: "↵" %>
+
+<%= render "shared/components/kbd/kbd",
+  key: "⌫" %>
+
+<!-- Arrow keys -->
+<%= render "shared/components/kbd/kbd",
+  key: "↑" %>
+
+<%= render "shared/components/kbd/kbd",
+  key: "↓" %>
+
+<%= render "shared/components/kbd/kbd",
+  key: "←" %>
+
+<%= render "shared/components/kbd/kbd",
+  key: "→" %>
+
+<!-- With custom classes -->
+<%= render "shared/components/kbd/kbd",
+  key: "Space",
+  classes: "shadow-md" %>

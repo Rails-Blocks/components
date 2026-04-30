@@ -1,0 +1,16 @@
+{
+  "component": "accordion",
+  "implementation": "erb_template",
+  "files": [
+    {
+      "path": "accordion/_accordion.html.erb",
+      "relative_path": "_accordion.html.erb",
+      "checksum": "40515d48b2fdca8b798350716e5a1bce80c8af1fc0c4688a893fd22ba83152c5"
+    },
+    {
+      "path": "accordion/_accordion_item.html.erb",
+      "relative_path": "_accordion_item.html.erb",
+      "checksum": "0dbfe314f44aefb17b56c40941ea41d2801f9d07bdbc0945131ba1d8b6223d8a"
+    }
+  ]
+}

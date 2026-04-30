@@ -1,0 +1,11 @@
+{
+  "component": "toast",
+  "implementation": "erb_template",
+  "files": [
+    {
+      "path": "toast/_toast.html.erb",
+      "relative_path": "_toast.html.erb",
+      "checksum": "329a893c812f5d62e0be8499d5982ac07644b488dc7f0c48a5dd96c790bcdb4a"
+    }
+  ]
+}

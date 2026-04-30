@@ -1,0 +1,36 @@
+{
+  "component": "dock",
+  "implementation": "view_component",
+  "files": [
+    {
+      "path": "dock/component.rb",
+      "relative_path": "component.rb",
+      "checksum": "a8c4078f658370104a1a2c54db93d7922de238362b4f72fa8f6c59105fff131b"
+    },
+    {
+      "path": "dock/component/item_component.html.erb",
+      "relative_path": "component/item_component.html.erb",
+      "checksum": "3fc5e0e384f6b52e69901e382090b0407c7623a350580a52c43c632576ca8e46"
+    },
+    {
+      "path": "dock/component/item_mobile_component.html.erb",
+      "relative_path": "component/item_mobile_component.html.erb",
+      "checksum": "ad2d6c37979f91ea4e9c8588c640c03a7f973d3b3e3bd87c8f8820d82a08db42"
+    },
+    {
+      "path": "dock/component/item_component.rb",
+      "relative_path": "component/item_component.rb",
+      "checksum": "e69f8f571f50741644d862519876eb66fd26ec41ae1c2b624f5bf77b3b56c64b"
+    },
+    {
+      "path": "dock/component/item_mobile_component.rb",
+      "relative_path": "component/item_mobile_component.rb",
+      "checksum": "d0ebe8005203f4f86d2d34811025c08c9c3ea5722d999b58df36f35c1c64777f"
+    },
+    {
+      "path": "dock/component.html.erb",
+      "relative_path": "component.html.erb",
+      "checksum": "0ec6610518d5b5a4495e2d66cd1b3a5bdb4ef37b591ca817a9a3f373b5b9e8a9"
+    }
+  ]
+}

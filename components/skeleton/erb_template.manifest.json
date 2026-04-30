@@ -1,0 +1,11 @@
+{
+  "component": "skeleton",
+  "implementation": "erb_template",
+  "files": [
+    {
+      "path": "skeleton/_skeleton.html.erb",
+      "relative_path": "_skeleton.html.erb",
+      "checksum": "556eba791bf342c7eed75514f7f8182c5310548e16f91c25ba992b31b53369d0"
+    }
+  ]
+}

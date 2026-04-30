@@ -1,0 +1,87 @@
+<!-- Basic usage with items array -->
+<%= render "shared/components/checkbox_select_all/checkbox_select_all",
+  select_all_label: "Select All Tasks",
+  name: "tasks[]",
+  items: [
+    { label: "Update landing page design", value: "1" },
+    { label: "Review pull requests", value: "2" },
+    { label: "Write documentation", value: "3" },
+    { label: "Fix responsive issues", value: "4" }
+  ]
+%>
+
+<!-- With keyboard shortcut and pre-checked items -->
+<%= render "shared/components/checkbox_select_all/checkbox_select_all",
+  select_all_label: "Select Users",
+  name: "users[]",
+  toggle_key: "x",
+  items: [
+    { label: "Alex Johnson", value: "1", checked: true },
+    { label: "Sarah Miller", value: "2" },
+    { label: "Michael Chen", value: "3", disabled: true },
+    { label: "Emily Davis", value: "4" }
+  ]
+%>
+
+<!-- With nested groups, action bar, and clear/reset -->
+<%= render "shared/components/checkbox_select_all/checkbox_select_all",
+  select_all_label: "Select All Permissions",
+  name: "permissions[]",
+  show_action_bar: true,
+  show_count: true,
+  groups: [
+    {
+      label: "Content Management",
+      description: "Manage posts, pages, and media",
+      items: [
+        { label: "Create content", value: "content.create" },
+        { label: "Edit content", value: "content.edit" },
+        { label: "Delete content", value: "content.delete" }
+      ]
+    },
+    {
+      label: "User Management",
+      description: "Manage users and roles",
+      items: [
+        { label: "View users", value: "users.view" },
+        { label: "Create users", value: "users.create" },
+        { label: "Edit users", value: "users.edit" }
+      ],
+      groups: [
+        {
+          label: "Role Management",
+          description: "Assign roles and permissions",
+          items: [
+            { label: "Create roles", value: "roles.create" },
+            { label: "Assign roles", value: "roles.assign" }
+          ],
+          groups: [
+            {
+              label: "Admin Controls",
+              description: "Advanced controls for admin roles",
+              items: [
+                { label: "Impersonate users", value: "admin.impersonate" }
+              ],
+              groups: [
+                {
+                  label: "Security Policies",
+                  description: "Critical account security controls",
+                  items: [
+                    { label: "Require 2FA", value: "security.require_2fa" },
+                    { label: "Enforce password rotation", value: "security.password_rotation" }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ] do %>
+  <button
+    type="button"
+    class="text-sm font-medium text-neutral-700 hover:text-neutral-900 dark:text-neutral-300 dark:hover:text-neutral-100"
+    data-action="click->checkbox-select-all#clearAll">
+    Clear Selection
+  </button>
+<% end %>

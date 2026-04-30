@@ -1,0 +1,98 @@
+<!-- Basic password with visibility toggle -->
+<%= render Password::Component.new(
+  label: "Password",
+  name: "user[password]",
+  placeholder: "Enter your password"
+) %>
+
+<!-- Password without toggle (just input) -->
+<%= render Password::Component.new(
+  label: "Password",
+  name: "password",
+  show_toggle: false
+) %>
+
+<!-- Password with strength meter -->
+<%= render Password::Component.new(
+  label: "Create Password",
+  name: "user[password]",
+  placeholder: "Create a strong password...",
+  show_strength: true,
+  autocomplete: "new-password"
+) %>
+
+<!-- Password with requirements checklist -->
+<%= render Password::Component.new(
+  label: "Create a secure password",
+  name: "user[password]",
+  placeholder: "Enter a secure password...",
+  show_requirements: true,
+  autocomplete: "new-password"
+) %>
+
+<!-- Password with strength AND requirements (combined) -->
+<%= render Password::Component.new(
+  label: "Create Password",
+  name: "user[password]",
+  placeholder: "Create a strong password...",
+  show_strength: true,
+  show_requirements: true,
+  autocomplete: "new-password"
+) %>
+
+<!-- Required password -->
+<%= render Password::Component.new(
+  label: "Password",
+  name: "user[password]",
+  required: true
+) %>
+
+<!-- Password with error -->
+<%= render Password::Component.new(
+  label: "Password",
+  name: "user[password]",
+  error: "Password must be at least 8 characters"
+) %>
+
+<!-- Password with hint -->
+<%= render Password::Component.new(
+  label: "Password",
+  name: "user[password]",
+  hint: "Must contain at least 8 characters"
+) %>
+
+<!-- Disabled password -->
+<%= render Password::Component.new(
+  label: "Password",
+  name: "user[password]",
+  disabled: true
+) %>
+
+<!-- Password with custom id -->
+<%= render Password::Component.new(
+  label: "Current Password",
+  name: "user[current_password]",
+  id: "current-password-field",
+  autocomplete: "current-password"
+) %>
+
+<!-- Password with custom classes -->
+<%= render Password::Component.new(
+  label: "Password",
+  name: "user[password]",
+  classes: "max-w-sm",
+  input_classes: "bg-neutral-50 dark:bg-neutral-800"
+) %>
+
+<!-- Full-featured password for registration forms -->
+<%= render Password::Component.new(
+  label: "Create Password",
+  name: "user[password]",
+  id: "registration-password",
+  placeholder: "Create a secure password...",
+  required: true,
+  show_strength: true,
+  show_requirements: true,
+  autocomplete: "new-password",
+  classes: "max-w-md"
+) %>

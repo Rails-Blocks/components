@@ -1,0 +1,21 @@
+{
+  "component": "navbar",
+  "implementation": "erb_template",
+  "files": [
+    {
+      "path": "navbar/_navbar_dropdown_content.html.erb",
+      "relative_path": "_navbar_dropdown_content.html.erb",
+      "checksum": "3d97c13cd76c014c56555416fdfe31c8907151c73df368a557f64a924530448c"
+    },
+    {
+      "path": "navbar/_navbar.html.erb",
+      "relative_path": "_navbar.html.erb",
+      "checksum": "9b6976ee6810d7d01b50ddf3ea5a172f29bcbfc43f38d209c4bb4e543deac6cf"
+    },
+    {
+      "path": "navbar/_navbar_item.html.erb",
+      "relative_path": "_navbar_item.html.erb",
+      "checksum": "fb15b89f0367ec2112f4f1b9127b5f28b118a2a35ecb76fba34fb882681f9a70"
+    }
+  ]
+}

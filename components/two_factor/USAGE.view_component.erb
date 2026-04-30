@@ -1,0 +1,112 @@
+<!-- Basic 6-digit OTP input -->
+<%= render TwoFactor::Component.new %>
+
+<!-- With label -->
+<%= render TwoFactor::Component.new(
+  label: "Verification Code"
+) %>
+
+<!-- With label and hint -->
+<%= render TwoFactor::Component.new(
+  label: "Enter Code",
+  hint: "Enter the 6-digit code sent to your phone"
+) %>
+
+<!-- 4-digit code (PIN style) -->
+<%= render TwoFactor::Component.new(
+  length: 4,
+  separator: false,
+  label: "Enter PIN"
+) %>
+
+<!-- Without separator -->
+<%= render TwoFactor::Component.new(
+  separator: false
+) %>
+
+<!-- Separator at different position -->
+<%= render TwoFactor::Component.new(
+  separator_position: 2
+) %>
+
+<!-- Small size -->
+<%= render TwoFactor::Component.new(
+  size: :sm,
+  label: "Small Code"
+) %>
+
+<!-- Large size -->
+<%= render TwoFactor::Component.new(
+  size: :lg,
+  label: "Large Code"
+) %>
+
+<!-- Auto-submit when complete -->
+<%= render TwoFactor::Component.new(
+  auto_submit: true,
+  label: "Auto-submit Code"
+) %>
+
+<!-- Without autofocus -->
+<%= render TwoFactor::Component.new(
+  autofocus: false
+) %>
+
+<!-- Allow alphanumeric/symbol codes -->
+<%= render TwoFactor::Component.new(
+  numeric_only: false,
+  label: "Recovery Code"
+) %>
+
+<!-- With error message -->
+<%= render TwoFactor::Component.new(
+  label: "Verification Code",
+  error: "Invalid code. Please try again."
+) %>
+
+<!-- Disabled state -->
+<%= render TwoFactor::Component.new(
+  label: "Verification Code",
+  disabled: true
+) %>
+
+<!-- Custom name for form submission -->
+<%= render TwoFactor::Component.new(
+  name: "user[otp_code]",
+  label: "Two-Factor Code"
+) %>
+
+<!-- Custom ID prefix -->
+<%= render TwoFactor::Component.new(
+  id_prefix: "login_otp",
+  label: "Login Code"
+) %>
+
+<!-- With custom classes -->
+<%= render TwoFactor::Component.new(
+  label: "Verification Code",
+  classes: "max-w-xs mx-auto text-center",
+  input_classes: "font-mono"
+) %>
+
+<!-- 8-digit code -->
+<%= render TwoFactor::Component.new(
+  length: 8,
+  separator_position: 4,
+  label: "Backup Code"
+) %>
+
+<!-- Full-featured example -->
+<%= render TwoFactor::Component.new(
+  length: 6,
+  name: "otp[code]",
+  id_prefix: "2fa_code",
+  auto_submit: true,
+  autofocus: true,
+  separator: true,
+  separator_position: 3,
+  size: :md,
+  label: "Two-Factor Authentication",
+  hint: "Enter the code from your authenticator app",
+  classes: "max-w-sm"
+) %>

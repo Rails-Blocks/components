@@ -1,0 +1,128 @@
+<!-- Single key -->
+<%= render Kbd::Component.new(
+  key: "A"
+) %>
+
+<!-- Key combination with string -->
+<%= render Kbd::Component.new(
+  key: "Ctrl+S"
+) %>
+
+<!-- Key combination with array -->
+<%= render Kbd::Component.new(
+  key: ["Ctrl", "Shift", "P"]
+) %>
+
+<!-- Different sizes -->
+<%= render Kbd::Component.new(
+  key: "Esc",
+  size: :xs
+) %>
+
+<%= render Kbd::Component.new(
+  key: "Esc",
+  size: :sm
+) %>
+
+<%= render Kbd::Component.new(
+  key: "Esc",
+  size: :md
+) %>
+
+<%= render Kbd::Component.new(
+  key: "Esc",
+  size: :lg
+) %>
+
+<!-- Variants -->
+<%= render Kbd::Component.new(
+  key: "Enter",
+  variant: :default
+) %>
+
+<%= render Kbd::Component.new(
+  key: "Enter",
+  variant: :light
+) %>
+
+<%= render Kbd::Component.new(
+  key: "Enter",
+  variant: :dark
+) %>
+
+<%= render Kbd::Component.new(
+  key: "Enter",
+  variant: :outline
+) %>
+
+<!-- Without visible separator -->
+<%= render Kbd::Component.new(
+  key: ["⌘", "K"],
+  show_separator: false
+) %>
+
+<!-- OS-aware shortcut (shows ⌘ on Mac, Ctrl on others) -->
+<%= render Kbd::Component.new(
+  key: "S",
+  os_aware: true,
+  mac_key: "⌘",
+  non_mac_key: "Ctrl"
+) %>
+
+<!-- OS-aware with multiple keys -->
+<%= render Kbd::Component.new(
+  key: ["Shift", "P"],
+  os_aware: true,
+  mac_key: "⌘",
+  non_mac_key: "Ctrl"
+) %>
+
+<!-- Common shortcuts with OS detection -->
+<%= render Kbd::Component.new(
+  key: "S",
+  os_aware: true,
+  mac_key: "⌘",
+  non_mac_key: "Ctrl"
+) %>
+
+<%= render Kbd::Component.new(
+  key: "C",
+  os_aware: true,
+  mac_key: "⌘",
+  non_mac_key: "Ctrl"
+) %>
+
+<%= render Kbd::Component.new(
+  key: "V",
+  os_aware: true,
+  mac_key: "⌘",
+  non_mac_key: "Ctrl"
+) %>
+
+<!-- Special keys with symbols -->
+<%= render Kbd::Component.new(key: "⌘") %>
+
+<%= render Kbd::Component.new(key: "⌥") %>
+
+<%= render Kbd::Component.new(key: "⇧") %>
+
+<%= render Kbd::Component.new(key: "⌃") %>
+
+<%= render Kbd::Component.new(key: "↵") %>
+
+<%= render Kbd::Component.new(key: "⌫") %>
+
+<!-- Arrow keys -->
+<%= render Kbd::Component.new(key: "↑") %>
+
+<%= render Kbd::Component.new(key: "↓") %>
+
+<%= render Kbd::Component.new(key: "←") %>
+
+<%= render Kbd::Component.new(key: "→") %>
+
+<!-- With custom classes -->
+<%= render Kbd::Component.new(
+  key: "Space",
+  classes: "shadow-md"
+) %>

@@ -1,0 +1,242 @@
+<!-- Basic select -->
+<%= render Select::Component.new(
+  name: "framework",
+  options: [
+    ["Ruby on Rails", "rails"],
+    ["Laravel", "laravel"],
+    ["Django", "django"],
+    ["Express.js", "express"]
+  ],
+  placeholder: "Select framework..."
+) %>
+
+<!-- With label -->
+<%= render Select::Component.new(
+  name: "language",
+  label: "Programming Language",
+  options: [
+    ["Ruby", "ruby"],
+    ["Python", "python"],
+    ["JavaScript", "javascript"],
+    ["Go", "go"]
+  ],
+  placeholder: "Choose a language..."
+) %>
+
+<!-- With label and description -->
+<%= render Select::Component.new(
+  name: "plan",
+  label: "Subscription Plan",
+  description: "Select the plan that best fits your needs",
+  options: [
+    ["Free", "free"],
+    ["Pro", "pro"],
+    ["Enterprise", "enterprise"]
+  ],
+  placeholder: "Select a plan..."
+) %>
+
+<!-- Pre-selected value -->
+<%= render Select::Component.new(
+  name: "status",
+  label: "Status",
+  options: [
+    ["Active", "active"],
+    ["Pending", "pending"],
+    ["Inactive", "inactive"]
+  ],
+  selected: "active"
+) %>
+
+<!-- Required field -->
+<%= render Select::Component.new(
+  name: "country",
+  label: "Country",
+  required: true,
+  options: [
+    ["United States", "us"],
+    ["United Kingdom", "uk"],
+    ["Canada", "ca"],
+    ["Australia", "au"]
+  ],
+  placeholder: "Select your country..."
+) %>
+
+<!-- With error message -->
+<%= render Select::Component.new(
+  name: "category",
+  label: "Category",
+  error: "Please select a category",
+  options: [
+    ["Technology", "tech"],
+    ["Business", "business"],
+    ["Design", "design"]
+  ],
+  placeholder: "Select category..."
+) %>
+
+<!-- Disabled select -->
+<%= render Select::Component.new(
+  name: "disabled_example",
+  label: "Disabled Select",
+  disabled: true,
+  options: [
+    ["Option 1", "1"],
+    ["Option 2", "2"],
+    ["Option 3", "3"]
+  ],
+  selected: "2"
+) %>
+
+<!-- Searchable select -->
+<%= render Select::Component.new(
+  name: "searchable_country",
+  label: "Country (Searchable)",
+  dropdown_input: true,
+  options: [
+    ["United States", "us"],
+    ["United Kingdom", "uk"],
+    ["Canada", "ca"],
+    ["Australia", "au"],
+    ["Germany", "de"],
+    ["France", "fr"],
+    ["Japan", "jp"],
+    ["Brazil", "br"]
+  ],
+  placeholder: "Search countries..."
+) %>
+
+<!-- Multiple select -->
+<%= render Select::Component.new(
+  name: "tags[]",
+  label: "Tags",
+  multiple: true,
+  dropdown_input: true,
+  options: [
+    ["Frontend", "frontend"],
+    ["Backend", "backend"],
+    ["DevOps", "devops"],
+    ["Design", "design"],
+    ["Mobile", "mobile"]
+  ],
+  placeholder: "Select tags..."
+) %>
+
+<!-- With scroll buttons -->
+<%= render Select::Component.new(
+  name: "framework_scroll",
+  label: "Framework (with scroll buttons)",
+  scroll_buttons: true,
+  options: [
+    ["Ruby on Rails", "rails"],
+    ["Laravel", "laravel"],
+    ["Django", "django"],
+    ["Express.js", "express"],
+    ["Spring Boot", "spring"],
+    ["ASP.NET Core", "aspnet"],
+    ["Phoenix", "phoenix"],
+    ["FastAPI", "fastapi"]
+  ],
+  placeholder: "Select framework..."
+) %>
+
+<!-- Rich options with icons -->
+<%= render Select::Component.new(
+  name: "theme",
+  label: "Theme",
+  options: [
+    {
+      label: "Light",
+      value: "light",
+      icon: "<svg xmlns='http://www.w3.org/2000/svg' class='size-4' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'><circle cx='12' cy='12' r='4'></circle><path d='M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41'></path></svg>",
+      description: "Light mode uses bright colors"
+    },
+    {
+      label: "Dark",
+      value: "dark",
+      icon: "<svg xmlns='http://www.w3.org/2000/svg' class='size-4' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'><path d='M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z'></path></svg>",
+      description: "Dark mode is easier on the eyes"
+    },
+    {
+      label: "System",
+      value: "system",
+      icon: "<svg xmlns='http://www.w3.org/2000/svg' class='size-4' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'><rect width='20' height='14' x='2' y='3' rx='2'></rect><path d='M8 21h8M12 17v4'></path></svg>",
+      description: "Follow system preferences"
+    }
+  ],
+  placeholder: "Select theme..."
+) %>
+
+<!-- Grouped options -->
+<%= render Select::Component.new(
+  name: "car_brand",
+  label: "Car Brand",
+  grouped: true,
+  options: {
+    "European" => [["BMW", "bmw"], ["Mercedes", "mercedes"], ["Audi", "audi"]],
+    "Japanese" => [["Toyota", "toyota"], ["Honda", "honda"], ["Nissan", "nissan"]],
+    "American" => [["Ford", "ford"], ["Chevrolet", "chevy"], ["Tesla", "tesla"]]
+  },
+  placeholder: "Select car brand..."
+) %>
+
+<!-- Without clearable button -->
+<%= render Select::Component.new(
+  name: "no_clear",
+  label: "No Clear Button",
+  clearable: false,
+  options: [
+    ["Always Required", "required"],
+    ["Cannot Clear", "no_clear"]
+  ],
+  selected: "required"
+) %>
+
+<!-- With custom classes -->
+<%= render Select::Component.new(
+  name: "custom_styled",
+  label: "Custom Styled",
+  classes: "max-w-xs",
+  options: [
+    ["Styled Option 1", "1"],
+    ["Styled Option 2", "2"]
+  ]
+) %>
+
+<!-- Async GitHub user search (via backend proxy) -->
+<%= render Select::Component.new(
+  name: "github_user",
+  label: "GitHub User",
+  placeholder: "Search GitHub users...",
+  url: "/api/github-users",
+  disable_typing: true,
+  value_field: "login",
+  label_field: "name"
+) %>
+
+<!-- Direct Rick and Morty API search -->
+<%= render Select::Component.new(
+  name: "rick_and_morty_character",
+  label: "Rick and Morty Character",
+  placeholder: "Search Rick and Morty characters...",
+  url: "https://rickandmortyapi.com/api/character",
+  value_field: "id",
+  label_field: "name",
+  search_param: "name",
+  image_field: "image",
+  subtitle_field: "status",
+  badge_field: "species"
+) %>
+
+<!-- With additional data attributes -->
+<%= render Select::Component.new(
+  name: "custom_data",
+  label: "Custom Data Attributes",
+  options: [
+    ["Option 1", "1"],
+    ["Option 2", "2"]
+  ],
+  data: {
+    select_submit_on_change_value: true
+  }
+) %>

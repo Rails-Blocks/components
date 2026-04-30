@@ -1,0 +1,16 @@
+{
+  "component": "forms",
+  "implementation": "view_component",
+  "files": [
+    {
+      "path": "forms/component.rb",
+      "relative_path": "component.rb",
+      "checksum": "b149ecbd591b15274de2d5e9aaa68dde6f3f83228ceb31abe8a4b01fac0d2585"
+    },
+    {
+      "path": "forms/component.html.erb",
+      "relative_path": "component.html.erb",
+      "checksum": "25b02849acd2316c487dbdd30cd9990a605867823f233c0ad597867f974973ea"
+    }
+  ]
+}

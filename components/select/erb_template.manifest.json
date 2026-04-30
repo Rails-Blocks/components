@@ -1,0 +1,11 @@
+{
+  "component": "select",
+  "implementation": "erb_template",
+  "files": [
+    {
+      "path": "select/_select.html.erb",
+      "relative_path": "_select.html.erb",
+      "checksum": "882425d142e3bfc9ffd73be494b4d770ecf133de7615f381a05f36dee5477074"
+    }
+  ]
+}

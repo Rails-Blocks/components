@@ -1,0 +1,79 @@
+<!-- Basic animated number -->
+<%= render AnimatedNumber::Component.new(
+  end_value: 1250,
+  duration: 2000
+) %>
+
+<!-- With start value -->
+<%= render AnimatedNumber::Component.new(
+  start_value: 100,
+  end_value: 5000,
+  duration: 2500
+) %>
+
+<!-- Currency formatting -->
+<%= render AnimatedNumber::Component.new(
+  start_value: 50,
+  end_value: 850.99,
+  duration: 2500,
+  format_options: { style: "currency", currency: "USD", minimumFractionDigits: 2 },
+  suffix: " / month"
+) %>
+
+<!-- Compact notation for large numbers -->
+<%= render AnimatedNumber::Component.new(
+  end_value: 125600,
+  duration: 2000,
+  format_options: { notation: "compact", compactDisplay: "short" }
+) %>
+
+<!-- Percentage with prefix and suffix -->
+<%= render AnimatedNumber::Component.new(
+  end_value: 147.5,
+  duration: 2800,
+  format_options: { minimumFractionDigits: 1, maximumFractionDigits: 1 },
+  prefix: "+",
+  suffix: "%"
+) %>
+
+<!-- Page load trigger -->
+<%= render AnimatedNumber::Component.new(
+  end_value: 100000,
+  duration: 3500,
+  trigger: "load",
+  suffix: "+"
+) %>
+
+<!-- Countdown timer (realtime) -->
+<%= render AnimatedNumber::Component.new(
+  start_value: 10,
+  end_value: 0,
+  duration: 500,
+  trend: -1,
+  format_options: { minimumIntegerDigits: 2 },
+  suffix: "s",
+  realtime: true,
+  update_interval: 1000
+) %>
+
+<!-- Discrete animation (slot-machine style) -->
+<%= render AnimatedNumber::Component.new(
+  end_value: 999,
+  duration: 2000,
+  continuous: false
+) %>
+
+<!-- Custom easing -->
+<%= render AnimatedNumber::Component.new(
+  end_value: 5000,
+  duration: 3000,
+  spin_easing: "ease-out",
+  transform_easing: "ease-out"
+) %>
+
+<!-- With custom classes for styling -->
+<%= render AnimatedNumber::Component.new(
+  end_value: 42,
+  duration: 1500,
+  classes: "text-4xl font-bold text-blue-600"
+) %>

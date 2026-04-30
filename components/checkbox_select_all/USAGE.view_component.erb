@@ -1,0 +1,80 @@
+<!-- Basic usage -->
+<%= render(CheckboxSelectAll::Component.new(
+  select_all_label: "Select All Tasks",
+  name: "tasks[]"
+)) do |c| %>
+  <% c.with_item(label: "Update landing page design", value: "1") %>
+  <% c.with_item(label: "Review pull requests", value: "2") %>
+  <% c.with_item(label: "Write documentation", value: "3") %>
+  <% c.with_item(label: "Fix responsive issues", value: "4") %>
+<% end %>
+
+<!-- With keyboard shortcut and pre-checked items -->
+<%= render(CheckboxSelectAll::Component.new(
+  select_all_label: "Select Users",
+  name: "users[]",
+  toggle_key: "x"
+)) do |c| %>
+  <% c.with_item(label: "Alex Johnson", value: "1", checked: true) %>
+  <% c.with_item(label: "Sarah Miller", value: "2") %>
+  <% c.with_item(label: "Michael Chen", value: "3", disabled: true) %>
+  <% c.with_item(label: "Emily Davis", value: "4") %>
+<% end %>
+
+<!-- With nested groups, action bar, and clear/reset -->
+<%= render(CheckboxSelectAll::Component.new(
+  select_all_label: "Select All Permissions",
+  name: "permissions[]",
+  show_action_bar: true,
+  show_count: true
+)) do |c| %>
+  <% c.with_group(
+    label: "Content Management",
+    description: "Manage posts, pages, and media"
+  ) do |group| %>
+    <% group.with_item(label: "Create content", value: "content.create") %>
+    <% group.with_item(label: "Edit content", value: "content.edit") %>
+    <% group.with_item(label: "Delete content", value: "content.delete") %>
+  <% end %>
+
+  <% c.with_group(
+    label: "User Management",
+    description: "Manage users and roles"
+  ) do |group| %>
+    <% group.with_item(label: "View users", value: "users.view") %>
+    <% group.with_item(label: "Create users", value: "users.create") %>
+    <% group.with_item(label: "Edit users", value: "users.edit") %>
+
+    <% group.with_group(
+      label: "Role Management",
+      description: "Assign roles and permissions"
+    ) do |role_group| %>
+      <% role_group.with_item(label: "Create roles", value: "roles.create") %>
+      <% role_group.with_item(label: "Assign roles", value: "roles.assign") %>
+
+      <% role_group.with_group(
+        label: "Admin Controls",
+        description: "Advanced controls for admin roles"
+      ) do |admin_group| %>
+        <% admin_group.with_item(label: "Impersonate users", value: "admin.impersonate") %>
+
+        <% admin_group.with_group(
+          label: "Security Policies",
+          description: "Critical account security controls"
+        ) do |security_group| %>
+          <% security_group.with_item(label: "Require 2FA", value: "security.require_2fa") %>
+          <% security_group.with_item(label: "Enforce password rotation", value: "security.password_rotation") %>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+
+  <% c.with_action_bar do %>
+    <button
+      type="button"
+      class="text-sm font-medium text-neutral-700 hover:text-neutral-900 dark:text-neutral-300 dark:hover:text-neutral-100"
+      data-action="click->checkbox-select-all#clearAll">
+      Clear Selection
+    </button>
+  <% end %>
+<% end %>

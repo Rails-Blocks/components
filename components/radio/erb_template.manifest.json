@@ -1,0 +1,11 @@
+{
+  "component": "radio",
+  "implementation": "erb_template",
+  "files": [
+    {
+      "path": "radio/_radio.html.erb",
+      "relative_path": "_radio.html.erb",
+      "checksum": "5d8a459dbfb77f7ae63c415d4117c12cf03964b1343d35974b54ff7ee311dd15"
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+<!-- Basic clipboard button -->
+<%= render Clipboard::Component.new(
+  text: "Hello from Rails Blocks!"
+) %>
+
+<!-- With custom button text -->
+<%= render Clipboard::Component.new(
+  text: "https://railsblocks.com",
+  button_text: "Copy URL",
+  copied_text: "URL Copied!"
+) %>
+
+<!-- Secondary variant -->
+<%= render Clipboard::Component.new(
+  text: "Secondary button text",
+  button_text: "Copy (secondary)",
+  variant: :secondary
+) %>
+
+<!-- Outline variant -->
+<%= render Clipboard::Component.new(
+  text: "Outline button text",
+  button_text: "Copy (outline)",
+  variant: :outline
+) %>
+
+<!-- Icon only (ghost variant) -->
+<%= render Clipboard::Component.new(
+  text: "Ghost icon only text",
+  icon_only: true,
+  variant: :ghost
+) %>
+
+<!-- Without tooltip -->
+<%= render Clipboard::Component.new(
+  text: "No tooltip feedback",
+  button_text: "Copy (no tooltip)",
+  show_tooltip: false
+) %>
+
+<!-- Custom tooltip placement -->
+<%= render Clipboard::Component.new(
+  text: "Bottom tooltip",
+  button_text: "Copy",
+  tooltip_placement: "bottom"
+) %>

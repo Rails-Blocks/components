@@ -1,0 +1,16 @@
+{
+  "component": "color_picker",
+  "implementation": "view_component",
+  "files": [
+    {
+      "path": "color_picker/component.rb",
+      "relative_path": "component.rb",
+      "checksum": "d593e48b25d2bce759a01ea8b7b3143e857e4dd39d24e4be79cd198d4cba0590"
+    },
+    {
+      "path": "color_picker/component.html.erb",
+      "relative_path": "component.html.erb",
+      "checksum": "14553ad60fa110bfe7a865aaa64c4728b4d95d60999c787f573966e2efa31ff1"
+    }
+  ]
+}

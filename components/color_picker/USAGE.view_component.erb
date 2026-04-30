@@ -1,0 +1,51 @@
+<%# Enhanced color picker %>
+<%= render ColorPicker::Component.new(
+  id: "enhanced_color",
+  label: "Brand Color",
+  value: "#3b82f6",
+  format: :hex
+) %>
+
+<%# Color picker with opacity %>
+<%= render ColorPicker::Component.new(
+  id: "opacity_color",
+  label: "Background Color",
+  value: "#f5a623ff",
+  opacity: true,
+  no_format_toggle: true
+) %>
+
+<%# Format variations %>
+<%= render ColorPicker::Component.new(
+  id: "rgb_color",
+  label: "RGB Format",
+  value: "rgb(80, 227, 194)",
+  format: :rgb
+) %>
+
+<%= render ColorPicker::Component.new(
+  id: "hsl_color",
+  label: "HSL Format",
+  value: "hsl(290, 87%, 47%)",
+  format: :hsl
+) %>
+
+<%= render ColorPicker::Component.new(
+  id: "hsv_color",
+  label: "HSV Format",
+  value: "hsv(55, 89%, 97%)",
+  format: :hsv
+) %>
+
+<%# Custom swatches with form submission %>
+<%= render ColorPicker::Component.new(
+  id: "brand_palette",
+  name: "settings[brand_color]",
+  label: "Brand Color",
+  value: "#4a5568",
+  show_swatches: true,
+  swatches: [
+    "#1a202c", "#2d3748", "#4a5568", "#718096",
+    "#fed7d7", "#fc8181", "#f56565", "#e53e3e"
+  ]
+) %>

@@ -1,0 +1,16 @@
+{
+  "component": "pagination",
+  "implementation": "view_component",
+  "files": [
+    {
+      "path": "pagination/component.rb",
+      "relative_path": "component.rb",
+      "checksum": "17d263ddd272e1f6188baaad675221bbbc3cd18e471eb37996642216f72272fb"
+    },
+    {
+      "path": "pagination/component.html.erb",
+      "relative_path": "component.html.erb",
+      "checksum": "b81ec01b056df74bd0166edf64db73960ca9a3b52f500a7bd7a19076983d7493"
+    }
+  ]
+}

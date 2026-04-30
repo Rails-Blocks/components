@@ -1,0 +1,11 @@
+{
+  "component": "testimonial",
+  "implementation": "erb_template",
+  "files": [
+    {
+      "path": "testimonial/_testimonial.html.erb",
+      "relative_path": "_testimonial.html.erb",
+      "checksum": "5e9aa9354f03cfc880d568fe71d2ef498060ba053c9eb7ea422ae25ca8e490b7"
+    }
+  ]
+}

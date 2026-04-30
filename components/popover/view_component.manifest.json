@@ -1,0 +1,16 @@
+{
+  "component": "popover",
+  "implementation": "view_component",
+  "files": [
+    {
+      "path": "popover/component.rb",
+      "relative_path": "component.rb",
+      "checksum": "a391e43025f77f20f06f921bf5e3d15a148ea67cedc2218c40992c2ccd5dbbbe"
+    },
+    {
+      "path": "popover/component.html.erb",
+      "relative_path": "component.html.erb",
+      "checksum": "6669f408ffee0cd6f5b141c050ec77a44dfee91e4286f6584dea659edc9ba029"
+    }
+  ]
+}

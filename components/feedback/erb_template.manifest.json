@@ -1,0 +1,11 @@
+{
+  "component": "feedback",
+  "implementation": "erb_template",
+  "files": [
+    {
+      "path": "feedback/_feedback.html.erb",
+      "relative_path": "_feedback.html.erb",
+      "checksum": "c84929d718f429a95845c5164e7c46c979a9d4daee9cea1f90615c3cb8f7d598"
+    }
+  ]
+}

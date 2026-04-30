@@ -1,0 +1,156 @@
+<%# Basic date picker %>
+<%= render "shared/components/date_picker/date_picker",
+  id: "basic_date",
+  placeholder: "Select date...",
+  show_today_button: true,
+  show_clear_button: true %>
+
+<%# Date picker with initial value %>
+<%= render "shared/components/date_picker/date_picker",
+  id: "preset_date",
+  value: Date.today,
+  show_today_button: true,
+  show_clear_button: true %>
+
+<%# Date range picker %>
+<%= render "shared/components/date_picker/date_picker",
+  id: "date_range",
+  placeholder: "Select date range...",
+  range: true,
+  show_today_button: true,
+  show_clear_button: true %>
+
+<%# Date and time picker %>
+<%= render "shared/components/date_picker/date_picker",
+  id: "datetime_picker",
+  placeholder: "Select date & time...",
+  timepicker: true,
+  show_today_button: true,
+  show_clear_button: true %>
+
+<%# Time only picker %>
+<%= render "shared/components/date_picker/date_picker",
+  id: "time_only",
+  placeholder: "Select time...",
+  time_only: true,
+  show_today_button: true,
+  show_clear_button: true %>
+
+<%# Week picker %>
+<%= render "shared/components/date_picker/date_picker",
+  id: "week_picker",
+  placeholder: "Select week...",
+  week_picker: true,
+  show_today_button: true,
+  show_clear_button: true %>
+
+<%# Month selector (start at months view, stay at months view) %>
+<%= render "shared/components/date_picker/date_picker",
+  id: "month_selector",
+  placeholder: "Select month...",
+  start_view: "months",
+  min_view: "months",
+  date_format: "MMMM yyyy",
+  show_this_month_button: true,
+  show_clear_button: true %>
+
+<%# Year selector %>
+<%= render "shared/components/date_picker/date_picker",
+  id: "year_selector",
+  placeholder: "Select year...",
+  start_view: "years",
+  min_view: "years",
+  date_format: "yyyy",
+  show_this_year_button: true,
+  show_clear_button: true %>
+
+<%# Date picker with constraints %>
+<%= render "shared/components/date_picker/date_picker",
+  id: "constrained_date",
+  placeholder: "Select date...",
+  min_date: Date.today,
+  max_date: Date.today + 30.days,
+  show_today_button: true,
+  show_clear_button: true %>
+
+<%# Date picker with disabled dates %>
+<%= render "shared/components/date_picker/date_picker",
+  id: "disabled_dates",
+  placeholder: "Select date...",
+  disabled_dates: [
+    (Date.today + 2.days).strftime("%Y-%m-%d"),
+    (Date.today + 5.days).strftime("%Y-%m-%d"),
+    (Date.today + 10.days).strftime("%Y-%m-%d")
+  ],
+  show_today_button: true,
+  show_clear_button: true %>
+
+<%# Inline calendar (always visible) %>
+<%= render "shared/components/date_picker/date_picker",
+  id: "inline_calendar",
+  value: Date.today,
+  inline: true,
+  show_today_button: true,
+  show_clear_button: true %>
+
+<%# Time picker with constraints %>
+<%= render "shared/components/date_picker/date_picker",
+  id: "constrained_time",
+  placeholder: "Select time (9 AM - 5 PM)...",
+  timepicker: true,
+  min_hours: 9,
+  max_hours: 17,
+  minutes_step: 15,
+  show_today_button: true,
+  show_clear_button: true %>
+
+<%# Form field with name attribute %>
+<%= render "shared/components/date_picker/date_picker",
+  id: "form_date",
+  name: "appointment[scheduled_at]",
+  placeholder: "Select appointment date...",
+  timepicker: true,
+  required: true,
+  show_today_button: true,
+  show_clear_button: true %>
+
+<%# Custom date format %>
+<%= render "shared/components/date_picker/date_picker",
+  id: "custom_format",
+  placeholder: "Select date...",
+  date_format: "dd/MM/yyyy",
+  show_today_button: true,
+  show_clear_button: true %>
+
+<%# All available options %>
+<%= render "shared/components/date_picker/date_picker",
+  id: "full_options",
+  name: "event[date]",
+  value: nil,
+  placeholder: "Select date...",
+  range: false,
+  timepicker: false,
+  time_only: false,
+  week_picker: false,
+  inline: false,
+  date_format: nil,
+  time_format: nil,
+  min_date: nil,
+  max_date: nil,
+  disabled_dates: [],
+  start_view: "days",
+  min_view: "days",
+  placement: "top-end",
+  show_today_button: true,
+  show_clear_button: true,
+  show_this_month_button: false,
+  show_this_year_button: false,
+  min_hours: nil,
+  max_hours: nil,
+  minutes_step: nil,
+  readonly: true,
+  required: false,
+  disabled: false,
+  show_icon: true,
+  input_class: nil,
+  classes: nil %>

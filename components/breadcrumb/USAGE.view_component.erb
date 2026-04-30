@@ -1,0 +1,97 @@
+<!-- Basic breadcrumb with slash separators -->
+<%= render Breadcrumb::Component.new(
+  items: [
+    { label: "Home", href: "/" },
+    { label: "Products", href: "/products" },
+    { label: "Electronics", href: "/products/electronics" },
+    { label: "Headphones" }
+  ]
+) %>
+
+<!-- Breadcrumb with chevron separators -->
+<%= render Breadcrumb::Component.new(
+  items: [
+    { label: "Home", href: "/" },
+    { label: "Documentation", href: "/docs" },
+    { label: "Components", href: "/docs/components" },
+    { label: "Breadcrumb" }
+  ],
+  separator: :chevron
+) %>
+
+<!-- Breadcrumb with background (pill style) -->
+<%= render Breadcrumb::Component.new(
+  items: [
+    { label: "Home", href: "/" },
+    { label: "Documentation", href: "/docs" },
+    { label: "Components", href: "/docs/components" },
+    { label: "Breadcrumb" }
+  ],
+  variant: :with_background
+) %>
+
+<!-- Breadcrumb with icons and home icon -->
+<%= render Breadcrumb::Component.new(
+  items: [
+    { label: "Home", href: "/" },
+    { label: "Dashboard", href: "/dashboard" },
+    { label: "Projects", href: "/projects" },
+    { label: "Project Alpha" }
+  ],
+  variant: :with_icons,
+  show_home_icon: true
+) %>
+
+<!-- Breadcrumb with icons but no home icon -->
+<%= render Breadcrumb::Component.new(
+  items: [
+    { label: "Home", href: "/" },
+    { label: "Settings", href: "/settings" },
+    { label: "Profile" }
+  ],
+  variant: :with_icons,
+  show_home_icon: false
+) %>
+
+<!-- Breadcrumb with truncation (shows first item, ellipsis, and last 2 items) -->
+<%= render Breadcrumb::Component.new(
+  items: [
+    { label: "Home", href: "/" },
+    { label: "Products", href: "/products" },
+    { label: "Electronics", href: "/electronics" },
+    { label: "Audio", href: "/audio" },
+    { label: "Headphones", href: "/headphones" },
+    { label: "Wireless Bluetooth Headphones" }
+  ],
+  truncate_at: 3
+) %>
+
+<!-- Breadcrumb with truncated current page text -->
+<%= render Breadcrumb::Component.new(
+  items: [
+    { label: "Home", href: "/" },
+    { label: "Products", href: "/products" },
+    { label: "Electronics", href: "/electronics" },
+    { label: "Very Long Product Name That Might Need Truncation" }
+  ],
+  current_max_width: "200px"
+) %>
+
+<!-- Breadcrumb with custom item icons -->
+<%= render Breadcrumb::Component.new(
+  items: [
+    { label: "Home", href: "/", icon: '<svg xmlns="http://www.w3.org/2000/svg" class="size-4" viewBox="0 0 18 18"><g fill="currentColor"><path d="M7.94127 1.36281C8.56694 0.887445 9.4333 0.886569 10.0591 1.36312L15.3088 5.35287C15.7448 5.68398 16 6.20008 16 6.746V14.25C16 15.7692 14.7692 17 13.25 17H10.75V13.251C10.75 12.699 10.302 12.251 9.75 12.251H8.25C7.698 12.251 7.25 12.699 7.25 13.251V17H4.75C3.23079 17 2 15.7692 2 14.25V6.746C2 6.19867 2.2559 5.68346 2.69155 5.3526L7.94127 1.36281Z"></path></g></svg>' },
+    { label: "Settings", href: "/settings" },
+    { label: "Profile" }
+  ]
+) %>
+
+<!-- Breadcrumb with custom classes -->
+<%= render Breadcrumb::Component.new(
+  items: [
+    { label: "Home", href: "/" },
+    { label: "About", href: "/about" },
+    { label: "Team" }
+  ],
+  classes: "max-w-2xl mx-auto"
+) %>

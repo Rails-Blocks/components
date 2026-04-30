@@ -1,0 +1,16 @@
+{
+  "component": "lightbox",
+  "implementation": "erb_template",
+  "files": [
+    {
+      "path": "lightbox/_lightbox.html.erb",
+      "relative_path": "_lightbox.html.erb",
+      "checksum": "98b9b126cbb4ce4ca0d70e1d6648fd715a3891274e0d1f877c62d8c47ee06038"
+    },
+    {
+      "path": "lightbox/_lightbox_item.html.erb",
+      "relative_path": "_lightbox_item.html.erb",
+      "checksum": "eb96b773813d21fc8ada7460d33d5dcf60012eef47d5c3965c4da01c6402de1d"
+    }
+  ]
+}

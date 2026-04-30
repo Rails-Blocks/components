@@ -1,0 +1,11 @@
+{
+  "component": "confirmation",
+  "implementation": "erb_template",
+  "files": [
+    {
+      "path": "confirmation/_confirmation.html.erb",
+      "relative_path": "_confirmation.html.erb",
+      "checksum": "13b8e66e3c2d4d73692fbf7e768feb63944a7891d502aebc72e643ca8d35df5b"
+    }
+  ]
+}

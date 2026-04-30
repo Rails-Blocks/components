@@ -1,0 +1,11 @@
+{
+  "component": "color_picker",
+  "implementation": "erb_template",
+  "files": [
+    {
+      "path": "color_picker/_color_picker.html.erb",
+      "relative_path": "_color_picker.html.erb",
+      "checksum": "324aff8692e99a42fd767c99e0a30670b40a9ebbb28bc6a4d1d813e81f273fd5"
+    }
+  ]
+}

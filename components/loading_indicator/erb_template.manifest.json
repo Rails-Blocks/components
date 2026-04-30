@@ -1,0 +1,11 @@
+{
+  "component": "loading_indicator",
+  "implementation": "erb_template",
+  "files": [
+    {
+      "path": "loading_indicator/_loading_indicator.html.erb",
+      "relative_path": "_loading_indicator.html.erb",
+      "checksum": "c320c5845ea2b0de437be61422d3db33b38bed604d5a7a8bfa356fd2764efdd3"
+    }
+  ]
+}

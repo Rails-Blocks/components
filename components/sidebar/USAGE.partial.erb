@@ -1,0 +1,206 @@
+<%
+  profile_image_url = "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=100&h=100&fit=crop"
+
+  dashboard_icon = <<~SVG
+    <svg xmlns="http://www.w3.org/2000/svg" class="size-4 sm:size-4.5" width="18" height="18" viewBox="0 0 18 18"><g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" stroke="currentColor"><path d="M14.855 5.95L9.605 1.96C9.247 1.688 8.752 1.688 8.395 1.96L3.145 5.95C2.896 6.139 2.75 6.434 2.75 6.747V14.251C2.75 15.356 3.645 16.251 4.75 16.251H7.25V12.251C7.25 11.699 7.698 11.251 8.25 11.251H9.75C10.302 11.251 10.75 11.699 10.75 12.251V16.251H13.25C14.355 16.251 15.25 15.356 15.25 14.251V6.746C15.25 6.433 15.104 6.14 14.855 5.95Z"></path></g></svg>
+  SVG
+
+  contacts_icon = <<~SVG
+    <svg xmlns="http://www.w3.org/2000/svg" class="size-4 sm:size-4.5" width="18" height="18" viewBox="0 0 18 18"><g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" stroke="currentColor"><circle cx="9" cy="4.5" r="2.75"></circle><path d="M13.762,15.516c.86-.271,1.312-1.221,.947-2.045-.97-2.191-3.159-3.721-5.709-3.721s-4.739,1.53-5.709,3.721c-.365,.825,.087,1.774,.947,2.045,1.225,.386,2.846,.734,4.762,.734s3.537-.348,4.762-.734Z"></path></g></svg>
+  SVG
+
+  companies_icon = <<~SVG
+    <svg xmlns="http://www.w3.org/2000/svg" class="size-4 sm:size-4.5" width="18" height="18" viewBox="0 0 18 18"><g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" stroke="currentColor"><path d="M7.75 16.25V7.75C7.75 7.198 8.198 6.75 8.75 6.75H14.25C14.802 6.75 15.25 7.198 15.25 7.75V16.25"></path><path d="M2.75 16.25V4.412C2.75 4.01 2.99 3.64701 3.36 3.49101L7.86 1.58802C8.519 1.30902 9.25 1.79301 9.25 2.50901V3.75001"></path><path d="M1.75 16.25H16.25"></path><path d="M10.25 10.25V9.75"></path><path d="M12.75 10.25V9.75"></path><path d="M10.25 13.25V12.75"></path><path d="M12.75 13.25V12.75"></path></g></svg>
+  SVG
+
+  deals_icon = <<~SVG
+    <svg xmlns="http://www.w3.org/2000/svg" class="size-4 sm:size-4.5" width="18" height="18" viewBox="0 0 18 18"><g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" stroke="currentColor"><line x1="12.345" y1="11.75" x2="15.25" y2="11.75"></line><path d="M8.779,4.67l-.231-.313c-.283-.382-.73-.608-1.206-.608h-1.458c-.388,0-.761,.151-1.041,.42l-1.867,1.8c-.07,.067-.148,.123-.232,.167"></path><path d="M2.75,11.75h1.26c.303,0,.59,.138,.78,.374l1.083,1.349c.596,.742,1.632,.962,2.478,.525l3.274-1.693c1.111-.574,1.428-2.016,.661-3.003l-1.648-2.122"></path><path d="M15.258,6.138c-.085-.044-.163-.1-.233-.168l-1.867-1.8c-.28-.269-.653-.42-1.041-.42h-1.807c-.404,0-.791,.163-1.074,.453l-2.495,2.558c-.498,.51-.493,1.326,.011,1.83h0c.447,.447,1.15,.508,1.668,.145l2.83-1.985"></path><path d="M.75,5.25H1.75c.552,0,1,.448,1,1v6c0,.552-.448,1-1,1H.75"></path><path d="M17.25,5.25h-1c-.552,0-1,.448-1,1v6c0,.552,.448,1,1,1h1"></path></g></svg>
+  SVG
+
+  tasks_icon = <<~SVG
+    <svg xmlns="http://www.w3.org/2000/svg" class="size-4 sm:size-4.5" width="18" height="18" viewBox="0 0 18 18"><g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" stroke="currentColor"><path d="M7.99707 11.25L9.60605 12.75L13.0031 8.25"></path><path d="M13.75 5.25H7.25C6.145 5.25 5.25 6.145 5.25 7.25V13.75C5.25 14.855 6.145 15.75 7.25 15.75H13.75C14.855 15.75 15.75 14.855 15.75 13.75V7.25C15.75 6.145 14.855 5.25 13.75 5.25Z"></path><path d="M12.4012 2.74996C12.0022 2.06146 11.2151 1.64841 10.38 1.77291L3.45602 2.80196C2.36402 2.96386 1.61003 3.98093 1.77203 5.07393L2.75002 11.6547"></path></g></svg>
+  SVG
+
+  calendar_icon = <<~SVG
+    <svg xmlns="http://www.w3.org/2000/svg" class="size-4 sm:size-4.5" width="18" height="18" viewBox="0 0 18 18"><g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" stroke="currentColor"><line x1="5.75" y1="2.75" x2="5.75" y2=".75"></line><line x1="12.25" y1="2.75" x2="12.25" y2=".75"></line><rect x="2.25" y="2.75" width="13.5" height="12.5" rx="2" ry="2"></rect><line x1="2.25" y1="6.25" x2="15.75" y2="6.25"></line></g></svg>
+  SVG
+
+  new_chat_icon = <<~SVG
+    <svg xmlns="http://www.w3.org/2000/svg" class="size-4 sm:size-4.5" width="18" height="18" viewBox="0 0 18 18"><g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" stroke="currentColor"><path d="M15.25 9.2422V13.25C15.25 14.355 14.355 15.25 13.25 15.25H4.75C3.645 15.25 2.75 14.355 2.75 13.25V4.75C2.75 3.645 3.645 2.75 4.75 2.75H8.75781"></path><path d="M7.75 10.25C7.75 10.25 10.0838 10.1662 10.909 9.34101L15.784 4.46601C16.4053 3.84471 16.4053 2.83731 15.784 2.21601C15.1627 1.59471 14.1553 1.59471 13.534 2.21601L8.659 7.09101C7.8809 7.86911 7.75 10.25 7.75 10.25Z"></path></g></svg>
+  SVG
+
+  search_icon = <<~SVG
+    <svg xmlns="http://www.w3.org/2000/svg" class="size-4 sm:size-4.5" width="18" height="18" viewBox="0 0 18 18"><g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" stroke="currentColor"><path d="M15.75 15.75L11.6386 11.6386"></path><path d="M7.75 13.25C10.7875 13.25 13.25 10.7875 13.25 7.75C13.25 4.7125 10.7875 2.25 7.75 2.25C4.7125 2.25 2.25 4.7125 2.25 7.75C2.25 10.7875 4.7125 13.25 7.75 13.25Z"></path></g></svg>
+  SVG
+
+  library_icon = <<~SVG
+    <svg xmlns="http://www.w3.org/2000/svg" class="size-4 sm:size-4.5" width="18" height="18" viewBox="0 0 18 18"><g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" stroke="currentColor"><path d="M4,14.75l5.836-5.836c.781-.781,2.047-.781,2.828,0l3.586,3.586"></path><rect x="1.75" y="3.25" width="14.5" height="11.5" rx="2" ry="2" transform="translate(18 18) rotate(180)"></rect><circle cx="5.75" cy="7.25" r="1.25" fill="currentColor" data-stroke="none" stroke="none"></circle><line x1="9" y1="1.5" x2="9" y2="3.25"></line><line x1="5.25" y1="1.5" x2="5.25" y2="3.25"></line><line x1="12.75" y1="1.5" x2="12.75" y2="3.25"></line></g></svg>
+  SVG
+
+  folder_add_icon = <<~SVG
+    <svg xmlns="http://www.w3.org/2000/svg" class="size-4 sm:size-4.5" width="18" height="18" viewBox="0 0 18 18"><g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" stroke="currentColor"><path d="M2.25 8.75V4.75C2.25 3.645 3.145 2.75 4.25 2.75H6.201C6.808 2.75 7.381 3.02499 7.761 3.49799L8.364 4.25H13.75C14.855 4.25 15.75 5.145 15.75 6.25V9.09399"></path><path d="M14.75 12.25V17.25"></path><path d="M15.75 9.42221V8.75C15.75 7.646 14.855 6.75 13.75 6.75H4.25C3.145 6.75 2.25 7.646 2.25 8.75V13.25C2.25 14.354 3.145 15.25 4.25 15.25H9.2919"></path><path d="M17.25 14.75H12.25"></path></g></svg>
+  SVG
+
+  folder_icon = <<~SVG
+    <svg xmlns="http://www.w3.org/2000/svg" class="size-4 sm:size-4.5" width="18" height="18" viewBox="0 0 18 18"><g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" stroke="currentColor"><path d="M13.75,5.25c1.105,0,2,.895,2,2v5.5c0,1.105-.895,2-2,2H4.25c-1.105,0-2-.895-2-2V4.75c0-1.105,.895-2,2-2h1.825c.587,0,1.144,.258,1.524,.705l1.524,1.795h4.626Z"></path></g></svg>
+  SVG
+
+  more_icon = <<~SVG
+    <svg xmlns="http://www.w3.org/2000/svg" class="size-4" width="12" height="12" viewBox="0 0 12 12"><g fill="currentColor"><circle cx="6" cy="6" r="1" stroke-width="0"></circle><circle cx="2" cy="6" r="1" stroke-width="0"></circle><circle cx="10" cy="6" r="1" stroke-width="0"></circle></g></svg>
+  SVG
+
+  logo_html = <<~HTML
+    <a href="javascript:void(0)" aria-label="Home" class="flex size-10 items-center justify-center rounded-lg text-neutral-900 hover:bg-neutral-100 focus:outline-none focus-visible:bg-neutral-100 disabled:opacity-50 sm:size-9 dark:text-neutral-100 dark:hover:bg-neutral-800 focus-visible:dark:bg-neutral-800">
+      <svg xmlns="http://www.w3.org/2000/svg" class="size-4 sm:size-4.5" width="18" height="18" viewBox="0 0 18 18"><g fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="M1 9C1 4.58168 4.58179 1 9 1C13.4182 1 17 4.58168 17 9C17 13.4183 13.4182 17 9 17C4.58179 17 1 13.4183 1 9Z" fill-opacity="0.4"></path></g></svg>
+    </a>
+  HTML
+
+  collapsed_footer_html = <<~HTML
+    <button class="w-full flex items-center gap-2 rounded-md px-1 sm:px-1.5 py-1 sm:py-1.5 text-left text-sm text-neutral-700 hover:bg-neutral-100 focus-visible:bg-neutral-100 focus:outline-hidden disabled:cursor-not-allowed disabled:opacity-50 dark:text-neutral-100 dark:hover:bg-neutral-700/50 dark:focus-visible:bg-neutral-700/50" aria-label="Profile">
+      <div class="flex items-center justify-center group-disabled:opacity-50 group-data-disabled:opacity-50">
+        <div class="flex size-6 shrink-0 overflow-hidden rounded-md bg-neutral-500/30">
+          <img alt="Profile image" class="size-6 shrink-0 object-cover" referrerpolicy="no-referrer" src="#{profile_image_url}">
+        </div>
+      </div>
+    </button>
+  HTML
+
+  expanded_footer_html = <<~HTML
+    <button class="w-full flex items-center gap-2 rounded-md px-1 sm:px-1.5 py-1 sm:py-1.5 text-left text-sm text-neutral-700 hover:bg-neutral-100 focus-visible:bg-neutral-100 focus:outline-hidden disabled:cursor-not-allowed disabled:opacity-50 dark:text-neutral-100 dark:hover:bg-neutral-700/50 dark:focus-visible:bg-neutral-700/50">
+      <div class="flex items-center justify-center group-disabled:opacity-50 group-data-disabled:opacity-50">
+        <div class="flex size-6 shrink-0 overflow-hidden rounded-md bg-neutral-500/30">
+          <img alt="Profile image" class="size-6 shrink-0 object-cover" referrerpolicy="no-referrer" src="#{profile_image_url}">
+        </div>
+      </div>
+      <div class="min-w-0">
+        <div class="flex min-w-0 grow items-center gap-2.5 group-data-no-contents-gap:gap-0">
+          <div class="truncate text-xs">John Doe</div>
+        </div>
+      </div>
+    </button>
+  HTML
+
+  ai_projects_content = <<~HTML
+    <button class="group w-full flex items-center justify-between gap-2 rounded-md px-2 py-1.5 text-left text-sm text-neutral-700 hover:bg-neutral-100 focus-visible:bg-neutral-100 focus:outline-hidden disabled:cursor-not-allowed disabled:opacity-50 dark:text-neutral-100 dark:hover:bg-neutral-700/50 dark:focus-visible:bg-neutral-700/50">
+      <div class="flex items-center justify-center group-disabled:opacity-50 group-data-disabled:opacity-50">#{folder_add_icon}</div>
+      <div class="flex min-w-0 grow items-center gap-2.5 group-data-no-contents-gap:gap-0"><div class="truncate">New project</div></div>
+    </button>
+    <div class="w-full group relative flex items-center">
+      <a href="javascript:void(0)" class="w-full flex items-center justify-between gap-2 rounded-md px-2 py-1.5 text-left text-sm text-neutral-700 hover:bg-neutral-100 focus-visible:bg-neutral-100 focus:outline-hidden disabled:cursor-not-allowed disabled:opacity-50 dark:text-neutral-100 dark:hover:bg-neutral-700/50 dark:focus-visible:bg-neutral-700/50">
+        <div class="flex min-w-0 items-center gap-1.5">
+          <div class="flex items-center justify-center group-disabled:opacity-50 group-data-disabled:opacity-50">#{folder_icon}</div>
+          <div class="flex min-w-0 grow items-center gap-2.5 group-data-no-contents-gap:gap-0"><div class="truncate">Rails Blocks</div></div>
+        </div>
+      </a>
+      <button class="absolute right-0 hidden group-hover:flex size-8 rounded-md items-center justify-center text-neutral-500 dark:text-neutral-400 hover:bg-neutral-100 focus-visible:bg-neutral-100 focus:outline-hidden disabled:cursor-not-allowed disabled:opacity-50 dark:hover:bg-neutral-700/50 dark:focus-visible:bg-neutral-700/50">#{more_icon}</button>
+    </div>
+  HTML
+
+  ai_chats_content = <<~HTML
+    <div class="w-full group relative flex items-center">
+      <a href="javascript:void(0)" class="w-full flex items-center justify-between gap-2 rounded-md px-2 py-1.5 text-left text-sm text-neutral-700 hover:bg-neutral-100 focus-visible:bg-neutral-100 focus:outline-hidden disabled:cursor-not-allowed disabled:opacity-50 dark:text-neutral-100 dark:hover:bg-neutral-700/50 dark:focus-visible:bg-neutral-700/50">
+        <div class="flex min-w-0 items-center gap-1.5"><div class="flex min-w-0 grow items-center gap-2.5 group-data-no-contents-gap:gap-0"><div class="truncate">How to build a Rails app</div></div></div>
+      </a>
+      <button class="absolute right-0 hidden group-hover:flex size-8 rounded-md items-center justify-center text-neutral-500 dark:text-neutral-400 hover:bg-neutral-100 focus-visible:bg-neutral-100 focus:outline-hidden disabled:cursor-not-allowed disabled:opacity-50 dark:hover:bg-neutral-700/50 dark:focus-visible:bg-neutral-700/50">#{more_icon}</button>
+    </div>
+    <div class="w-full group relative flex items-center">
+      <a href="javascript:void(0)" class="w-full flex items-center justify-between gap-2 rounded-md px-2 py-1.5 text-left text-sm text-neutral-700 hover:bg-neutral-100 focus-visible:bg-neutral-100 focus:outline-hidden disabled:cursor-not-allowed disabled:opacity-50 dark:text-neutral-100 dark:hover:bg-neutral-700/50 dark:focus-visible:bg-neutral-700/50">
+        <div class="flex min-w-0 items-center gap-1.5"><div class="flex min-w-0 grow items-center gap-2.5 group-data-no-contents-gap:gap-0"><div class="truncate">Why are gems called gems</div></div></div>
+      </a>
+      <button class="absolute right-0 hidden group-hover:flex size-8 rounded-md items-center justify-center text-neutral-500 dark:text-neutral-400 hover:bg-neutral-100 focus-visible:bg-neutral-100 focus:outline-hidden disabled:cursor-not-allowed disabled:opacity-50 dark:hover:bg-neutral-700/50 dark:focus-visible:bg-neutral-700/50">#{more_icon}</button>
+    </div>
+    <div class="w-full group relative flex items-center">
+      <a href="javascript:void(0)" class="w-full flex items-center justify-between gap-2 rounded-md px-2 py-1.5 text-left text-sm text-neutral-700 hover:bg-neutral-100 focus-visible:bg-neutral-100 focus:outline-hidden disabled:cursor-not-allowed disabled:opacity-50 dark:text-neutral-100 dark:hover:bg-neutral-700/50 dark:focus-visible:bg-neutral-700/50">
+        <div class="flex min-w-0 items-center gap-1.5"><div class="flex min-w-0 grow items-center gap-2.5 group-data-no-contents-gap:gap-0"><div class="truncate">How to use Hotwire</div></div></div>
+      </a>
+      <button class="absolute right-0 hidden group-hover:flex size-8 rounded-md items-center justify-center text-neutral-500 dark:text-neutral-400 hover:bg-neutral-100 focus-visible:bg-neutral-100 focus:outline-hidden disabled:cursor-not-allowed disabled:opacity-50 dark:hover:bg-neutral-700/50 dark:focus-visible:bg-neutral-700/50">#{more_icon}</button>
+    </div>
+  HTML
+
+  basic_items = [
+    { label: "Dashboard", href: "javascript:void(0)", icon: dashboard_icon, shortcut: "⌘1", active: true },
+    { label: "Contacts", href: "javascript:void(0)", icon: contacts_icon, shortcut: "⌘2" },
+    { label: "Companies", href: "javascript:void(0)", icon: companies_icon, shortcut: "⌘3" },
+    { label: "Deals", href: "javascript:void(0)", icon: deals_icon, shortcut: "⌘4" },
+    { label: "Tasks", href: "javascript:void(0)", icon: tasks_icon, shortcut: "⌘5" },
+    { label: "Calendar", href: "javascript:void(0)", icon: calendar_icon, shortcut: "⌘6" }
+  ]
+
+  basic_sections = [
+    {
+      title: "Sales Pipelines",
+      items: [
+        { label: "Enterprise Sales", href: "javascript:void(0)", badge: "12" },
+        { label: "SMB Sales", href: "javascript:void(0)", badge: "24" }
+      ]
+    },
+    {
+      title: "Recent Deals",
+      items: [
+        { label: "Acme Corp - Enterprise Plan", href: "javascript:void(0)", badge: "$45k" },
+        { label: "TechStart Inc - Starter Package", href: "javascript:void(0)", badge: "$12k" },
+        { label: "Global Solutions - Consulting", href: "javascript:void(0)", badge: "$28k" }
+      ]
+    }
+  ]
+
+  ai_items = [
+    { label: "New chat", href: "javascript:void(0)", icon: new_chat_icon, shortcut: "⌘N", active: true },
+    { label: "Search chats", href: "javascript:void(0)", icon: search_icon, shortcut: "⌘K" },
+    { label: "Library", href: "javascript:void(0)", icon: library_icon }
+  ]
+
+  ai_sections = [
+    { title: "Projects", items: [], content: ai_projects_content },
+    { title: "Chats", items: [], content: ai_chats_content }
+  ]
+%>
+
+<!-- 1) Basic Sidebar -->
+<%= render "shared/components/sidebar/sidebar",
+  storage_key: "basicSidebar",
+  min_height_class: "min-h-[600px]",
+  items: basic_items,
+  sections: basic_sections,
+  logo: logo_html,
+  collapsed_footer: collapsed_footer_html,
+  footer: expanded_footer_html do %>
+  <div class="grow h-auto w-auto flex flex-col justify-center items-center relative">
+    <div class="px-6 py-4 bg-neutral-50 dark:bg-neutral-900 rounded-lg border border-neutral-200 dark:border-neutral-800">
+      Your content
+    </div>
+  </div>
+<% end %>
+
+<!-- 2) AI Chat Sidebar -->
+<%= render "shared/components/sidebar/sidebar",
+  storage_key: "aiChatSidebar",
+  min_height_class: "min-h-[600px]",
+  items: ai_items,
+  sections: ai_sections,
+  logo: logo_html,
+  collapsed_footer: collapsed_footer_html,
+  footer: expanded_footer_html do %>
+  <div class="grow h-auto w-auto flex flex-col justify-center items-center relative">
+    <div class="px-6 py-4 bg-neutral-50 dark:bg-neutral-900 rounded-lg border border-neutral-200 dark:border-neutral-800">
+      Your content
+    </div>
+  </div>
+<% end %>
+
+<!-- 3) Sidebar with Fancy Container -->
+<%= render "shared/components/sidebar/sidebar",
+  storage_key: "fancySidebar",
+  variant: "minimal",
+  min_height_class: "min-h-[600px]",
+  items: basic_items,
+  sections: basic_sections,
+  logo: logo_html,
+  collapsed_footer: collapsed_footer_html,
+  footer: expanded_footer_html do %>
+  <div class="h-full w-full pl-1.5 md:pl-0 py-1.5 pr-1.5 grow flex flex-col">
+    <div class="w-full h-full flex justify-center items-center relative bg-neutral-50 dark:bg-neutral-900 rounded-lg border border-neutral-200 dark:border-neutral-800">
+      <div class="px-6 py-4">Your content</div>
+    </div>
+  </div>
+<% end %>

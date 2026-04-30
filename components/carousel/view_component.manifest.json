@@ -1,0 +1,26 @@
+{
+  "component": "carousel",
+  "implementation": "view_component",
+  "files": [
+    {
+      "path": "carousel/component.rb",
+      "relative_path": "component.rb",
+      "checksum": "5b2bd581705567f1b49cb1048689c4960a85d7839056b9250873893505257cc5"
+    },
+    {
+      "path": "carousel/component/slide_component.rb",
+      "relative_path": "component/slide_component.rb",
+      "checksum": "c12643ebe9875425773e64ca1afac185d9356bc48657df3fd43c1ec7b506c866"
+    },
+    {
+      "path": "carousel/component/slide_component.html.erb",
+      "relative_path": "component/slide_component.html.erb",
+      "checksum": "2d7175ed9e318a191527afcaadbd938a395e42180467357ba4895ed240b33397"
+    },
+    {
+      "path": "carousel/component.html.erb",
+      "relative_path": "component.html.erb",
+      "checksum": "6394a7848517dc0708c13d2cd59ce122aff3b04f9609beb8390963527553864a"
+    }
+  ]
+}

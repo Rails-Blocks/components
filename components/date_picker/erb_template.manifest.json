@@ -1,0 +1,11 @@
+{
+  "component": "date_picker",
+  "implementation": "erb_template",
+  "files": [
+    {
+      "path": "date_picker/_date_picker.html.erb",
+      "relative_path": "_date_picker.html.erb",
+      "checksum": "a7bebd5b5192d6553e5bf5b2db73955b7a19e3ab889891cd7461685078c02347"
+    }
+  ]
+}

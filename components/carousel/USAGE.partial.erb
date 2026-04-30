@@ -1,0 +1,100 @@
+<!-- Basic horizontal carousel -->
+<%= render "shared/components/carousel/carousel",
+  slides: [
+    { content: '<div class="px-4 py-6 sm:px-6 sm:py-10 md:px-8 md:py-16 text-center rounded-xl border border-neutral-200 bg-neutral-50 dark:bg-neutral-800 dark:border-neutral-700">Slide 1</div>' },
+    { content: '<div class="px-4 py-6 sm:px-6 sm:py-10 md:px-8 md:py-16 text-center rounded-xl border border-neutral-200 bg-neutral-50 dark:bg-neutral-800 dark:border-neutral-700">Slide 2</div>' },
+    { content: '<div class="px-4 py-6 sm:px-6 sm:py-10 md:px-8 md:py-16 text-center rounded-xl border border-neutral-200 bg-neutral-50 dark:bg-neutral-800 dark:border-neutral-700">Slide 3</div>' },
+    { content: '<div class="px-4 py-6 sm:px-6 sm:py-10 md:px-8 md:py-16 text-center rounded-xl border border-neutral-200 bg-neutral-50 dark:bg-neutral-800 dark:border-neutral-700">Slide 4</div>' }
+  ]
+%>
+
+<!-- Loop + drag-free carousel -->
+<%= render "shared/components/carousel/carousel",
+  loop: true,
+  drag_free: true,
+  slide_size: "third",
+  slides: [
+    { content: '<div class="p-6 text-center rounded-xl bg-blue-500 text-white">Card 1</div>' },
+    { content: '<div class="p-6 text-center rounded-xl bg-green-500 text-white">Card 2</div>' },
+    { content: '<div class="p-6 text-center rounded-xl bg-purple-500 text-white">Card 3</div>' },
+    { content: '<div class="p-6 text-center rounded-xl bg-orange-500 text-white">Card 4</div>' },
+    { content: '<div class="p-6 text-center rounded-xl bg-pink-500 text-white">Card 5</div>' },
+    { content: '<div class="p-6 text-center rounded-xl bg-cyan-500 text-white">Card 6</div>' }
+  ]
+%>
+
+<!-- Vertical carousel -->
+<%= render "shared/components/carousel/carousel",
+  axis: "y",
+  height: "h-96",
+  classes: "max-w-xs sm:max-w-md md:max-w-lg",
+  slides: [
+    { content: '<div class="text-lg sm:text-xl font-semibold text-neutral-900 dark:text-neutral-100 mb-2">Vertical Slide 1</div><div class="text-sm text-neutral-600 dark:text-neutral-400">Scrolls on the Y-axis</div>', classes: "basis-1/2 sm:basis-2/5 w-[88%] mx-auto p-5 sm:p-6 md:p-7 text-center rounded-xl border border-neutral-200 bg-neutral-50 dark:bg-neutral-800 dark:border-neutral-700 flex flex-col justify-center items-center" },
+    { content: '<div class="text-lg sm:text-xl font-semibold text-neutral-900 dark:text-neutral-100 mb-2">Vertical Slide 2</div><div class="text-sm text-neutral-600 dark:text-neutral-400">Works for stacked content flows</div>', classes: "basis-1/2 sm:basis-2/5 w-[88%] mx-auto p-5 sm:p-6 md:p-7 text-center rounded-xl border border-neutral-200 bg-neutral-50 dark:bg-neutral-800 dark:border-neutral-700 flex flex-col justify-center items-center" },
+    { content: '<div class="text-lg sm:text-xl font-semibold text-neutral-900 dark:text-neutral-100 mb-2">Vertical Slide 3</div><div class="text-sm text-neutral-600 dark:text-neutral-400">Useful for timelines and steps</div>', classes: "basis-1/2 sm:basis-2/5 w-[88%] mx-auto p-5 sm:p-6 md:p-7 text-center rounded-xl border border-neutral-200 bg-neutral-50 dark:bg-neutral-800 dark:border-neutral-700 flex flex-col justify-center items-center" },
+    { content: '<div class="text-lg sm:text-xl font-semibold text-neutral-900 dark:text-neutral-100 mb-2">Vertical Slide 4</div><div class="text-sm text-neutral-600 dark:text-neutral-400">Fully keyboard and touch friendly</div>', classes: "basis-1/2 sm:basis-2/5 w-[88%] mx-auto p-5 sm:p-6 md:p-7 text-center rounded-xl border border-neutral-200 bg-neutral-50 dark:bg-neutral-800 dark:border-neutral-700 flex flex-col justify-center items-center" }
+  ]
+%>
+
+<!-- Full-width media carousel -->
+<%= render "shared/components/carousel/carousel",
+  slide_size: "full",
+  slides: [
+    { content: '<img src="https://picsum.photos/1000/480?random=301" alt="Gallery image 1" class="w-full h-64 md:h-80 object-cover rounded-xl">' },
+    { content: '<img src="https://picsum.photos/1000/480?random=302" alt="Gallery image 2" class="w-full h-64 md:h-80 object-cover rounded-xl">' },
+    { content: '<img src="https://picsum.photos/1000/480?random=303" alt="Gallery image 3" class="w-full h-64 md:h-80 object-cover rounded-xl">' }
+  ]
+%>
+
+<!-- Main carousel + thumbnails -->
+<div class="space-y-4">
+  <%= render "shared/components/carousel/carousel",
+    id: "usage-main-carousel-erb",
+    slide_size: "full",
+    dots: false,
+    buttons: false,
+    show_gradients: false,
+    slides: [
+      { content: '<img src="https://picsum.photos/1000/540?random=401" alt="Main image 1" class="w-full h-64 md:h-80 object-cover rounded-xl">' },
+      { content: '<img src="https://picsum.photos/1000/540?random=402" alt="Main image 2" class="w-full h-64 md:h-80 object-cover rounded-xl">' },
+      { content: '<img src="https://picsum.photos/1000/540?random=403" alt="Main image 3" class="w-full h-64 md:h-80 object-cover rounded-xl">' },
+      { content: '<img src="https://picsum.photos/1000/540?random=404" alt="Main image 4" class="w-full h-64 md:h-80 object-cover rounded-xl">' }
+    ]
+  %>
+
+  <%= render "shared/components/carousel/carousel",
+    thumbnails: true,
+    main_carousel_id: "usage-main-carousel-erb",
+    slide_size: "quarter",
+    dots: false,
+    buttons: false,
+    show_gradients: false,
+    slides: [
+      { content: '<button data-carousel-target="thumbnailButton" class="w-full rounded-lg border-2 border-neutral-200 dark:border-neutral-700 bg-neutral-100 dark:bg-neutral-800 hover:border-neutral-400 dark:hover:border-neutral-500 p-1.5 outline-hidden focus-visible:outline-offset-1.5 focus-visible:outline-neutral-500 dark:focus-visible:outline-neutral-200"><img src="https://picsum.photos/260/150?random=401" alt="Thumbnail 1" class="w-full h-16 object-cover rounded-md"></button>' },
+      { content: '<button data-carousel-target="thumbnailButton" class="w-full rounded-lg border-2 border-neutral-200 dark:border-neutral-700 bg-neutral-100 dark:bg-neutral-800 hover:border-neutral-400 dark:hover:border-neutral-500 p-1.5 outline-hidden focus-visible:outline-offset-1.5 focus-visible:outline-neutral-500 dark:focus-visible:outline-neutral-200"><img src="https://picsum.photos/260/150?random=402" alt="Thumbnail 2" class="w-full h-16 object-cover rounded-md"></button>' },
+      { content: '<button data-carousel-target="thumbnailButton" class="w-full rounded-lg border-2 border-neutral-200 dark:border-neutral-700 bg-neutral-100 dark:bg-neutral-800 hover:border-neutral-400 dark:hover:border-neutral-500 p-1.5 outline-hidden focus-visible:outline-offset-1.5 focus-visible:outline-neutral-500 dark:focus-visible:outline-neutral-200"><img src="https://picsum.photos/260/150?random=403" alt="Thumbnail 3" class="w-full h-16 object-cover rounded-md"></button>' },
+      { content: '<button data-carousel-target="thumbnailButton" class="w-full rounded-lg border-2 border-neutral-200 dark:border-neutral-700 bg-neutral-100 dark:bg-neutral-800 hover:border-neutral-400 dark:hover:border-neutral-500 p-1.5 outline-hidden focus-visible:outline-offset-1.5 focus-visible:outline-neutral-500 dark:focus-visible:outline-neutral-200"><img src="https://picsum.photos/260/150?random=404" alt="Thumbnail 4" class="w-full h-16 object-cover rounded-md"></button>' }
+    ]
+  %>
+</div>
+
+<!-- Buttons-only carousel (no dots) -->
+<%= render "shared/components/carousel/carousel",
+  dots: false,
+  buttons: true,
+  show_gradients: false,
+  slides: [
+    { content: '<div class="p-10 text-center rounded-xl border border-neutral-200 bg-neutral-50 dark:bg-neutral-800 dark:border-neutral-700">Buttons-only Slide 1</div>' },
+    { content: '<div class="p-10 text-center rounded-xl border border-neutral-200 bg-neutral-50 dark:bg-neutral-800 dark:border-neutral-700">Buttons-only Slide 2</div>' },
+    { content: '<div class="p-10 text-center rounded-xl border border-neutral-200 bg-neutral-50 dark:bg-neutral-800 dark:border-neutral-700">Buttons-only Slide 3</div>' }
+  ]
+%>
+
+<!-- Wheel gestures carousel -->
+<%= render "shared/components/carousel/carousel",
+  wheel_gestures: true,
+  loop: true,
+  slide_size: "quarter",
+  show_gradients: false,
+  slides: (1..8).map { |i| { content: "<div class='p-4 text-center rounded-lg bg-neutral-100 dark:bg-neutral-800'>Item #{i}</div>" } }
+%>

@@ -1,0 +1,88 @@
+<!-- Basic text skeleton (single line) -->
+<%= render Skeleton::Component.new %>
+
+<!-- Multiple text lines -->
+<%= render Skeleton::Component.new(count: 3) %>
+
+<!-- Circle skeleton (avatar placeholder) -->
+<%= render Skeleton::Component.new(variant: :circle) %>
+
+<!-- Larger circle -->
+<%= render Skeleton::Component.new(
+  variant: :circle,
+  width: "w-16",
+  height: "h-16"
+) %>
+
+<!-- Rectangle skeleton -->
+<%= render Skeleton::Component.new(variant: :rectangle) %>
+
+<!-- Image skeleton -->
+<%= render Skeleton::Component.new(variant: :image) %>
+
+<!-- Button skeleton -->
+<%= render Skeleton::Component.new(variant: :button) %>
+
+<!-- Input skeleton -->
+<%= render Skeleton::Component.new(variant: :input) %>
+
+<!-- Custom dimensions -->
+<%= render Skeleton::Component.new(
+  width: "w-3/4",
+  height: "h-6"
+) %>
+
+<!-- Half-width text -->
+<%= render Skeleton::Component.new(width: "w-1/2") %>
+
+<!-- Custom rounded -->
+<%= render Skeleton::Component.new(
+  variant: :rectangle,
+  rounded: :xl
+) %>
+
+<!-- No animation (static) -->
+<%= render Skeleton::Component.new(
+  variant: :text,
+  animated: false
+) %>
+
+<!-- Custom classes -->
+<%= render Skeleton::Component.new(
+  variant: :rectangle,
+  classes: "shadow-sm"
+) %>
+
+<!-- Card skeleton composition -->
+<div class="bg-white w-full dark:bg-neutral-800 border border-black/10 dark:border-white/10 rounded-xl p-4 max-w-sm">
+  <%= render Skeleton::Component.new(variant: :image, classes: "mb-4") %>
+  <%= render Skeleton::Component.new(width: "w-3/4", height: "h-6", classes: "mb-3") %>
+  <%= render Skeleton::Component.new(count: 3) %>
+</div>
+
+<!-- User profile skeleton composition -->
+<div class="flex items-center space-x-3">
+  <div class="animate-pulse">
+    <%= render Skeleton::Component.new(variant: :circle) %>
+  </div>
+  <div class="flex-1 animate-pulse">
+    <%= render Skeleton::Component.new(width: "w-1/3", classes: "mb-2") %>
+    <%= render Skeleton::Component.new(width: "w-1/2", height: "h-3") %>
+  </div>
+</div>
+
+<!-- Form skeleton composition -->
+<div class="space-y-4 max-w-md animate-pulse">
+  <div>
+    <%= render Skeleton::Component.new(width: "w-20", classes: "mb-2") %>
+    <%= render Skeleton::Component.new(variant: :input) %>
+  </div>
+  <div>
+    <%= render Skeleton::Component.new(width: "w-24", classes: "mb-2") %>
+    <%= render Skeleton::Component.new(variant: :input) %>
+  </div>
+  <div class="flex space-x-3">
+    <%= render Skeleton::Component.new(variant: :button) %>
+    <%= render Skeleton::Component.new(variant: :button, width: "w-20") %>
+  </div>
+</div>

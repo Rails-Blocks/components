@@ -1,0 +1,16 @@
+{
+  "component": "scroll_area",
+  "implementation": "view_component",
+  "files": [
+    {
+      "path": "scroll_area/component.rb",
+      "relative_path": "component.rb",
+      "checksum": "a64a45e1df2c16e6f84eb332f22a2113961d15e55ff075d6365c5ce8ed2bfead"
+    },
+    {
+      "path": "scroll_area/component.html.erb",
+      "relative_path": "component.html.erb",
+      "checksum": "15d70a3870b630d7079ddb5b3e4aabfedad3564e1085ac43b4c9e9c2cfcd3ca2"
+    }
+  ]
+}

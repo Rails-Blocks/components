@@ -1,0 +1,36 @@
+{
+  "component": "checkbox_select_all",
+  "implementation": "view_component",
+  "files": [
+    {
+      "path": "checkbox_select_all/component.rb",
+      "relative_path": "component.rb",
+      "checksum": "2f1bc83278a4c9d4ead902271b50991856b96290c6715350e93139703b8ac9c1"
+    },
+    {
+      "path": "checkbox_select_all/component/item_component.html.erb",
+      "relative_path": "component/item_component.html.erb",
+      "checksum": "ddd0954580b8806fa808132efc600d011f1316efa0c6231c4eafd5418157f00d"
+    },
+    {
+      "path": "checkbox_select_all/component/group_component.html.erb",
+      "relative_path": "component/group_component.html.erb",
+      "checksum": "77b667b49da06ff72f7baaa1805123a821d23e203e6e755ca0d11b30c545aa6f"
+    },
+    {
+      "path": "checkbox_select_all/component/item_component.rb",
+      "relative_path": "component/item_component.rb",
+      "checksum": "29213f2e682492af81e8516ea963d136a8526a5e0027996c33d014f3de1d1be2"
+    },
+    {
+      "path": "checkbox_select_all/component/group_component.rb",
+      "relative_path": "component/group_component.rb",
+      "checksum": "c5aee9895b86c7554e6d57947d56cb6e3efe52ba33cde1cba0f82b4de870cf68"
+    },
+    {
+      "path": "checkbox_select_all/component.html.erb",
+      "relative_path": "component.html.erb",
+      "checksum": "e7344bc52c3a0babcb47d50deea68b89ed74c8aa2d070f59112183bb927fac98"
+    }
+  ]
+}

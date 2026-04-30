@@ -1,0 +1,128 @@
+<!-- Vertical activity feed -->
+<%= render "shared/components/scroll_area/scroll_area",
+  height: "h-72",
+  border: true,
+  background: true,
+  padding: "py-4 pl-4 pr-6",
+  rounded: "rounded-xl",
+  scroll_fade: "y",
+  classes: "max-w-lg" do %>
+  <div class="space-y-3">
+    <% [
+      { title: "New subscriber", detail: "Sophie joined from the pricing page.", time: "2m ago", tone: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400" },
+      { title: "Trial upgraded", detail: "Acme Inc moved to Pro annual.", time: "18m ago", tone: "bg-blue-500/10 text-blue-600 dark:text-blue-400" },
+      { title: "Feedback received", detail: "3 users requested CSV export.", time: "1h ago", tone: "bg-amber-500/10 text-amber-600 dark:text-amber-400" },
+      { title: "Invoice paid", detail: "INV-2048 was paid via card.", time: "2h ago", tone: "bg-violet-500/10 text-violet-600 dark:text-violet-400" },
+      { title: "API key created", detail: "Server integration enabled by Liam.", time: "4h ago", tone: "bg-rose-500/10 text-rose-600 dark:text-rose-400" },
+      { title: "Weekly report", detail: "Conversion rate increased to 5.8%.", time: "Yesterday", tone: "bg-neutral-500/10 text-neutral-600 dark:text-neutral-300" }
+    ].each do |item| %>
+      <article class="rounded-lg border border-black/10 bg-white p-3 shadow-xs dark:border-white/10 dark:bg-neutral-900/70">
+        <div class="mb-2 flex items-center justify-between gap-3">
+          <p class="text-sm font-medium text-neutral-900 dark:text-neutral-50"><%= item[:title] %></p>
+          <span class="rounded-full px-2 py-1 text-xs font-medium <%= item[:tone] %>"><%= item[:time] %></span>
+        </div>
+        <p class="text-sm text-neutral-600 dark:text-neutral-400"><%= item[:detail] %></p>
+      </article>
+    <% end %>
+  </div>
+<% end %>
+
+<!-- Horizontal destination cards -->
+<%= render "shared/components/scroll_area/scroll_area",
+  orientation: "horizontal",
+  max_width: "max-w-full",
+  scroll_fade: "x",
+  border: true,
+  background: true,
+  padding: "p-4 mr-4",
+  rounded: "rounded-xl" do %>
+  <div class="flex gap-4 pb-1 *:last:mr-4">
+    <% [
+      { city: "Reykjavik", season: "Winter route", note: "Hot springs, northern lights, lava fields." },
+      { city: "Kyoto", season: "Spring route", note: "Tea houses, shrines, and hidden gardens." },
+      { city: "Lisbon", season: "Summer route", note: "Coastal tram rides and tiled streets." },
+      { city: "Marrakesh", season: "Autumn route", note: "Markets, riads, and Atlas day trips." },
+      { city: "Vancouver", season: "Year-round", note: "Mountain hikes with city skyline views." },
+      { city: "Seoul", season: "Late fall", note: "Street food nights and palace walks." }
+    ].each do |trip| %>
+      <article class="w-72 flex-shrink-0 overflow-hidden rounded-xl border border-neutral-200/80 bg-white shadow-sm dark:border-neutral-700 dark:bg-neutral-900">
+        <div class="h-24 bg-neutral-800 p-4 text-neutral-100 dark:bg-neutral-600/50">
+          <p class="text-xs uppercase tracking-wide text-white/70"><%= trip[:season] %></p>
+          <h3 class="mt-2 text-lg font-semibold"><%= trip[:city] %></h3>
+        </div>
+        <div class="p-4">
+          <p class="text-sm text-neutral-600 dark:text-neutral-300"><%= trip[:note] %></p>
+        </div>
+      </article>
+    <% end %>
+  </div>
+<% end %>
+
+<!-- Both directions for dense analytics tables -->
+<%= render "shared/components/scroll_area/scroll_area",
+  height: "h-96",
+  width: "w-full",
+  max_width: "max-w-4xl",
+  orientation: "both",
+  scroll_fade: "both",
+  border: false,
+  background: false,
+  rounded: "rounded-xl",
+  classes: "overflow-hidden border border-black/10 bg-white dark:border-white/10 dark:bg-neutral-900",
+  viewport_classes: "[--fade-top-offset:44px]" do %>
+  <table class="w-full min-w-[800px]">
+    <thead class="sticky top-0 z-10 bg-neutral-50 dark:bg-neutral-900">
+      <tr class="*:py-3 *:text-left *:align-middle *:[box-shadow:inset_0_-1px_0_0_rgb(229_229_229)] dark:*:[box-shadow:inset_0_-1px_0_0_rgb(46_46_46)]">
+        <th scope="col" class="px-6 text-sm font-semibold text-neutral-900 dark:text-neutral-50">ID</th>
+        <th scope="col" class="px-6 text-sm font-semibold text-neutral-900 dark:text-neutral-50">Name</th>
+        <th scope="col" class="px-6 text-sm font-semibold text-neutral-900 dark:text-neutral-50">Email</th>
+        <th scope="col" class="px-6 text-sm font-semibold text-neutral-900 dark:text-neutral-50">Role</th>
+        <th scope="col" class="px-6 text-sm font-semibold text-neutral-900 dark:text-neutral-50">Status</th>
+        <th scope="col" class="px-6 text-sm font-semibold text-neutral-900 dark:text-neutral-50">Created At</th>
+      </tr>
+    </thead>
+    <tbody class="*:even:bg-neutral-50 dark:*:even:bg-neutral-800/50 *:*:py-4">
+      <% 30.times do |i| %>
+        <tr>
+          <td class="px-6 text-sm font-medium text-neutral-900 dark:text-neutral-100"><%= i + 1 %></td>
+          <td class="px-6 text-sm font-medium text-neutral-900 dark:text-neutral-100">User <%= i + 1 %></td>
+          <td class="px-6 text-sm text-neutral-500 dark:text-neutral-400">user<%= i + 1 %>@example.com</td>
+          <td class="px-6 text-sm text-neutral-500 dark:text-neutral-400"><%= ["Admin", "Editor", "Viewer"].sample %></td>
+          <td class="px-6">
+            <% status = ["Active", "Inactive", "Pending"].sample %>
+            <span class="inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs font-medium outline
+              <%= case status
+                  when "Active" then "bg-green-50 text-green-700 outline-green-600/20 dark:bg-green-400/10 dark:text-green-400 dark:outline-green-400/25"
+                  when "Inactive" then "bg-red-50 text-red-700 outline-red-600/20 dark:bg-red-400/10 dark:text-red-400 dark:outline-red-400/25"
+                  when "Pending" then "bg-yellow-50 text-yellow-700 outline-yellow-700/20 dark:bg-yellow-400/10 dark:text-yellow-500 dark:outline-yellow-400/25"
+                  end %>">
+              <%= status %>
+            </span>
+          </td>
+          <td class="px-6 text-sm text-neutral-500 dark:text-neutral-400">Nov <%= rand(1..30) %>, 2025</td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>
+
+<!-- Reading pane with minimal scrollbar -->
+<%= render "shared/components/scroll_area/scroll_area",
+  height: "h-80",
+  scroll_fade: "y",
+  scrollbar_style: "minimal",
+  hide_delay: 900,
+  border: true,
+  background: true,
+  padding: "p-6",
+  rounded: "rounded-2xl",
+  classes: "max-w-2xl" do %>
+  <article class="space-y-4 text-sm leading-relaxed text-neutral-700 dark:text-neutral-300">
+    <h3 class="text-base font-semibold text-neutral-900 dark:text-neutral-100">Design Notes: Scrollable Surfaces</h3>
+    <p>Scrollable containers should feel calm and predictable. Keep edge fades subtle, maintain comfortable line length, and reserve stronger contrast for active controls.</p>
+    <p>In dense interfaces, custom scrollbars help communicate affordance. Use enough track contrast to be discoverable, then fade it back when users are reading.</p>
+    <p>Pair vertical rhythm with clear grouping. Small cards, table rows, and section blocks give the user natural stopping points and improve scan speed.</p>
+    <p>When content loads progressively, trigger a recalculation after layout settles so scrollbar thumb sizing remains accurate at first glance.</p>
+    <p>For long-form copy, increase internal padding slightly and keep line-height around 1.6 to reduce fatigue during extended reading sessions.</p>
+  </article>
+<% end %>

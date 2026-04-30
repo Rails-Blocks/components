@@ -1,0 +1,11 @@
+{
+  "component": "breadcrumb",
+  "implementation": "erb_template",
+  "files": [
+    {
+      "path": "breadcrumb/_breadcrumb.html.erb",
+      "relative_path": "_breadcrumb.html.erb",
+      "checksum": "2cce00d53a8ca21330dcbebdba78bd905dfa66e7142e4e1d4cd278a0640efb6e"
+    }
+  ]
+}

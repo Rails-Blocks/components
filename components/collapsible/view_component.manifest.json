@@ -1,0 +1,16 @@
+{
+  "component": "collapsible",
+  "implementation": "view_component",
+  "files": [
+    {
+      "path": "collapsible/component.rb",
+      "relative_path": "component.rb",
+      "checksum": "43aa49e7a49fc98568cd2e98aeae2bec93bc56097eac1e58675bd99038deebbd"
+    },
+    {
+      "path": "collapsible/component.html.erb",
+      "relative_path": "component.html.erb",
+      "checksum": "b1a147f06afaf1e7fcbf32589077966ba84c0ac1b09e6e6e65f239d1382f6998"
+    }
+  ]
+}

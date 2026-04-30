@@ -1,0 +1,172 @@
+<!-- Basic card with body content -->
+<%= render(Card::Component.new) do |card| %>
+  <% card.with_body do %>
+    <p class="text-neutral-700 dark:text-neutral-300">This is a basic card with just body content.</p>
+  <% end %>
+<% end %>
+
+<!-- Card with title and description -->
+<%= render(Card::Component.new) do |card| %>
+  <% card.with_body do %>
+    <h3 class="text-lg/6 font-medium text-neutral-900 dark:text-white">Card Title</h3>
+    <p class="mt-2 text-sm text-neutral-600 dark:text-neutral-400">
+      This is a basic card component with a title and description.
+    </p>
+  <% end %>
+<% end %>
+
+<!-- Card with header -->
+<%= render(Card::Component.new(divide: true)) do |card| %>
+  <% card.with_header do %>
+    <h3 class="text-lg/6 font-medium text-neutral-900 dark:text-white">Card with Header</h3>
+    <p class="mt-1 text-sm text-neutral-600 dark:text-neutral-400">Header with description</p>
+  <% end %>
+  <% card.with_body do %>
+    <p class="text-neutral-700 dark:text-neutral-300">The header section provides a clear title for the card content.</p>
+  <% end %>
+<% end %>
+
+<!-- Card with footer -->
+<%= render(Card::Component.new) do |card| %>
+  <% card.with_body do %>
+    <h3 class="text-lg/6 font-medium text-neutral-900 dark:text-white mb-2">Card with Footer</h3>
+    <p class="text-neutral-700 dark:text-neutral-300">This card has a footer for actions.</p>
+  <% end %>
+  <% card.with_footer do %>
+    <a href="#" class="text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-500">View details →</a>
+  <% end %>
+<% end %>
+
+<!-- Card with header and footer -->
+<%= render(Card::Component.new(divide: true)) do |card| %>
+  <% card.with_header do %>
+    <h3 class="text-lg/6 font-medium text-neutral-900 dark:text-white">Complete Card</h3>
+    <p class="mt-1 text-sm text-neutral-600 dark:text-neutral-400">Header, body, and footer sections</p>
+  <% end %>
+  <% card.with_body do %>
+    <p class="text-neutral-700 dark:text-neutral-300">This card demonstrates a complete structure with all three sections.</p>
+  <% end %>
+  <% card.with_footer do %>
+    <div class="flex justify-between">
+      <button type="button" class="text-sm font-medium text-neutral-600 dark:text-neutral-400 hover:text-neutral-500">Cancel</button>
+      <button type="button" class="text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-500">Save</button>
+    </div>
+  <% end %>
+<% end %>
+
+<!-- Well variant (subtle background) -->
+<%= render(Card::Component.new(variant: :well)) do |card| %>
+  <% card.with_body do %>
+    <h3 class="text-lg/6 font-medium text-neutral-900 dark:text-white mb-2">Well Card</h3>
+    <p class="text-neutral-700 dark:text-neutral-300">A well has a subtle background and no shadow. Perfect for grouping related content.</p>
+  <% end %>
+<% end %>
+
+<!-- Elevated card (larger shadow) -->
+<%= render(Card::Component.new(variant: :elevated, shadow: :lg)) do |card| %>
+  <% card.with_body do %>
+    <h3 class="text-lg/6 font-medium text-neutral-900 dark:text-white mb-2">Elevated Card</h3>
+    <p class="text-neutral-700 dark:text-neutral-300">This card has a larger shadow for more visual prominence.</p>
+  <% end %>
+<% end %>
+
+<!-- Hoverable card -->
+<%= render(Card::Component.new(hoverable: true)) do |card| %>
+  <% card.with_body do %>
+    <h3 class="text-lg/6 font-medium text-neutral-900 dark:text-white mb-2">Hoverable Card</h3>
+    <p class="text-neutral-700 dark:text-neutral-300">Hover over this card to see the shadow effect.</p>
+  <% end %>
+<% end %>
+
+<!-- Clickable card -->
+<%= render(Card::Component.new(clickable: true)) do |card| %>
+  <% card.with_body do %>
+    <h3 class="text-lg/6 font-medium text-neutral-900 dark:text-white mb-2">Clickable Card</h3>
+    <p class="text-neutral-700 dark:text-neutral-300">This entire card appears clickable with hover effects.</p>
+  <% end %>
+<% end %>
+
+<!-- Edge-to-edge on mobile -->
+<%= render(Card::Component.new(full_width_mobile: true)) do |card| %>
+  <% card.with_body do %>
+    <h3 class="text-lg/6 font-medium text-neutral-900 dark:text-white mb-2">Mobile Full Width</h3>
+    <p class="text-neutral-700 dark:text-neutral-300">On mobile, this card extends edge-to-edge. Resize to see the effect.</p>
+  <% end %>
+<% end %>
+
+<!-- Card with image (top) -->
+<%= render(Card::Component.new) do |card| %>
+  <% card.with_image(
+    src: "https://images.unsplash.com/photo-1496128858413-b36217c2ce36?auto=format&fit=crop&w=800&q=80",
+    alt: "Featured image",
+    aspect: :video
+  ) %>
+  <% card.with_body do %>
+    <h3 class="text-xl font-semibold text-neutral-900 dark:text-white mb-2">Card with Image</h3>
+    <p class="text-sm text-neutral-700 dark:text-neutral-300">This card features an image at the top with video aspect ratio.</p>
+  <% end %>
+<% end %>
+
+<!-- Card with image and footer -->
+<%= render(Card::Component.new(divide: true)) do |card| %>
+  <% card.with_image(
+    src: "https://images.unsplash.com/photo-1496128858413-b36217c2ce36?auto=format&fit=crop&w=800&q=80",
+    alt: "Article image",
+    aspect: :video
+  ) %>
+  <% card.with_body do %>
+    <div class="flex items-center mb-2">
+      <span class="inline-flex items-center gap-0.5 rounded-md bg-blue-50 px-1.5 py-0.5 text-[11px] font-medium text-blue-700 outline outline-blue-600/20 dark:bg-blue-400/10 dark:text-blue-400 dark:outline-blue-400/25">Article</span>
+      <span class="ml-2 text-sm text-neutral-500 dark:text-neutral-400">5 min read</span>
+    </div>
+    <h3 class="text-xl font-semibold text-neutral-900 dark:text-white mb-2">Featured Article</h3>
+    <p class="text-sm text-neutral-700 dark:text-neutral-300">A complete card with image, badges, and footer.</p>
+  <% end %>
+  <% card.with_footer do %>
+    <div class="flex items-center">
+      <img class="h-10 w-10 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="Author">
+      <div class="ml-3">
+        <p class="text-sm font-medium text-neutral-900 dark:text-white">John Doe</p>
+        <p class="text-xs text-neutral-500 dark:text-neutral-400">September 16, 2025</p>
+      </div>
+    </div>
+  <% end %>
+<% end %>
+
+<!-- Small padding -->
+<%= render(Card::Component.new(padding: :sm)) do |card| %>
+  <% card.with_body do %>
+    <h3 class="text-base font-medium text-neutral-900 dark:text-white mb-1">Compact Card</h3>
+    <p class="text-sm text-neutral-700 dark:text-neutral-300">Uses small padding for denser layouts.</p>
+  <% end %>
+<% end %>
+
+<!-- Large padding -->
+<%= render(Card::Component.new(padding: :lg)) do |card| %>
+  <% card.with_body do %>
+    <h3 class="text-xl font-medium text-neutral-900 dark:text-white mb-2">Spacious Card</h3>
+    <p class="text-neutral-700 dark:text-neutral-300">Uses large padding for more breathing room.</p>
+  <% end %>
+<% end %>
+
+<!-- No border -->
+<%= render(Card::Component.new(border: false, shadow: :md)) do |card| %>
+  <% card.with_body do %>
+    <h3 class="text-lg/6 font-medium text-neutral-900 dark:text-white mb-2">Borderless Card</h3>
+    <p class="text-neutral-700 dark:text-neutral-300">No border, relying on shadow for definition.</p>
+  <% end %>
+<% end %>
+
+<!-- Custom classes -->
+<%= render(Card::Component.new(classes: "max-w-md mx-auto")) do |card| %>
+  <% card.with_body do %>
+    <h3 class="text-lg/6 font-medium text-neutral-900 dark:text-white mb-2">Custom Classes</h3>
+    <p class="text-neutral-700 dark:text-neutral-300">This card has custom width and centering classes.</p>
+  <% end %>
+<% end %>
+
+<!-- Using content block directly (shorthand for body) -->
+<%= render(Card::Component.new) do %>
+  <h3 class="text-lg/6 font-medium text-neutral-900 dark:text-white mb-2">Simple Content</h3>
+  <p class="text-neutral-700 dark:text-neutral-300">You can also pass content directly without using with_body.</p>
+<% end %>

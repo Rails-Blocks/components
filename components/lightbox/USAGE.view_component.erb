@@ -1,0 +1,35 @@
+<!-- Basic gallery with grid layout -->
+<%= render(Lightbox::Component.new) do |lightbox| %>
+  <% lightbox.with_item(src: "https://images.unsplash.com/photo-1682695794816-7b9da18ed470", caption: "Sunset over the ocean") %>
+  <% lightbox.with_item(src: "https://images.unsplash.com/photo-1682687982093-4773cb0dbc2e", caption: "Mountain peaks in fog") %>
+  <% lightbox.with_item(src: "https://images.unsplash.com/photo-1682687218608-5e2522b04673", caption: "Forest pathway") %>
+  <% lightbox.with_item(src: "https://images.unsplash.com/photo-1682695795798-1b31ea040caf", caption: "Desert dunes at sunrise") %>
+<% end %>
+
+<!-- Masonry layout with explicit dimensions -->
+<%= render(Lightbox::Component.new(variant: :masonry, columns: 3)) do |lightbox| %>
+  <% lightbox.with_item(
+    src: "https://images.unsplash.com/photo-1560707303-4e980ce876ad",
+    thumbnail_src: "https://images.unsplash.com/photo-1560707303-4e980ce876ad?w=400",
+    width: 1600,
+    height: 2400,
+    caption: "Vertical Architecture"
+  ) %>
+<% end %>
+
+<!-- Gallery with customized UI (no download button or dots) -->
+<%= render(Lightbox::Component.new(
+  show_download_button: false,
+  show_dots_indicator: false,
+  columns: 2
+)) do |lightbox| %>
+  <% lightbox.with_item(src: "https://images.unsplash.com/photo-1682687220742-aba13b6e50ba", alt: "Mountain view", caption: "Mountain view with a man looking into the distance") %>
+  <% lightbox.with_item(src: "https://images.unsplash.com/photo-1682695797221-8164ff1fafc9", alt: "Coral reef", caption: "Coral reef with a diver") %>
+<% end %>
+
+<!-- Inline layout for attachment-style galleries -->
+<%= render(Lightbox::Component.new(variant: :inline, gap: :sm)) do |lightbox| %>
+  <% lightbox.with_item(src: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe", caption: "Attachment 1") %>
+  <% lightbox.with_item(src: "https://images.unsplash.com/photo-1611162617474-5b21e879e113", caption: "Attachment 2") %>
+  <% lightbox.with_item(src: "https://images.unsplash.com/photo-1551650975-87deedd944c3", caption: "Attachment 3") %>
+<% end %>

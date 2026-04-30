@@ -1,0 +1,62 @@
+<!-- Basic usage with title and content block -->
+<%= render "shared/components/popover/popover",
+  title: "Help Information",
+  trigger_text: "Hover me" do %>
+  <p>This popover provides additional context and information.</p>
+<% end %>
+
+<!-- Click-triggered popover -->
+<%= render "shared/components/popover/popover",
+  trigger_type: "click",
+  interactive: true,
+  title: "Settings",
+  trigger_text: "Open Settings" do %>
+  <form class="space-y-3">
+    <label class="flex items-center gap-2 text-sm">
+      <input type="checkbox" name="notifications" /> Enable notifications
+    </label>
+    <label class="flex items-center gap-2 text-sm">
+      <input type="checkbox" name="dark_mode" /> Dark mode
+    </label>
+    <div class="flex justify-between gap-2">
+      <button type="reset" class="w-full flex items-center justify-center gap-1.5 rounded-lg border border-black/10 bg-white/90 px-3 py-2 text-xs font-medium whitespace-nowrap text-neutral-800 shadow-xs transition-all duration-100 ease-in-out select-none hover:bg-neutral-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-600 disabled:cursor-not-allowed disabled:opacity-50 dark:border-white/10 dark:bg-neutral-700/50 dark:text-neutral-50 dark:hover:bg-neutral-700/75 dark:focus-visible:outline-neutral-200">
+        Clear
+      </button>
+      <button data-popover-close-button type="button" class="w-full flex items-center justify-center gap-1.5 rounded-lg border border-neutral-400/30 bg-neutral-800 px-3 py-2 text-xs font-medium whitespace-nowrap text-white shadow-sm transition-all duration-100 ease-in-out select-none hover:bg-neutral-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-600 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-white dark:text-neutral-800 dark:hover:bg-neutral-100 dark:focus-visible:outline-neutral-200">
+        Apply
+      </button>
+    </div>
+  </form>
+<% end %>
+
+<!-- With placement and animation options -->
+<%= render "shared/components/popover/popover",
+  placement: "right",
+  animation: "fade origin",
+  offset: 12,
+  max_width: 350,
+  title: "Quick Stats",
+  trigger_text: "View Stats" do %>
+  <div class="space-y-1 text-sm">
+    <p><strong>Sales:</strong> $1,234</p>
+    <p><strong>Orders:</strong> 42</p>
+  </div>
+<% end %>
+
+<!-- Simple popover without title -->
+<%= render "shared/components/popover/popover",
+  placement: "bottom",
+  arrow: false,
+  trigger_text: "No arrow" do %>
+  <div class="p-3">
+    <p class="text-sm">A simple tooltip-style popover without an arrow.</p>
+  </div>
+<% end %>
+
+<!-- With delay -->
+<%= render "shared/components/popover/popover",
+  delay: 500,
+  title: "Delayed Popover",
+  trigger_text: "Wait 500ms" do %>
+  <p>This popover appears after a 500ms delay.</p>
+<% end %>

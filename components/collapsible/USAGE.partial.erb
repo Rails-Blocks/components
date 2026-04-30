@@ -1,0 +1,33 @@
+<% collapsible_content = capture do %>
+  <div class="rounded-md border border-neutral-200 bg-neutral-50 dark:border-neutral-700 dark:bg-neutral-700/50 px-4 py-3 font-mono text-sm">hotwired/stimulus</div>
+  <div class="rounded-md border border-neutral-200 bg-neutral-50 dark:border-neutral-700 dark:bg-neutral-700/50 px-4 py-3 font-mono text-sm">hotwired/turbo-rails</div>
+<% end %>
+
+<% always_visible_content = capture do %>
+  <div class="rounded-md border border-neutral-200 bg-neutral-50 dark:border-neutral-700 dark:bg-neutral-700/50 px-4 py-3 font-mono text-sm">rails/rails</div>
+<% end %>
+
+<div class="flex w-fit justify-center">
+  <%= render "shared/components/collapsible/collapsible",
+    title: "Rails developer starred 3 repositories",
+    icon: "arrows",
+    visible_content: always_visible_content,
+    content: collapsible_content %>
+</div>
+
+<% plus_minus_collapsible_content = capture do %>
+  <div class="rounded-md border border-neutral-200 bg-neutral-50 dark:border-neutral-700 dark:bg-neutral-700/50 px-4 py-3 font-mono text-sm">hotwired/stimulus</div>
+  <div class="rounded-md border border-neutral-200 bg-neutral-50 dark:border-neutral-700 dark:bg-neutral-700/50 px-4 py-3 font-mono text-sm">hotwired/turbo-rails</div>
+<% end %>
+
+<% plus_minus_visible_content = capture do %>
+  <div class="rounded-md border border-neutral-200 bg-neutral-50 dark:border-neutral-700 dark:bg-neutral-700/50 px-4 py-3 font-mono text-sm">rails/rails</div>
+<% end %>
+
+<div class="flex w-fit justify-center">
+  <%= render "shared/components/collapsible/collapsible",
+    title: "Rails developer starred 3 repositories",
+    icon: "plus_minus",
+    visible_content: plus_minus_visible_content,
+    content: plus_minus_collapsible_content %>
+</div>

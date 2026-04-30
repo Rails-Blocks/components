@@ -1,0 +1,16 @@
+{
+  "component": "kbd",
+  "implementation": "view_component",
+  "files": [
+    {
+      "path": "kbd/component.rb",
+      "relative_path": "component.rb",
+      "checksum": "4fa36d3802688d3576dce26441f99923871454990e76e6ca8ad12075c1cacc1b"
+    },
+    {
+      "path": "kbd/component.html.erb",
+      "relative_path": "component.html.erb",
+      "checksum": "4b2c41399d0c3ffbf09d3909663c6fc1adfaddf32f70153853bc8dfc0c257b40"
+    }
+  ]
+}

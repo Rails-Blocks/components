@@ -1,0 +1,217 @@
+<!-- Basic button (primary, medium size) -->
+<%= render Buttons::Component.new(
+  text: "Primary Button"
+) %>
+
+<!-- Variants -->
+<%= render Buttons::Component.new(
+  text: "Primary",
+  variant: :primary
+) %>
+
+<%= render Buttons::Component.new(
+  text: "Secondary",
+  variant: :secondary
+) %>
+
+<%= render Buttons::Component.new(
+  text: "Outline",
+  variant: :outline
+) %>
+
+<%= render Buttons::Component.new(
+  text: "Ghost",
+  variant: :ghost
+) %>
+
+<%= render Buttons::Component.new(
+  text: "Destructive",
+  variant: :destructive
+) %>
+
+<!-- Sizes -->
+<%= render Buttons::Component.new(
+  text: "Extra Small",
+  size: :xs
+) %>
+
+<%= render Buttons::Component.new(
+  text: "Small",
+  size: :sm
+) %>
+
+<%= render Buttons::Component.new(
+  text: "Medium (Default)",
+  size: :md
+) %>
+
+<%= render Buttons::Component.new(
+  text: "Large",
+  size: :lg
+) %>
+
+<!-- Fancy style (enhanced shadows) -->
+<%= render Buttons::Component.new(
+  text: "Fancy Primary",
+  variant: :primary,
+  style: :fancy
+) %>
+
+<%= render Buttons::Component.new(
+  text: "Fancy Secondary",
+  variant: :secondary,
+  style: :fancy
+) %>
+
+<%= render Buttons::Component.new(
+  text: "Fancy Destructive",
+  variant: :destructive,
+  style: :fancy
+) %>
+
+<!-- Pill shape (fully rounded) -->
+<%= render Buttons::Component.new(
+  text: "Pill Button",
+  pill: true
+) %>
+
+<%= render Buttons::Component.new(
+  text: "Pill Secondary",
+  variant: :secondary,
+  pill: true
+) %>
+
+<!-- Disabled state -->
+<%= render Buttons::Component.new(
+  text: "Disabled",
+  disabled: true
+) %>
+
+<%= render Buttons::Component.new(
+  text: "Disabled Secondary",
+  variant: :secondary,
+  disabled: true
+) %>
+
+<!-- Loading state -->
+<%= render Buttons::Component.new(
+  text: "Loading...",
+  loading: true
+) %>
+
+<%= render Buttons::Component.new(
+  text: "Processing...",
+  variant: :secondary,
+  loading: true
+) %>
+
+<!-- With icon (left position - default) -->
+<%= render Buttons::Component.new(
+  text: "Add Item",
+  icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18"><g fill="currentColor"><path d="M14.75,9.75H3.25c-.414,0-.75-.336-.75-.75s.336-.75,.75-.75H14.75c.414,0,.75,.336,.75,.75s-.336,.75-.75,.75Z"></path><path d="M9,15.5c-.414,0-.75-.336-.75-.75V3.25c0-.414,.336-.75,.75-.75s.75,.336,.75,.75V14.75c0,.414-.336,.75-.75,.75Z"></path></g></svg>'
+) %>
+
+<!-- With icon (right position) -->
+<%= render Buttons::Component.new(
+  text: "Next Step",
+  icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18"><g fill="currentColor"><path d="M13.28,8.47L7.03,2.22c-.293-.293-.768-.293-1.061,0s-.293,.768,0,1.061l5.72,5.72-5.72,5.72c-.293,.293-.293,.768,0,1.061,.146,.146,.338,.22,.53,.22s.384-.073,.53-.22l6.25-6.25c.293-.293,.293-.768,0-1.061Z"></path></g></svg>',
+  icon_position: :right
+) %>
+
+<!-- Icon only buttons -->
+<%= render Buttons::Component.new(
+  icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18"><g fill="currentColor"><path d="M14.75,9.75H3.25c-.414,0-.75-.336-.75-.75s.336-.75,.75-.75H14.75c.414,0,.75,.336,.75,.75s-.336,.75-.75,.75Z"></path><path d="M9,15.5c-.414,0-.75-.336-.75-.75V3.25c0-.414,.336-.75,.75-.75s.75,.336,.75,.75V14.75c0,.414-.336,.75-.75,.75Z"></path></g></svg>',
+  icon_only: true
+) %>
+
+<%= render Buttons::Component.new(
+  icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18"><g fill="currentColor"><path d="M14.75,9.75H3.25c-.414,0-.75-.336-.75-.75s.336-.75,.75-.75H14.75c.414,0,.75,.336,.75,.75s-.336,.75-.75,.75Z"></path><path d="M9,15.5c-.414,0-.75-.336-.75-.75V3.25c0-.414,.336-.75,.75-.75s.75,.336,.75,.75V14.75c0,.414-.336,.75-.75,.75Z"></path></g></svg>',
+  icon_only: true,
+  variant: :secondary
+) %>
+
+<%= render Buttons::Component.new(
+  icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18"><g fill="currentColor"><path d="M14.75,9.75H3.25c-.414,0-.75-.336-.75-.75s.336-.75,.75-.75H14.75c.414,0,.75,.336,.75,.75s-.336,.75-.75,.75Z"></path><path d="M9,15.5c-.414,0-.75-.336-.75-.75V3.25c0-.414,.336-.75,.75-.75s.75,.336,.75,.75V14.75c0,.414-.336,.75-.75,.75Z"></path></g></svg>',
+  icon_only: true,
+  variant: :ghost
+) %>
+
+<!-- Small icon-only buttons -->
+<%= render Buttons::Component.new(
+  icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18"><g fill="currentColor"><path d="M14.75,9.75H3.25c-.414,0-.75-.336-.75-.75s.336-.75,.75-.75H14.75c.414,0,.75,.336,.75,.75s-.336,.75-.75,.75Z"></path><path d="M9,15.5c-.414,0-.75-.336-.75-.75V3.25c0-.414,.336-.75,.75-.75s.75,.336,.75,.75V14.75c0,.414-.336,.75-.75,.75Z"></path></g></svg>',
+  icon_only: true,
+  size: :sm
+) %>
+
+<%= render Buttons::Component.new(
+  icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18"><g fill="currentColor"><path d="M14.75,9.75H3.25c-.414,0-.75-.336-.75-.75s.336-.75,.75-.75H14.75c.414,0,.75,.336,.75,.75s-.336,.75-.75,.75Z"></path><path d="M9,15.5c-.414,0-.75-.336-.75-.75V3.25c0-.414,.336-.75,.75-.75s.75,.336,.75,.75V14.75c0,.414-.336,.75-.75,.75Z"></path></g></svg>',
+  icon_only: true,
+  size: :sm,
+  pill: true
+) %>
+
+<!-- Icon only with pill shape -->
+<%= render Buttons::Component.new(
+  icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18"><g fill="currentColor"><path d="M14.75,9.75H3.25c-.414,0-.75-.336-.75-.75s.336-.75,.75-.75H14.75c.414,0,.75,.336,.75,.75s-.336,.75-.75,.75Z"></path><path d="M9,15.5c-.414,0-.75-.336-.75-.75V3.25c0-.414,.336-.75,.75-.75s.75,.336,.75,.75V14.75c0,.414-.336,.75-.75,.75Z"></path></g></svg>',
+  icon_only: true,
+  pill: true,
+  variant: :ghost
+) %>
+
+<!-- Full width button -->
+<%= render Buttons::Component.new(
+  text: "Full Width Button",
+  full_width: true
+) %>
+
+<%= render Buttons::Component.new(
+  text: "Full Width Secondary",
+  variant: :secondary,
+  full_width: true
+) %>
+
+<!-- As link (anchor tag) -->
+<%= render Buttons::Component.new(
+  text: "Visit Page",
+  href: "/some-page"
+) %>
+
+<%= render Buttons::Component.new(
+  text: "External Link",
+  variant: :secondary,
+  href: "https://example.com"
+) %>
+
+<!-- Submit button -->
+<%= render Buttons::Component.new(
+  text: "Submit Form",
+  type: "submit"
+) %>
+
+<!-- With custom classes -->
+<%= render Buttons::Component.new(
+  text: "Custom Styled",
+  classes: "shadow-lg"
+) %>
+
+<!-- With data attributes -->
+<%= render Buttons::Component.new(
+  text: "With Data Attrs",
+  data: { turbo_method: "delete", confirm: "Are you sure?" }
+) %>
+
+<!-- Combining options -->
+<%= render Buttons::Component.new(
+  text: "Get Started",
+  icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18"><g fill="currentColor"><path d="M13.28,8.47L7.03,2.22c-.293-.293-.768-.293-1.061,0s-.293,.768,0,1.061l5.72,5.72-5.72,5.72c-.293,.293-.293,.768,0,1.061,.146,.146,.338,.22,.53,.22s.384-.073,.53-.22l6.25-6.25c.293-.293,.293-.768,0-1.061Z"></path></g></svg>',
+  icon_position: :right,
+  style: :fancy,
+  size: :lg
+) %>
+
+<%= render Buttons::Component.new(
+  text: "Delete Account",
+  icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18"><g fill="currentColor"><path d="M15.25,3.5h-3.25v-.75c0-.965-.785-1.75-1.75-1.75h-2.5c-.965,0-1.75,.785-1.75,1.75v.75H2.75c-.414,0-.75,.336-.75,.75s.336,.75,.75,.75H15.25c.414,0,.75-.336,.75-.75s-.336-.75-.75-.75Zm-7.75-.75c0-.138,.112-.25,.25-.25h2.5c.138,0,.25,.112,.25,.25v.75h-3v-.75Z"></path><path d="M13.5,6H4.5c-.206,0-.402,.084-.544,.234s-.216,.35-.205,.556l.4,7.604c.077,1.461,1.283,2.606,2.746,2.606h4.205c1.463,0,2.669-1.145,2.746-2.605l.4-7.605c.011-.206-.063-.406-.205-.556s-.338-.234-.544-.234Z" fill="currentColor"></path></g></svg>',
+  variant: :destructive,
+  style: :fancy
+) %>

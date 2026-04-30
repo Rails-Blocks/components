@@ -1,0 +1,16 @@
+{
+  "component": "breadcrumb",
+  "implementation": "view_component",
+  "files": [
+    {
+      "path": "breadcrumb/component.rb",
+      "relative_path": "component.rb",
+      "checksum": "9daf735a758a5b3ebd1b3046942e0dbc7c8b981ff88251e113a8421c4a6db968"
+    },
+    {
+      "path": "breadcrumb/component.html.erb",
+      "relative_path": "component.html.erb",
+      "checksum": "18df0a69ae74cc767f6bb3851aa25e1f5fae1d41be3b5b7c5040a1fecf32926c"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "component": "password",
+  "implementation": "view_component",
+  "files": [
+    {
+      "path": "password/component.rb",
+      "relative_path": "component.rb",
+      "checksum": "025bc6d1b7d5ae3dd0d25297702aa38706661817c31f3b4407bf12c3a9e52764"
+    },
+    {
+      "path": "password/component.html.erb",
+      "relative_path": "component.html.erb",
+      "checksum": "d913e50399c0dc27d0c67b305ea66f2f0a56d4c824e6a0efc8c1555fe9b1dc3a"
+    }
+  ]
+}

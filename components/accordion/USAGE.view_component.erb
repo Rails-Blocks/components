@@ -1,0 +1,25 @@
+<!-- Basic usage -->
+<%= render(Accordion::Component.new) do |c| %>
+  <% c.with_item(title: "Question 1") do %>
+    Answer content here
+  <% end %>
+  <% c.with_item(title: "Question 2") do %>
+    More content
+  <% end %>
+  <% c.with_item(title: "Question 3") do %>
+    Even more content
+  <% end %>
+<% end %>
+
+<!-- With options: bordered variant, plus/minus icon, allow multiple open -->
+<%= render Accordion::Component.new(icon: :plus_minus, variant: :bordered, allow_multiple: true) do |accordion| %>
+  <% accordion.with_item(title: "First item", default_open: true) do %>
+    Content for the first item.
+  <% end %>
+  <% accordion.with_item(title: "Second item") do %>
+    Content for the second item.
+  <% end %>
+  <% accordion.with_item(title: "Disabled item", disabled: true) do %>
+    This won't be shown.
+  <% end %>
+<% end %>

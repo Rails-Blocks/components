@@ -1,0 +1,119 @@
+<%# Basic emoji picker (icon only, hidden input) %>
+<%= render EmojiPicker::Component.new %>
+
+<%# With visible input field %>
+<%= render EmojiPicker::Component.new(
+  id: "emoji_with_input",
+  name: "reaction",
+  show_input: true,
+  placeholder: "Choose an emoji..."
+) %>
+
+<%# Pre-selected emoji %>
+<%= render EmojiPicker::Component.new(
+  id: "preset_emoji",
+  name: "mood",
+  value: "😊"
+) %>
+
+<%# Auto-submit on selection (for forms) %>
+<%= render EmojiPicker::Component.new(
+  id: "auto_submit_emoji",
+  name: "reaction",
+  auto_submit: true,
+  show_input: true
+) %>
+
+<%# Insert mode (for chat/textarea) with external target %>
+<%= render EmojiPicker::Component.new(
+  id: "chat_emoji",
+  insert_mode: true,
+  target_selector: "#message_content"
+) %>
+
+<%# Insert mode with inline textarea (using block content) %>
+<%= render EmojiPicker::Component.new(
+  id: "inline_chat",
+  insert_mode: true
+) do %>
+  <textarea
+    id="inline_message"
+    rows="3"
+    class="form-control w-full mb-3"
+    placeholder="Type your message..."
+  ></textarea>
+<% end %>
+
+<%# Different button sizes %>
+<%= render EmojiPicker::Component.new(
+  id: "small_picker",
+  button_size: :sm
+) %>
+
+<%= render EmojiPicker::Component.new(
+  id: "medium_picker",
+  button_size: :md
+) %>
+
+<%= render EmojiPicker::Component.new(
+  id: "large_picker",
+  button_size: :lg
+) %>
+
+<%# Different button styles %>
+<%= render EmojiPicker::Component.new(
+  id: "ghost_picker",
+  button_style: :ghost
+) %>
+
+<%= render EmojiPicker::Component.new(
+  id: "outline_picker",
+  button_style: :outline
+) %>
+
+<%= render EmojiPicker::Component.new(
+  id: "solid_picker",
+  button_style: :solid
+) %>
+
+<%# Different picker positions %>
+<%= render EmojiPicker::Component.new(
+  id: "left_picker",
+  picker_position: :left
+) %>
+
+<%= render EmojiPicker::Component.new(
+  id: "center_picker",
+  picker_position: :center
+) %>
+
+<%= render EmojiPicker::Component.new(
+  id: "right_picker",
+  picker_position: :right
+) %>
+
+<%# Custom classes %>
+<%= render EmojiPicker::Component.new(
+  id: "custom_picker",
+  classes: "p-2 bg-neutral-50 dark:bg-neutral-800 rounded-lg",
+  button_size: :md,
+  button_classes: "!h-auto !w-auto !rounded-lg border border-neutral-400/30 bg-neutral-800 !p-2 !text-xs font-medium !text-white shadow-sm transition-all duration-100 ease-in-out hover:!bg-neutral-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-600 disabled:cursor-not-allowed dark:bg-white dark:!text-neutral-800 dark:hover:!bg-neutral-100 dark:focus-visible:outline-neutral-200"
+) %>
+
+<%# Full example with all options %>
+<%= render EmojiPicker::Component.new(
+  id: "full_options",
+  name: "post[emoji]",
+  value: nil,
+  placeholder: "Pick an emoji...",
+  auto_submit: false,
+  insert_mode: false,
+  target_selector: nil,
+  show_input: true,
+  button_size: :md,
+  button_style: :outline,
+  picker_position: :left,
+  classes: "max-w-xs",
+  button_classes: nil,
+  input_classes: nil
+) %>

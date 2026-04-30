@@ -1,0 +1,99 @@
+<!-- Keep examples in sync with app/components/banner/USAGE.erb -->
+
+<!-- Basic top announcement banner -->
+<%= render "shared/components/banner/banner",
+  title: "New Feature Launch!",
+  description: "Check out our latest Stimulus components for Rails.",
+  action_text: "Learn more",
+  action_url: "#" %>
+
+<!-- Bottom cookie consent banner -->
+<%= render "shared/components/banner/banner",
+  title: "We use cookies",
+  description: "By continuing to use this site, you agree to our use of cookies.",
+  position: :bottom,
+  action_text: "Accept All",
+  action_url: "#",
+  cookie_name: "cookie_consent" %>
+
+<!-- Info variant banner -->
+<%= render "shared/components/banner/banner",
+  title: "System Update",
+  description: "Scheduled maintenance will occur this weekend.",
+  variant: :info %>
+
+<!-- Warning variant banner -->
+<%= render "shared/components/banner/banner",
+  title: "Action Required",
+  description: "Please verify your email address to continue.",
+  variant: :warning,
+  action_text: "Verify Now",
+  action_url: "#" %>
+
+<!-- Success variant banner -->
+<%= render "shared/components/banner/banner",
+  title: "Welcome back!",
+  description: "Your account has been successfully restored.",
+  variant: :success %>
+
+<!-- Promotional banner with countdown -->
+<%= render "shared/components/banner/banner",
+  title: "Black Friday Sale!",
+  description: "Get 30% off all products. Limited time only!",
+  variant: :promotional,
+  action_text: "Shop Now",
+  action_url: "#",
+  countdown_end_time: (Time.current + 3.days).iso8601,
+  auto_hide: true,
+  cookie_name: "black_friday_banner",
+  cookie_days: 7 %>
+
+<!-- Floating neutral banner with blur -->
+<%= render "shared/components/banner/banner",
+  title: "Get 30% Off Your First Purchase!",
+  description: "Join thousands of developers using our Rails components. Use code RAILS30 at checkout.",
+  position: :floating,
+  variant: :default,
+  action_text: "Claim Offer",
+  action_url: "#",
+  cookie_name: "promo_banner",
+  cookie_days: 30,
+  classes: "[&>div]:backdrop-blur-sm" %>
+
+<!-- Non-dismissible banner -->
+<%= render "shared/components/banner/banner",
+  title: "Important Notice",
+  description: "This banner cannot be dismissed.",
+  variant: :warning,
+  dismissible: false %>
+
+<!-- Banner without icon -->
+<%= render "shared/components/banner/banner",
+  title: "Simple Announcement",
+  description: "A minimal banner without an icon.",
+  show_icon: false %>
+
+<!-- Session-only cookie (dismissed until browser closes) -->
+<%= render "shared/components/banner/banner",
+  title: "Session Notice",
+  description: "This will reappear when you close and reopen your browser.",
+  cookie_days: 0 %>
+
+<!-- Custom icon banner -->
+<%= render "shared/components/banner/banner",
+  title: "Rocket Launch!",
+  description: "New version is now available.",
+  variant: :info,
+  custom_icon: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"></path><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"></path></svg>' %>
+
+<!-- Banner with HTML in description -->
+<%= render "shared/components/banner/banner",
+  title: "HTML Support",
+  description: "You can include <strong>bold text</strong>, <em>italics</em>, and even <a href='#' class='underline'>links</a>!",
+  variant: :success %>
+
+<!-- Banner with additional classes -->
+<%= render "shared/components/banner/banner",
+  title: "Custom Styled",
+  description: "Additional classes can be added for custom styling.",
+  classes: "shadow-xl" %>

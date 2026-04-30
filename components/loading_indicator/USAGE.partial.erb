@@ -1,0 +1,49 @@
+<!-- Circular spinner -->
+<%= render "shared/components/loading_indicator/loading_indicator" %>
+
+<!-- Circular spinner (colored) -->
+<%= render "shared/components/loading_indicator/loading_indicator",
+  color: "blue" %>
+
+<!-- Circular spinner in a blue button -->
+<button type="button" disabled class="flex items-center justify-center gap-1.5 rounded-lg border border-blue-400/30 bg-blue-600 px-3.5 py-2 text-sm font-medium whitespace-nowrap text-white shadow-sm transition-all duration-100 ease-in-out select-none hover:bg-blue-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-600 disabled:cursor-not-allowed disabled:opacity-50 dark:focus-visible:outline-neutral-200">
+  <%= render "shared/components/loading_indicator/loading_indicator",
+    size: "sm",
+    classes: "[&_svg]:text-white dark:[&_svg]:text-white" %>
+  Saving...
+</button>
+
+<!-- Stepped animation loader -->
+<%= render "shared/components/loading_indicator/loading_indicator",
+  stepped: true %>
+
+<!-- Stepped animation loader (colored) -->
+<%= render "shared/components/loading_indicator/loading_indicator",
+  stepped: true,
+  color: "blue" %>
+
+<!-- Stepped animation loader in an empty state -->
+<div class="flex w-full max-w-sm flex-col items-center justify-center gap-3 rounded-xl border border-dashed border-neutral-300 bg-neutral-50 p-6 text-center dark:border-neutral-700 dark:bg-neutral-900/50">
+  <%= render "shared/components/loading_indicator/loading_indicator",
+    stepped: true,
+    color: "blue",
+    size: "lg" %>
+  <p class="text-sm text-neutral-600 dark:text-neutral-300">Loading your first project...</p>
+</div>
+
+<!-- Dots loader -->
+<%= render "shared/components/loading_indicator/loading_indicator",
+  type: "dots" %>
+
+<!-- Dots loader (colored) -->
+<%= render "shared/components/loading_indicator/loading_indicator",
+  type: "dots",
+  color: "blue" %>
+
+<!-- Dots loader in a chat bubble -->
+<div class="flex gap-2 rounded-2xl rounded-bl-md bg-neutral-100 px-4 py-3 dark:bg-neutral-800">
+  <%= render "shared/components/loading_indicator/loading_indicator",
+    type: "dots",
+    size: "sm" %>
+  <p class="text-xs text-neutral-500 dark:text-neutral-400">Support is typing...</p>
+</div>

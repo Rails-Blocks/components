@@ -1,0 +1,11 @@
+{
+  "component": "buttons",
+  "implementation": "erb_template",
+  "files": [
+    {
+      "path": "buttons/_button.html.erb",
+      "relative_path": "_button.html.erb",
+      "checksum": "144f762725a00ed57b790776a717868ffe270f84fe15fa364d6bb311081fe98c"
+    }
+  ]
+}

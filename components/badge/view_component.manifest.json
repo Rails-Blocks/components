@@ -1,0 +1,16 @@
+{
+  "component": "badge",
+  "implementation": "view_component",
+  "files": [
+    {
+      "path": "badge/component.rb",
+      "relative_path": "component.rb",
+      "checksum": "261c9de1dc119203c3966b98ab5b3de65dcb5c299065c685a2fa76a1896b30d1"
+    },
+    {
+      "path": "badge/component.html.erb",
+      "relative_path": "component.html.erb",
+      "checksum": "1199de4b668736603d0726ecf5d2bb153da348310e449397d5e8789502b1a411"
+    }
+  ]
+}

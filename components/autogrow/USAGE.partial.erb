@@ -1,0 +1,50 @@
+<!-- Basic autogrow textarea -->
+<%= render "shared/components/autogrow/autogrow",
+  placeholder: "Start typing..."
+%>
+
+<!-- With custom options -->
+<%= render "shared/components/autogrow/autogrow",
+  placeholder: "Write your message here...",
+  name: "message",
+  id: "message-field",
+  rows: 3,
+  min_height: "4rem",
+  max_height: "20rem",
+  classes: "max-w-md"
+%>
+
+<!-- Single-line style (like a growing input) -->
+<%= render "shared/components/autogrow/autogrow",
+  placeholder: "Quick note...",
+  name: "note",
+  rows: 1,
+  min_height: "2.5rem",
+  max_height: "13rem"
+%>
+
+<!-- Required field with initial value -->
+<%= render "shared/components/autogrow/autogrow",
+  placeholder: "Your bio...",
+  name: "user[bio]",
+  id: "user_bio",
+  value: "I'm a Ruby developer...",
+  required: true,
+  rows: 2,
+  min_height: "3rem",
+  max_height: "15rem"
+%>
+
+<!-- Disabled textarea -->
+<%= render "shared/components/autogrow/autogrow",
+  placeholder: "Cannot edit...",
+  value: "This content is locked.",
+  disabled: true
+%>
+
+<!-- With manual resize allowed -->
+<%= render "shared/components/autogrow/autogrow",
+  placeholder: "You can also manually resize this...",
+  resize: true,
+  rows: 2
+%>

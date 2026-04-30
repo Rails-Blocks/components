@@ -1,0 +1,16 @@
+{
+  "component": "emoji_picker",
+  "implementation": "view_component",
+  "files": [
+    {
+      "path": "emoji_picker/component.rb",
+      "relative_path": "component.rb",
+      "checksum": "7f6e3c2123daed16c9613ad097f308899c7b669a94a7b123ec571b95949bd06f"
+    },
+    {
+      "path": "emoji_picker/component.html.erb",
+      "relative_path": "component.html.erb",
+      "checksum": "bd2a351251147c212db57e14f603ebd590ac7bb47a80fdcb0ea1332d5f722f82"
+    }
+  ]
+}

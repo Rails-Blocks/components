@@ -1,0 +1,16 @@
+{
+  "component": "tree_view",
+  "implementation": "erb_template",
+  "files": [
+    {
+      "path": "tree_view/_tree_view_node.html.erb",
+      "relative_path": "_tree_view_node.html.erb",
+      "checksum": "68b02b216721e9f97f1580cb9adf0c8300a8a439662b3a8dca3b307391a6d842"
+    },
+    {
+      "path": "tree_view/_tree_view.html.erb",
+      "relative_path": "_tree_view.html.erb",
+      "checksum": "8ebe16b251d673858007c723b2ae663cea24f1e6ee54a622ff9ea69d32c76953"
+    }
+  ]
+}

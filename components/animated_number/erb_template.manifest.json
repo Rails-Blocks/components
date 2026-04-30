@@ -1,0 +1,11 @@
+{
+  "component": "animated_number",
+  "implementation": "erb_template",
+  "files": [
+    {
+      "path": "animated_number/_animated_number.html.erb",
+      "relative_path": "_animated_number.html.erb",
+      "checksum": "d70ff7a785a2eff3f186a7ad5575d3501cbaa82a34e8be46feb9bfe12fc80491"
+    }
+  ]
+}

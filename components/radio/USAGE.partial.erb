@@ -1,0 +1,138 @@
+<!-- Basic radio button -->
+<%= render "shared/components/radio/radio",
+  label: "Option A",
+  name: "choice",
+  value: "a" %>
+
+<!-- Radio button group -->
+<fieldset class="space-y-3">
+  <legend class="text-sm font-medium text-neutral-900 dark:text-neutral-100 mb-4">Select a payment method</legend>
+
+  <%= render "shared/components/radio/radio",
+    label: "Credit Card",
+    name: "payment",
+    value: "card",
+    checked: true %>
+
+  <%= render "shared/components/radio/radio",
+    label: "PayPal",
+    name: "payment",
+    value: "paypal" %>
+
+  <%= render "shared/components/radio/radio",
+    label: "Bank Transfer",
+    name: "payment",
+    value: "bank" %>
+</fieldset>
+
+<!-- Radio with custom id -->
+<%= render "shared/components/radio/radio",
+  label: "Custom ID option",
+  name: "option",
+  value: "custom",
+  id: "custom-radio-id" %>
+
+<!-- Disabled radio button -->
+<%= render "shared/components/radio/radio",
+  label: "Disabled option",
+  name: "disabled_example",
+  value: "disabled",
+  disabled: true %>
+
+<!-- Disabled and checked -->
+<%= render "shared/components/radio/radio",
+  label: "Disabled checked option",
+  name: "disabled_checked",
+  value: "locked",
+  checked: true,
+  disabled: true %>
+
+<!-- Required radio button -->
+<%= render "shared/components/radio/radio",
+  label: "Required option",
+  name: "required_field",
+  value: "required",
+  required: true %>
+
+<!-- With description -->
+<%= render "shared/components/radio/radio",
+  label: "Basic Plan",
+  name: "subscription",
+  value: "basic",
+  description: "Perfect for individuals getting started with basic features" %>
+
+<!-- With description (checked) -->
+<%= render "shared/components/radio/radio",
+  label: "Professional Plan",
+  name: "subscription",
+  value: "professional",
+  description: "Advanced features for growing businesses and teams",
+  checked: true %>
+
+<!-- With error message -->
+<%= render "shared/components/radio/radio",
+  label: "Select this option",
+  name: "required_selection",
+  value: "select",
+  error: "Please select an option to continue" %>
+
+<!-- Small size -->
+<%= render "shared/components/radio/radio",
+  label: "Small radio",
+  name: "sizes",
+  value: "sm",
+  size: "sm" %>
+
+<!-- Medium size (default) -->
+<%= render "shared/components/radio/radio",
+  label: "Medium radio",
+  name: "sizes",
+  value: "md",
+  size: "md" %>
+
+<!-- Large size -->
+<%= render "shared/components/radio/radio",
+  label: "Large radio",
+  name: "sizes",
+  value: "lg",
+  size: "lg" %>
+
+<!-- Small with description -->
+<%= render "shared/components/radio/radio",
+  label: "Compact option",
+  name: "size_desc",
+  value: "compact",
+  description: "A smaller radio with description",
+  size: "sm" %>
+
+<!-- Large with description -->
+<%= render "shared/components/radio/radio",
+  label: "Prominent option",
+  name: "size_desc",
+  value: "prominent",
+  description: "A larger radio for emphasis",
+  size: "lg" %>
+
+<!-- With custom wrapper classes -->
+<%= render "shared/components/radio/radio",
+  label: "Custom styled",
+  name: "custom_style",
+  value: "styled",
+  classes: "p-4 bg-neutral-50 dark:bg-neutral-800 rounded-lg" %>
+
+<!-- With custom input classes -->
+<%= render "shared/components/radio/radio",
+  label: "Blue radio",
+  name: "custom_input",
+  value: "blue",
+  input_classes: "text-blue-600 focus:ring-blue-500 dark:checked:bg-blue-600" %>
+
+<!-- All options combined -->
+<%= render "shared/components/radio/radio",
+  label: "Full featured radio",
+  name: "full_featured",
+  id: "full-featured-radio",
+  value: "yes",
+  description: "This radio demonstrates all available options",
+  size: "md",
+  required: true %>

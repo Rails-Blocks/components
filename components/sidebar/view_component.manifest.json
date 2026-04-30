@@ -1,0 +1,46 @@
+{
+  "component": "sidebar",
+  "implementation": "view_component",
+  "files": [
+    {
+      "path": "sidebar/component.rb",
+      "relative_path": "component.rb",
+      "checksum": "727d5085f679f992fe0402e2a8382f99ce41192951c56d6121a8adf82852da07"
+    },
+    {
+      "path": "sidebar/component/item_component.html.erb",
+      "relative_path": "component/item_component.html.erb",
+      "checksum": "7384dc95b990a4f0b7f2e44765ebc46a675cd6a04bfbeca6de38e85e7e44cc56"
+    },
+    {
+      "path": "sidebar/component/item_component.rb",
+      "relative_path": "component/item_component.rb",
+      "checksum": "1b3a731dc3376ffeb3cdb3ec8d6a335d75f76f7731388d7c526d074177daad8d"
+    },
+    {
+      "path": "sidebar/component/section_component.html.erb",
+      "relative_path": "component/section_component.html.erb",
+      "checksum": "1be07d14e692d3eae8265425c55138a5ca9b37b90e89fd3826f47f762b26eb8e"
+    },
+    {
+      "path": "sidebar/component/section_item_component.html.erb",
+      "relative_path": "component/section_item_component.html.erb",
+      "checksum": "4a79a7b4a07b0da84556aee825f643a0525597b49b5a803c53f8ab4d61cdc5e1"
+    },
+    {
+      "path": "sidebar/component/section_component.rb",
+      "relative_path": "component/section_component.rb",
+      "checksum": "2700a02c2916aaf4c9bc58715a9fba8c1495d7e9d3b1162027e48e6e09a0bcea"
+    },
+    {
+      "path": "sidebar/component/section_item_component.rb",
+      "relative_path": "component/section_item_component.rb",
+      "checksum": "03239bac3a063a6a428357c5d387157663a81302fcf1184cb0a0505bf3ef9e10"
+    },
+    {
+      "path": "sidebar/component.html.erb",
+      "relative_path": "component.html.erb",
+      "checksum": "596e5318b070abfe21a3aa1ac83d4226270af1aeb657bdeab5a48c20179dc746"
+    }
+  ]
+}

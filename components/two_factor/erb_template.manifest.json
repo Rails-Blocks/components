@@ -1,0 +1,11 @@
+{
+  "component": "two_factor",
+  "implementation": "erb_template",
+  "files": [
+    {
+      "path": "two_factor/_two_factor.html.erb",
+      "relative_path": "_two_factor.html.erb",
+      "checksum": "eccc5fd298d37aa01ebedd5eebe0c842c1f3407c1fde25ff38d9b4b5aee47291"
+    }
+  ]
+}

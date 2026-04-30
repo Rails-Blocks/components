@@ -1,0 +1,230 @@
+<%
+  team_members = [
+    { name: "Alex Johnson", email: "alex@example.com", role: "Admin", status: "Active" },
+    { name: "Sarah Miller", email: "sarah@example.com", role: "Editor", status: "Active" },
+    { name: "Michael Chen", email: "michael@example.com", role: "Viewer", status: "Pending" },
+    { name: "Emily Davis", email: "emily@example.com", role: "Editor", status: "Active" },
+    { name: "Jordan Lee", email: "jordan@example.com", role: "Manager", status: "Active" },
+    { name: "Priya Patel", email: "priya@example.com", role: "Admin", status: "Pending" },
+    { name: "Noah Wilson", email: "noah@example.com", role: "Viewer", status: "Active" },
+    { name: "Mia Rodriguez", email: "mia@example.com", role: "Editor", status: "Inactive" }
+  ]
+
+  products = [
+    { name: "Wireless Headphones", category: "Electronics", price: "$129.99", stock: "245" },
+    { name: "Ergonomic Mouse", category: "Electronics", price: "$49.99", stock: "512" },
+    { name: "Desk Lamp", category: "Furniture", price: "$79.99", stock: "89" },
+    { name: "Mechanical Keyboard", category: "Electronics", price: "$99.00", stock: "301" },
+    { name: "Monitor Stand", category: "Furniture", price: "$39.00", stock: "178" },
+    { name: "USB-C Hub", category: "Accessories", price: "$59.00", stock: "420" },
+    { name: "Laptop Sleeve", category: "Accessories", price: "$34.00", stock: "267" },
+    { name: "Webcam", category: "Electronics", price: "$89.00", stock: "142" }
+  ]
+
+  transactions = [
+    { id: "#TXN-4821", date: "Nov 28, 2025", customer: "Acme Corp", amount: "$2,450.00" },
+    { id: "#TXN-4820", date: "Nov 28, 2025", customer: "TechStart Inc", amount: "$1,299.00" },
+    { id: "#TXN-4819", date: "Nov 27, 2025", customer: "Bluebird LLC", amount: "$875.00" },
+    { id: "#TXN-4818", date: "Nov 27, 2025", customer: "Orbit Labs", amount: "$3,120.00" },
+    { id: "#TXN-4817", date: "Nov 26, 2025", customer: "Northwind", amount: "$640.00" },
+    { id: "#TXN-4816", date: "Nov 26, 2025", customer: "Nimbus Co", amount: "$2,040.00" },
+    { id: "#TXN-4815", date: "Nov 25, 2025", customer: "Pioneer Group", amount: "$1,150.00" },
+    { id: "#TXN-4814", date: "Nov 25, 2025", customer: "Summit Works", amount: "$980.00" }
+  ]
+
+  projects = [
+    { name: "Website Redesign", deadline: "Dec 15, 2025", priority: "High" },
+    { name: "Mobile App", deadline: "Jan 20, 2026", priority: "Medium" },
+    { name: "Brand Identity", deadline: "Dec 01, 2025", priority: "Low" },
+    { name: "API Integration", deadline: "Jan 05, 2026", priority: "High" },
+    { name: "Billing Migration", deadline: "Jan 12, 2026", priority: "Medium" },
+    { name: "Search Improvements", deadline: "Feb 02, 2026", priority: "Medium" },
+    { name: "Security Audit", deadline: "Dec 22, 2025", priority: "High" },
+    { name: "Performance Tuning", deadline: "Jan 18, 2026", priority: "Low" },
+    { name: "Partner Dashboard", deadline: "Feb 10, 2026", priority: "Medium" },
+    { name: "Data Export", deadline: "Feb 15, 2026", priority: "Low" },
+    { name: "Onboarding Refresh", deadline: "Mar 01, 2026", priority: "High" },
+    { name: "Notification Center", deadline: "Mar 11, 2026", priority: "Medium" }
+  ]
+
+  status_badge = lambda do |text, tone|
+    tone_classes = case tone
+    when :active
+      "bg-green-50 text-green-700 outline-green-600/20 dark:bg-green-400/10 dark:text-green-400 dark:outline-green-400/25"
+    when :pending
+      "bg-amber-50 text-amber-700 outline-amber-600/20 dark:bg-amber-400/10 dark:text-amber-400 dark:outline-amber-400/25"
+    else
+      "bg-red-50 text-red-700 outline-red-600/20 dark:bg-red-400/10 dark:text-red-400 dark:outline-red-400/25"
+    end
+
+    content_tag(
+      :span,
+      text,
+      class: "inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs font-medium outline #{tone_classes}"
+    )
+  end
+
+  status_rows = [
+    { name: "Alex Johnson", email: "alex@example.com", status: status_badge.call("Active", :active) },
+    { name: "Sarah Miller", email: "sarah@example.com", status: status_badge.call("Pending", :pending) },
+    { name: "Michael Chen", email: "michael@example.com", status: status_badge.call("Blocked", :blocked) },
+    { name: "Emily Davis", email: "emily@example.com", status: status_badge.call("Active", :active) },
+    { name: "Jordan Lee", email: "jordan@example.com", status: status_badge.call("Pending", :pending) },
+    { name: "Priya Patel", email: "priya@example.com", status: status_badge.call("Active", :active) }
+  ]
+%>
+
+<!-- Basic table -->
+<%= render(Table::Component.new(max_height: "240px")) do |table| %>
+  <% table.with_column(label: "Name") %>
+  <% table.with_column(label: "Email") %>
+  <% table.with_column(label: "Role") %>
+  <% table.with_column(label: "Status", align: :right) %>
+
+  <% team_members.each do |member| %>
+    <% table.with_row do |row| %>
+      <% row.with_cell(primary: true) { member[:name] } %>
+      <% row.with_cell { member[:email] } %>
+      <% row.with_cell { member[:role] } %>
+      <% row.with_cell(align: :right) { member[:status] } %>
+    <% end %>
+  <% end %>
+<% end %>
+
+<!-- With column alignment options -->
+<%= render(Table::Component.new(max_height: "240px")) do |table| %>
+  <% table.with_column(label: "Product") %>
+  <% table.with_column(label: "Category") %>
+  <% table.with_column(label: "Price", align: :right) %>
+  <% table.with_column(label: "Stock", align: :right) %>
+
+  <% products.each do |product| %>
+    <% table.with_row do |row| %>
+      <% row.with_cell(primary: true) { product[:name] } %>
+      <% row.with_cell { product[:category] } %>
+      <% row.with_cell(align: :right) { product[:price] } %>
+      <% row.with_cell(align: :right) { product[:stock] } %>
+    <% end %>
+  <% end %>
+<% end %>
+
+<!-- Striped table -->
+<%= render(Table::Component.new(striped: true, max_height: "240px")) do |table| %>
+  <% table.with_column(label: "Name") %>
+  <% table.with_column(label: "Email") %>
+  <% table.with_column(label: "Role") %>
+  <% table.with_column(label: "Status", align: :right) %>
+
+  <% team_members.each do |member| %>
+    <% table.with_row do |row| %>
+      <% row.with_cell(primary: true) { member[:name] } %>
+      <% row.with_cell { member[:email] } %>
+      <% row.with_cell { member[:role] } %>
+      <% row.with_cell(align: :right) { member[:status] } %>
+    <% end %>
+  <% end %>
+<% end %>
+
+<!-- Hoverable table -->
+<%= render(Table::Component.new(hoverable: true, max_height: "240px")) do |table| %>
+  <% table.with_column(label: "Name") %>
+  <% table.with_column(label: "Email") %>
+  <% table.with_column(label: "Role") %>
+  <% table.with_column(label: "Status", align: :right) %>
+
+  <% team_members.each do |member| %>
+    <% table.with_row do |row| %>
+      <% row.with_cell(primary: true) { member[:name] } %>
+      <% row.with_cell { member[:email] } %>
+      <% row.with_cell { member[:role] } %>
+      <% row.with_cell(align: :right) { member[:status] } %>
+    <% end %>
+  <% end %>
+<% end %>
+
+<!-- Compact (condensed) table -->
+<%= render(Table::Component.new(density: :compact, max_height: "220px")) do |table| %>
+  <% table.with_column(label: "Transaction ID") %>
+  <% table.with_column(label: "Date") %>
+  <% table.with_column(label: "Customer") %>
+  <% table.with_column(label: "Amount", align: :right) %>
+
+  <% transactions.each do |transaction| %>
+    <% table.with_row do |row| %>
+      <% row.with_cell(primary: true) { transaction[:id] } %>
+      <% row.with_cell { transaction[:date] } %>
+      <% row.with_cell { transaction[:customer] } %>
+      <% row.with_cell(align: :right) { transaction[:amount] } %>
+    <% end %>
+  <% end %>
+<% end %>
+
+<!-- Sticky header with max height -->
+<%= render(Table::Component.new(sticky_header: true, striped: true, max_height: "220px")) do |table| %>
+  <% table.with_column(label: "Project") %>
+  <% table.with_column(label: "Deadline") %>
+  <% table.with_column(label: "Priority") %>
+
+  <% projects.each do |project| %>
+    <% table.with_row do |row| %>
+      <% row.with_cell(primary: true) { project[:name] } %>
+      <% row.with_cell { project[:deadline] } %>
+      <% row.with_cell { project[:priority] } %>
+    <% end %>
+  <% end %>
+<% end %>
+
+<!-- With custom HTML content in cells -->
+<%= render(Table::Component.new(max_height: "220px")) do |table| %>
+  <% table.with_column(label: "Name") %>
+  <% table.with_column(label: "Email") %>
+  <% table.with_column(label: "Status") %>
+
+  <% status_rows.each do |member| %>
+    <% table.with_row do |row| %>
+      <% row.with_cell(primary: true) { member[:name] } %>
+      <% row.with_cell { member[:email] } %>
+      <% row.with_cell { member[:status] } %>
+    <% end %>
+  <% end %>
+<% end %>
+
+<!-- Table with caption -->
+<%= render(Table::Component.new(max_height: "220px")) do |table| %>
+  <% table.with_caption { "Team Members" } %>
+  <% table.with_column(label: "Name") %>
+  <% table.with_column(label: "Role") %>
+
+  <% team_members.each do |member| %>
+    <% table.with_row do |row| %>
+      <% row.with_cell(primary: true) { member[:name] } %>
+      <% row.with_cell { member[:role] } %>
+    <% end %>
+  <% end %>
+<% end %>
+
+<!-- Borderless table -->
+<%= render(Table::Component.new(bordered: false, max_height: "220px")) do |table| %>
+  <% table.with_column(label: "Name") %>
+  <% table.with_column(label: "Email") %>
+
+  <% team_members.each do |member| %>
+    <% table.with_row do |row| %>
+      <% row.with_cell(primary: true) { member[:name] } %>
+      <% row.with_cell { member[:email] } %>
+    <% end %>
+  <% end %>
+<% end %>
+
+<!-- Without container (raw table) -->
+<%= render(Table::Component.new(container: false)) do |table| %>
+  <% table.with_column(label: "Name") %>
+  <% table.with_column(label: "Email") %>
+
+  <% team_members.each do |member| %>
+    <% table.with_row do |row| %>
+      <% row.with_cell(primary: true) { member[:name] } %>
+      <% row.with_cell { member[:email] } %>
+    <% end %>
+  <% end %>
+<% end %>

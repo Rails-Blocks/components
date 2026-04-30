@@ -1,0 +1,16 @@
+{
+  "component": "testimonial",
+  "implementation": "view_component",
+  "files": [
+    {
+      "path": "testimonial/component.rb",
+      "relative_path": "component.rb",
+      "checksum": "f40764df466a3d6a3feba0c10caa980b8aae29a0d652662d0eb9a5875253b30b"
+    },
+    {
+      "path": "testimonial/component.html.erb",
+      "relative_path": "component.html.erb",
+      "checksum": "905f687fecd925d215addf3cc291882b962106a530eb93844051a392ca551202"
+    }
+  ]
+}

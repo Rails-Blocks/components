@@ -1,0 +1,26 @@
+{
+  "component": "lightbox",
+  "implementation": "view_component",
+  "files": [
+    {
+      "path": "lightbox/component.rb",
+      "relative_path": "component.rb",
+      "checksum": "f1177dd9fddfdc5ceb2c070724617afffc89b7ac24d64695ab33c7eba0128299"
+    },
+    {
+      "path": "lightbox/component/item_component.html.erb",
+      "relative_path": "component/item_component.html.erb",
+      "checksum": "e40d1a7622e0121f8a4c07a5b95f49582467f326b712f9ce72b79fbb22dc8f27"
+    },
+    {
+      "path": "lightbox/component/item_component.rb",
+      "relative_path": "component/item_component.rb",
+      "checksum": "eff24ceed987245c193ae90c099fac1a76d7997af5bc3f1b3ec3d4696e1dc078"
+    },
+    {
+      "path": "lightbox/component.html.erb",
+      "relative_path": "component.html.erb",
+      "checksum": "ea7e3635b7640a2b4d206891513030ed24a6a7237c65bc9e079a5abf35ab2220"
+    }
+  ]
+}

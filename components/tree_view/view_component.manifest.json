@@ -1,0 +1,26 @@
+{
+  "component": "tree_view",
+  "implementation": "view_component",
+  "files": [
+    {
+      "path": "tree_view/component.rb",
+      "relative_path": "component.rb",
+      "checksum": "0469db625983b2430fb6a7201ad8dc46652b9f1103b8119b4a4360a74b62449d"
+    },
+    {
+      "path": "tree_view/component/node_component.rb",
+      "relative_path": "component/node_component.rb",
+      "checksum": "b70794b2bdf5e6a1deb3bfa0a32c7938dbbc2a113e0f13dd62f6579555bb68e1"
+    },
+    {
+      "path": "tree_view/component/node_component.html.erb",
+      "relative_path": "component/node_component.html.erb",
+      "checksum": "ee93e68576a8e2cecd2a475a1a4d959d87e6d3b7beafbf0874065b4d74ce726f"
+    },
+    {
+      "path": "tree_view/component.html.erb",
+      "relative_path": "component.html.erb",
+      "checksum": "0a4d98d36892d57e654fb88d8eaf8a4306103ee98cd58cb62fec47b15fa208b0"
+    }
+  ]
+}

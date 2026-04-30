@@ -1,0 +1,46 @@
+{
+  "component": "table",
+  "implementation": "view_component",
+  "files": [
+    {
+      "path": "table/component.rb",
+      "relative_path": "component.rb",
+      "checksum": "5cdb6c8b2ed9b39f41d57b04630146cd909799dd22c6bec8c1abfe7dc51e1fce"
+    },
+    {
+      "path": "table/component/cell_component.rb",
+      "relative_path": "component/cell_component.rb",
+      "checksum": "dff0ea1e2cbe85178f2212be68bc381ef212c6610fc310778538683b0bb0d9a8"
+    },
+    {
+      "path": "table/component/row_component.html.erb",
+      "relative_path": "component/row_component.html.erb",
+      "checksum": "ce47563d9cfbdf939f65efd6d2982e19acda5a5adb1c0e70d1984ae043ec1ac5"
+    },
+    {
+      "path": "table/component/column_component.html.erb",
+      "relative_path": "component/column_component.html.erb",
+      "checksum": "e61fd30dbe3149383ccc94b864580a2c43286d61dc4c8e403034edd074b4b564"
+    },
+    {
+      "path": "table/component/row_component.rb",
+      "relative_path": "component/row_component.rb",
+      "checksum": "a988f5321b7589f05d2d1cf141abadfed0e6c415c7c3df6ce3003e4d7fa1cbc7"
+    },
+    {
+      "path": "table/component/cell_component.html.erb",
+      "relative_path": "component/cell_component.html.erb",
+      "checksum": "e641bf875a6140650f8f64cfacde83728f09a916f49136b9b93034b5c49408bd"
+    },
+    {
+      "path": "table/component/column_component.rb",
+      "relative_path": "component/column_component.rb",
+      "checksum": "dfe08652c3e3978b9450999089891a426876bdf4e33528558d8e7ec12b7f1b46"
+    },
+    {
+      "path": "table/component.html.erb",
+      "relative_path": "component.html.erb",
+      "checksum": "4446ff5e2d7155320f3c52bac8e53084f33312cd9f36f73d859beb1b8244581c"
+    }
+  ]
+}

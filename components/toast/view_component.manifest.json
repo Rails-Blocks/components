@@ -1,0 +1,16 @@
+{
+  "component": "toast",
+  "implementation": "view_component",
+  "files": [
+    {
+      "path": "toast/component.rb",
+      "relative_path": "component.rb",
+      "checksum": "9879db00880000c9b796c74df532325a736041c71f4329f3b6134db81e9425e2"
+    },
+    {
+      "path": "toast/component.html.erb",
+      "relative_path": "component.html.erb",
+      "checksum": "674d7df3574ceb6666b8f3fb32430488d70db1b86be109b8b9d8680f42e91454"
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "component": "switch",
+  "implementation": "erb_template",
+  "files": [
+    {
+      "path": "switch/_switch.html.erb",
+      "relative_path": "_switch.html.erb",
+      "checksum": "284c91c804693cd916ca8185c5160c9e1ad74c8de748a43c5dc445b71ecb224a"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "component": "two_factor",
+  "implementation": "view_component",
+  "files": [
+    {
+      "path": "two_factor/component.rb",
+      "relative_path": "component.rb",
+      "checksum": "dbb02dbee2868fa60c404cfe5965defb2fdc4b587a363abe3e70dcf35274995e"
+    },
+    {
+      "path": "two_factor/component.html.erb",
+      "relative_path": "component.html.erb",
+      "checksum": "24a6a50076002999b57b83c6fba92f68fe279807c559dedc4d984fd12efe34b3"
+    }
+  ]
+}

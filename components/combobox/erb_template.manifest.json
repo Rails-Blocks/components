@@ -1,0 +1,11 @@
+{
+  "component": "combobox",
+  "implementation": "erb_template",
+  "files": [
+    {
+      "path": "combobox/_combobox.html.erb",
+      "relative_path": "_combobox.html.erb",
+      "checksum": "f8869f4b86654d44afb053b78634897b50a26bbb1ee043ad31a177502859495d"
+    }
+  ]
+}

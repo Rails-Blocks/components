@@ -1,0 +1,16 @@
+{
+  "component": "radio",
+  "implementation": "view_component",
+  "files": [
+    {
+      "path": "radio/component.rb",
+      "relative_path": "component.rb",
+      "checksum": "f3276af925e0899614576a675f95a372223db54c820a141f5ae1ab66124a0856"
+    },
+    {
+      "path": "radio/component.html.erb",
+      "relative_path": "component.html.erb",
+      "checksum": "d28730f92d26e7c7cecaf69bbbf29a20f691ed9900d7c7cfabe2bf4aa0e562ad"
+    }
+  ]
+}

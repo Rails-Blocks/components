@@ -1,0 +1,11 @@
+{
+  "component": "scroll_area",
+  "implementation": "erb_template",
+  "files": [
+    {
+      "path": "scroll_area/_scroll_area.html.erb",
+      "relative_path": "_scroll_area.html.erb",
+      "checksum": "9ab8ab07818abaef75b8165f53cb825ca363a55fd20937d573dd790758a620d4"
+    }
+  ]
+}

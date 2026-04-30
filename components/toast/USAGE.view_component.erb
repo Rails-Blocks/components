@@ -1,0 +1,79 @@
+<!-- Demo trigger button -->
+<button
+  type="button"
+  onclick="toast('Changes saved successfully', { type: 'success', description: 'Your profile has been updated.' })"
+  class="flex items-center justify-center gap-1.5 rounded-lg border border-black/10 bg-white/90 px-3.5 py-2 text-sm font-medium whitespace-nowrap text-neutral-800 shadow-xs transition-all duration-100 ease-in-out select-none hover:bg-neutral-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-600 disabled:cursor-not-allowed disabled:opacity-50 dark:border-white/10 dark:bg-neutral-700/50 dark:text-neutral-50 dark:hover:bg-neutral-700/75 dark:focus-visible:outline-neutral-200"
+>
+  Show demo toast
+</button>
+
+<!-- Basic toast container (place once in your layout, typically in application.html.erb) -->
+<%= render Toast::Component.new %>
+
+<!-- Custom position: bottom-right -->
+<%= render Toast::Component.new(position: "bottom-right") %>
+
+<!-- All positions available: -->
+<!-- "top-left", "top-center" (default), "top-right", "bottom-left", "bottom-center", "bottom-right" -->
+
+<!-- Expanded layout (all toasts visible instead of stacked) -->
+<%= render Toast::Component.new(layout: "expanded") %>
+
+<!-- Custom auto-dismiss duration (in milliseconds) -->
+<%= render Toast::Component.new(auto_dismiss_duration: 6000) %>
+
+<!-- Custom limit of visible toasts -->
+<%= render Toast::Component.new(limit: 5) %>
+
+<!-- Full options -->
+<%= render Toast::Component.new(
+  position: "bottom-right",
+  layout: "default",
+  auto_dismiss_duration: 5000,
+  limit: 4,
+  gap: 16,
+  classes: "custom-class"
+) %>
+
+<!--
+  TRIGGERING TOASTS FROM JAVASCRIPT:
+
+  Basic toast:
+    toast("Your message here")
+
+  With type (success, error, info, warning, danger, loading):
+    toast("Success!", { type: "success" })
+    toast("Error occurred", { type: "error" })
+
+  With description:
+    toast("Event created", { description: "Sunday, December 03, 2023 at 9:00 AM" })
+
+  With position (overrides container default):
+    toast("Hello", { position: "bottom-right" })
+
+  With action button:
+    toast("Event created", {
+      action: {
+        label: "Undo",
+        onClick: () => console.log("Undo clicked")
+      }
+    })
+
+  With two action buttons:
+    toast("Delete file?", {
+      description: "This action cannot be undone.",
+      action: {
+        label: "Delete",
+        onClick: () => console.log("Deleted")
+      },
+      secondaryAction: {
+        label: "Cancel",
+        onClick: () => console.log("Cancelled")
+      }
+    })
+
+  Custom HTML content:
+    toast("", {
+      html: "<div class='p-4'>Custom HTML content here</div>"
+    })
+-->

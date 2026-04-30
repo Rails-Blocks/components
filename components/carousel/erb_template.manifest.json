@@ -1,0 +1,16 @@
+{
+  "component": "carousel",
+  "implementation": "erb_template",
+  "files": [
+    {
+      "path": "carousel/_carousel_slide.html.erb",
+      "relative_path": "_carousel_slide.html.erb",
+      "checksum": "79191605b1ec99f2be5b1578e112c29f91aab9474a027b11bad7a77fe2cdd319"
+    },
+    {
+      "path": "carousel/_carousel.html.erb",
+      "relative_path": "_carousel.html.erb",
+      "checksum": "e1754ba2c6dc02bc30104aeea1d6f2fba5bdf78f85463873a46053c81019cc04"
+    }
+  ]
+}

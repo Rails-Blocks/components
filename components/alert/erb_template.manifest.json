@@ -1,0 +1,11 @@
+{
+  "component": "alert",
+  "implementation": "erb_template",
+  "files": [
+    {
+      "path": "alert/_alert.html.erb",
+      "relative_path": "_alert.html.erb",
+      "checksum": "5d83a8eb3c1da63b0a4ab9df787d17388d696d1a0098efefe4402d03418fd1bb"
+    }
+  ]
+}

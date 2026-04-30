@@ -1,0 +1,73 @@
+<!-- Basic file browser tree -->
+<%= render "shared/components/tree_view/tree_view",
+  variant: "bordered",
+  nodes: [
+    {
+      label: "src",
+      type: :folder,
+      default_open: true,
+      children: [
+        { label: "index.ts", type: :file },
+        { label: "utils.ts", type: :file },
+        {
+          label: "components",
+          type: :folder,
+          children: [
+            { label: "Button.tsx", type: :file },
+            { label: "Modal.tsx", type: :file }
+          ]
+        }
+      ]
+    },
+    { label: "package.json", type: :file },
+    { label: "README.md", type: :file }
+  ]
+%>
+
+<!-- With checkbox selection (uses checkbox_select_all patterns) -->
+<%= render "shared/components/tree_view/tree_view",
+  variant: "bordered",
+  selectable: true,
+  name: "files[]",
+  select_all_label: "Select All Files",
+  toggle_key: "x",
+  nodes: [
+    {
+      label: "app",
+      type: :folder,
+      default_open: true,
+      children: [
+        { label: "layout.tsx", type: :file, value: "app/layout.tsx" },
+        { label: "page.tsx", type: :file, value: "app/page.tsx", checked: true },
+        {
+          label: "components",
+          type: :folder,
+          default_open: true,
+          children: [
+            { label: "Header.tsx", type: :file, value: "app/components/Header.tsx" },
+            { label: "Footer.tsx", type: :file, value: "app/components/Footer.tsx" }
+          ]
+        }
+      ]
+    },
+    {
+      label: "lib",
+      type: :folder,
+      children: [
+        { label: "utils.ts", type: :file, value: "lib/utils.ts" }
+      ]
+    }
+  ]
+%>
+
+<!-- Without select all header -->
+<%= render "shared/components/tree_view/tree_view",
+  selectable: true,
+  show_select_all: false,
+  name: "selected_files[]",
+  nodes: [
+    { label: "Document 1.pdf", type: :file, value: "doc1" },
+    { label: "Document 2.pdf", type: :file, value: "doc2" },
+    { label: "Document 3.pdf", type: :file, value: "doc3" }
+  ]
+%>

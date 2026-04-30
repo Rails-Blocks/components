@@ -1,0 +1,16 @@
+{
+  "component": "date_picker",
+  "implementation": "view_component",
+  "files": [
+    {
+      "path": "date_picker/component.rb",
+      "relative_path": "component.rb",
+      "checksum": "0c1d8ff3fde7ee9a64cb40a453cc4c0178dc0ee08fcd8c3533ae60f4166a4a6f"
+    },
+    {
+      "path": "date_picker/component.html.erb",
+      "relative_path": "component.html.erb",
+      "checksum": "ec479c8b021bb8391c8bc89f7e2de40c7578323f2cd567741fbc80caf32e4991"
+    }
+  ]
+}

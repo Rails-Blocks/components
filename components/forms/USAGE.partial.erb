@@ -1,0 +1,128 @@
+<!-- Basic form group with text input -->
+<%= render "shared/components/forms/form_group",
+  label: "Full Name",
+  name: "user[name]" do %>
+  <input type="text" name="user[name]" id="user_name" class="form-control" placeholder="Enter your name...">
+<% end %>
+
+<!-- With helper text -->
+<%= render "shared/components/forms/form_group",
+  label: "Email Address",
+  name: "user[email]",
+  helper_text: "We'll never share your email with anyone else." do %>
+  <input type="email" name="user[email]" id="user_email" class="form-control" placeholder="you@example.com">
+<% end %>
+
+<!-- Required field -->
+<%= render "shared/components/forms/form_group",
+  label: "Password",
+  name: "user[password]",
+  required: true,
+  helper_text: "Must be at least 8 characters long." do %>
+  <input type="password" name="user[password]" id="user_password" class="form-control" placeholder="Enter password...">
+<% end %>
+
+<!-- With error state -->
+<%= render "shared/components/forms/form_group",
+  label: "Username",
+  name: "user[username]",
+  error: "Username is already taken. Please choose another." do %>
+  <input type="text" name="user[username]" id="user_username" class="form-control error" value="johndoe">
+<% end %>
+
+<!-- Disabled field -->
+<%= render "shared/components/forms/form_group",
+  label: "Account ID",
+  name: "account_id",
+  disabled: true,
+  helper_text: "This field cannot be modified." do %>
+  <input type="text" name="account_id" id="account_id" class="form-control" value="ACC-12345" disabled>
+<% end %>
+
+<!-- Small size -->
+<%= render "shared/components/forms/form_group",
+  label: "Promo Code",
+  name: "promo_code",
+  size: "sm",
+  helper_text: "Enter your promo code if you have one." do %>
+  <input type="text" name="promo_code" id="promo_code" class="form-control text-sm py-1.5" placeholder="SAVE20">
+<% end %>
+
+<!-- Large size -->
+<%= render "shared/components/forms/form_group",
+  label: "Company Name",
+  name: "company[name]",
+  size: "lg" do %>
+  <input type="text" name="company[name]" id="company_name" class="form-control text-lg py-3" placeholder="Acme Corporation">
+<% end %>
+
+<!-- Inline variant -->
+<%= render "shared/components/forms/form_group",
+  label: "Search:",
+  name: "q",
+  variant: "inline" do %>
+  <input type="search" name="q" id="q" class="form-control" placeholder="Search...">
+<% end %>
+
+<!-- Floating label variant -->
+<%= render "shared/components/forms/form_group",
+  label: "Email",
+  name: "email",
+  variant: "floating" do %>
+  <input type="email" name="email" id="email" class="form-control pt-4" placeholder=" ">
+<% end %>
+
+<!-- Hidden label (accessible) -->
+<%= render "shared/components/forms/form_group",
+  label: "Search",
+  name: "search",
+  label_hidden: true do %>
+  <input type="search" name="search" id="search" class="form-control" placeholder="Search..." aria-label="Search">
+<% end %>
+
+<!-- With input addons -->
+<%= render "shared/components/forms/form_group",
+  label: "Website",
+  name: "website",
+  addon_left: "https://",
+  addon_right: ".com" do %>
+  <input type="text" name="website" id="website" class="form-control !rounded-none" placeholder="example.com">
+<% end %>
+
+<!-- With textarea -->
+<%= render "shared/components/forms/form_group",
+  label: "Message",
+  name: "message",
+  helper_text: "Maximum 500 characters." do %>
+  <textarea name="message" id="message" rows="4" class="form-control min-h-24 max-h-64" placeholder="Type your message..."></textarea>
+<% end %>
+
+<!-- With select -->
+<%= render "shared/components/forms/form_group",
+  label: "Country",
+  name: "country",
+  required: true do %>
+  <select name="country" id="country" class="form-control">
+    <option value="">Select a country...</option>
+    <option value="us">United States</option>
+    <option value="ca">Canada</option>
+    <option value="uk">United Kingdom</option>
+    <option value="au">Australia</option>
+  </select>
+<% end %>
+
+<!-- With custom wrapper classes -->
+<%= render "shared/components/forms/form_group",
+  label: "Bio",
+  name: "bio",
+  classes: "bg-neutral-50 dark:bg-neutral-800 p-4 rounded-lg",
+  helper_text: "Tell us about yourself." do %>
+  <textarea name="bio" id="bio" rows="3" class="form-control min-h-24 max-h-64" placeholder="A few words about you..."></textarea>
+<% end %>
+
+<!-- Notes textarea -->
+<%= render "shared/components/forms/form_group",
+  label: "Notes",
+  name: "notes" do %>
+  <textarea name="notes" id="notes" rows="2" class="form-control min-h-24 max-h-64" placeholder="Additional notes..."></textarea>
+<% end %>

@@ -1,0 +1,16 @@
+{
+  "component": "card",
+  "implementation": "view_component",
+  "files": [
+    {
+      "path": "card/component.rb",
+      "relative_path": "component.rb",
+      "checksum": "81f209f12984ed96679d56f758286436383176e6221a295b8dd21496fc447a8a"
+    },
+    {
+      "path": "card/component.html.erb",
+      "relative_path": "component.html.erb",
+      "checksum": "7d3d8a294956a256144a36b9108ce0a4f77709fa830f1667935e80ba5144ddfe"
+    }
+  ]
+}

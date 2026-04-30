@@ -1,0 +1,11 @@
+{
+  "component": "banner",
+  "implementation": "erb_template",
+  "files": [
+    {
+      "path": "banner/_banner.html.erb",
+      "relative_path": "_banner.html.erb",
+      "checksum": "e1de3526fd0765a3fc01f893fcddbdd2db6ce075ad022d235591b389ea3fd28f"
+    }
+  ]
+}

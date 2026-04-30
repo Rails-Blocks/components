@@ -1,0 +1,170 @@
+<!-- Basic card with body content -->
+<%= render "shared/components/card/card" do %>
+  <p class="text-neutral-700 dark:text-neutral-300">
+    This is a basic card with just body content.
+  </p>
+<% end %>
+
+<!-- Card with title and description -->
+<%= render "shared/components/card/card" do %>
+  <h3 class="text-lg/6 font-medium text-neutral-900 dark:text-white">Card Title</h3>
+  <p class="mt-2 text-sm text-neutral-600 dark:text-neutral-400">
+    This is a basic card component with a title and description.
+  </p>
+<% end %>
+
+<!-- Card with header -->
+<% card_with_header_content = capture do %>
+  <h3 class="text-lg/6 font-medium text-neutral-900 dark:text-white">Card with Header</h3>
+  <p class="mt-1 text-sm text-neutral-600 dark:text-neutral-400">Header with description</p>
+<% end %>
+<%= render "shared/components/card/card",
+  divide: true,
+  header_content: card_with_header_content do %>
+  <p class="text-neutral-700 dark:text-neutral-300">
+    The header section provides a clear title for the card content.
+  </p>
+<% end %>
+
+<!-- Card with footer -->
+<% card_with_footer_content = capture do %>
+  <a href="#" class="text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-500">
+    View details ->
+  </a>
+<% end %>
+<%= render "shared/components/card/card",
+  footer_content: card_with_footer_content do %>
+  <h3 class="mb-2 text-lg/6 font-medium text-neutral-900 dark:text-white">Card with Footer</h3>
+  <p class="text-neutral-700 dark:text-neutral-300">This card has a footer for actions.</p>
+<% end %>
+
+<!-- Card with header and footer -->
+<% complete_card_header_content = capture do %>
+  <h3 class="text-lg/6 font-medium text-neutral-900 dark:text-white">Complete Card</h3>
+  <p class="mt-1 text-sm text-neutral-600 dark:text-neutral-400">Header, body, and footer sections</p>
+<% end %>
+<% complete_card_footer_content = capture do %>
+  <div class="flex justify-between">
+    <button type="button" class="text-sm font-medium text-neutral-600 dark:text-neutral-400 hover:text-neutral-500">
+      Cancel
+    </button>
+    <button type="button" class="text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-500">
+      Save
+    </button>
+  </div>
+<% end %>
+<%= render "shared/components/card/card",
+  divide: true,
+  header_content: complete_card_header_content,
+  footer_content: complete_card_footer_content do %>
+  <p class="text-neutral-700 dark:text-neutral-300">
+    This card demonstrates a complete structure with all three sections.
+  </p>
+<% end %>
+
+<!-- Well variant (subtle background) -->
+<%= render "shared/components/card/card", variant: "well" do %>
+  <h3 class="mb-2 text-lg/6 font-medium text-neutral-900 dark:text-white">Well Card</h3>
+  <p class="text-neutral-700 dark:text-neutral-300">
+    A well has a subtle background and no shadow. Perfect for grouping related content.
+  </p>
+<% end %>
+
+<!-- Elevated card (larger shadow) -->
+<%= render "shared/components/card/card",
+  variant: "elevated",
+  shadow: "lg" do %>
+  <h3 class="mb-2 text-lg/6 font-medium text-neutral-900 dark:text-white">Elevated Card</h3>
+  <p class="text-neutral-700 dark:text-neutral-300">
+    This card has a larger shadow for more visual prominence.
+  </p>
+<% end %>
+
+<!-- Hoverable card -->
+<%= render "shared/components/card/card", hoverable: true do %>
+  <h3 class="mb-2 text-lg/6 font-medium text-neutral-900 dark:text-white">Hoverable Card</h3>
+  <p class="text-neutral-700 dark:text-neutral-300">Hover over this card to see the shadow effect.</p>
+<% end %>
+
+<!-- Clickable card -->
+<%= render "shared/components/card/card", clickable: true do %>
+  <h3 class="mb-2 text-lg/6 font-medium text-neutral-900 dark:text-white">Clickable Card</h3>
+  <p class="text-neutral-700 dark:text-neutral-300">
+    This entire card appears clickable with hover effects.
+  </p>
+<% end %>
+
+<!-- Edge-to-edge on mobile -->
+<%= render "shared/components/card/card", full_width_mobile: true do %>
+  <h3 class="mb-2 text-lg/6 font-medium text-neutral-900 dark:text-white">Mobile Full Width</h3>
+  <p class="text-neutral-700 dark:text-neutral-300">
+    On mobile, this card extends edge-to-edge. Resize to see the effect.
+  </p>
+<% end %>
+
+<!-- Card with image (top) -->
+<%= render "shared/components/card/card",
+  image_src: "https://images.unsplash.com/photo-1496128858413-b36217c2ce36?auto=format&fit=crop&w=800&q=80",
+  image_alt: "Featured image",
+  image_aspect: "video" do %>
+  <h3 class="mb-2 text-xl font-semibold text-neutral-900 dark:text-white">Card with Image</h3>
+  <p class="text-sm text-neutral-700 dark:text-neutral-300">
+    This card features an image at the top with video aspect ratio.
+  </p>
+<% end %>
+
+<!-- Card with image and footer -->
+<% article_card_footer_content = capture do %>
+  <div class="flex items-center">
+    <img class="h-10 w-10 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="Author">
+    <div class="ml-3">
+      <p class="text-sm font-medium text-neutral-900 dark:text-white">John Doe</p>
+      <p class="text-xs text-neutral-500 dark:text-neutral-400">September 16, 2025</p>
+    </div>
+  </div>
+<% end %>
+<%= render "shared/components/card/card",
+  divide: true,
+  image_src: "https://images.unsplash.com/photo-1496128858413-b36217c2ce36?auto=format&fit=crop&w=800&q=80",
+  image_alt: "Article image",
+  image_aspect: "video",
+  footer_content: article_card_footer_content do %>
+  <div class="mb-2 flex items-center">
+    <span class="inline-flex items-center gap-0.5 rounded-md bg-blue-50 px-1.5 py-0.5 text-[11px] font-medium text-blue-700 outline outline-blue-600/20 dark:bg-blue-400/10 dark:text-blue-400 dark:outline-blue-400/25">
+      Article
+    </span>
+    <span class="ml-2 text-sm text-neutral-500 dark:text-neutral-400">5 min read</span>
+  </div>
+  <h3 class="mb-2 text-xl font-semibold text-neutral-900 dark:text-white">Featured Article</h3>
+  <p class="text-sm text-neutral-700 dark:text-neutral-300">
+    A complete card with image, badges, and footer.
+  </p>
+<% end %>
+
+<!-- Small padding -->
+<%= render "shared/components/card/card", padding: "sm" do %>
+  <h3 class="mb-1 text-base font-medium text-neutral-900 dark:text-white">Compact Card</h3>
+  <p class="text-sm text-neutral-700 dark:text-neutral-300">Uses small padding for denser layouts.</p>
+<% end %>
+
+<!-- Large padding -->
+<%= render "shared/components/card/card", padding: "lg" do %>
+  <h3 class="mb-2 text-xl font-medium text-neutral-900 dark:text-white">Spacious Card</h3>
+  <p class="text-neutral-700 dark:text-neutral-300">Uses large padding for more breathing room.</p>
+<% end %>
+
+<!-- No border -->
+<%= render "shared/components/card/card",
+  border: false,
+  shadow: "md" do %>
+  <h3 class="mb-2 text-lg/6 font-medium text-neutral-900 dark:text-white">Borderless Card</h3>
+  <p class="text-neutral-700 dark:text-neutral-300">No border, relying on shadow for definition.</p>
+<% end %>
+
+<!-- Custom classes -->
+<%= render "shared/components/card/card", classes: "mx-auto max-w-md" do %>
+  <h3 class="mb-2 text-lg/6 font-medium text-neutral-900 dark:text-white">Custom Classes</h3>
+  <p class="text-neutral-700 dark:text-neutral-300">
+    This card has custom width and centering classes.
+  </p>
+<% end %>

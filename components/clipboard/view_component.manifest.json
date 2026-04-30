@@ -1,0 +1,16 @@
+{
+  "component": "clipboard",
+  "implementation": "view_component",
+  "files": [
+    {
+      "path": "clipboard/component.rb",
+      "relative_path": "component.rb",
+      "checksum": "d7cd88c0bc6883f6c2b9019b8ce0aa70383d0b8c8595d73dedd77364bf5bd51d"
+    },
+    {
+      "path": "clipboard/component.html.erb",
+      "relative_path": "component.html.erb",
+      "checksum": "5dc724c5a92a6a0a3565306a6c8dfed2743d199d760e359705c64487881059c6"
+    }
+  ]
+}

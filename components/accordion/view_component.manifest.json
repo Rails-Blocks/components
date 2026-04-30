@@ -1,0 +1,26 @@
+{
+  "component": "accordion",
+  "implementation": "view_component",
+  "files": [
+    {
+      "path": "accordion/component.rb",
+      "relative_path": "component.rb",
+      "checksum": "eef1cc26d70123632f811e58749c3c5e5b26eb5cc446dc87c93ea79cf53b5788"
+    },
+    {
+      "path": "accordion/component/item_component.html.erb",
+      "relative_path": "component/item_component.html.erb",
+      "checksum": "1aa92ffcd3292d312932db9a452c8a5c206654c51d6b54d100da415374c63178"
+    },
+    {
+      "path": "accordion/component/item_component.rb",
+      "relative_path": "component/item_component.rb",
+      "checksum": "11e9cb3fac8e3621c61ac75a9a056589daec226c5614ded65d04fd8769ea175e"
+    },
+    {
+      "path": "accordion/component.html.erb",
+      "relative_path": "component.html.erb",
+      "checksum": "ea7e3635b7640a2b4d206891513030ed24a6a7237c65bc9e079a5abf35ab2220"
+    }
+  ]
+}

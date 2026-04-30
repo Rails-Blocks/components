@@ -1,0 +1,16 @@
+{
+  "component": "marquee",
+  "implementation": "erb_template",
+  "files": [
+    {
+      "path": "marquee/_marquee.html.erb",
+      "relative_path": "_marquee.html.erb",
+      "checksum": "bf855f770a5e5019aa2e4e9f9b994823c736e7f9bfd5ab8b301a4e5d35b7af6b"
+    },
+    {
+      "path": "marquee/_marquee_item.html.erb",
+      "relative_path": "_marquee_item.html.erb",
+      "checksum": "05824a14ec35c754e637691de9960e16ae89d325fe03999c191ae9e582764f5a"
+    }
+  ]
+}

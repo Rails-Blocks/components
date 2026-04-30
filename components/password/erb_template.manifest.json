@@ -1,0 +1,11 @@
+{
+  "component": "password",
+  "implementation": "erb_template",
+  "files": [
+    {
+      "path": "password/_password.html.erb",
+      "relative_path": "_password.html.erb",
+      "checksum": "e68b87478e698c5b717e05e441ef6103f4512c7ac2e52a7e83b7e6a2fafcf235"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "component": "alert",
+  "implementation": "view_component",
+  "files": [
+    {
+      "path": "alert/component.rb",
+      "relative_path": "component.rb",
+      "checksum": "12c53e54772e3d85b12d79c7629353352eb4bd62c6344859a77faec5602a8a80"
+    },
+    {
+      "path": "alert/component.html.erb",
+      "relative_path": "component.html.erb",
+      "checksum": "d1f648632447007a018d9f22a424528347a4ab0b2005477973cee11a9615ab49"
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "component": "tooltip",
+  "implementation": "erb_template",
+  "files": [
+    {
+      "path": "tooltip/_tooltip.html.erb",
+      "relative_path": "_tooltip.html.erb",
+      "checksum": "e426bbddae143aa3ce43963f3f1fb60de50e225d4fd3260c629531eeacf38e82"
+    }
+  ]
+}

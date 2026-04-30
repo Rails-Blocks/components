@@ -1,0 +1,133 @@
+<!-- Basic switch without label -->
+<%= render Switch::Component.new %>
+
+<!-- Switch with label -->
+<%= render Switch::Component.new(
+  label: "Enable notifications"
+) %>
+
+<!-- Switch with name for form submission -->
+<%= render Switch::Component.new(
+  label: "Dark mode",
+  name: "user[dark_mode]",
+  checked: true
+) %>
+
+<!-- Switch with custom id -->
+<%= render Switch::Component.new(
+  label: "Auto-save",
+  name: "settings[auto_save]",
+  id: "auto-save-switch"
+) %>
+
+<!-- Disabled switch -->
+<%= render Switch::Component.new(
+  label: "Premium feature",
+  disabled: true
+) %>
+
+<!-- Disabled and checked -->
+<%= render Switch::Component.new(
+  label: "Always enabled",
+  checked: true,
+  disabled: true
+) %>
+
+<!-- Required switch -->
+<%= render Switch::Component.new(
+  label: "Accept terms of service",
+  name: "accept_terms",
+  required: true
+) %>
+
+<!-- With description -->
+<%= render Switch::Component.new(
+  label: "Email notifications",
+  name: "settings[email]",
+  description: "Receive updates about your account via email"
+) %>
+
+<!-- With description (checked) -->
+<%= render Switch::Component.new(
+  label: "Push notifications",
+  name: "settings[push]",
+  description: "Get real-time alerts in your browser",
+  checked: true
+) %>
+
+<!-- With error message -->
+<%= render Switch::Component.new(
+  label: "Enable two-factor authentication",
+  name: "security[2fa]",
+  error: "Two-factor authentication is required for admin accounts"
+) %>
+
+<!-- Small size -->
+<%= render Switch::Component.new(
+  label: "Compact toggle",
+  size: :sm
+) %>
+
+<!-- Large size -->
+<%= render Switch::Component.new(
+  label: "Prominent toggle",
+  size: :lg
+) %>
+
+<!-- Small with description -->
+<%= render Switch::Component.new(
+  label: "Compact option",
+  description: "A smaller switch with description",
+  size: :sm
+) %>
+
+<!-- Large with description -->
+<%= render Switch::Component.new(
+  label: "Prominent option",
+  description: "A larger switch for emphasis",
+  size: :lg
+) %>
+
+<!-- With icons inside -->
+<%= render Switch::Component.new(
+  label: "Show icons",
+  show_icons: true
+) %>
+
+<!-- With icons (checked) -->
+<%= render Switch::Component.new(
+  label: "Icons enabled",
+  show_icons: true,
+  checked: true
+) %>
+
+<!-- Label on left -->
+<%= render Switch::Component.new(
+  label: "Label on left side",
+  label_position: :left
+) %>
+
+<!-- With custom wrapper classes -->
+<%= render Switch::Component.new(
+  label: "Custom styled",
+  classes: "p-4 bg-neutral-50 dark:bg-neutral-800 rounded-lg"
+) %>
+
+<!-- With custom switch track classes -->
+<%= render Switch::Component.new(
+  label: "Blue switch",
+  checked: true,
+  switch_classes: "peer-checked:bg-blue-600 peer-checked:group-hover:bg-blue-500 dark:peer-checked:bg-blue-500"
+) %>
+
+<!-- All options combined -->
+<%= render Switch::Component.new(
+  label: "Full featured switch",
+  name: "full_featured",
+  id: "full-featured-switch",
+  value: "yes",
+  description: "This switch demonstrates all available options",
+  size: :md,
+  show_icons: true,
+  required: true
+) %>

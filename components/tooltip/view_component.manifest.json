@@ -1,0 +1,16 @@
+{
+  "component": "tooltip",
+  "implementation": "view_component",
+  "files": [
+    {
+      "path": "tooltip/component.rb",
+      "relative_path": "component.rb",
+      "checksum": "dde0d2e07da6dcbc1d1a8a428323c633db203b6e1e83d82b4e7f16ae90839f66"
+    },
+    {
+      "path": "tooltip/component.html.erb",
+      "relative_path": "component.html.erb",
+      "checksum": "479e1d81903a661b29d4d14a5fd68ee53672d4dcba431652806a37640bb57fa9"
+    }
+  ]
+}

@@ -1,0 +1,139 @@
+<!-- Basic badge (neutral, medium size) -->
+<%= render Badge::Component.new(
+  text: "Badge"
+) %>
+
+<!-- Color variants -->
+<%= render Badge::Component.new(
+  text: "Neutral",
+  variant: :neutral
+) %>
+
+<%= render Badge::Component.new(
+  text: "Success",
+  variant: :green
+) %>
+
+<%= render Badge::Component.new(
+  text: "Error",
+  variant: :red
+) %>
+
+<%= render Badge::Component.new(
+  text: "Warning",
+  variant: :yellow
+) %>
+
+<%= render Badge::Component.new(
+  text: "Info",
+  variant: :blue
+) %>
+
+<%= render Badge::Component.new(
+  text: "Purple",
+  variant: :purple
+) %>
+
+<%= render Badge::Component.new(
+  text: "Orange",
+  variant: :orange
+) %>
+
+<%= render Badge::Component.new(
+  text: "Pink",
+  variant: :pink
+) %>
+
+<!-- Small size -->
+<%= render Badge::Component.new(
+  text: "Small badge",
+  variant: :blue,
+  size: :sm
+) %>
+
+<!-- Pill shape (fully rounded) -->
+<%= render Badge::Component.new(
+  text: "Pill badge",
+  variant: :green,
+  pill: true
+) %>
+
+<!-- Small pill -->
+<%= render Badge::Component.new(
+  text: "Small pill",
+  variant: :purple,
+  size: :sm,
+  pill: true
+) %>
+
+<!-- With dot indicator -->
+<%= render Badge::Component.new(
+  text: "Active",
+  variant: :green,
+  dot: true
+) %>
+
+<!-- Pill with dot -->
+<%= render Badge::Component.new(
+  text: "Online",
+  variant: :green,
+  pill: true,
+  dot: true
+) %>
+
+<!-- Small with dot -->
+<%= render Badge::Component.new(
+  text: "Live",
+  variant: :red,
+  size: :sm,
+  dot: true
+) %>
+
+<!-- Removable badge -->
+<%= render Badge::Component.new(
+  text: "Removable",
+  variant: :blue,
+  removable: true
+) %>
+
+<!-- Removable pill -->
+<%= render Badge::Component.new(
+  text: "Tag",
+  variant: :purple,
+  pill: true,
+  removable: true
+) %>
+
+<!-- Small removable -->
+<%= render Badge::Component.new(
+  text: "Filter",
+  variant: :neutral,
+  size: :sm,
+  removable: true
+) %>
+
+<!-- With custom classes -->
+<%= render Badge::Component.new(
+  text: "Custom",
+  variant: :blue,
+  classes: "shadow-sm"
+) %>
+
+<!-- Status badge example -->
+<%= render Badge::Component.new(
+  text: "Published",
+  variant: :green,
+  dot: true
+) %>
+
+<%= render Badge::Component.new(
+  text: "Draft",
+  variant: :yellow,
+  dot: true
+) %>
+
+<%= render Badge::Component.new(
+  text: "Archived",
+  variant: :neutral,
+  dot: true
+) %>

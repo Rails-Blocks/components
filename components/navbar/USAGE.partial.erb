@@ -1,0 +1,88 @@
+<!-- Basic usage with simple links -->
+<%= render "shared/components/navbar/navbar",
+  items: [
+    { label: "Home", href: "/" },
+    { label: "Products", href: "/products" },
+    { label: "About", href: "/about" },
+    { label: "Contact", href: "/contact" }
+  ]
+%>
+
+<!-- With dropdown menus -->
+<%= render "shared/components/navbar/navbar",
+  items: [
+    { label: "Home", href: "/" },
+    { label: "Products", dropdown: true, content_id: "products-dropdown", mobile_hidden: true },
+    { label: "Resources", dropdown: true, content_id: "resources-dropdown", mobile_hidden: true },
+    { label: "Contact", href: "/contact", mobile_hidden: true }
+  ],
+  dropdown_contents: [
+    {
+      id: "products-dropdown",
+      width: "w-[calc(100vw-2rem)] sm:w-[500px]",
+      columns: 2,
+      content: '
+        <a href="/products/software" class="block rounded-lg p-3 no-underline hover:bg-neutral-100 dark:hover:bg-neutral-700">
+          <div class="mb-1 font-medium text-neutral-900 dark:text-neutral-100">Software</div>
+          <p class="m-0 text-sm text-neutral-600 dark:text-neutral-400">Our software solutions.</p>
+        </a>
+        <a href="/products/hardware" class="block rounded-lg p-3 no-underline hover:bg-neutral-100 dark:hover:bg-neutral-700">
+          <div class="mb-1 font-medium text-neutral-900 dark:text-neutral-100">Hardware</div>
+          <p class="m-0 text-sm text-neutral-600 dark:text-neutral-400">Physical products.</p>
+        </a>
+      '
+    },
+    {
+      id: "resources-dropdown",
+      width: "w-[calc(100vw-2rem)] sm:w-[400px]",
+      columns: 1,
+      content: '
+        <a href="/blog" class="block rounded-lg p-3 no-underline hover:bg-neutral-100 dark:hover:bg-neutral-700">
+          <div class="mb-1 font-medium text-neutral-900 dark:text-neutral-100">Blog</div>
+          <p class="m-0 text-sm text-neutral-600 dark:text-neutral-400">Read our latest posts.</p>
+        </a>
+        <a href="/docs" class="block rounded-lg p-3 no-underline hover:bg-neutral-100 dark:hover:bg-neutral-700">
+          <div class="mb-1 font-medium text-neutral-900 dark:text-neutral-100">Documentation</div>
+          <p class="m-0 text-sm text-neutral-600 dark:text-neutral-400">Technical guides.</p>
+        </a>
+      '
+    },
+    {
+      id: "mobile-menu-content",
+      width: "w-[calc(100vw-2rem)]",
+      columns: 1,
+      content: '
+        <a href="/products" class="block rounded-lg p-3 no-underline hover:bg-neutral-100 dark:hover:bg-neutral-700">Products</a>
+        <a href="/resources" class="block rounded-lg p-3 no-underline hover:bg-neutral-100 dark:hover:bg-neutral-700">Resources</a>
+        <a href="/contact" class="block rounded-lg p-3 no-underline hover:bg-neutral-100 dark:hover:bg-neutral-700">Contact</a>
+      '
+    }
+  ]
+%>
+
+<!-- With logo and actions -->
+<%= render "shared/components/navbar/navbar",
+  logo: '<a href="/" class="flex items-center gap-2 px-2">
+    <span class="font-bold text-neutral-900 dark:text-white">MyBrand</span>
+  </a>',
+  items: [
+    { label: "Features", href: "/features" },
+    { label: "Pricing", href: "/pricing" },
+    { label: "Docs", href: "/docs" }
+  ],
+  actions: '<li class="ml-2 pl-2 border-l border-neutral-200 dark:border-neutral-700">
+    <a href="/login" class="block rounded-md px-3 py-2 text-sm font-medium text-neutral-700 no-underline hover:bg-neutral-100 dark:text-neutral-300 dark:hover:bg-neutral-700">
+      Sign in
+    </a>
+  </li>'
+%>
+
+<!-- Transparent variant (for hero sections) -->
+<%= render "shared/components/navbar/navbar",
+  variant: "transparent",
+  items: [
+    { label: "Home", href: "/" },
+    { label: "About", href: "/about" }
+  ],
+  show_mobile_menu: false
+%>

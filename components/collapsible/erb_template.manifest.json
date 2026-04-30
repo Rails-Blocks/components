@@ -1,0 +1,11 @@
+{
+  "component": "collapsible",
+  "implementation": "erb_template",
+  "files": [
+    {
+      "path": "collapsible/_collapsible.html.erb",
+      "relative_path": "_collapsible.html.erb",
+      "checksum": "8241752bc55c990ad601929bcdb7f19664ef740c5a7ffcee719fbee8498e79da"
+    }
+  ]
+}

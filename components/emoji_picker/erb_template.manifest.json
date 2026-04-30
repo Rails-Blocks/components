@@ -1,0 +1,11 @@
+{
+  "component": "emoji_picker",
+  "implementation": "erb_template",
+  "files": [
+    {
+      "path": "emoji_picker/_emoji_picker.html.erb",
+      "relative_path": "_emoji_picker.html.erb",
+      "checksum": "9ba59a95df83c5a53b49fdd8fbc5424f0e0370f14f833b3dfd904a160f5d3792"
+    }
+  ]
+}

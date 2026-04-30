@@ -1,0 +1,88 @@
+<!-- Basic testimonial with quote and author -->
+<%= render "shared/components/testimonial/testimonial",
+  quote: "This product has completely transformed how we approach our daily workflow. The intuitive design and powerful features have saved us countless hours.",
+  author_name: "Sarah Johnson",
+  author_title: "Product Manager",
+  company: "TechCorp" %>
+
+<!-- Testimonial with avatar -->
+<%= render "shared/components/testimonial/testimonial",
+  quote: "The attention to detail in this product is remarkable. Every interaction feels thoughtful and purposeful.",
+  author_name: "Emily Chen",
+  author_title: "Senior Designer",
+  company: "CreativeCo",
+  author_image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=100&h=100&fit=crop" %>
+
+<!-- Card variant testimonial -->
+<%= render "shared/components/testimonial/testimonial",
+  quote: "Outstanding quality and service! This exceeded all my expectations. The team was responsive and professional.",
+  author_name: "Michael Rodriguez",
+  author_title: "Verified Customer",
+  author_image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop",
+  variant: "card" %>
+
+<!-- Card with star rating -->
+<%= render "shared/components/testimonial/testimonial",
+  quote: "Game-changing tool that simplified our entire workflow. Highly recommend to anyone looking for a reliable solution!",
+  author_name: "Alex Thompson",
+  author_title: "CEO",
+  company: "StartupXYZ",
+  author_image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop",
+  rating: 5,
+  variant: "card" %>
+
+<!-- Centered variant -->
+<%= render "shared/components/testimonial/testimonial",
+  quote: "I'm absolutely floored by the level of care and attention to detail. The components are not just beautiful, they're incredibly functional.",
+  author_name: "John Doe",
+  author_title: "Director of Engineering",
+  company: "InnovateLabs",
+  author_image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=100&h=100&fit=crop",
+  variant: "centered" %>
+
+<!-- Centered with quote icon and rating -->
+<%= render "shared/components/testimonial/testimonial",
+  quote: "The best component library I've ever worked with. Clean code, beautiful design, and excellent documentation.",
+  author_name: "Lisa Wang",
+  author_title: "Marketing Director",
+  author_image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop",
+  rating: 5,
+  show_quote_icon: true,
+  variant: "centered" %>
+
+<!-- Small size testimonial -->
+<%= render "shared/components/testimonial/testimonial",
+  quote: "Fast, reliable, and user-friendly. Everything we could ask for!",
+  author_name: "David Kim",
+  author_title: "Lead Developer",
+  author_image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop",
+  size: "sm",
+  variant: "card" %>
+
+<!-- Large size testimonial -->
+<%= render "shared/components/testimonial/testimonial",
+  quote: "This has transformed how we build our applications. I can guarantee that we will be a return customer for years to come.",
+  author_name: "Rachel Green",
+  author_title: "Operations Manager",
+  company: "Enterprise Inc",
+  author_image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&h=100&fit=crop",
+  size: "lg",
+  variant: "centered",
+  show_quote_icon: true %>
+
+<!-- Testimonial without avatar -->
+<%= render "shared/components/testimonial/testimonial",
+  quote: "Beautiful design and seamless functionality. It's exactly what we needed for our project.",
+  author_name: "James Wilson",
+  author_title: "Project Manager",
+  company: "GlobalTech",
+  variant: "card" %>
+
+<!-- With custom classes -->
+<%= render "shared/components/testimonial/testimonial",
+  quote: "The integration was smooth and the results were immediate. Fantastic product!",
+  author_name: "Maria Garcia",
+  author_title: "Technical Lead",
+  author_image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=100&h=100&fit=crop",
+  variant: "card",
+  classes: "max-w-md shadow-lg" %>

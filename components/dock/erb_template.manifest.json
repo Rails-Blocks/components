@@ -1,0 +1,21 @@
+{
+  "component": "dock",
+  "implementation": "erb_template",
+  "files": [
+    {
+      "path": "dock/_dock_item.html.erb",
+      "relative_path": "_dock_item.html.erb",
+      "checksum": "212375401740579eb7983be8a7753ca7d861456bfbc1ae6a9600d482fcd49c33"
+    },
+    {
+      "path": "dock/_dock.html.erb",
+      "relative_path": "_dock.html.erb",
+      "checksum": "eb0fc4f5efd1d8d40dadf0bca3e6e507c707712bad9b38d967cbb9cd449fd267"
+    },
+    {
+      "path": "dock/_dock_item_mobile.html.erb",
+      "relative_path": "_dock_item_mobile.html.erb",
+      "checksum": "c83d48819a1d6f08f2942d59dfb1985a6e8521119ad5067b30874bfd078eb3cf"
+    }
+  ]
+}

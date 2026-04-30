@@ -1,0 +1,61 @@
+<!-- Basic marquee with tech logos -->
+<%= render "shared/components/marquee/marquee",
+  items: [
+    { content: '<div class="flex items-center space-x-2"><svg xmlns="http://www.w3.org/2000/svg" fill="#d30001" viewBox="0 0 235 155" class="h-5"><g><path d="M180 17.8c-.9-.5-3.4-1.7-9.7-3.5l-.4 6.6c3.3 1.1 6.5 2.3 9.7 3.6l.4-6.7Z"></path><path d="M124.9 18.9c-29.2 2.6-65 29.1-86 64.1S15 147.6 15 147.6h79s-15.1-68.9 34.9-96.8c10.9-5.3 45.6-25.1 102.4 16.9 1.8-1.5 3.5-2.7 3.5-2.7s-52-51.9-109.9-46.1Z"></path><path d="m54.7 54.7-7.1-6.2c-2.6 2.5-5.1 5-7.4 7.5l7.7 6.6c2.1-2.7 4.4-5.4 6.8-7.9Z"></path><path d="M92.5 25 88 18.1c-2.5 1.3-5.1 2.7-7.8 4.3l4.6 7c2.6-1.6 5.1-3.1 7.7-4.4Z"></path><path d="M24.5 99.4 13 95.2c-1.9 4.3-4 9.3-5 12l11.5 4.2c1.3-3.4 3.4-8.3 5-12Z"></path><path d="M133.1 14.5h1l-2-6.1c-3.1 0-6.3.2-9.6.6l1.9 5.9c2.9-.3 5.8-.4 8.7-.4Z"></path><path d="M97 127.6c.2 5.3.7 9.6 1.2 12.6l12 4.3c-.9-3.9-1.8-8.3-2.4-13L97 127.6Z"></path><path d="m137.9 51.3 2.3 6.9c2.9-1.4 5.8-2.6 8.7-3.5l-2.2-6.6c-3.4 1-6.3 2.1-8.8 3.2Z"></path><path d="M169.7 52c3.3.1 6.6.5 9.9 1.2l.4-6.2c-3.4-.7-6.7-1.1-9.9-1.3l-.4 6.3Z"></path><path d="M101.5 91.2c-1.3 3.7-2.2 7.4-3 11l8.1 6.4c.4-3.9 1.1-7.8 2.1-11.7l-7.2-5.7Z"></path><path d="m113 70 4.8 7.2c1.7-2.5 3.7-4.8 5.9-7.1l-4.5-6.8c-2.3 2.1-4.4 4.4-6.2 6.7Z"></path></g></svg><span class="text-sm font-medium text-neutral-800 dark:text-neutral-200">Ruby on Rails</span></div>' },
+    { content: '<div class="flex items-center space-x-2"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20" class="h-5"><path fill="#23B2E7" fill-rule="evenodd" d="M10 5Q6 5 5 8.334q1.5-1.668 3.5-1.25c.76.158 1.305.618 1.906 1.127C11.386 9.041 12.522 10 15 10q4 0 5-3.333-1.5 1.667-3.5 1.25c-.76-.159-1.305-.619-1.906-1.128C13.614 5.96 12.479 5 10 5m-5 5q-4 0-5 3.334 1.5-1.668 3.5-1.25c.76.158 1.305.618 1.906 1.127C6.386 14.041 7.521 15 10 15q4 0 5-3.333-1.5 1.667-3.5 1.25c-.76-.159-1.305-.619-1.906-1.128C8.614 10.96 7.478 10 5 10" clip-rule="evenodd"></path></svg><span class="text-sm font-medium text-neutral-800 dark:text-neutral-200">Tailwind CSS</span></div>' },
+    { content: '<div class="flex items-center space-x-2"><svg xmlns="http://www.w3.org/2000/svg" class="size-4 rounded-sm" viewBox="0 0 630 630"><rect width="630" height="630" fill="#f7df1e"/><path d="m423.2 492.19c12.69 20.72 29.2 35.95 58.4 35.95 24.53 0 40.2-12.26 40.2-29.2 0-20.3-16.1-27.49-43.1-39.3l-14.8-6.35c-42.72-18.2-71.1-41-71.1-89.2 0-44.4 33.83-78.2 86.7-78.2 37.64 0 64.7 13.1 84.2 47.4l-46.1 29.6c-10.15-18.2-21.1-25.37-38.1-25.37-17.34 0-28.33 11-28.33 25.37 0 17.76 11 24.95 36.4 35.95l14.8 6.34c50.3 21.57 78.7 43.56 78.7 93 0 53.3-41.87 82.5-98.1 82.5-54.98 0-90.5-26.2-107.88-60.54zm-209.13 5.13c9.3 16.5 17.76 30.45 38.1 30.45 19.45 0 31.72-7.61 31.72-37.2v-201.3h59.2v202.1c0 61.3-35.94 89.2-88.4 89.2-47.4 0-74.85-24.53-88.81-54.075z"/></svg><span class="text-sm font-medium text-neutral-800 dark:text-neutral-200">JavaScript</span></div>' }
+  ]
+%>
+
+<!-- Fast marquee scrolling right, slows on hover -->
+<%= render "shared/components/marquee/marquee",
+  items: [
+    { content: '<span class="text-lg font-bold text-neutral-800 dark:text-neutral-200">Breaking News</span>' },
+    { content: '<span class="text-lg text-neutral-600 dark:text-neutral-400">Latest updates from around the world</span>' },
+    { content: '<span class="text-lg font-bold text-neutral-800 dark:text-neutral-200">Technology</span>' },
+    { content: '<span class="text-lg text-neutral-600 dark:text-neutral-400">New innovations in AI</span>' }
+  ],
+  speed: 10,
+  hover_speed: 30,
+  direction: "right",
+  gap: "gap-12"
+%>
+
+<!-- Brand logos in cards, no gradients -->
+<%= render "shared/components/marquee/marquee",
+  items: [
+    { content: '<span class="text-lg font-medium text-neutral-800 dark:text-neutral-200">Apple</span>', classes: "flex min-w-[150px] items-center justify-center rounded-xl border border-black/5 bg-neutral-50 px-6 py-4 shadow-xs dark:border-white/10 dark:bg-neutral-800" },
+    { content: '<span class="text-lg font-medium text-neutral-800 dark:text-neutral-200">Google</span>', classes: "flex min-w-[150px] items-center justify-center rounded-xl border border-black/5 bg-neutral-50 px-6 py-4 shadow-xs dark:border-white/10 dark:bg-neutral-800" },
+    { content: '<span class="text-lg font-medium text-neutral-800 dark:text-neutral-200">Microsoft</span>', classes: "flex min-w-[150px] items-center justify-center rounded-xl border border-black/5 bg-neutral-50 px-6 py-4 shadow-xs dark:border-white/10 dark:bg-neutral-800" },
+    { content: '<span class="text-lg font-medium text-neutral-800 dark:text-neutral-200">Amazon</span>', classes: "flex min-w-[150px] items-center justify-center rounded-xl border border-black/5 bg-neutral-50 px-6 py-4 shadow-xs dark:border-white/10 dark:bg-neutral-800" }
+  ],
+  speed: 25,
+  hover_speed: 0,
+  show_fade: false,
+  gap: "gap-6"
+%>
+
+<!-- Slow announcement banner, pauses completely on hover -->
+<%= render "shared/components/marquee/marquee",
+  items: [
+    { content: '<span class="text-sm text-neutral-600 dark:text-neutral-400">🎉 Free shipping on orders over $50</span>' },
+    { content: '<span class="text-sm text-neutral-600 dark:text-neutral-400">⭐ New arrivals just dropped</span>' },
+    { content: '<span class="text-sm text-neutral-600 dark:text-neutral-400">🔥 Limited time offer: 20% off</span>' }
+  ],
+  speed: 30,
+  hover_speed: 0,
+  pause_on_hover: true,
+  classes: "bg-neutral-100 dark:bg-neutral-900 py-2"
+%>
+
+<!-- No pause on hover, continuous scroll -->
+<%= render "shared/components/marquee/marquee",
+  items: [
+    { content: '<span class="text-neutral-500 dark:text-neutral-400">Always scrolling</span>' },
+    { content: '<span class="text-neutral-500 dark:text-neutral-400">Never stops</span>' },
+    { content: '<span class="text-neutral-500 dark:text-neutral-400">Continuous motion</span>' }
+  ],
+  speed: 15,
+  pause_on_hover: false,
+  direction: "left"
+%>

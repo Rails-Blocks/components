@@ -1,0 +1,16 @@
+{
+  "component": "switch",
+  "implementation": "view_component",
+  "files": [
+    {
+      "path": "switch/component.rb",
+      "relative_path": "component.rb",
+      "checksum": "172bf8d3eae07920459891cf99a1944343dd406811798de13baef23b09e20971"
+    },
+    {
+      "path": "switch/component.html.erb",
+      "relative_path": "component.html.erb",
+      "checksum": "f51abbd15372e8242e40ab9c73c7322989f189344e719e86dececc6e348c29f6"
+    }
+  ]
+}

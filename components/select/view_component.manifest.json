@@ -1,0 +1,16 @@
+{
+  "component": "select",
+  "implementation": "view_component",
+  "files": [
+    {
+      "path": "select/component.rb",
+      "relative_path": "component.rb",
+      "checksum": "5b7bdc5624c2004dea3d0a4c75b6e10b34a72360072a6ce47945086a2c7efe81"
+    },
+    {
+      "path": "select/component.html.erb",
+      "relative_path": "component.html.erb",
+      "checksum": "76b81675fca40eb0410b9951c37e90894732d4e6014fb277b61f60159fc8e152"
+    }
+  ]
+}

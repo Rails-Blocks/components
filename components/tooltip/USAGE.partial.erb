@@ -1,0 +1,210 @@
+<% secondary_button_classes = "flex items-center justify-center gap-1.5 rounded-lg border border-black/10 bg-white/90 px-3.5 py-2 text-sm font-medium whitespace-nowrap text-neutral-800 shadow-xs transition-all duration-100 ease-in-out select-none hover:bg-neutral-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-600 disabled:cursor-not-allowed disabled:opacity-50 dark:border-white/10 dark:bg-neutral-700/50 dark:text-neutral-50 dark:hover:bg-neutral-700/75 dark:focus-visible:outline-neutral-200" %>
+<% colored_button_classes = "flex items-center justify-center gap-1.5 rounded-lg border border-blue-400/30 bg-blue-600 px-3.5 py-2 text-sm font-medium whitespace-nowrap text-white shadow-sm transition-all duration-100 ease-in-out select-none hover:bg-blue-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-600 disabled:cursor-not-allowed disabled:opacity-50 dark:focus-visible:outline-neutral-200" %>
+
+<!-- Basic tooltip (top placement, default settings) -->
+<%= render "shared/components/tooltip/tooltip", text: "This is a helpful tooltip" do %>
+  <button class="<%= secondary_button_classes %>">
+    Hover me
+  </button>
+<% end %>
+
+<!-- Different placements -->
+<%= render "shared/components/tooltip/tooltip",
+  text: "Tooltip on bottom",
+  placement: "bottom" do %>
+  <button class="<%= secondary_button_classes %>">
+    Bottom
+  </button>
+<% end %>
+
+<%= render "shared/components/tooltip/tooltip",
+  text: "Tooltip on left",
+  placement: "left" do %>
+  <button class="<%= secondary_button_classes %>">
+    Left
+  </button>
+<% end %>
+
+<%= render "shared/components/tooltip/tooltip",
+  text: "Tooltip on right",
+  placement: "right" do %>
+  <button class="<%= secondary_button_classes %>">
+    Right
+  </button>
+<% end %>
+
+<!-- Aligned placements -->
+<%= render "shared/components/tooltip/tooltip",
+  text: "Aligned to start",
+  placement: "top-start" do %>
+  <button class="<%= secondary_button_classes %>">
+    Top Start
+  </button>
+<% end %>
+
+<%= render "shared/components/tooltip/tooltip",
+  text: "Aligned to end",
+  placement: "bottom-end" do %>
+  <button class="<%= secondary_button_classes %>">
+    Bottom End
+  </button>
+<% end %>
+
+<!-- Different sizes -->
+<%= render "shared/components/tooltip/tooltip",
+  text: "Small tooltip text",
+  size: "small" do %>
+  <button class="<%= secondary_button_classes %>">
+    Small Size
+  </button>
+<% end %>
+
+<%= render "shared/components/tooltip/tooltip",
+  text: "Large tooltip text",
+  size: "large" do %>
+  <button class="<%= secondary_button_classes %>">
+    Large Size
+  </button>
+<% end %>
+
+<!-- With delay -->
+<%= render "shared/components/tooltip/tooltip",
+  text: "Appears after 500ms",
+  delay: 500 do %>
+  <button class="<%= secondary_button_classes %>">
+    Delayed
+  </button>
+<% end %>
+
+<!-- With keyboard shortcut -->
+<%= render "shared/components/tooltip/tooltip",
+  text: "Open command menu",
+  mac_kbd: "cmd K",
+  non_mac_kbd: "Ctrl K" do %>
+  <button class="<%= secondary_button_classes %>">
+    Shortcut
+  </button>
+<% end %>
+
+<!-- Without arrow -->
+<%= render "shared/components/tooltip/tooltip",
+  text: "No arrow on this tooltip",
+  arrow: false do %>
+  <button class="<%= secondary_button_classes %>">
+    No Arrow
+  </button>
+<% end %>
+
+<!-- Custom max width for long content -->
+<%= render "shared/components/tooltip/tooltip",
+  text: "This tooltip has a longer text content that wraps within the configured maximum width",
+  max_width: 300 do %>
+  <button class="<%= secondary_button_classes %>">
+    Long Content
+  </button>
+<% end %>
+
+<!-- Different animations -->
+<%= render "shared/components/tooltip/tooltip",
+  text: "Scale animation",
+  animation: "origin" do %>
+  <button class="<%= secondary_button_classes %>">
+    Origin Animation
+  </button>
+<% end %>
+
+<%= render "shared/components/tooltip/tooltip",
+  text: "Combined animations",
+  animation: "fade origin" do %>
+  <button class="<%= secondary_button_classes %>">
+    Fade + Origin
+  </button>
+<% end %>
+
+<%= render "shared/components/tooltip/tooltip",
+  text: "No animation",
+  animation: "none" do %>
+  <button class="<%= secondary_button_classes %>">
+    No Animation
+  </button>
+<% end %>
+
+<!-- Click trigger (useful for touch devices) -->
+<%= render "shared/components/tooltip/tooltip",
+  text: "Click to toggle this tooltip",
+  trigger: "click" do %>
+  <button class="<%= secondary_button_classes %>">
+    Click Trigger
+  </button>
+<% end %>
+
+<!-- Focus only trigger (for accessibility) -->
+<%= render "shared/components/tooltip/tooltip",
+  text: "Shows on focus only",
+  trigger: "focus" do %>
+  <button class="<%= secondary_button_classes %>">
+    Focus Trigger
+  </button>
+<% end %>
+
+<!-- Icon button with tooltip -->
+<%= render "shared/components/tooltip/tooltip",
+  text: "Settings",
+  placement: "bottom" do %>
+  <button class="p-2 bg-neutral-100 dark:bg-neutral-800 rounded-lg">
+    <svg xmlns="http://www.w3.org/2000/svg" class="size-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+    </svg>
+  </button>
+<% end %>
+
+<!-- Help icon tooltip -->
+<%= render "shared/components/tooltip/tooltip",
+  text: "Learn more about this feature",
+  placement: "right" do %>
+  <button type="button" class="cursor-help inline-flex items-center justify-center size-5 rounded-full border border-neutral-300 dark:border-neutral-600 text-sm">
+    <span class="text-xs">?</span>
+  </button>
+<% end %>
+
+<!-- With custom wrapper classes -->
+<%= render "shared/components/tooltip/tooltip",
+  text: "Inline element with tooltip",
+  classes: "inline-block" do %>
+  <span class="underline decoration-dotted cursor-help">hover this text</span>
+<% end %>
+
+<!-- Using div tag instead of span -->
+<%= render "shared/components/tooltip/tooltip",
+  text: "Block-level tooltip wrapper",
+  tag: "div" do %>
+  <div class="p-4 bg-neutral-100 dark:bg-neutral-800 rounded-lg">
+    Block element content
+  </div>
+<% end %>
+
+<!-- Status indicator with tooltip -->
+<%= render "shared/components/tooltip/tooltip",
+  text: "All systems operational",
+  classes: "inline-flex items-center gap-2" do %>
+  <div class="size-2 rounded-full bg-green-500 animate-pulse"></div>
+  <span class="text-sm">Online</span>
+<% end %>
+
+<!-- All options combined -->
+<%= render "shared/components/tooltip/tooltip",
+  text: "Fully customized tooltip with all options",
+  placement: "bottom",
+  offset: 12,
+  max_width: 250,
+  delay: 200,
+  size: "regular",
+  animation: "fade origin",
+  trigger: "mouseenter focus",
+  arrow: true,
+  classes: "inline-flex" do %>
+  <button class="<%= colored_button_classes %>">
+    All Options
+  </button>
+<% end %>

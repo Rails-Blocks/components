@@ -1,0 +1,95 @@
+<!-- Basic 6-digit OTP input -->
+<%= render "shared/components/two_factor/two_factor" %>
+
+<!-- With label -->
+<%= render "shared/components/two_factor/two_factor",
+  label: "Verification Code" %>
+
+<!-- With label and hint -->
+<%= render "shared/components/two_factor/two_factor",
+  label: "Enter Code",
+  hint: "Enter the 6-digit code sent to your phone" %>
+
+<!-- 4-digit code (PIN style) -->
+<%= render "shared/components/two_factor/two_factor",
+  length: 4,
+  separator: false,
+  label: "Enter PIN" %>
+
+<!-- Without separator -->
+<%= render "shared/components/two_factor/two_factor",
+  separator: false %>
+
+<!-- Separator at different position -->
+<%= render "shared/components/two_factor/two_factor",
+  separator_position: 2 %>
+
+<!-- Small size -->
+<%= render "shared/components/two_factor/two_factor",
+  size: "sm",
+  label: "Small Code" %>
+
+<!-- Large size -->
+<%= render "shared/components/two_factor/two_factor",
+  size: "lg",
+  label: "Large Code" %>
+
+<!-- Auto-submit when complete -->
+<%= render "shared/components/two_factor/two_factor",
+  auto_submit: true,
+  label: "Auto-submit Code" %>
+
+<!-- Without autofocus -->
+<%= render "shared/components/two_factor/two_factor",
+  autofocus: false %>
+
+<!-- Allow alphanumeric/symbol codes -->
+<%= render "shared/components/two_factor/two_factor",
+  numeric_only: false,
+  label: "Recovery Code" %>
+
+<!-- With error message -->
+<%= render "shared/components/two_factor/two_factor",
+  label: "Verification Code",
+  error: "Invalid code. Please try again." %>
+
+<!-- Disabled state -->
+<%= render "shared/components/two_factor/two_factor",
+  label: "Verification Code",
+  disabled: true %>
+
+<!-- Custom name for form submission -->
+<%= render "shared/components/two_factor/two_factor",
+  name: "user[otp_code]",
+  label: "Two-Factor Code" %>
+
+<!-- Custom ID prefix -->
+<%= render "shared/components/two_factor/two_factor",
+  id_prefix: "login_otp",
+  label: "Login Code" %>
+
+<!-- With custom classes -->
+<%= render "shared/components/two_factor/two_factor",
+  label: "Verification Code",
+  classes: "max-w-xs mx-auto text-center",
+  input_classes: "font-mono" %>
+
+<!-- 8-digit code -->
+<%= render "shared/components/two_factor/two_factor",
+  length: 8,
+  separator_position: 4,
+  label: "Backup Code" %>
+
+<!-- Full-featured example -->
+<%= render "shared/components/two_factor/two_factor",
+  length: 6,
+  name: "otp[code]",
+  id_prefix: "2fa_code",
+  auto_submit: true,
+  autofocus: true,
+  separator: true,
+  separator_position: 3,
+  size: "md",
+  label: "Two-Factor Authentication",
+  hint: "Enter the code from your authenticator app",
+  classes: "max-w-sm" %>

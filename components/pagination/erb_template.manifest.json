@@ -1,0 +1,11 @@
+{
+  "component": "pagination",
+  "implementation": "erb_template",
+  "files": [
+    {
+      "path": "pagination/_pagination.html.erb",
+      "relative_path": "_pagination.html.erb",
+      "checksum": "4e0f484327d9052a41132249dfffac1134634af6a5852eca5cfebaff39937b8c"
+    }
+  ]
+}

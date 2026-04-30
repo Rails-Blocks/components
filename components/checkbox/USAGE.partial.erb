@@ -1,0 +1,93 @@
+<!-- Basic checkbox -->
+<%= render "shared/components/checkbox/checkbox",
+  label: "I agree to the terms and conditions" %>
+
+<!-- Checkbox with name for form submission -->
+<%= render "shared/components/checkbox/checkbox",
+  label: "Subscribe to newsletter",
+  name: "user[newsletter]",
+  checked: true %>
+
+<!-- Checkbox with custom id -->
+<%= render "shared/components/checkbox/checkbox",
+  label: "Remember me",
+  name: "remember_me",
+  id: "remember-me-checkbox" %>
+
+<!-- Disabled checkbox -->
+<%= render "shared/components/checkbox/checkbox",
+  label: "Disabled option",
+  disabled: true %>
+
+<!-- Disabled and checked -->
+<%= render "shared/components/checkbox/checkbox",
+  label: "Disabled checked option",
+  checked: true,
+  disabled: true %>
+
+<!-- Required checkbox -->
+<%= render "shared/components/checkbox/checkbox",
+  label: "Accept privacy policy",
+  name: "accept_privacy",
+  required: true %>
+
+<!-- With description -->
+<%= render "shared/components/checkbox/checkbox",
+  label: "Advanced Analytics",
+  name: "features[analytics]",
+  description: "Get detailed insights about your users and their behavior" %>
+
+<!-- With description (checked) -->
+<%= render "shared/components/checkbox/checkbox",
+  label: "Push Notifications",
+  name: "features[notifications]",
+  description: "Send real-time notifications to keep users engaged",
+  checked: true %>
+
+<!-- With error message -->
+<%= render "shared/components/checkbox/checkbox",
+  label: "Accept terms",
+  name: "accept_terms",
+  error: "You must accept the terms to continue" %>
+
+<!-- Small size -->
+<%= render "shared/components/checkbox/checkbox",
+  label: "Small checkbox",
+  size: "sm" %>
+
+<!-- Large size -->
+<%= render "shared/components/checkbox/checkbox",
+  label: "Large checkbox",
+  size: "lg" %>
+
+<!-- Small with description -->
+<%= render "shared/components/checkbox/checkbox",
+  label: "Compact option",
+  description: "A smaller checkbox with description",
+  size: "sm" %>
+
+<!-- Large with description -->
+<%= render "shared/components/checkbox/checkbox",
+  label: "Prominent option",
+  description: "A larger checkbox for emphasis",
+  size: "lg" %>
+
+<!-- With custom wrapper classes -->
+<%= render "shared/components/checkbox/checkbox",
+  label: "Custom styled",
+  classes: "p-4 bg-neutral-50 dark:bg-neutral-800 rounded-lg" %>
+
+<!-- With custom input classes -->
+<%= render "shared/components/checkbox/checkbox",
+  label: "Custom input",
+  input_classes: "text-blue-600 focus:ring-blue-500" %>
+
+<!-- All options combined -->
+<%= render "shared/components/checkbox/checkbox",
+  label: "Full featured checkbox",
+  name: "full_featured",
+  id: "full-featured-checkbox",
+  value: "yes",
+  description: "This checkbox demonstrates all available options",
+  size: "md",
+  required: true %>

@@ -1,0 +1,11 @@
+{
+  "component": "forms",
+  "implementation": "erb_template",
+  "files": [
+    {
+      "path": "forms/_form_group.html.erb",
+      "relative_path": "_form_group.html.erb",
+      "checksum": "9dbeb2e599d59e5e6e072952386a3d915bce54e115c560baf7308e9fb4a5b06d"
+    }
+  ]
+}

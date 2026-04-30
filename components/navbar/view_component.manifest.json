@@ -1,0 +1,36 @@
+{
+  "component": "navbar",
+  "implementation": "view_component",
+  "files": [
+    {
+      "path": "navbar/component.rb",
+      "relative_path": "component.rb",
+      "checksum": "e355f3d1afa726f1884a1c8425a04aeb2ec6628fd6982a3d390d0d3876641202"
+    },
+    {
+      "path": "navbar/component/item_component.html.erb",
+      "relative_path": "component/item_component.html.erb",
+      "checksum": "72f78398edff74b3e2fffa0c7a6548e1e8efbfcbe4e8c8c303ee9f8fc38e0cb4"
+    },
+    {
+      "path": "navbar/component/item_component.rb",
+      "relative_path": "component/item_component.rb",
+      "checksum": "b6bcbf0c2342e893de345acdaae287452835692dc8a0dee67482f35a00804b53"
+    },
+    {
+      "path": "navbar/component/dropdown_content_component.html.erb",
+      "relative_path": "component/dropdown_content_component.html.erb",
+      "checksum": "310f662a1702fa90d28f9f8866a6b51abbcb96d8d235999c38a5993a9e0f79db"
+    },
+    {
+      "path": "navbar/component/dropdown_content_component.rb",
+      "relative_path": "component/dropdown_content_component.rb",
+      "checksum": "8fd3c3a688ad57591d3b2d1058207eab68fb45e503c15b1c89be2dec4132ff51"
+    },
+    {
+      "path": "navbar/component.html.erb",
+      "relative_path": "component.html.erb",
+      "checksum": "9b837393fba5cccf66fc0dccce088e18040de3a7b955d776d5f4d1d7aa64bdde"
+    }
+  ]
+}

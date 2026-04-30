@@ -1,0 +1,78 @@
+<!-- Basic pagination with numbered pages -->
+<%= render Pagination::Component.new(
+  pagy: @pagy
+) %>
+
+<!-- Pagination inside a Turbo Frame -->
+<%= render Pagination::Component.new(
+  pagy: @pagy,
+  frame_id: "results-frame",
+  preserve_params: request.query_parameters
+) %>
+
+<!-- Compact pagination (prev/next with page info) -->
+<%= render Pagination::Component.new(
+  pagy: @pagy,
+  variant: :compact,
+  frame_id: "items-frame"
+) %>
+
+<!-- Minimal pagination (prev/next only, no info) -->
+<%= render Pagination::Component.new(
+  pagy: @pagy,
+  variant: :minimal,
+  show_info: false
+) %>
+
+<!-- Full pagination with jump to page form -->
+<%= render Pagination::Component.new(
+  pagy: @pagy,
+  variant: :full,
+  show_page_form: true,
+  frame_id: "data-frame"
+) %>
+
+<!-- Pagination with rows per page selector -->
+<%= render Pagination::Component.new(
+  pagy: @pagy,
+  show_limit_form: true,
+  limit_options: [10, 25, 50, 100],
+  frame_id: "table-frame",
+  preserve_params: request.query_parameters
+) %>
+
+<!-- Full pagination with all controls -->
+<%= render Pagination::Component.new(
+  pagy: @pagy,
+  variant: :full,
+  show_info: true,
+  show_page_form: true,
+  show_limit_form: true,
+  limit_options: [15, 30, 60],
+  frame_id: "complete-pagination",
+  preserve_params: request.query_parameters
+) %>
+
+<!-- Small size pagination -->
+<%= render Pagination::Component.new(
+  pagy: @pagy,
+  size: :sm
+) %>
+
+<!-- Large size pagination -->
+<%= render Pagination::Component.new(
+  pagy: @pagy,
+  size: :lg
+) %>
+
+<!-- Pagination with custom wrapper classes -->
+<%= render Pagination::Component.new(
+  pagy: @pagy,
+  classes: "border-t border-neutral-200 dark:border-neutral-700 pt-4"
+) %>
+
+<!-- Pagination without info text -->
+<%= render Pagination::Component.new(
+  pagy: @pagy,
+  show_info: false
+) %>

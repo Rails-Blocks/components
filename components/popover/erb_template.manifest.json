@@ -1,0 +1,11 @@
+{
+  "component": "popover",
+  "implementation": "erb_template",
+  "files": [
+    {
+      "path": "popover/_popover.html.erb",
+      "relative_path": "_popover.html.erb",
+      "checksum": "3b01ece71c64211968788ae6b6adf8ceceb5250616971b36139d7e865a96e8f8"
+    }
+  ]
+}

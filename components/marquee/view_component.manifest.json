@@ -1,0 +1,26 @@
+{
+  "component": "marquee",
+  "implementation": "view_component",
+  "files": [
+    {
+      "path": "marquee/component.rb",
+      "relative_path": "component.rb",
+      "checksum": "44909941154d0289c3a38a2551f4f9eda6f41606d427acc838a18e08b87d7201"
+    },
+    {
+      "path": "marquee/component/item_component.html.erb",
+      "relative_path": "component/item_component.html.erb",
+      "checksum": "f8d56de9a9e0190b5f0d08597bbb766e8b8966552bf46c9e1fbe9f7826087c64"
+    },
+    {
+      "path": "marquee/component/item_component.rb",
+      "relative_path": "component/item_component.rb",
+      "checksum": "7de87b3e5ad86b02fd1ed4afd0a3c3f527bb359152e1f00e8c3df082225b0802"
+    },
+    {
+      "path": "marquee/component.html.erb",
+      "relative_path": "component.html.erb",
+      "checksum": "282da2419f36d737711521bf6d41322be53e861ae9cdd023bacf81fc28b0f340"
+    }
+  ]
+}

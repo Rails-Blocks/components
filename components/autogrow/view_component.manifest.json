@@ -1,0 +1,16 @@
+{
+  "component": "autogrow",
+  "implementation": "view_component",
+  "files": [
+    {
+      "path": "autogrow/component.rb",
+      "relative_path": "component.rb",
+      "checksum": "6820b765948a6eedd8cb1e1002359ded17cc70f5561f784431263bcf1870fe92"
+    },
+    {
+      "path": "autogrow/component.html.erb",
+      "relative_path": "component.html.erb",
+      "checksum": "01b736c443083a7ded315e98f44e0dc9578f33ec56f157ba06cf3d8e2e331bcf"
+    }
+  ]
+}

@@ -1,0 +1,85 @@
+<!-- Basic danger confirmation with text input -->
+<%= render "shared/components/confirmation/confirmation",
+  title: "Delete Account",
+  message: "This action cannot be undone. This will permanently delete your account.",
+  confirm_text: "DELETE",
+  confirm_button_text: "Delete Account",
+  variant: "danger" %>
+
+<!-- Warning confirmation -->
+<%= render "shared/components/confirmation/confirmation",
+  title: "Reset Database",
+  message: "This will permanently delete all data in your database.",
+  confirm_text: "RESET",
+  confirm_button_text: "Reset Database",
+  variant: "warning",
+  case_sensitive: true %>
+
+<!-- Info confirmation (non-destructive) -->
+<%= render "shared/components/confirmation/confirmation",
+  title: "Create Workspace",
+  message: "You are about to create a new workspace.",
+  confirm_text: "CREATE",
+  confirm_button_text: "Create Workspace",
+  variant: "info" %>
+
+<!-- Neutral confirmation -->
+<%= render "shared/components/confirmation/confirmation",
+  title: "Transfer Ownership",
+  message: "Transfer project ownership to another user.",
+  confirm_text: "TRANSFER",
+  confirm_button_text: "Transfer",
+  variant: "neutral" %>
+
+<!-- Confirmation without text input (simple confirm) -->
+<%= render "shared/components/confirmation/confirmation",
+  title: "Publish Post",
+  message: "Are you sure you want to publish this post?",
+  confirm_button_text: "Publish",
+  variant: "info" %>
+
+<!-- Without icon -->
+<%= render "shared/components/confirmation/confirmation",
+  title: "Delete Item",
+  message: "This item will be permanently deleted.",
+  confirm_text: "DELETE",
+  confirm_button_text: "Delete",
+  variant: "danger",
+  show_icon: false %>
+
+<!-- Custom input label and placeholder -->
+<%= render "shared/components/confirmation/confirmation",
+  title: "Delete Repository",
+  message: "Please type the repository name to confirm deletion.",
+  confirm_text: "my-project",
+  confirm_button_text: "Delete Repository",
+  variant: "danger",
+  case_sensitive: true,
+  input_label: "Repository name:",
+  input_placeholder: "Enter repository name exactly" %>
+
+<!-- With custom content block -->
+<%= render "shared/components/confirmation/confirmation",
+  title: "Delete Workspace",
+  message: "This action cannot be undone.",
+  confirm_text: "PERMANENTLY DELETE",
+  confirm_button_text: "Delete Workspace",
+  variant: "danger" do %>
+  <div class="bg-red-50 border border-red-200 rounded-lg p-4 dark:bg-red-900/20 dark:border-red-800">
+    <h4 class="text-sm font-medium text-red-800 dark:text-red-200 mb-2">This will permanently delete:</h4>
+    <ul class="text-sm text-red-700 dark:text-red-300 space-y-1 list-disc list-inside">
+      <li>All projects and files in this workspace</li>
+      <li>All team member access and permissions</li>
+      <li>Billing history and subscription data</li>
+    </ul>
+  </div>
+<% end %>
+
+<!-- Without card styling (for use inside existing modals) -->
+<%= render "shared/components/confirmation/confirmation",
+  title: "Confirm Action",
+  message: "Please confirm this action.",
+  confirm_text: "CONFIRM",
+  confirm_button_text: "Confirm",
+  variant: "neutral",
+  show_card: false %>

@@ -1,0 +1,11 @@
+{
+  "component": "checkbox",
+  "implementation": "erb_template",
+  "files": [
+    {
+      "path": "checkbox/_checkbox.html.erb",
+      "relative_path": "_checkbox.html.erb",
+      "checksum": "9b6dae3b4c7bbdb780b1641daa060f29b91de8fbe55d5122b7227f1fac1fe8d3"
+    }
+  ]
+}

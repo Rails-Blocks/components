@@ -1,0 +1,11 @@
+{
+  "component": "kbd",
+  "implementation": "erb_template",
+  "files": [
+    {
+      "path": "kbd/_kbd.html.erb",
+      "relative_path": "_kbd.html.erb",
+      "checksum": "fd40737ceb3c55e3d58065553b905b174f0dd568e71423a21eb21c6a9d3efcec"
+    }
+  ]
+}

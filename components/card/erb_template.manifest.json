@@ -1,0 +1,11 @@
+{
+  "component": "card",
+  "implementation": "erb_template",
+  "files": [
+    {
+      "path": "card/_card.html.erb",
+      "relative_path": "_card.html.erb",
+      "checksum": "01bc7f1998d9b966752af07c9ec6c6046ee0b824a838eefd201637ca6aada32f"
+    }
+  ]
+}

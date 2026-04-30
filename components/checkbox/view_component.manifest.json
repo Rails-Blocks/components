@@ -1,0 +1,16 @@
+{
+  "component": "checkbox",
+  "implementation": "view_component",
+  "files": [
+    {
+      "path": "checkbox/component.rb",
+      "relative_path": "component.rb",
+      "checksum": "000da3a4218b56fb22682adda4b6b85c6108a82e103a09ceff518a032ab6c141"
+    },
+    {
+      "path": "checkbox/component.html.erb",
+      "relative_path": "component.html.erb",
+      "checksum": "8a590affba846a52a094276397a85c0aafe2d6e515fecc432f30bf081fc4cf3b"
+    }
+  ]
+}

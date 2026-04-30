@@ -1,0 +1,11 @@
+{
+  "component": "table",
+  "implementation": "erb_template",
+  "files": [
+    {
+      "path": "table/_table.html.erb",
+      "relative_path": "_table.html.erb",
+      "checksum": "6d3d87c24ef91de0f4489884d0eaf9a5a2929d9744e8fc149729938454a9b83e"
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+<!-- Basic file browser tree -->
+<%= render(TreeView::Component.new(variant: :bordered)) do |tree| %>
+  <% tree.with_node(label: "src", type: :folder, default_open: true) do |folder| %>
+    <% folder.with_child(label: "index.ts", type: :file) %>
+    <% folder.with_child(label: "utils.ts", type: :file) %>
+    <% folder.with_child(label: "components", type: :folder) do |subfolder| %>
+      <% subfolder.with_child(label: "Button.tsx", type: :file) %>
+      <% subfolder.with_child(label: "Modal.tsx", type: :file) %>
+    <% end %>
+  <% end %>
+  <% tree.with_node(label: "package.json", type: :file) %>
+  <% tree.with_node(label: "README.md", type: :file) %>
+<% end %>
+
+<!-- With checkbox selection (uses checkbox_select_all patterns) -->
+<%= render(TreeView::Component.new(
+  variant: :bordered,
+  selectable: true,
+  name: "files[]",
+  select_all_label: "Select All Files",
+  toggle_key: "x"
+)) do |tree| %>
+  <% tree.with_node(label: "app", type: :folder, default_open: true) do |folder| %>
+    <% folder.with_child(label: "layout.tsx", type: :file, value: "app/layout.tsx") %>
+    <% folder.with_child(label: "page.tsx", type: :file, value: "app/page.tsx", checked: true) %>
+    <% folder.with_child(label: "components", type: :folder, default_open: true) do |subfolder| %>
+      <% subfolder.with_child(label: "Header.tsx", type: :file, value: "app/components/Header.tsx") %>
+      <% subfolder.with_child(label: "Footer.tsx", type: :file, value: "app/components/Footer.tsx") %>
+    <% end %>
+  <% end %>
+  <% tree.with_node(label: "lib", type: :folder) do |folder| %>
+    <% folder.with_child(label: "utils.ts", type: :file, value: "lib/utils.ts") %>
+  <% end %>
+<% end %>
+
+<!-- Flat selectable list with select all -->
+<%= render(TreeView::Component.new(
+  selectable: true,
+  select_all_label: "Select All",
+  name: "selected_files[]"
+)) do |tree| %>
+  <% tree.with_node(label: "Document 1.pdf", type: :file, value: "doc1") %>
+  <% tree.with_node(label: "Document 2.pdf", type: :file, value: "doc2") %>
+  <% tree.with_node(label: "Document 3.pdf", type: :file, value: "doc3") %>
+<% end %>

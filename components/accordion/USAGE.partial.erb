@@ -1,0 +1,20 @@
+<!-- Basic usage with items array -->
+<%= render "shared/components/accordion/accordion",
+  items: [
+    { title: "Question 1", content: "Answer content here" },
+    { title: "Question 2", content: "More content" },
+    { title: "Question 3", content: "Even more content" }
+  ]
+%>
+
+<!-- With options: bordered variant, plus/minus icon, allow multiple open -->
+<%= render "shared/components/accordion/accordion",
+  items: [
+    { title: "First item", content: "Content for the first item.", default_open: true },
+    { title: "Second item", content: "Content for the second item." },
+    { title: "Disabled item", content: "This won't be shown.", disabled: true }
+  ],
+  icon: "plus_minus",
+  variant: "bordered",
+  allow_multiple: true
+%>

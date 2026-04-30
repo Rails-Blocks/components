@@ -1,0 +1,55 @@
+<!-- Basic feedback widget (centered) -->
+<%= render "shared/components/feedback/feedback" %>
+
+<!-- Custom button text -->
+<%= render "shared/components/feedback/feedback",
+  button_text: "Send Feedback",
+  placeholder: "What's on your mind?",
+  submit_text: "Submit" %>
+
+<!-- Top-left anchor point -->
+<%= render "shared/components/feedback/feedback",
+  anchor_point: "top-left",
+  button_text: "Give Feedback" %>
+
+<!-- Top-right anchor point -->
+<%= render "shared/components/feedback/feedback",
+  anchor_point: "top-right" %>
+
+<!-- Bottom-left anchor point -->
+<%= render "shared/components/feedback/feedback",
+  anchor_point: "bottom-left" %>
+
+<!-- Bottom-right anchor point -->
+<%= render "shared/components/feedback/feedback",
+  anchor_point: "bottom-right" %>
+
+<!-- Top center anchor point -->
+<%= render "shared/components/feedback/feedback",
+  anchor_point: "top" %>
+
+<!-- Bottom center anchor point -->
+<%= render "shared/components/feedback/feedback",
+  anchor_point: "bottom" %>
+
+<!-- Left anchor point -->
+<%= render "shared/components/feedback/feedback",
+  anchor_point: "left" %>
+
+<!-- Right anchor point -->
+<%= render "shared/components/feedback/feedback",
+  anchor_point: "right" %>
+
+<!-- With form action (server-side submission) -->
+<%= render "shared/components/feedback/feedback",
+  button_text: "Report Issue",
+  placeholder: "Describe the issue...",
+  submit_text: "Submit Report",
+  form_action: "/feedback",
+  form_method: "post",
+  name: "issue_report" %>
+
+<!-- With custom classes -->
+<%= render "shared/components/feedback/feedback",
+  button_text: "Feedback",
+  classes: "max-w-md mx-auto" %>

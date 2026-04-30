@@ -1,0 +1,16 @@
+{
+  "component": "loading_indicator",
+  "implementation": "view_component",
+  "files": [
+    {
+      "path": "loading_indicator/component.rb",
+      "relative_path": "component.rb",
+      "checksum": "fd0b168761e63884bbadcf2dede3c37db8306fd1c8e5bc5c419ca5ef76ff04d0"
+    },
+    {
+      "path": "loading_indicator/component.html.erb",
+      "relative_path": "component.html.erb",
+      "checksum": "e4783dd34ecf5bd95ba8f66d5bf5611b4882f7f6976bb1f160f043ceeb64476b"
+    }
+  ]
+}

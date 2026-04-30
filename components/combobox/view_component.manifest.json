@@ -1,0 +1,16 @@
+{
+  "component": "combobox",
+  "implementation": "view_component",
+  "files": [
+    {
+      "path": "combobox/component.rb",
+      "relative_path": "component.rb",
+      "checksum": "a520a1dc59f178d166b86a7dac84dbf7518300b02175f6e1a238c191fcf57ed4"
+    },
+    {
+      "path": "combobox/component.html.erb",
+      "relative_path": "component.html.erb",
+      "checksum": "607c20b3f398e53948955d6a819a0c23c2de01f2436880334ac6a581da25f403"
+    }
+  ]
+}

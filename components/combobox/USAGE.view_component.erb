@@ -1,0 +1,160 @@
+<!-- Basic single select -->
+<%= render Combobox::Component.new(
+  name: "framework",
+  placeholder: "Select framework...",
+  options: [
+    ["Ruby on Rails", "rails"],
+    ["Laravel", "laravel"],
+    ["Django", "django"],
+    ["Express.js", "express"]
+  ]
+) %>
+
+<!-- With pre-selected value -->
+<%= render Combobox::Component.new(
+  name: "language",
+  placeholder: "Select language...",
+  options: [
+    ["Ruby", "ruby"],
+    ["Python", "python"],
+    ["JavaScript", "javascript"]
+  ],
+  selected: "ruby"
+) %>
+
+<!-- With label, description, and required indicator -->
+<%= render Combobox::Component.new(
+  name: "deployment_region",
+  label: "Deployment Region",
+  description: "Choose where your app will be deployed",
+  required: true,
+  placeholder: "Select region...",
+  options: [
+    ["US East", "us-east"],
+    ["US West", "us-west"],
+    ["EU Central", "eu-central"]
+  ]
+) %>
+
+<!-- Multi-select -->
+<%= render Combobox::Component.new(
+  name: "skills[]",
+  placeholder: "Select skills...",
+  multiple: true,
+  options: [
+    ["Ruby", "ruby"],
+    ["JavaScript", "javascript"],
+    ["Python", "python"],
+    ["Go", "go"]
+  ]
+) %>
+
+<!-- Multi-select with count display -->
+<%= render Combobox::Component.new(
+  name: "categories[]",
+  placeholder: "Select categories...",
+  multiple: true,
+  show_count: true,
+  count_text: "categories selected",
+  count_text_singular: "category selected",
+  options: [
+    ["Electronics", "electronics"],
+    ["Clothing", "clothing"],
+    ["Home & Garden", "home"]
+  ]
+) %>
+
+<!-- With grouped options -->
+<%= render Combobox::Component.new(
+  name: "technology",
+  placeholder: "Select technology...",
+  grouped_options: {
+    "Frontend" => [["React", "react"], ["Vue", "vue"], ["Angular", "angular"]],
+    "Backend" => [["Rails", "rails"], ["Django", "django"], ["Laravel", "laravel"]]
+  }
+) %>
+
+<!-- Allow creating new options -->
+<%= render Combobox::Component.new(
+  name: "tag",
+  placeholder: "Select or create tag...",
+  allow_create: true,
+  options: [
+    ["Bug", "bug"],
+    ["Feature", "feature"],
+    ["Enhancement", "enhancement"]
+  ]
+) %>
+
+<!-- Async GitHub user search (via backend proxy) -->
+<%= render Combobox::Component.new(
+  name: "github_user",
+  placeholder: "Search GitHub users...",
+  url: "/api/github-users",
+  value_field: "login",
+  label_field: "name",
+  dropdown_input: false
+) %>
+
+<!-- Direct Rick and Morty API search -->
+<%= render Combobox::Component.new(
+  name: "rick_and_morty_character",
+  placeholder: "Search Rick and Morty characters...",
+  url: "https://rickandmortyapi.com/api/character",
+  value_field: "id",
+  label_field: "name",
+  search_param: "name",
+  image_field: "image",
+  subtitle_field: "status",
+  badge_field: "species"
+) %>
+
+<!-- Tags positioned below input -->
+<%= render Combobox::Component.new(
+  name: "tags[]",
+  placeholder: "Select tags...",
+  multiple: true,
+  tags_position: "below",
+  options: [
+    ["Important", "important"],
+    ["Urgent", "urgent"],
+    ["Low Priority", "low"]
+  ]
+) %>
+
+<!-- Disabled combobox -->
+<%= render Combobox::Component.new(
+  name: "status",
+  placeholder: "Select status...",
+  disabled: true,
+  options: [
+    ["Active", "active"],
+    ["Inactive", "inactive"]
+  ],
+  selected: "active"
+) %>
+
+<!-- Without search (dropdown only) -->
+<%= render Combobox::Component.new(
+  name: "priority",
+  placeholder: "Select priority...",
+  searchable: false,
+  options: [
+    ["High", "high"],
+    ["Medium", "medium"],
+    ["Low", "low"]
+  ]
+) %>
+
+<!-- With additional data attributes -->
+<%= render Combobox::Component.new(
+  name: "combobox_custom_data",
+  label: "Custom Data Attributes",
+  options: [
+    ["Option 1", "1"],
+    ["Option 2", "2"]
+  ],
+  data: {
+    select_submit_on_change_value: true
+  }
+) %>

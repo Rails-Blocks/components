@@ -1,0 +1,77 @@
+<!-- Basic usage with simple links -->
+<%= render(Navbar::Component.new) do |navbar| %>
+  <% navbar.with_item(label: "Home", href: "/") %>
+  <% navbar.with_item(label: "Products", href: "/products") %>
+  <% navbar.with_item(label: "About", href: "/about") %>
+  <% navbar.with_item(label: "Contact", href: "/contact") %>
+<% end %>
+
+<!-- With dropdown menus -->
+<%= render(Navbar::Component.new) do |navbar| %>
+  <% navbar.with_item(label: "Home", href: "/") %>
+  <% navbar.with_item(label: "Products", dropdown: true, content_id: "products-dropdown", mobile_hidden: true) %>
+  <% navbar.with_item(label: "Resources", dropdown: true, content_id: "resources-dropdown", mobile_hidden: true) %>
+  <% navbar.with_item(label: "Contact", href: "/contact", mobile_hidden: true) %>
+
+  <% navbar.with_dropdown_content(id: "products-dropdown", width: "w-[calc(100vw-2rem)] sm:w-[500px]", columns: 2) do %>
+    <a href="/products/software" class="block rounded-lg p-3 no-underline hover:bg-neutral-100 dark:hover:bg-neutral-700">
+      <div class="mb-1 font-medium text-neutral-900 dark:text-neutral-100">Software</div>
+      <p class="m-0 text-sm text-neutral-600 dark:text-neutral-400">Our software solutions.</p>
+    </a>
+    <a href="/products/hardware" class="block rounded-lg p-3 no-underline hover:bg-neutral-100 dark:hover:bg-neutral-700">
+      <div class="mb-1 font-medium text-neutral-900 dark:text-neutral-100">Hardware</div>
+      <p class="m-0 text-sm text-neutral-600 dark:text-neutral-400">Physical products.</p>
+    </a>
+  <% end %>
+
+  <% navbar.with_dropdown_content(id: "resources-dropdown", width: "w-[calc(100vw-2rem)] sm:w-[400px]") do %>
+    <a href="/blog" class="block rounded-lg p-3 no-underline hover:bg-neutral-100 dark:hover:bg-neutral-700">
+      <div class="mb-1 font-medium text-neutral-900 dark:text-neutral-100">Blog</div>
+      <p class="m-0 text-sm text-neutral-600 dark:text-neutral-400">Read our latest posts.</p>
+    </a>
+    <a href="/docs" class="block rounded-lg p-3 no-underline hover:bg-neutral-100 dark:hover:bg-neutral-700">
+      <div class="mb-1 font-medium text-neutral-900 dark:text-neutral-100">Documentation</div>
+      <p class="m-0 text-sm text-neutral-600 dark:text-neutral-400">Technical guides.</p>
+    </a>
+  <% end %>
+
+  <% navbar.with_dropdown_content(id: "mobile-menu-content", width: "w-[calc(100vw-2rem)]") do %>
+    <a href="/products" class="block rounded-lg p-3 no-underline hover:bg-neutral-100 dark:hover:bg-neutral-700">Products</a>
+    <a href="/resources" class="block rounded-lg p-3 no-underline hover:bg-neutral-100 dark:hover:bg-neutral-700">Resources</a>
+    <a href="/contact" class="block rounded-lg p-3 no-underline hover:bg-neutral-100 dark:hover:bg-neutral-700">Contact</a>
+  <% end %>
+<% end %>
+
+<!-- With logo and actions -->
+<%= render(Navbar::Component.new) do |navbar| %>
+  <% navbar.with_logo do %>
+    <a href="/" class="flex items-center gap-2 px-2">
+      <span class="font-bold text-neutral-900 dark:text-white">MyBrand</span>
+    </a>
+  <% end %>
+
+  <% navbar.with_item(label: "Features", href: "/features") %>
+  <% navbar.with_item(label: "Pricing", href: "/pricing") %>
+  <% navbar.with_item(label: "Docs", href: "/docs") %>
+
+  <% navbar.with_actions do %>
+    <li class="ml-2 pl-2 border-l border-neutral-200 dark:border-neutral-700">
+      <a href="/login" class="block rounded-md px-3 py-2 text-sm font-medium text-neutral-700 no-underline hover:bg-neutral-100 dark:text-neutral-300 dark:hover:bg-neutral-700">
+        Sign in
+      </a>
+    </li>
+  <% end %>
+<% end %>
+
+<!-- Sticky navbar with transparent variant -->
+<%= render(Navbar::Component.new(variant: :transparent, sticky: true)) do |navbar| %>
+  <% navbar.with_item(label: "Home", href: "/") %>
+  <% navbar.with_item(label: "About", href: "/about") %>
+  <% navbar.with_item(label: "Contact", href: "/contact") %>
+<% end %>
+
+<!-- Without mobile menu -->
+<%= render(Navbar::Component.new(show_mobile_menu: false)) do |navbar| %>
+  <% navbar.with_item(label: "Home", href: "/") %>
+  <% navbar.with_item(label: "Products", href: "/products") %>
+<% end %>

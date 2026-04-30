@@ -1,0 +1,31 @@
+{
+  "component": "sidebar",
+  "implementation": "erb_template",
+  "files": [
+    {
+      "path": "sidebar/_sidebar_item.html.erb",
+      "relative_path": "_sidebar_item.html.erb",
+      "checksum": "20954ae5f07da9df12fe48e332140acfbd508009ce7a795e509b73fc578182ab"
+    },
+    {
+      "path": "sidebar/_sidebar.html.erb",
+      "relative_path": "_sidebar.html.erb",
+      "checksum": "7b3ba10a0d95154f901cf0a2410fb81e71f64affb01bc0d8601db2ab52dc8b97"
+    },
+    {
+      "path": "sidebar/_sidebar_item_collapsed.html.erb",
+      "relative_path": "_sidebar_item_collapsed.html.erb",
+      "checksum": "d4ee42f225b12c900253202c829d72f699f69a31d8adf91f5c47bd99b95774ea"
+    },
+    {
+      "path": "sidebar/_sidebar_section.html.erb",
+      "relative_path": "_sidebar_section.html.erb",
+      "checksum": "02c7a932b4ec3b268bdd7908302cdd72601015a3866774feb4238fae2466bafe"
+    },
+    {
+      "path": "sidebar/_sidebar_section_item.html.erb",
+      "relative_path": "_sidebar_section_item.html.erb",
+      "checksum": "9d0d5feebb5213171d7ff1118343042527d39eb8a97cdd067ebbf6c58f4c1f20"
+    }
+  ]
+}

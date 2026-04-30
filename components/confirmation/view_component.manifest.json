@@ -1,0 +1,16 @@
+{
+  "component": "confirmation",
+  "implementation": "view_component",
+  "files": [
+    {
+      "path": "confirmation/component.rb",
+      "relative_path": "component.rb",
+      "checksum": "81038a12d7c2811e1c9d76501775fdf102e40697a5249eb635ae06d1604bef66"
+    },
+    {
+      "path": "confirmation/component.html.erb",
+      "relative_path": "component.html.erb",
+      "checksum": "c9567f8343a42c3cef534113b48af783006061296016db8fd9dd4d807c7384e7"
+    }
+  ]
+}

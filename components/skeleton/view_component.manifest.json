@@ -1,0 +1,16 @@
+{
+  "component": "skeleton",
+  "implementation": "view_component",
+  "files": [
+    {
+      "path": "skeleton/component.rb",
+      "relative_path": "component.rb",
+      "checksum": "0cdf7edb1d8493967d89b6466dc48a7c70a2702c8a0c205f17d90fd23c720a68"
+    },
+    {
+      "path": "skeleton/component.html.erb",
+      "relative_path": "component.html.erb",
+      "checksum": "d5f3e39a033966cd6235092ed8d29c7bef6f9102b43f1b7f6c499666544221f8"
+    }
+  ]
+}

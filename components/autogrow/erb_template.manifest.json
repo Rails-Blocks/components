@@ -1,0 +1,11 @@
+{
+  "component": "autogrow",
+  "implementation": "erb_template",
+  "files": [
+    {
+      "path": "autogrow/_autogrow.html.erb",
+      "relative_path": "_autogrow.html.erb",
+      "checksum": "9a5d02f69f427772faa380a24f0650c47398f58d1cc6b604803e8d1de6f5252a"
+    }
+  ]
+}

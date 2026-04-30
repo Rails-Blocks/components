@@ -1,0 +1,21 @@
+{
+  "component": "checkbox_select_all",
+  "implementation": "erb_template",
+  "files": [
+    {
+      "path": "checkbox_select_all/_checkbox_select_all_group.html.erb",
+      "relative_path": "_checkbox_select_all_group.html.erb",
+      "checksum": "e11ea016a780c82cbdebf5f6d4fdf03ad6da6b42e63f589ea4a51d54b8a51005"
+    },
+    {
+      "path": "checkbox_select_all/_checkbox_select_all.html.erb",
+      "relative_path": "_checkbox_select_all.html.erb",
+      "checksum": "94c65be25f00a4987053a883136420fae4aa02cbad1f5658bdf2dcdcf309e3cf"
+    },
+    {
+      "path": "checkbox_select_all/_checkbox_select_all_item.html.erb",
+      "relative_path": "_checkbox_select_all_item.html.erb",
+      "checksum": "97f2e2e3d1719dd5539037dce9ee7d81b171de19d0c9e67d79d05a85bf674a84"
+    }
+  ]
+}
