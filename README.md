@@ -9,7 +9,7 @@ This repository is the public artifact registry for the free Rails Blocks compon
 - `registry.json` - machine-readable component registry.
 - `components/` - free component docs, usage examples, and package manifests.
 - `stimulus_controllers/` - free Stimulus controllers used by the components.
-- `packages/0.1.0/` - immutable zip packages and SHA256 checksums.
+- `packages/0.1.1/` - immutable zip packages and SHA256 checksums.
 
 ## Usage
 

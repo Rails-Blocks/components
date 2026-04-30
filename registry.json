@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-04-30T03:11:38Z",
-  "version": "0.1.0",
+  "generated_at": "2026-04-30T05:09:04Z",
+  "version": "0.1.1",
   "source": "rails-blocks",
   "stimulus_controllers": {
     "type": "free",
@@ -32,13 +32,14 @@
       "scroll_area_controller.js",
       "select_controller.js",
       "sidebar_controller.js",
+      "shoelace_color_picker_controller.js",
       "toast_controller.js",
       "tooltip_controller.js",
       "tree_view_controller.js",
       "two_factor_controller.js"
     ],
-    "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/stimulus_controllers.zip",
-    "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/stimulus_controllers.zip.sha256"
+    "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/stimulus_controllers.zip",
+    "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/stimulus_controllers.zip.sha256"
   },
   "components": [
     {
@@ -49,15 +50,23 @@
         "tailwindcss",
         "stimulus"
       ],
+      "required_stimulus_controllers": [
+        "accordion_controller.js"
+      ],
       "requires_stimulus_controller": true,
       "has_complex_installation": false,
       "markdown_available": true,
       "view_component_available": true,
       "erb_template_available": true,
       "docs_path": "/docs/accordion.md",
+      "docs_url": "https://railsblocks.com/docs/accordion",
+      "markdown_url": "https://railsblocks.com/docs/accordion.md",
+      "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/accordion/ACCORDION.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/accordion.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/accordion.zip.sha256"
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/accordion.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/accordion.zip.sha256",
+      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/accordion-stimulus.zip",
+      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/accordion-stimulus.zip.sha256"
     },
     {
       "slug": "alert",
@@ -66,15 +75,21 @@
       "dependencies": [
         "tailwindcss"
       ],
+      "required_stimulus_controllers": [],
       "requires_stimulus_controller": false,
       "has_complex_installation": false,
       "markdown_available": true,
       "view_component_available": true,
       "erb_template_available": true,
       "docs_path": "/docs/alert.md",
+      "docs_url": "https://railsblocks.com/docs/alert",
+      "markdown_url": "https://railsblocks.com/docs/alert.md",
+      "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/alert/ALERT.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/alert.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/alert.zip.sha256"
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/alert.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/alert.zip.sha256",
+      "stimulus_package_url": null,
+      "stimulus_checksum_url": null
     },
     {
       "slug": "animated_number",
@@ -85,15 +100,23 @@
         "stimulus",
         "number_flow"
       ],
+      "required_stimulus_controllers": [
+        "animated_number_controller.js"
+      ],
       "requires_stimulus_controller": true,
       "has_complex_installation": true,
       "markdown_available": true,
       "view_component_available": true,
       "erb_template_available": true,
       "docs_path": "/docs/animated-number.md",
+      "docs_url": "https://railsblocks.com/docs/animated-number",
+      "markdown_url": "https://railsblocks.com/docs/animated-number.md",
+      "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/animated_number/ANIMATED_NUMBER.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/animated_number.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/animated_number.zip.sha256"
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/animated_number.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/animated_number.zip.sha256",
+      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/animated_number-stimulus.zip",
+      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/animated_number-stimulus.zip.sha256"
     },
     {
       "slug": "autocomplete",
@@ -104,12 +127,21 @@
         "stimulus",
         "floating_ui"
       ],
+      "required_stimulus_controllers": [
+        "autocomplete_controller.js",
+        "autocomplete_fuzzy_search_controller.js",
+        "autocomplete_navigation_controller.js",
+        "autocomplete_recent_searches_controller.js"
+      ],
       "requires_stimulus_controller": true,
       "has_complex_installation": true,
       "markdown_available": true,
       "view_component_available": true,
       "erb_template_available": true,
       "docs_path": "/docs/autocomplete.md",
+      "docs_url": "https://railsblocks.com/docs/autocomplete",
+      "markdown_url": "https://railsblocks.com/docs/autocomplete.md",
+      "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/autocomplete/AUTOCOMPLETE.md",
       "upgrade_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/pro"
     },
     {
@@ -120,15 +152,23 @@
         "tailwindcss",
         "stimulus"
       ],
+      "required_stimulus_controllers": [
+        "autogrow_controller.js"
+      ],
       "requires_stimulus_controller": true,
       "has_complex_installation": true,
       "markdown_available": true,
       "view_component_available": true,
       "erb_template_available": true,
       "docs_path": "/docs/autogrow.md",
+      "docs_url": "https://railsblocks.com/docs/autogrow",
+      "markdown_url": "https://railsblocks.com/docs/autogrow.md",
+      "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/autogrow/AUTOGROW.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/autogrow.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/autogrow.zip.sha256"
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/autogrow.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/autogrow.zip.sha256",
+      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/autogrow-stimulus.zip",
+      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/autogrow-stimulus.zip.sha256"
     },
     {
       "slug": "badge",
@@ -137,15 +177,21 @@
       "dependencies": [
         "tailwindcss"
       ],
+      "required_stimulus_controllers": [],
       "requires_stimulus_controller": false,
       "has_complex_installation": false,
       "markdown_available": true,
       "view_component_available": true,
       "erb_template_available": true,
       "docs_path": "/docs/badge.md",
+      "docs_url": "https://railsblocks.com/docs/badge",
+      "markdown_url": "https://railsblocks.com/docs/badge.md",
+      "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/badge/BADGE.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/badge.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/badge.zip.sha256"
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/badge.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/badge.zip.sha256",
+      "stimulus_package_url": null,
+      "stimulus_checksum_url": null
     },
     {
       "slug": "banner",
@@ -155,15 +201,23 @@
         "tailwindcss",
         "stimulus"
       ],
+      "required_stimulus_controllers": [
+        "banner_controller.js"
+      ],
       "requires_stimulus_controller": true,
       "has_complex_installation": false,
       "markdown_available": true,
       "view_component_available": true,
       "erb_template_available": true,
       "docs_path": "/docs/banner.md",
+      "docs_url": "https://railsblocks.com/docs/banner",
+      "markdown_url": "https://railsblocks.com/docs/banner.md",
+      "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/banner/BANNER.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/banner.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/banner.zip.sha256"
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/banner.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/banner.zip.sha256",
+      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/banner-stimulus.zip",
+      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/banner-stimulus.zip.sha256"
     },
     {
       "slug": "breadcrumb",
@@ -173,15 +227,21 @@
         "tailwindcss",
         "stimulus"
       ],
+      "required_stimulus_controllers": [],
       "requires_stimulus_controller": false,
       "has_complex_installation": false,
       "markdown_available": true,
       "view_component_available": true,
       "erb_template_available": true,
       "docs_path": "/docs/breadcrumb.md",
+      "docs_url": "https://railsblocks.com/docs/breadcrumb",
+      "markdown_url": "https://railsblocks.com/docs/breadcrumb.md",
+      "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/breadcrumb/BREADCRUMB.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/breadcrumb.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/breadcrumb.zip.sha256"
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/breadcrumb.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/breadcrumb.zip.sha256",
+      "stimulus_package_url": null,
+      "stimulus_checksum_url": null
     },
     {
       "slug": "buttons",
@@ -190,15 +250,21 @@
       "dependencies": [
         "tailwindcss"
       ],
+      "required_stimulus_controllers": [],
       "requires_stimulus_controller": false,
       "has_complex_installation": false,
       "markdown_available": true,
       "view_component_available": true,
       "erb_template_available": true,
       "docs_path": "/docs/buttons.md",
+      "docs_url": "https://railsblocks.com/docs/buttons",
+      "markdown_url": "https://railsblocks.com/docs/buttons.md",
+      "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/buttons/BUTTONS.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/buttons.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/buttons.zip.sha256"
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/buttons.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/buttons.zip.sha256",
+      "stimulus_package_url": null,
+      "stimulus_checksum_url": null
     },
     {
       "slug": "card",
@@ -207,15 +273,21 @@
       "dependencies": [
         "tailwindcss"
       ],
+      "required_stimulus_controllers": [],
       "requires_stimulus_controller": false,
       "has_complex_installation": false,
       "markdown_available": true,
       "view_component_available": true,
       "erb_template_available": true,
       "docs_path": "/docs/card.md",
+      "docs_url": "https://railsblocks.com/docs/card",
+      "markdown_url": "https://railsblocks.com/docs/card.md",
+      "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/card/CARD.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/card.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/card.zip.sha256"
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/card.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/card.zip.sha256",
+      "stimulus_package_url": null,
+      "stimulus_checksum_url": null
     },
     {
       "slug": "carousel",
@@ -226,15 +298,23 @@
         "stimulus",
         "embla_carousel"
       ],
+      "required_stimulus_controllers": [
+        "carousel_controller.js"
+      ],
       "requires_stimulus_controller": true,
       "has_complex_installation": true,
       "markdown_available": true,
       "view_component_available": true,
       "erb_template_available": true,
       "docs_path": "/docs/carousel.md",
+      "docs_url": "https://railsblocks.com/docs/carousel",
+      "markdown_url": "https://railsblocks.com/docs/carousel.md",
+      "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/carousel/CAROUSEL.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/carousel.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/carousel.zip.sha256"
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/carousel.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/carousel.zip.sha256",
+      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/carousel-stimulus.zip",
+      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/carousel-stimulus.zip.sha256"
     },
     {
       "slug": "checkbox",
@@ -243,15 +323,21 @@
       "dependencies": [
         "tailwindcss"
       ],
-      "requires_stimulus_controller": true,
+      "required_stimulus_controllers": [],
+      "requires_stimulus_controller": false,
       "has_complex_installation": true,
       "markdown_available": true,
       "view_component_available": true,
       "erb_template_available": true,
       "docs_path": "/docs/checkbox.md",
+      "docs_url": "https://railsblocks.com/docs/checkbox",
+      "markdown_url": "https://railsblocks.com/docs/checkbox.md",
+      "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/checkbox/CHECKBOX.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/checkbox.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/checkbox.zip.sha256"
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/checkbox.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/checkbox.zip.sha256",
+      "stimulus_package_url": null,
+      "stimulus_checksum_url": null
     },
     {
       "slug": "checkbox_select_all",
@@ -261,15 +347,23 @@
         "tailwindcss",
         "stimulus"
       ],
+      "required_stimulus_controllers": [
+        "checkbox_select_all_controller.js"
+      ],
       "requires_stimulus_controller": true,
       "has_complex_installation": true,
       "markdown_available": true,
       "view_component_available": true,
       "erb_template_available": true,
       "docs_path": "/docs/checkbox-select-all.md",
+      "docs_url": "https://railsblocks.com/docs/checkbox-select-all",
+      "markdown_url": "https://railsblocks.com/docs/checkbox-select-all.md",
+      "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/checkbox_select_all/CHECKBOX_SELECT_ALL.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/checkbox_select_all.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/checkbox_select_all.zip.sha256"
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/checkbox_select_all.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/checkbox_select_all.zip.sha256",
+      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/checkbox_select_all-stimulus.zip",
+      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/checkbox_select_all-stimulus.zip.sha256"
     },
     {
       "slug": "clipboard",
@@ -280,15 +374,23 @@
         "stimulus",
         "floating_ui"
       ],
+      "required_stimulus_controllers": [
+        "clipboard_controller.js"
+      ],
       "requires_stimulus_controller": true,
       "has_complex_installation": true,
       "markdown_available": true,
       "view_component_available": true,
       "erb_template_available": true,
       "docs_path": "/docs/clipboard.md",
+      "docs_url": "https://railsblocks.com/docs/clipboard",
+      "markdown_url": "https://railsblocks.com/docs/clipboard.md",
+      "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/clipboard/CLIPBOARD.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/clipboard.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/clipboard.zip.sha256"
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/clipboard.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/clipboard.zip.sha256",
+      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/clipboard-stimulus.zip",
+      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/clipboard-stimulus.zip.sha256"
     },
     {
       "slug": "collapsible",
@@ -298,15 +400,23 @@
         "tailwindcss",
         "stimulus"
       ],
+      "required_stimulus_controllers": [
+        "collapsible_controller.js"
+      ],
       "requires_stimulus_controller": true,
       "has_complex_installation": false,
       "markdown_available": true,
       "view_component_available": true,
       "erb_template_available": true,
       "docs_path": "/docs/collapsible.md",
+      "docs_url": "https://railsblocks.com/docs/collapsible",
+      "markdown_url": "https://railsblocks.com/docs/collapsible.md",
+      "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/collapsible/COLLAPSIBLE.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/collapsible.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/collapsible.zip.sha256"
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/collapsible.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/collapsible.zip.sha256",
+      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/collapsible-stimulus.zip",
+      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/collapsible-stimulus.zip.sha256"
     },
     {
       "slug": "color_picker",
@@ -317,15 +427,23 @@
         "stimulus",
         "shoelace"
       ],
+      "required_stimulus_controllers": [
+        "shoelace_color_picker_controller.js"
+      ],
       "requires_stimulus_controller": true,
       "has_complex_installation": true,
       "markdown_available": true,
       "view_component_available": true,
       "erb_template_available": true,
       "docs_path": "/docs/color-picker.md",
+      "docs_url": "https://railsblocks.com/docs/color-picker",
+      "markdown_url": "https://railsblocks.com/docs/color-picker.md",
+      "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/color_picker/COLOR_PICKER.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/color_picker.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/color_picker.zip.sha256"
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/color_picker.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/color_picker.zip.sha256",
+      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/color_picker-stimulus.zip",
+      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/color_picker-stimulus.zip.sha256"
     },
     {
       "slug": "combobox",
@@ -337,15 +455,23 @@
         "tom_select",
         "floating_ui"
       ],
+      "required_stimulus_controllers": [
+        "select_controller.js"
+      ],
       "requires_stimulus_controller": true,
       "has_complex_installation": true,
       "markdown_available": true,
       "view_component_available": true,
       "erb_template_available": true,
       "docs_path": "/docs/combobox.md",
+      "docs_url": "https://railsblocks.com/docs/combobox",
+      "markdown_url": "https://railsblocks.com/docs/combobox.md",
+      "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/combobox/COMBOBOX.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/combobox.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/combobox.zip.sha256"
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/combobox.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/combobox.zip.sha256",
+      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/combobox-stimulus.zip",
+      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/combobox-stimulus.zip.sha256"
     },
     {
       "slug": "command_palette",
@@ -356,12 +482,16 @@
         "stimulus",
         "floating_ui"
       ],
-      "requires_stimulus_controller": true,
+      "required_stimulus_controllers": [],
+      "requires_stimulus_controller": false,
       "has_complex_installation": true,
       "markdown_available": true,
       "view_component_available": true,
       "erb_template_available": true,
       "docs_path": "/docs/command-palette.md",
+      "docs_url": "https://railsblocks.com/docs/command-palette",
+      "markdown_url": "https://railsblocks.com/docs/command-palette.md",
+      "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/command_palette/COMMAND_PALETTE.md",
       "upgrade_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/pro"
     },
     {
@@ -372,15 +502,23 @@
         "tailwindcss",
         "stimulus"
       ],
+      "required_stimulus_controllers": [
+        "confirmation_controller.js"
+      ],
       "requires_stimulus_controller": true,
       "has_complex_installation": true,
       "markdown_available": true,
       "view_component_available": true,
       "erb_template_available": true,
       "docs_path": "/docs/confirmation.md",
+      "docs_url": "https://railsblocks.com/docs/confirmation",
+      "markdown_url": "https://railsblocks.com/docs/confirmation.md",
+      "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/confirmation/CONFIRMATION.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/confirmation.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/confirmation.zip.sha256"
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/confirmation.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/confirmation.zip.sha256",
+      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/confirmation-stimulus.zip",
+      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/confirmation-stimulus.zip.sha256"
     },
     {
       "slug": "context_menu",
@@ -391,12 +529,20 @@
         "stimulus",
         "floating_ui"
       ],
+      "required_stimulus_controllers": [
+        "context_menu_controller.js",
+        "dropdown_popover_controller.js",
+        "menu_controller.js"
+      ],
       "requires_stimulus_controller": true,
       "has_complex_installation": true,
       "markdown_available": true,
       "view_component_available": true,
       "erb_template_available": true,
       "docs_path": "/docs/context-menu.md",
+      "docs_url": "https://railsblocks.com/docs/context-menu",
+      "markdown_url": "https://railsblocks.com/docs/context-menu.md",
+      "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/context_menu/CONTEXT_MENU.md",
       "upgrade_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/pro"
     },
     {
@@ -408,12 +554,19 @@
         "stimulus",
         "pagy"
       ],
+      "required_stimulus_controllers": [
+        "autosubmit_controller.js",
+        "datatable_controller.js"
+      ],
       "requires_stimulus_controller": true,
       "has_complex_installation": true,
       "markdown_available": true,
       "view_component_available": true,
       "erb_template_available": true,
       "docs_path": "/docs/datatable.md",
+      "docs_url": "https://railsblocks.com/docs/datatable",
+      "markdown_url": "https://railsblocks.com/docs/datatable.md",
+      "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/datatable/DATATABLE.md",
       "upgrade_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/pro"
     },
     {
@@ -426,15 +579,23 @@
         "air_datepicker",
         "floating_ui"
       ],
+      "required_stimulus_controllers": [
+        "date_picker_controller.js"
+      ],
       "requires_stimulus_controller": true,
       "has_complex_installation": true,
       "markdown_available": true,
       "view_component_available": true,
       "erb_template_available": true,
       "docs_path": "/docs/date-picker.md",
+      "docs_url": "https://railsblocks.com/docs/date-picker",
+      "markdown_url": "https://railsblocks.com/docs/date-picker.md",
+      "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/date_picker/DATE_PICKER.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/date_picker.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/date_picker.zip.sha256"
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/date_picker.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/date_picker.zip.sha256",
+      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/date_picker-stimulus.zip",
+      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/date_picker-stimulus.zip.sha256"
     },
     {
       "slug": "dock",
@@ -446,15 +607,23 @@
         "floating_ui",
         "motion"
       ],
+      "required_stimulus_controllers": [
+        "dock_controller.js"
+      ],
       "requires_stimulus_controller": true,
       "has_complex_installation": true,
       "markdown_available": true,
       "view_component_available": true,
       "erb_template_available": true,
       "docs_path": "/docs/dock.md",
+      "docs_url": "https://railsblocks.com/docs/dock",
+      "markdown_url": "https://railsblocks.com/docs/dock.md",
+      "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/dock/DOCK.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/dock.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/dock.zip.sha256"
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/dock.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/dock.zip.sha256",
+      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/dock-stimulus.zip",
+      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/dock-stimulus.zip.sha256"
     },
     {
       "slug": "drawer",
@@ -464,12 +633,18 @@
         "tailwindcss",
         "stimulus"
       ],
+      "required_stimulus_controllers": [
+        "drawer_controller.js"
+      ],
       "requires_stimulus_controller": true,
       "has_complex_installation": true,
       "markdown_available": true,
       "view_component_available": true,
       "erb_template_available": true,
       "docs_path": "/docs/drawer.md",
+      "docs_url": "https://railsblocks.com/docs/drawer",
+      "markdown_url": "https://railsblocks.com/docs/drawer.md",
+      "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/drawer/DRAWER.md",
       "upgrade_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/pro"
     },
     {
@@ -481,12 +656,20 @@
         "stimulus",
         "floating_ui"
       ],
+      "required_stimulus_controllers": [
+        "dropdown_popover_controller.js",
+        "menu_controller.js",
+        "searchable_dropdown_controller.js"
+      ],
       "requires_stimulus_controller": true,
       "has_complex_installation": true,
       "markdown_available": true,
       "view_component_available": true,
       "erb_template_available": true,
       "docs_path": "/docs/dropdown.md",
+      "docs_url": "https://railsblocks.com/docs/dropdown",
+      "markdown_url": "https://railsblocks.com/docs/dropdown.md",
+      "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/dropdown/DROPDOWN.md",
       "upgrade_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/pro"
     },
     {
@@ -498,15 +681,23 @@
         "stimulus",
         "emoji_mart"
       ],
+      "required_stimulus_controllers": [
+        "emoji_picker_controller.js"
+      ],
       "requires_stimulus_controller": true,
       "has_complex_installation": true,
       "markdown_available": true,
       "view_component_available": true,
       "erb_template_available": true,
       "docs_path": "/docs/emoji-picker.md",
+      "docs_url": "https://railsblocks.com/docs/emoji-picker",
+      "markdown_url": "https://railsblocks.com/docs/emoji-picker.md",
+      "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/emoji_picker/EMOJI_PICKER.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/emoji_picker.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/emoji_picker.zip.sha256"
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/emoji_picker.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/emoji_picker.zip.sha256",
+      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/emoji_picker-stimulus.zip",
+      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/emoji_picker-stimulus.zip.sha256"
     },
     {
       "slug": "feedback",
@@ -517,15 +708,23 @@
         "stimulus",
         "motion"
       ],
+      "required_stimulus_controllers": [
+        "feedback_controller.js"
+      ],
       "requires_stimulus_controller": true,
       "has_complex_installation": true,
       "markdown_available": true,
       "view_component_available": true,
       "erb_template_available": true,
       "docs_path": "/docs/feedback.md",
+      "docs_url": "https://railsblocks.com/docs/feedback",
+      "markdown_url": "https://railsblocks.com/docs/feedback.md",
+      "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/feedback/FEEDBACK.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/feedback.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/feedback.zip.sha256"
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/feedback.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/feedback.zip.sha256",
+      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/feedback-stimulus.zip",
+      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/feedback-stimulus.zip.sha256"
     },
     {
       "slug": "forms",
@@ -534,15 +733,23 @@
       "dependencies": [
         "tailwindcss"
       ],
+      "required_stimulus_controllers": [
+        "nested_form_controller.js"
+      ],
       "requires_stimulus_controller": true,
       "has_complex_installation": true,
       "markdown_available": true,
       "view_component_available": true,
       "erb_template_available": true,
       "docs_path": "/docs/forms.md",
+      "docs_url": "https://railsblocks.com/docs/forms",
+      "markdown_url": "https://railsblocks.com/docs/forms.md",
+      "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/forms/FORMS.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/forms.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/forms.zip.sha256"
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/forms.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/forms.zip.sha256",
+      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/forms-stimulus.zip",
+      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/forms-stimulus.zip.sha256"
     },
     {
       "slug": "kbd",
@@ -552,15 +759,24 @@
         "tailwindcss",
         "stimulus"
       ],
+      "required_stimulus_controllers": [
+        "hotkey_controller.js",
+        "os_detect_controller.js"
+      ],
       "requires_stimulus_controller": true,
       "has_complex_installation": true,
       "markdown_available": true,
       "view_component_available": true,
       "erb_template_available": true,
       "docs_path": "/docs/kbd.md",
+      "docs_url": "https://railsblocks.com/docs/kbd",
+      "markdown_url": "https://railsblocks.com/docs/kbd.md",
+      "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/kbd/KBD.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/kbd.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/kbd.zip.sha256"
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/kbd.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/kbd.zip.sha256",
+      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/kbd-stimulus.zip",
+      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/kbd-stimulus.zip.sha256"
     },
     {
       "slug": "lightbox",
@@ -571,15 +787,23 @@
         "stimulus",
         "photoswipe"
       ],
+      "required_stimulus_controllers": [
+        "lightbox_controller.js"
+      ],
       "requires_stimulus_controller": true,
       "has_complex_installation": true,
       "markdown_available": true,
       "view_component_available": true,
       "erb_template_available": true,
       "docs_path": "/docs/lightbox.md",
+      "docs_url": "https://railsblocks.com/docs/lightbox",
+      "markdown_url": "https://railsblocks.com/docs/lightbox.md",
+      "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/lightbox/LIGHTBOX.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/lightbox.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/lightbox.zip.sha256"
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/lightbox.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/lightbox.zip.sha256",
+      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/lightbox-stimulus.zip",
+      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/lightbox-stimulus.zip.sha256"
     },
     {
       "slug": "loading_indicator",
@@ -588,15 +812,21 @@
       "dependencies": [
         "tailwindcss"
       ],
+      "required_stimulus_controllers": [],
       "requires_stimulus_controller": false,
       "has_complex_installation": false,
       "markdown_available": true,
       "view_component_available": true,
       "erb_template_available": true,
       "docs_path": "/docs/loading-indicator.md",
+      "docs_url": "https://railsblocks.com/docs/loading-indicator",
+      "markdown_url": "https://railsblocks.com/docs/loading-indicator.md",
+      "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/loading_indicator/LOADING_INDICATOR.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/loading_indicator.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/loading_indicator.zip.sha256"
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/loading_indicator.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/loading_indicator.zip.sha256",
+      "stimulus_package_url": null,
+      "stimulus_checksum_url": null
     },
     {
       "slug": "marquee",
@@ -606,15 +836,23 @@
         "tailwindcss",
         "stimulus"
       ],
+      "required_stimulus_controllers": [
+        "marquee_controller.js"
+      ],
       "requires_stimulus_controller": true,
       "has_complex_installation": false,
       "markdown_available": true,
       "view_component_available": true,
       "erb_template_available": true,
       "docs_path": "/docs/marquee.md",
+      "docs_url": "https://railsblocks.com/docs/marquee",
+      "markdown_url": "https://railsblocks.com/docs/marquee.md",
+      "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/marquee/MARQUEE.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/marquee.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/marquee.zip.sha256"
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/marquee.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/marquee.zip.sha256",
+      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/marquee-stimulus.zip",
+      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/marquee-stimulus.zip.sha256"
     },
     {
       "slug": "modal",
@@ -624,12 +862,18 @@
         "tailwindcss",
         "stimulus"
       ],
+      "required_stimulus_controllers": [
+        "modal_controller.js"
+      ],
       "requires_stimulus_controller": true,
       "has_complex_installation": true,
       "markdown_available": true,
       "view_component_available": true,
       "erb_template_available": true,
       "docs_path": "/docs/modal.md",
+      "docs_url": "https://railsblocks.com/docs/modal",
+      "markdown_url": "https://railsblocks.com/docs/modal.md",
+      "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/modal/MODAL.md",
       "upgrade_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/pro"
     },
     {
@@ -640,15 +884,23 @@
         "tailwindcss",
         "stimulus"
       ],
+      "required_stimulus_controllers": [
+        "navbar_controller.js"
+      ],
       "requires_stimulus_controller": true,
       "has_complex_installation": false,
       "markdown_available": true,
       "view_component_available": true,
       "erb_template_available": true,
       "docs_path": "/docs/navbar.md",
+      "docs_url": "https://railsblocks.com/docs/navbar",
+      "markdown_url": "https://railsblocks.com/docs/navbar.md",
+      "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/navbar/NAVBAR.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/navbar.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/navbar.zip.sha256"
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/navbar.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/navbar.zip.sha256",
+      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/navbar-stimulus.zip",
+      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/navbar-stimulus.zip.sha256"
     },
     {
       "slug": "password",
@@ -658,15 +910,23 @@
         "tailwindcss",
         "stimulus"
       ],
+      "required_stimulus_controllers": [
+        "password_controller.js"
+      ],
       "requires_stimulus_controller": true,
       "has_complex_installation": true,
       "markdown_available": true,
       "view_component_available": true,
       "erb_template_available": true,
       "docs_path": "/docs/password.md",
+      "docs_url": "https://railsblocks.com/docs/password",
+      "markdown_url": "https://railsblocks.com/docs/password.md",
+      "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/password/PASSWORD.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/password.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/password.zip.sha256"
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/password.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/password.zip.sha256",
+      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/password-stimulus.zip",
+      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/password-stimulus.zip.sha256"
     },
     {
       "slug": "pagination",
@@ -677,15 +937,21 @@
         "stimulus",
         "pagy"
       ],
-      "requires_stimulus_controller": true,
+      "required_stimulus_controllers": [],
+      "requires_stimulus_controller": false,
       "has_complex_installation": true,
       "markdown_available": true,
       "view_component_available": true,
       "erb_template_available": true,
       "docs_path": "/docs/pagination.md",
+      "docs_url": "https://railsblocks.com/docs/pagination",
+      "markdown_url": "https://railsblocks.com/docs/pagination.md",
+      "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/pagination/PAGINATION.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/pagination.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/pagination.zip.sha256"
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/pagination.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/pagination.zip.sha256",
+      "stimulus_package_url": null,
+      "stimulus_checksum_url": null
     },
     {
       "slug": "popover",
@@ -696,15 +962,23 @@
         "stimulus",
         "floating_ui"
       ],
+      "required_stimulus_controllers": [
+        "popover_controller.js"
+      ],
       "requires_stimulus_controller": true,
       "has_complex_installation": true,
       "markdown_available": true,
       "view_component_available": true,
       "erb_template_available": true,
       "docs_path": "/docs/popover.md",
+      "docs_url": "https://railsblocks.com/docs/popover",
+      "markdown_url": "https://railsblocks.com/docs/popover.md",
+      "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/popover/POPOVER.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/popover.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/popover.zip.sha256"
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/popover.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/popover.zip.sha256",
+      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/popover-stimulus.zip",
+      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/popover-stimulus.zip.sha256"
     },
     {
       "slug": "radio",
@@ -713,15 +987,23 @@
       "dependencies": [
         "tailwindcss"
       ],
+      "required_stimulus_controllers": [
+        "conditional_field_controller.js"
+      ],
       "requires_stimulus_controller": true,
       "has_complex_installation": true,
       "markdown_available": true,
       "view_component_available": true,
       "erb_template_available": true,
       "docs_path": "/docs/radio.md",
+      "docs_url": "https://railsblocks.com/docs/radio",
+      "markdown_url": "https://railsblocks.com/docs/radio.md",
+      "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/radio/RADIO.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/radio.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/radio.zip.sha256"
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/radio.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/radio.zip.sha256",
+      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/radio-stimulus.zip",
+      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/radio-stimulus.zip.sha256"
     },
     {
       "slug": "scroll_area",
@@ -731,15 +1013,23 @@
         "tailwindcss",
         "stimulus"
       ],
+      "required_stimulus_controllers": [
+        "scroll_area_controller.js"
+      ],
       "requires_stimulus_controller": true,
       "has_complex_installation": true,
       "markdown_available": true,
       "view_component_available": true,
       "erb_template_available": true,
       "docs_path": "/docs/scroll-area.md",
+      "docs_url": "https://railsblocks.com/docs/scroll-area",
+      "markdown_url": "https://railsblocks.com/docs/scroll-area.md",
+      "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/scroll_area/SCROLL_AREA.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/scroll_area.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/scroll_area.zip.sha256"
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/scroll_area.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/scroll_area.zip.sha256",
+      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/scroll_area-stimulus.zip",
+      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/scroll_area-stimulus.zip.sha256"
     },
     {
       "slug": "select",
@@ -751,15 +1041,23 @@
         "tom_select",
         "floating_ui"
       ],
+      "required_stimulus_controllers": [
+        "select_controller.js"
+      ],
       "requires_stimulus_controller": true,
       "has_complex_installation": true,
       "markdown_available": true,
       "view_component_available": true,
       "erb_template_available": true,
       "docs_path": "/docs/select.md",
+      "docs_url": "https://railsblocks.com/docs/select",
+      "markdown_url": "https://railsblocks.com/docs/select.md",
+      "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/select/SELECT.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/select.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/select.zip.sha256"
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/select.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/select.zip.sha256",
+      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/select-stimulus.zip",
+      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/select-stimulus.zip.sha256"
     },
     {
       "slug": "sidebar",
@@ -769,15 +1067,24 @@
         "tailwindcss",
         "stimulus"
       ],
+      "required_stimulus_controllers": [
+        "sidebar_controller.js",
+        "tooltip_controller.js"
+      ],
       "requires_stimulus_controller": true,
       "has_complex_installation": true,
       "markdown_available": true,
       "view_component_available": true,
       "erb_template_available": true,
       "docs_path": "/docs/sidebar.md",
+      "docs_url": "https://railsblocks.com/docs/sidebar",
+      "markdown_url": "https://railsblocks.com/docs/sidebar.md",
+      "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/sidebar/SIDEBAR.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/sidebar.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/sidebar.zip.sha256"
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/sidebar.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/sidebar.zip.sha256",
+      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/sidebar-stimulus.zip",
+      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/sidebar-stimulus.zip.sha256"
     },
     {
       "slug": "skeleton",
@@ -786,15 +1093,21 @@
       "dependencies": [
         "tailwindcss"
       ],
+      "required_stimulus_controllers": [],
       "requires_stimulus_controller": false,
       "has_complex_installation": false,
       "markdown_available": true,
       "view_component_available": true,
       "erb_template_available": true,
       "docs_path": "/docs/skeleton.md",
+      "docs_url": "https://railsblocks.com/docs/skeleton",
+      "markdown_url": "https://railsblocks.com/docs/skeleton.md",
+      "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/skeleton/SKELETON.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/skeleton.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/skeleton.zip.sha256"
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/skeleton.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/skeleton.zip.sha256",
+      "stimulus_package_url": null,
+      "stimulus_checksum_url": null
     },
     {
       "slug": "slideover",
@@ -804,12 +1117,18 @@
         "tailwindcss",
         "stimulus"
       ],
+      "required_stimulus_controllers": [
+        "slideover_controller.js"
+      ],
       "requires_stimulus_controller": true,
       "has_complex_installation": true,
       "markdown_available": true,
       "view_component_available": true,
       "erb_template_available": true,
       "docs_path": "/docs/slideover.md",
+      "docs_url": "https://railsblocks.com/docs/slideover",
+      "markdown_url": "https://railsblocks.com/docs/slideover.md",
+      "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/slideover/SLIDEOVER.md",
       "upgrade_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/pro"
     },
     {
@@ -820,12 +1139,18 @@
         "tailwindcss",
         "stimulus"
       ],
+      "required_stimulus_controllers": [
+        "stepper_controller.js"
+      ],
       "requires_stimulus_controller": true,
       "has_complex_installation": true,
       "markdown_available": true,
       "view_component_available": true,
       "erb_template_available": true,
       "docs_path": "/docs/stepper.md",
+      "docs_url": "https://railsblocks.com/docs/stepper",
+      "markdown_url": "https://railsblocks.com/docs/stepper.md",
+      "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/stepper/STEPPER.md",
       "upgrade_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/pro"
     },
     {
@@ -835,15 +1160,21 @@
       "dependencies": [
         "tailwindcss"
       ],
+      "required_stimulus_controllers": [],
       "requires_stimulus_controller": false,
       "has_complex_installation": false,
       "markdown_available": true,
       "view_component_available": true,
       "erb_template_available": true,
       "docs_path": "/docs/switch.md",
+      "docs_url": "https://railsblocks.com/docs/switch",
+      "markdown_url": "https://railsblocks.com/docs/switch.md",
+      "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/switch/SWITCH.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/switch.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/switch.zip.sha256"
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/switch.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/switch.zip.sha256",
+      "stimulus_package_url": null,
+      "stimulus_checksum_url": null
     },
     {
       "slug": "tabs",
@@ -853,12 +1184,18 @@
         "tailwindcss",
         "stimulus"
       ],
+      "required_stimulus_controllers": [
+        "tabs_controller.js"
+      ],
       "requires_stimulus_controller": true,
       "has_complex_installation": false,
       "markdown_available": true,
       "view_component_available": true,
       "erb_template_available": true,
       "docs_path": "/docs/tabs.md",
+      "docs_url": "https://railsblocks.com/docs/tabs",
+      "markdown_url": "https://railsblocks.com/docs/tabs.md",
+      "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/tabs/TABS.md",
       "upgrade_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/pro"
     },
     {
@@ -868,15 +1205,21 @@
       "dependencies": [
         "tailwindcss"
       ],
+      "required_stimulus_controllers": [],
       "requires_stimulus_controller": false,
       "has_complex_installation": false,
       "markdown_available": true,
       "view_component_available": true,
       "erb_template_available": true,
       "docs_path": "/docs/table.md",
+      "docs_url": "https://railsblocks.com/docs/table",
+      "markdown_url": "https://railsblocks.com/docs/table.md",
+      "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/table/TABLE.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/table.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/table.zip.sha256"
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/table.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/table.zip.sha256",
+      "stimulus_package_url": null,
+      "stimulus_checksum_url": null
     },
     {
       "slug": "testimonial",
@@ -885,15 +1228,21 @@
       "dependencies": [
         "tailwindcss"
       ],
+      "required_stimulus_controllers": [],
       "requires_stimulus_controller": false,
       "has_complex_installation": false,
       "markdown_available": true,
       "view_component_available": true,
       "erb_template_available": true,
       "docs_path": "/docs/testimonial.md",
+      "docs_url": "https://railsblocks.com/docs/testimonial",
+      "markdown_url": "https://railsblocks.com/docs/testimonial.md",
+      "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/testimonial/TESTIMONIAL.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/testimonial.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/testimonial.zip.sha256"
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/testimonial.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/testimonial.zip.sha256",
+      "stimulus_package_url": null,
+      "stimulus_checksum_url": null
     },
     {
       "slug": "toast",
@@ -903,15 +1252,23 @@
         "tailwindcss",
         "stimulus"
       ],
+      "required_stimulus_controllers": [
+        "toast_controller.js"
+      ],
       "requires_stimulus_controller": true,
       "has_complex_installation": true,
       "markdown_available": true,
       "view_component_available": true,
       "erb_template_available": true,
       "docs_path": "/docs/toast.md",
+      "docs_url": "https://railsblocks.com/docs/toast",
+      "markdown_url": "https://railsblocks.com/docs/toast.md",
+      "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/toast/TOAST.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/toast.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/toast.zip.sha256"
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/toast.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/toast.zip.sha256",
+      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/toast-stimulus.zip",
+      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/toast-stimulus.zip.sha256"
     },
     {
       "slug": "tooltip",
@@ -922,15 +1279,23 @@
         "stimulus",
         "floating_ui"
       ],
+      "required_stimulus_controllers": [
+        "tooltip_controller.js"
+      ],
       "requires_stimulus_controller": true,
       "has_complex_installation": true,
       "markdown_available": true,
       "view_component_available": true,
       "erb_template_available": true,
       "docs_path": "/docs/tooltip.md",
+      "docs_url": "https://railsblocks.com/docs/tooltip",
+      "markdown_url": "https://railsblocks.com/docs/tooltip.md",
+      "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/tooltip/TOOLTIP.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/tooltip.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/tooltip.zip.sha256"
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/tooltip.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/tooltip.zip.sha256",
+      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/tooltip-stimulus.zip",
+      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/tooltip-stimulus.zip.sha256"
     },
     {
       "slug": "tree_view",
@@ -941,15 +1306,23 @@
         "stimulus",
         "floating_ui"
       ],
+      "required_stimulus_controllers": [
+        "tree_view_controller.js"
+      ],
       "requires_stimulus_controller": true,
       "has_complex_installation": false,
       "markdown_available": true,
       "view_component_available": true,
       "erb_template_available": true,
       "docs_path": "/docs/tree-view.md",
+      "docs_url": "https://railsblocks.com/docs/tree-view",
+      "markdown_url": "https://railsblocks.com/docs/tree-view.md",
+      "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/tree_view/TREE_VIEW.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/tree_view.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/tree_view.zip.sha256"
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/tree_view.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/tree_view.zip.sha256",
+      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/tree_view-stimulus.zip",
+      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/tree_view-stimulus.zip.sha256"
     },
     {
       "slug": "two_factor",
@@ -959,15 +1332,23 @@
         "tailwindcss",
         "stimulus"
       ],
+      "required_stimulus_controllers": [
+        "two_factor_controller.js"
+      ],
       "requires_stimulus_controller": true,
       "has_complex_installation": false,
       "markdown_available": true,
       "view_component_available": true,
       "erb_template_available": true,
       "docs_path": "/docs/two-factor.md",
+      "docs_url": "https://railsblocks.com/docs/two-factor",
+      "markdown_url": "https://railsblocks.com/docs/two-factor.md",
+      "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/two_factor/TWO_FACTOR.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/two_factor.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.0/two_factor.zip.sha256"
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/two_factor.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/two_factor.zip.sha256",
+      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/two_factor-stimulus.zip",
+      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/two_factor-stimulus.zip.sha256"
     }
   ]
 }
