@@ -23,6 +23,16 @@ rails-blocks update stimulus --all --free
 
 The CLI reads `registry.json` and downloads package artifacts from this repository.
 
+## Agent Skill
+
+Install the Rails Blocks CLI skill in AI agents that support Agent Skills:
+
+```bash
+npx skills add Rails-Blocks/components --skill rails-blocks-cli
+```
+
+The skill teaches agents to use the `rails-blocks` CLI directly, with dry-run previews before file writes.
+
 ## License
 
 The free Rails Blocks components in this repository are published under the MIT License. Preserve the included license notice when redistributing substantial portions of the components.
