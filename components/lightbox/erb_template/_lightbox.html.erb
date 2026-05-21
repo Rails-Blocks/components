@@ -1,0 +1,101 @@
+<%#
+  Lightbox Component
+  A flexible image lightbox/gallery viewer powered by PhotoSwipe.
+
+  Required locals:
+    - none (all have defaults, but you'll usually pass items for a gallery)
+
+  Optional locals:
+    - items: Array (default: []) - Array of image hashes (see Item Hash below)
+    - variant: String (default: "grid") - Layout: "grid", "masonry", "inline", "single"
+    - columns: Integer (default: 4) - Number of columns for grid/masonry (2-6)
+    - gap: String (default: "md") - Gap size: "sm", "md", "lg"
+    - show_download_button: Boolean (default: true) - Show download button in lightbox
+    - show_zoom_indicator: Boolean (default: true) - Show zoom level indicator
+    - show_dots_indicator: Boolean (default: true) - Show dots navigation for galleries
+    - rounded: Boolean (default: true) - Apply rounded corners to thumbnails
+    - hover_effect: Boolean (default: true) - Apply hover scale effect
+    - classes: String (default: nil) - Additional CSS classes for the wrapper
+
+  Item Hash:
+    - src: String (required) - Full-size image URL
+    - thumbnail_src: String (optional) - Thumbnail URL, uses src if not provided
+    - width: Integer (optional) - Full-size image width (auto-detected if not provided)
+    - height: Integer (optional) - Full-size image height (auto-detected if not provided)
+    - alt: String (optional) - Alt text for the image
+    - caption: String (optional) - Caption shown in lightbox overlay
+    - classes: String (optional) - Additional item classes
+  
+  Usage examples:
+    See app/views/shared/components/lightbox/USAGE.erb
+%>
+
+<% items ||= [] %>
+<% variant ||= "grid" %>
+<% columns ||= 4 %>
+<% gap ||= "md" %>
+<% show_download_button = true if local_assigns[:show_download_button].nil? %>
+<% show_zoom_indicator = true if local_assigns[:show_zoom_indicator].nil? %>
+<% show_dots_indicator = true if local_assigns[:show_dots_indicator].nil? %>
+<% rounded = true if local_assigns[:rounded].nil? %>
+<% hover_effect = true if local_assigns[:hover_effect].nil? %>
+<% classes ||= nil %>
+
+<%
+  # Clamp columns between 2-6
+  columns = [[columns.to_i, 2].max, 6].min
+
+  # Determine if single image mode
+  is_single = variant.to_s == "single"
+
+  # Build data attributes
+  data_attrs = { controller: "lightbox" }
+  data_attrs[:lightbox_target] = "gallery" unless is_single
+  data_attrs[:lightbox_show_download_button_value] = false unless show_download_button
+  data_attrs[:lightbox_show_zoom_indicator_value] = false unless show_zoom_indicator
+  data_attrs[:lightbox_show_dots_indicator_value] = false unless show_dots_indicator
+
+  # Gap classes
+  gap_class = case gap.to_s
+    when "sm" then "gap-2"
+    when "lg" then "gap-6"
+    else "gap-4"
+  end
+
+  gap_value = case gap.to_s
+    when "sm" then "2"
+    when "lg" then "6"
+    else "4"
+  end
+
+  # Wrapper classes based on variant
+  wrapper_classes = case variant.to_s
+    when "masonry"
+      "columns-1 sm:columns-2 lg:columns-#{[columns - 1, 2].max} xl:columns-#{columns} #{gap_class} space-y-#{gap_value}"
+    when "inline"
+      "flex flex-wrap #{gap_class}"
+    when "single"
+      "inline-block"
+    else # grid
+      "grid grid-cols-2 md:grid-cols-#{[columns - 1, 2].max} lg:grid-cols-#{columns} #{gap_class}"
+    end
+
+  wrapper_classes = [wrapper_classes, classes].compact.reject(&:empty?).join(" ")
+%>
+
+<div class="<%= wrapper_classes %>" <%= tag.attributes(data: data_attrs) %>>
+  <% items.each do |item| %>
+    <%= render "shared/components/lightbox/lightbox_item",
+      src: item[:src],
+      thumbnail_src: item[:thumbnail_src],
+      width: item[:width],
+      height: item[:height],
+      alt: item[:alt],
+      caption: item[:caption],
+      variant: variant,
+      rounded: rounded,
+      hover_effect: hover_effect,
+      item_classes: item[:classes]
+    %>
+  <% end %>
+</div>

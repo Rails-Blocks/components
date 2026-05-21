@@ -1,0 +1,38 @@
+<div class="<%= wrapper_classes %>" <%= tag.attributes(controller_data) %>>
+  <%# Viewport %>
+  <div class="<%= viewport_classes %>" <%= tag.attributes(viewport_data) %>>
+    <%= content %>
+  </div>
+
+  <% if show_vertical_scrollbar? %>
+    <%# Vertical Scrollbar %>
+    <div
+      data-scroll-area-target="scrollbar"
+      data-scroll-area-orientation-value="vertical"
+      data-action="click->scroll-area#onScrollbarClick"
+      class="<%= scrollbar_track_classes(:vertical) %>"
+    >
+      <div
+        data-scroll-area-target="thumb"
+        data-action="mousedown->scroll-area#onThumbMouseDown"
+        class="w-full <%= thumb_classes %>"
+      ></div>
+    </div>
+  <% end %>
+
+  <% if show_horizontal_scrollbar? %>
+    <%# Horizontal Scrollbar %>
+    <div
+      data-scroll-area-target="scrollbar"
+      data-scroll-area-orientation-value="horizontal"
+      data-action="click->scroll-area#onScrollbarClick"
+      class="<%= scrollbar_track_classes(:horizontal) %>"
+    >
+      <div
+        data-scroll-area-target="thumb"
+        data-action="mousedown->scroll-area#onThumbMouseDown"
+        class="h-full <%= thumb_classes %>"
+      ></div>
+    </div>
+  <% end %>
+</div>

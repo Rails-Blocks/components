@@ -1,0 +1,20 @@
+<div class="w-full group relative flex items-center">
+  <a href="<%= href %>" class="<%= item_classes %>">
+    <div class="flex min-w-0 items-center gap-1.5">
+      <% if icon? %>
+        <div class="flex items-center justify-center group-disabled:opacity-50 group-data-disabled:opacity-50">
+          <%= icon.html_safe %>
+        </div>
+      <% end %>
+      <div class="flex min-w-0 grow items-center gap-2.5 group-data-no-contents-gap:gap-0">
+        <div class="truncate"><%= label %></div>
+      </div>
+    </div>
+    <% if badge? %>
+      <div class="mr-auto text-xs text-neutral-500 dark:text-neutral-400"><%= badge %></div>
+    <% end %>
+  </a>
+  <button class="absolute right-0 hidden group-hover:flex size-8 rounded-md items-center justify-center text-neutral-500 dark:text-neutral-400 hover:bg-neutral-100 focus-visible:bg-neutral-100 focus:outline-hidden disabled:cursor-not-allowed disabled:opacity-50 dark:hover:bg-neutral-700/50 dark:focus-visible:bg-neutral-700/50">
+    <svg xmlns="http://www.w3.org/2000/svg" class="size-4" width="12" height="12" viewBox="0 0 12 12"><g fill="currentColor"><circle cx="6" cy="6" r="1" stroke-width="0"></circle><circle cx="2" cy="6" r="1" stroke-width="0"></circle><circle cx="10" cy="6" r="1" stroke-width="0"></circle></g></svg>
+  </button>
+</div>

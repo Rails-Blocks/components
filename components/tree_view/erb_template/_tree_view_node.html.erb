@@ -1,0 +1,154 @@
+<% label ||= "" %>
+<% type ||= :file %>
+<% value ||= label %>
+<% name ||= "items[]" %>
+<% default_open ||= false %>
+<% icon ||= nil %>
+<% disabled ||= false %>
+<% checked ||= false %>
+<% selectable ||= false %>
+<% children ||= [] %>
+<% classes ||= nil %>
+<% unique_id ||= "tree-node-#{SecureRandom.hex(4)}" %>
+
+<%
+  is_folder = type.to_sym == :folder
+
+  state = default_open ? "open" : "closed"
+  aria_expanded = default_open ? "true" : "false"
+  content_hidden = !default_open
+
+  # Node wrapper classes
+  node_classes = ["flex flex-col gap-y-1", classes].compact.reject(&:empty?).join(" ")
+
+  # Row classes for folders
+  folder_row_classes = if selectable
+    "flex items-center gap-2 rounded-md px-2 py-1.5 hover:bg-neutral-100 dark:hover:bg-neutral-700/50 has-[:checked]:bg-neutral-200 dark:has-[:checked]:bg-neutral-700"
+  else
+    "flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-sm hover:bg-neutral-100 dark:hover:bg-neutral-700/50 outline-hidden focus:underline"
+  end
+
+  # File row classes
+  file_row_classes = if selectable
+    "flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-sm text-neutral-600 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-700/50 has-[:checked]:bg-neutral-200 dark:has-[:checked]:bg-neutral-700 has-[:checked]:text-neutral-900 dark:has-[:checked]:text-neutral-50"
+  else
+    "flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-sm text-neutral-600 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-700/50 outline-hidden focus:underline"
+  end
+
+  # Button classes for folders
+  folder_button_classes = if selectable
+    "flex flex-1 items-center gap-2 text-sm outline-hidden focus:underline"
+  else
+    "flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-sm hover:bg-neutral-100 dark:hover:bg-neutral-700/50 outline-hidden focus:underline"
+  end
+
+  # Content classes
+  content_classes = "grid transition-[grid-template-rows] duration-300 ease-in-out data-[state=open]:grid-rows-[1fr] data-[state=closed]:grid-rows-[0fr]"
+  content_inner_classes = "ml-4 pl-2 border-l border-neutral-200 dark:border-neutral-700 flex flex-col gap-y-1 overflow-hidden min-h-0"
+
+  # Checkbox data attributes
+  folder_checkbox_data = {
+    "checkbox-select-all-target": "checkbox child",
+    action: "click->checkbox-select-all#toggleChildren click->checkbox-select-all#toggle"
+  }
+  file_checkbox_data = {
+    "checkbox-select-all-target": "checkbox child",
+    action: "click->checkbox-select-all#toggle"
+  }
+%>
+
+<%# SVG Icons %>
+<% open_folder_svg = '<svg data-tree-view-target="icon" class="folder-open" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18"><g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" stroke="currentColor"><path d="M5,14.75h-.75c-1.105,0-2-.895-2-2V4.75c0-1.105,.895-2,2-2h1.825c.587,0,1.144,.258,1.524,.705l1.524,1.795h4.626c1.105,0,2,.895,2,2v1"></path><path d="M16.148,13.27l.843-3.13c.257-.953-.461-1.89-1.448-1.89H6.15c-.678,0-1.272,.455-1.448,1.11l-.942,3.5c-.257,.953,.461,1.89,1.448,1.89H14.217c.904,0,1.696-.607,1.931-1.48Z"></path></g></svg>' %>
+<% closed_folder_svg = '<svg data-tree-view-target="icon" class="folder-closed" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18"><g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" stroke="currentColor"><path d="M13.75,5.25c1.105,0,2,.895,2,2v5.5c0,1.105-.895,2-2,2H4.25c-1.105,0-2-.895-2-2V4.75c0-1.105,.895-2,2-2h1.825c.587,0,1.144,.258,1.524,.705l1.524,1.795h4.626Z"></path></g></svg>' %>
+<% file_svg = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18"><g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" stroke="currentColor"><path d="M15.16,6.25h-3.41c-.552,0-1-.448-1-1V1.852"></path><path d="M2.75,14.25V3.75c0-1.105,.895-2,2-2h5.586c.265,0,.52,.105,.707,.293l3.914,3.914c.188,.188,.293,.442,.293,.707v7.586c0,1.105-.895,2-2,2H4.75c-1.105,0-2-.895-2-2Z"></path></g></svg>' %>
+
+<% if is_folder %>
+  <!-- Folder node -->
+  <div class="<%= node_classes %>"<% if selectable %> data-checkbox-select-all-target="parent"<% end %>>
+    <% if selectable %>
+      <div class="<%= folder_row_classes %>">
+        <input
+          type="checkbox"
+          id="<%= unique_id %>"
+          tabindex="-1"
+          <%= "checked" if checked %>
+          <%= "disabled" if disabled %>
+          <%= tag.attributes(data: folder_checkbox_data) %>>
+        <button type="button"
+                data-action="click->tree-view#toggle"
+                aria-controls="<%= unique_id %>-content"
+                aria-expanded="<%= aria_expanded %>"
+                data-state="<%= state %>"
+                class="<%= folder_button_classes %>">
+          <%= default_open ? open_folder_svg.html_safe : closed_folder_svg.html_safe %>
+          <span class="font-medium"><%= label %></span>
+        </button>
+      </div>
+    <% else %>
+      <button type="button"
+              data-action="click->tree-view#toggle"
+              aria-controls="<%= unique_id %>-content"
+              aria-expanded="<%= aria_expanded %>"
+              data-state="<%= state %>"
+              class="<%= folder_button_classes %>">
+        <%= default_open ? open_folder_svg.html_safe : closed_folder_svg.html_safe %>
+        <span class="font-medium"><%= label %></span>
+      </button>
+    <% end %>
+
+    <!-- Folder content -->
+    <div id="<%= unique_id %>-content"
+         data-state="<%= state %>"
+         role="region"
+         class="<%= content_classes %>"
+         data-tree-view-target="content"
+         <% if content_hidden %>hidden<% end %>>
+      <div class="<%= content_inner_classes %>">
+        <% children.each_with_index do |child, index| %>
+          <%= render "shared/components/tree_view/tree_view_node",
+            label: child[:label],
+            type: child[:type] || :file,
+            value: child[:value],
+            name: child[:name] || name,
+            default_open: child[:default_open] || false,
+            icon: child[:icon],
+            disabled: child[:disabled] || false,
+            checked: child[:checked] || false,
+            selectable: selectable,
+            children: child[:children] || [],
+            classes: child[:classes],
+            unique_id: "#{unique_id}-#{index}"
+          %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+<% else %>
+  <!-- File node -->
+  <% if selectable %>
+    <div class="<%= file_row_classes %>">
+      <input
+        type="checkbox"
+        name="<%= name %>"
+        value="<%= value %>"
+        tabindex="-1"
+        <%= "checked" if checked %>
+        <%= "disabled" if disabled %>
+        <%= tag.attributes(data: file_checkbox_data) %>>
+      <button type="button"
+              data-tree-view-item
+              data-action="click->tree-view#selectFile"
+              class="flex flex-1 items-center gap-2 outline-hidden focus:underline">
+        <%= icon&.html_safe || file_svg.html_safe %>
+        <span><%= label %></span>
+      </button>
+    </div>
+  <% else %>
+    <button type="button"
+            data-tree-view-item
+            class="<%= file_row_classes %>">
+      <%= icon&.html_safe || file_svg.html_safe %>
+      <span><%= label %></span>
+    </button>
+  <% end %>
+<% end %>

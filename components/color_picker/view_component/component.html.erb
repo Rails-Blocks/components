@@ -1,0 +1,56 @@
+<div class="<%= wrapper_classes %>"
+     data-controller="shoelace-color-picker"
+     data-shoelace-color-picker-default-value-value="<%= value %>">
+  <sl-color-picker
+    id="<%= id %>"
+    label="<%= label %>"
+    value="<%= value %>"
+    format="<%= picker_format %>"
+    size="<%= picker_size %>"
+    data-shoelace-color-picker-target="picker"
+    data-action="sl-change->shoelace-color-picker#change"
+    <% if swatches.present? %>swatches="<%= swatches_attribute %>"<% end %>
+    <%= "opacity" if picker_opacity? %>
+    <%= "no-format-toggle" if no_format_toggle? %>
+    <%= "disabled" if disabled %>
+    <%= "required" if required %>
+  ></sl-color-picker>
+
+  <% if name.present? %>
+    <input
+      type="hidden"
+      name="<%= name %>"
+      value="<%= value %>"
+      data-shoelace-color-picker-target="input"
+      <%= "disabled" if disabled %>
+    >
+  <% end %>
+
+  <% if show_value %>
+    <div class="flex items-center gap-2 text-sm text-neutral-600 dark:text-neutral-400">
+      <span>Value:</span>
+      <code
+        class="rounded bg-neutral-100 px-2 py-1 font-mono text-xs text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300"
+        data-shoelace-color-picker-target="value"
+      ><%= value %></code>
+    </div>
+  <% end %>
+
+  <% if show_swatches? %>
+    <div class="flex flex-wrap gap-2">
+      <% swatches.each do |color| %>
+        <button
+          type="button"
+          class="<%= swatch_button_classes(color) %>"
+          style="background-color: <%= color %>;"
+          data-color="<%= color %>"
+          data-shoelace-color-picker-target="swatch"
+          data-action="click->shoelace-color-picker#selectSwatch"
+          aria-label="Pick <%= color %>"
+          aria-pressed="<%= color.to_s.casecmp?(value.to_s) ? "true" : "false" %>"
+          <%= "disabled" if disabled %>
+        ></button>
+      <% end %>
+    </div>
+  <% end %>
+</div>

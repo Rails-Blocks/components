@@ -1,0 +1,35 @@
+<div class="<%= wrapper_classes %>">
+  <% if image && image.position == :top %>
+    <div class="<%= image.wrapper_classes %>">
+      <%= image_tag(image.src, alt: image.alt, class: image.image_classes) %>
+    </div>
+  <% end %>
+
+  <% if header? %>
+    <div class="<%= header_classes %>">
+      <%= header %>
+    </div>
+  <% end %>
+
+  <% if body? %>
+    <div class="<%= body_classes %>">
+      <%= body %>
+    </div>
+  <% elsif content? %>
+    <div class="<%= body_classes %>">
+      <%= content %>
+    </div>
+  <% end %>
+
+  <% if footer? %>
+    <div class="<%= footer_classes %>">
+      <%= footer %>
+    </div>
+  <% end %>
+
+  <% if image && image.position == :bottom %>
+    <div class="<%= image.wrapper_classes %>">
+      <%= image_tag(image.src, alt: image.alt, class: image.image_classes) %>
+    </div>
+  <% end %>
+</div>

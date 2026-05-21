@@ -1,0 +1,204 @@
+<%#
+  Loading Indicator Component
+  Displays loading spinners, dots, bars, or progress indicators.
+
+  Optional locals:
+    - type: String (default: "spinner") - Loading type: "spinner", "dots", "bars", "progress"
+    - size: String (default: "md") - Size: "xs", "sm", "md", "lg", "xl"
+    - color: String (default: "neutral") - Color: "neutral", "primary", "red", "orange", "yellow", "green", "blue", "purple", "pink"
+    - text: String (default: nil) - Optional loading text to display
+    - progress: Integer (default: nil) - Progress percentage (0-100), only for type "progress"
+    - stepped: Boolean (default: false) - Use stepped animation for spinner (iOS-style)
+    - classes: String (default: nil) - Additional CSS classes for the wrapper
+%>
+
+<% type ||= "spinner" %>
+<% size ||= "md" %>
+<% color ||= "neutral" %>
+<% text ||= nil %>
+<% progress ||= nil %>
+<% stepped ||= false %>
+<% classes ||= nil %>
+
+<%
+  # Clamp progress to 0-100
+  progress = progress.nil? ? nil : [[0, progress.to_i].max, 100].min
+
+  # Size classes for different elements
+  spinner_size_classes = case size.to_s
+    when "xs" then "size-4"
+    when "sm" then "size-5"
+    when "md" then "size-6"
+    when "lg" then "size-8"
+    when "xl" then "size-10"
+    else "size-6"
+    end
+
+  dot_size_classes = case size.to_s
+    when "xs" then "size-1"
+    when "sm" then "size-1.5"
+    when "md" then "size-2"
+    when "lg" then "size-2.5"
+    when "xl" then "size-3"
+    else "size-2"
+    end
+
+  bar_size_classes = case size.to_s
+    when "xs" then "w-0.5 h-3"
+    when "sm" then "w-1 h-4"
+    when "md" then "w-1 h-5"
+    when "lg" then "w-1.5 h-6"
+    when "xl" then "w-2 h-8"
+    else "w-1 h-5"
+    end
+
+  progress_height_classes = case size.to_s
+    when "xs" then "h-1"
+    when "sm" then "h-1.5"
+    when "md" then "h-2"
+    when "lg" then "h-3"
+    when "xl" then "h-4"
+    else "h-2"
+    end
+
+  text_size_classes = case size.to_s
+    when "xs" then "text-xs"
+    when "sm" then "text-xs"
+    when "md" then "text-sm"
+    when "lg" then "text-base"
+    when "xl" then "text-lg"
+    else "text-sm"
+    end
+
+  # Color classes for different elements
+  spinner_color_classes = case color.to_s
+    when "neutral" then "text-neutral-800 dark:text-neutral-200"
+    when "primary" then "text-red-600 dark:text-red-500"
+    when "red" then "text-red-600 dark:text-red-500"
+    when "orange" then "text-orange-600 dark:text-orange-500"
+    when "yellow" then "text-yellow-600 dark:text-yellow-500"
+    when "green" then "text-green-600 dark:text-green-500"
+    when "blue" then "text-blue-600 dark:text-blue-500"
+    when "purple" then "text-purple-600 dark:text-purple-500"
+    when "pink" then "text-pink-600 dark:text-pink-500"
+    else "text-neutral-800 dark:text-neutral-200"
+    end
+
+  dot_color_classes = case color.to_s
+    when "neutral" then "bg-neutral-800 dark:bg-neutral-200"
+    when "primary" then "bg-red-600 dark:bg-red-500"
+    when "red" then "bg-red-600 dark:bg-red-500"
+    when "orange" then "bg-orange-600 dark:bg-orange-500"
+    when "yellow" then "bg-yellow-600 dark:bg-yellow-500"
+    when "green" then "bg-green-600 dark:bg-green-500"
+    when "blue" then "bg-blue-600 dark:bg-blue-500"
+    when "purple" then "bg-purple-600 dark:bg-purple-500"
+    when "pink" then "bg-pink-600 dark:bg-pink-500"
+    else "bg-neutral-800 dark:bg-neutral-200"
+    end
+
+  bar_color_classes = dot_color_classes
+
+  progress_bg_classes = case color.to_s
+    when "neutral" then "bg-neutral-200 dark:bg-neutral-700"
+    when "primary" then "bg-red-100 dark:bg-red-900/30"
+    when "red" then "bg-red-100 dark:bg-red-900/30"
+    when "orange" then "bg-orange-100 dark:bg-orange-900/30"
+    when "yellow" then "bg-yellow-100 dark:bg-yellow-900/30"
+    when "green" then "bg-green-100 dark:bg-green-900/30"
+    when "blue" then "bg-blue-100 dark:bg-blue-900/30"
+    when "purple" then "bg-purple-100 dark:bg-purple-900/30"
+    when "pink" then "bg-pink-100 dark:bg-pink-900/30"
+    else "bg-neutral-200 dark:bg-neutral-700"
+    end
+
+  progress_fill_classes = case color.to_s
+    when "neutral" then "bg-neutral-800 dark:bg-neutral-200"
+    when "primary" then "bg-red-600 dark:bg-red-500"
+    when "red" then "bg-red-600 dark:bg-red-500"
+    when "orange" then "bg-orange-600 dark:bg-orange-500"
+    when "yellow" then "bg-yellow-600 dark:bg-yellow-500"
+    when "green" then "bg-green-600 dark:bg-green-500"
+    when "blue" then "bg-blue-600 dark:bg-blue-500"
+    when "purple" then "bg-purple-600 dark:bg-purple-500"
+    when "pink" then "bg-pink-600 dark:bg-pink-500"
+    else "bg-neutral-800 dark:bg-neutral-200"
+    end
+
+  text_color_classes = case color.to_s
+    when "neutral" then "text-neutral-700 dark:text-neutral-300"
+    when "primary" then "text-red-700 dark:text-red-400"
+    when "red" then "text-red-700 dark:text-red-400"
+    when "orange" then "text-orange-700 dark:text-orange-400"
+    when "yellow" then "text-yellow-700 dark:text-yellow-400"
+    when "green" then "text-green-700 dark:text-green-400"
+    when "blue" then "text-blue-700 dark:text-blue-400"
+    when "purple" then "text-purple-700 dark:text-purple-400"
+    when "pink" then "text-pink-700 dark:text-pink-400"
+    else "text-neutral-700 dark:text-neutral-300"
+    end
+
+  # Animation classes
+  animation_classes = stepped ? "animate-[spin_0.8s_steps(8)_infinite]" : "animate-spin"
+
+  # Build wrapper classes
+  base_classes = "inline-flex items-center"
+  gap_classes = text.present? ? "gap-2" : ""
+  wrapper_classes = [base_classes, gap_classes, classes].compact.reject(&:empty?).join(" ")
+
+  # Build spinner classes
+  spinner_classes = [spinner_size_classes, spinner_color_classes, animation_classes].join(" ")
+%>
+
+<div class="<%= wrapper_classes %>">
+  <% case type.to_s %>
+  <% when "spinner" %>
+    <% if stepped %>
+      <%# Stepped spinner (iOS-style) %>
+      <svg xmlns="http://www.w3.org/2000/svg" class="<%= spinner_classes %>" viewBox="0 0 18 18">
+        <g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" stroke="currentColor">
+          <line x1="9" y1="1.75" x2="9" y2="4.25" opacity=".13"></line>
+          <line x1="14.127" y1="3.873" x2="12.359" y2="5.641" opacity=".25"></line>
+          <line x1="16.25" y1="9" x2="13.75" y2="9" opacity=".38"></line>
+          <line x1="14.127" y1="14.127" x2="12.359" y2="12.359" opacity=".5"></line>
+          <line x1="9" y1="16.25" x2="9" y2="13.75" opacity=".63"></line>
+          <line x1="3.873" y1="14.127" x2="5.641" y2="12.359" opacity=".75"></line>
+          <line x1="1.75" y1="9" x2="4.25" y2="9" opacity=".88"></line>
+          <line x1="3.873" y1="3.873" x2="5.641" y2="5.641"></line>
+        </g>
+      </svg>
+    <% else %>
+      <%# Smooth circular spinner %>
+      <svg xmlns="http://www.w3.org/2000/svg" class="<%= spinner_classes %>" viewBox="0 0 18 18">
+        <g fill="currentColor">
+          <path d="m9,17c-4.4111,0-8-3.5889-8-8S4.5889,1,9,1s8,3.5889,8,8-3.5889,8-8,8Zm0-14.5c-3.584,0-6.5,2.916-6.5,6.5s2.916,6.5,6.5,6.5,6.5-2.916,6.5-6.5-2.916-6.5-6.5-6.5Z" opacity=".4" stroke-width="0"></path>
+          <path d="m16.25,9.75c-.4141,0-.75-.3359-.75-.75,0-3.584-2.916-6.5-6.5-6.5-.4141,0-.75-.3359-.75-.75s.3359-.75.75-.75c4.4111,0,8,3.5889,8,8,0,.4141-.3359.75-.75.75Z" stroke-width="0"></path>
+        </g>
+      </svg>
+    <% end %>
+
+  <% when "dots" %>
+    <div class="flex space-x-1.5">
+      <div class="<%= dot_size_classes %> <%= dot_color_classes %> rounded-full animate-bounce" style="animation-delay: 0ms;"></div>
+      <div class="<%= dot_size_classes %> <%= dot_color_classes %> rounded-full animate-bounce opacity-80" style="animation-delay: 150ms;"></div>
+      <div class="<%= dot_size_classes %> <%= dot_color_classes %> rounded-full animate-bounce opacity-60" style="animation-delay: 300ms;"></div>
+    </div>
+
+  <% when "bars" %>
+    <div class="flex items-end space-x-1">
+      <div class="<%= bar_size_classes %> <%= bar_color_classes %> rounded-sm animate-pulse" style="animation-delay: 0ms;"></div>
+      <div class="<%= bar_size_classes %> <%= bar_color_classes %> rounded-sm animate-pulse" style="animation-delay: 100ms;"></div>
+      <div class="<%= bar_size_classes %> <%= bar_color_classes %> rounded-sm animate-pulse" style="animation-delay: 200ms;"></div>
+      <div class="<%= bar_size_classes %> <%= bar_color_classes %> rounded-sm animate-pulse" style="animation-delay: 300ms;"></div>
+    </div>
+
+  <% when "progress" %>
+    <div class="<%= progress_height_classes %> <%= progress_bg_classes %> overflow-hidden rounded-full w-full min-w-24">
+      <div class="<%= progress_fill_classes %> h-full rounded-full transition-all duration-300 ease-out" style="width: <%= progress || 0 %>%"></div>
+    </div>
+  <% end %>
+
+  <% if text.present? %>
+    <span class="font-medium <%= text_size_classes %> <%= text_color_classes %>"><%= text %></span>
+  <% end %>
+</div>

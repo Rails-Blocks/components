@@ -1,0 +1,22 @@
+<li class="<%= li_classes %>">
+  <% if dropdown? %>
+    <button
+      type="button"
+      data-navbar-target="trigger"
+      data-content-id="<%= content_id %>"
+      aria-controls="<%= content_id %>"
+      aria-expanded="false"
+      data-align="<%= align_value %>"
+      data-action="<%= trigger_actions %>"
+      data-state="closed"
+      class="<%= trigger_classes %>"
+    >
+      <%= label %>
+      <%= chevron_icon %>
+    </button>
+  <% else %>
+    <a href="<%= href %>" class="<%= link_classes %>">
+      <%= label %>
+    </a>
+  <% end %>
+</li>

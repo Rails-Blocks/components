@@ -1,0 +1,108 @@
+<%
+# Color Picker Component - Shoelace Shared Partial
+#
+# @param id [String] Unique identifier for the picker
+# @param name [String] Optional hidden input name for form submissions
+# @param value [String] Initial color value (hex/rgb/hsl/hsv)
+# @param label [String] Shoelace label text
+# @param format [String] Output format: "hex", "rgb", "hsl", "hsv"
+# @param size [String] Picker size: "small", "medium", "large"
+# @param opacity [Boolean] Enable alpha channel
+# @param no_format_toggle [Boolean] Hide Shoelace format toggle
+# @param swatches [Array<String>, String] Array or semicolon-separated list of swatches
+# @param show_value [Boolean] Show selected value text
+# @param show_swatches [Boolean] Render custom swatch buttons below picker
+# @param disabled [Boolean] Disable picker
+# @param required [Boolean] Mark picker as required
+# @param classes [String] Additional wrapper classes
+
+id ||= "color_picker_#{SecureRandom.hex(4)}"
+name ||= nil
+value ||= "#3b82f6"
+label ||= "Color"
+format ||= "hex"
+size ||= "medium"
+opacity = local_assigns.fetch(:opacity, false)
+no_format_toggle = local_assigns.fetch(:no_format_toggle, false)
+show_value = local_assigns.fetch(:show_value, true)
+show_swatches = local_assigns.fetch(:show_swatches, false)
+disabled = local_assigns.fetch(:disabled, false)
+required = local_assigns.fetch(:required, false)
+classes ||= nil
+
+default_swatches = [
+  "#1a202c", "#2d3748", "#4a5568", "#718096",
+  "#a0aec0", "#cbd5e0", "#e2e8f0", "#f7fafc",
+  "#fed7d7", "#fc8181", "#f56565", "#e53e3e"
+]
+swatches = local_assigns.key?(:swatches) ? local_assigns[:swatches] : default_swatches
+swatches = swatches.split(";").map(&:strip) if swatches.is_a?(String)
+swatches = Array(swatches).compact.map(&:to_s).map(&:strip).reject(&:blank?)
+
+valid_formats = %w[hex rgb hsl hsv]
+format = "hex" unless valid_formats.include?(format.to_s)
+
+valid_sizes = %w[small medium large]
+size = "medium" unless valid_sizes.include?(size.to_s)
+
+wrapper_classes = ["inline-flex flex-col gap-3", classes].compact.reject(&:blank?).join(" ")
+swatch_button_base_classes = "size-8 rounded-md border border-black/15 dark:border-white/20 transition-transform hover:scale-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-600 dark:focus-visible:outline-neutral-200 ring-2 ring-offset-2 dark:ring-offset-neutral-900 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+%>
+
+<div class="<%= wrapper_classes %>"
+     data-controller="shoelace-color-picker"
+     data-shoelace-color-picker-default-value-value="<%= value %>">
+  <sl-color-picker
+    id="<%= id %>"
+    label="<%= label %>"
+    value="<%= value %>"
+    format="<%= format %>"
+    size="<%= size %>"
+    data-shoelace-color-picker-target="picker"
+    data-action="sl-change->shoelace-color-picker#change"
+    <% if swatches.present? %>swatches="<%= swatches.join("; ") %>"<% end %>
+    <%= "opacity" if opacity %>
+    <%= "no-format-toggle" if no_format_toggle %>
+    <%= "disabled" if disabled %>
+    <%= "required" if required %>
+  ></sl-color-picker>
+
+  <% if name.present? %>
+    <input
+      type="hidden"
+      name="<%= name %>"
+      value="<%= value %>"
+      data-shoelace-color-picker-target="input"
+      <%= "disabled" if disabled %>
+    >
+  <% end %>
+
+  <% if show_value %>
+    <div class="flex items-center gap-2 text-sm text-neutral-600 dark:text-neutral-400">
+      <span>Value:</span>
+      <code
+        class="rounded bg-neutral-100 px-2 py-1 font-mono text-xs text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300"
+        data-shoelace-color-picker-target="value"
+      ><%= value %></code>
+    </div>
+  <% end %>
+
+  <% if show_swatches && swatches.present? %>
+    <div class="flex flex-wrap gap-2">
+      <% swatches.each do |color| %>
+        <% selected_classes = color.casecmp?(value.to_s) ? "ring-neutral-500 dark:ring-neutral-400" : "ring-transparent" %>
+        <button
+          type="button"
+          class="<%= "#{swatch_button_base_classes} #{selected_classes}" %>"
+          style="background-color: <%= color %>;"
+          data-color="<%= color %>"
+          data-shoelace-color-picker-target="swatch"
+          data-action="click->shoelace-color-picker#selectSwatch"
+          aria-label="Pick <%= color %>"
+          aria-pressed="<%= color.casecmp?(value.to_s) ? "true" : "false" %>"
+          <%= "disabled" if disabled %>
+        ></button>
+      <% end %>
+    </div>
+  <% end %>
+</div>

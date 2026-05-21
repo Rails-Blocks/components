@@ -1,0 +1,149 @@
+<div class="<%= wrapper_classes %>" <%= tag.attributes(controller_data) %>>
+  <% if floating? %>
+    <div class="<%= inner_classes %>">
+      <%# Background pattern for floating banners %>
+      <div class="absolute inset-0 opacity-5">
+        <svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern id="banner-grid-<%= @cookie_name.parameterize %>" width="20" height="20" patternUnits="userSpaceOnUse">
+              <circle cx="10" cy="10" r="1" fill="currentColor"/>
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#banner-grid-<%= @cookie_name.parameterize %>)"/>
+        </svg>
+      </div>
+
+      <div class="relative px-4 sm:px-6 py-4">
+        <div class="flex items-start gap-4">
+          <% if @show_icon %>
+            <div class="hidden sm:flex size-9 shrink-0 items-center justify-center rounded-full <%= icon_bg_classes %> backdrop-blur-sm ring-1 ring-neutral-900/10 dark:ring-white/10" aria-hidden="true">
+              <span class="<%= variant_icon_classes %>">
+                <%= icon_svg %>
+              </span>
+            </div>
+          <% end %>
+
+          <div class="flex-1 min-w-0">
+            <div class="flex items-start justify-between gap-2 sm:gap-4">
+              <div>
+                <h3 class="text-sm sm:text-base font-bold mb-1 <%= @dismissible ? 'pr-6' : '' %> <%= variant_text_classes %>">
+                  <%= @title %>
+                </h3>
+                <% if @description.present? %>
+                  <p class="text-xs sm:text-sm <%= variant_description_classes %> mb-3">
+                    <%= @description.respond_to?(:html_safe) ? @description.html_safe : @description %>
+                  </p>
+                <% end %>
+
+                <% if countdown? %>
+                  <div class="flex flex-wrap gap-2 items-center mb-3">
+                    <div class="flex justify-center items-center divide-x divide-neutral-200 dark:divide-neutral-700/75 rounded-lg bg-neutral-100 dark:bg-neutral-950/50 text-sm border border-neutral-200 dark:border-neutral-700/75">
+                      <span class="flex h-9 items-center justify-center px-3 py-2">
+                        <span data-banner-target="days" class="text-xs sm:text-sm font-mono font-semibold">00</span>
+                        <span class="ml-0.5 text-xs text-neutral-600 dark:text-neutral-400">d</span>
+                      </span>
+                      <span class="flex h-9 items-center justify-center px-3 py-2">
+                        <span data-banner-target="hours" class="text-xs sm:text-sm font-mono font-semibold">00</span>
+                        <span class="ml-0.5 text-xs text-neutral-600 dark:text-neutral-400">h</span>
+                      </span>
+                      <span class="flex h-9 items-center justify-center px-3 py-2">
+                        <span data-banner-target="minutes" class="text-xs sm:text-sm font-mono font-semibold">00</span>
+                        <span class="ml-0.5 text-xs text-neutral-600 dark:text-neutral-400">m</span>
+                      </span>
+                      <span class="flex h-9 items-center justify-center px-3 py-2">
+                        <span data-banner-target="seconds" class="text-xs sm:text-sm font-mono font-semibold">00</span>
+                        <span class="ml-0.5 text-xs text-neutral-600 dark:text-neutral-400">s</span>
+                      </span>
+                    </div>
+                  </div>
+                <% end %>
+
+                <% if @action_text.present? || @dismissible %>
+                  <div class="flex flex-wrap gap-2">
+                    <% if @action_text.present? && @action_url.present? %>
+                      <a href="<%= @action_url %>" data-action="click->banner#hideAndNavigate" class="flex items-center justify-center gap-1.5 rounded-lg border border-neutral-400/30 bg-neutral-800 px-3.5 py-2 text-sm font-medium whitespace-nowrap text-white shadow-sm transition-all duration-100 ease-in-out select-none hover:bg-neutral-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-600 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-white dark:text-neutral-800 dark:hover:bg-neutral-100 dark:focus-visible:outline-neutral-200">
+                        <%= @action_text %>
+                      </a>
+                    <% end %>
+                    <% if @dismissible %>
+                      <button data-action="click->banner#hide" class="flex items-center justify-center gap-1.5 rounded-lg border border-black/10 bg-white/90 px-3.5 py-2 text-sm font-medium whitespace-nowrap text-neutral-800 shadow-xs transition-all duration-100 ease-in-out select-none hover:bg-neutral-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-600 disabled:cursor-not-allowed disabled:opacity-50 dark:border-white/10 dark:bg-neutral-700/50 dark:text-neutral-50 dark:hover:bg-neutral-700/75 dark:focus-visible:outline-neutral-200">
+                        Maybe Later
+                      </button>
+                    <% end %>
+                  </div>
+                <% end %>
+              </div>
+
+              <% if @dismissible %>
+                <button data-action="click->banner#hide" class="inline-flex items-center justify-center p-1.5 absolute right-2 top-2 rounded-full opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-hidden hover:bg-neutral-500/15 active:bg-neutral-500/25 disabled:pointer-events-none" aria-label="Close banner">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="size-4" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" x2="6" y1="6" y2="18"></line><line x1="6" x2="18" y1="6" y2="18"></line></svg>
+                </button>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% else %>
+    <%# Top/Bottom position layout %>
+    <div class="<%= inner_classes %> <%= variant_bg_classes %>">
+      <div class="container mx-auto px-4">
+        <div class="flex items-center justify-between gap-2 sm:gap-4 py-3">
+          <div class="flex items-center gap-3 flex-1">
+            <% if @show_icon %>
+              <div class="hidden sm:flex size-9 shrink-0 items-center justify-center rounded-full <%= icon_bg_classes %>" aria-hidden="true">
+                <span class="<%= variant_icon_classes %>">
+                  <%= icon_svg %>
+                </span>
+              </div>
+            <% end %>
+            <div class="space-y-1">
+              <p class="text-sm font-semibold <%= variant_text_classes %>"><%= @title %></p>
+              <% if @description.present? %>
+                <p class="hidden sm:block text-xs <%= variant_description_classes %>">
+                  <%= @description.respond_to?(:html_safe) ? @description.html_safe : @description %>
+                </p>
+              <% end %>
+            </div>
+          </div>
+
+          <% if countdown? %>
+            <div class="hidden md:flex gap-3 items-center">
+              <div class="flex justify-center items-center divide-x divide-neutral-200 dark:divide-neutral-700/75 rounded-lg bg-neutral-100 dark:bg-neutral-950/50 text-sm border border-neutral-200 dark:border-neutral-700/75">
+                <span class="flex h-9 items-center justify-center px-3 py-2">
+                  <span data-banner-target="days" class="text-xs sm:text-sm font-mono font-semibold">00</span>
+                  <span class="ml-0.5 text-xs text-neutral-600 dark:text-neutral-400">d</span>
+                </span>
+                <span class="flex h-9 items-center justify-center px-3 py-2">
+                  <span data-banner-target="hours" class="text-xs sm:text-sm font-mono font-semibold">00</span>
+                  <span class="ml-0.5 text-xs text-neutral-600 dark:text-neutral-400">h</span>
+                </span>
+                <span class="flex h-9 items-center justify-center px-3 py-2">
+                  <span data-banner-target="minutes" class="text-xs sm:text-sm font-mono font-semibold">00</span>
+                  <span class="ml-0.5 text-xs text-neutral-600 dark:text-neutral-400">m</span>
+                </span>
+                <span class="flex h-9 items-center justify-center px-3 py-2">
+                  <span data-banner-target="seconds" class="text-xs sm:text-sm font-mono font-semibold">00</span>
+                  <span class="ml-0.5 text-xs text-neutral-600 dark:text-neutral-400">s</span>
+                </span>
+              </div>
+            </div>
+          <% end %>
+
+          <div class="flex items-center gap-2">
+            <% if @action_text.present? && @action_url.present? %>
+              <a href="<%= @action_url %>" data-action="click->banner#hideAndNavigate" class="inline-flex items-center justify-center gap-1.5 rounded-lg border border-neutral-400/30 bg-neutral-800 px-3 py-1.5 text-sm font-medium whitespace-nowrap text-white shadow-sm transition-all duration-100 ease-in-out select-none hover:bg-neutral-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-600 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-white dark:text-neutral-800 dark:hover:bg-neutral-100 dark:focus-visible:outline-neutral-200">
+                <%= @action_text %>
+              </a>
+            <% end %>
+            <% if @dismissible %>
+              <button data-action="click->banner#hide" class="inline-flex items-center justify-center p-1.5 right-2 top-2 rounded-full opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-hidden hover:bg-neutral-500/15 active:bg-neutral-500/25 disabled:pointer-events-none" aria-label="Close banner">
+                <svg xmlns="http://www.w3.org/2000/svg" class="size-4" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" x2="6" y1="6" y2="18"></line><line x1="6" x2="18" y1="6" y2="18"></line></svg>
+              </button>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>

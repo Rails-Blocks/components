@@ -1,0 +1,23 @@
+<a href="<%= href %>" aria-label="<%= label %>" class="<%= item_classes %>">
+  <div class="flex min-w-0 items-center gap-1.5">
+    <% if icon? %>
+      <div class="flex items-center justify-center group-disabled:opacity-50 group-data-disabled:opacity-50">
+        <%= icon.html_safe %>
+      </div>
+    <% end %>
+    <div class="flex min-w-0 grow items-center gap-2.5 group-data-no-contents-gap:gap-0">
+      <div class="truncate"><%= label %></div>
+    </div>
+  </div>
+  <div class="text-neutral-500 dark:text-neutral-400">
+    <% if badge? %>
+      <span class="mr-auto text-xs"><%= badge %></span>
+    <% elsif shortcut? %>
+      <div class="hidden sm:block">
+        <div class="hidden ml-auto group-hover:flex text-xs">
+          <%= shortcut %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</a>

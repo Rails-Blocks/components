@@ -1,0 +1,217 @@
+<%
+# Combobox Component - Shared Partial
+#
+# A searchable select/dropdown component powered by Tom Select with support for
+# single/multi-select, async data loading, and customizable rendering.
+#
+# @param options [Array] Array of [label, value] pairs or [label, value, options_hash] triplets (default: [])
+# @param selected [String, Array] Pre-selected value(s) (default: nil)
+# @param name [String] Name attribute for the select element (default: nil)
+# @param id [String] ID attribute for the select element (default: auto-generated)
+# @param label [String] Label text (default: nil)
+# @param description [String] Description text (default: nil)
+# @param placeholder [String] Placeholder text (default: "Select...")
+# @param multiple [Boolean] Allow multiple selections (default: false)
+# @param searchable [Boolean] Enable search/filter (default: true)
+# @param dropdown_input [Boolean, nil] Alias for searchable
+# @param clearable [Boolean] Show clear button (default: true)
+# @param clear_button [Boolean, nil] Alias for clearable
+# @param disabled [Boolean] Disable the combobox (default: false)
+# @param required [Boolean] Mark as required (default: false)
+# @param allow_create [Boolean] Allow creating new options (default: false)
+# @param allow_new [Boolean, nil] Alias for allow_create
+# @param grouped_options [Hash] Grouped options hash (default: nil)
+# @param url [String] URL for async data fetching (default: nil)
+# @param value_field [String] Field for value in API response (default: "value")
+# @param label_field [String] Field for label in API response (default: "label")
+# @param search_param [String] Query parameter for search (default: "query")
+# @param per_page [Integer] Items per page for async (default: 60)
+# @param virtual_scroll [Boolean] Enable virtual scroll (default: false)
+# @param response_data_field [String] Path to array in API response (default: "data")
+# @param optgroup_columns [Boolean] Enable optgroup columns plugin (default: false)
+# @param submit_on_change [Boolean] Submit form on change (default: false)
+# @param update_field [Boolean] Update target field from selected option data (default: false)
+# @param update_field_target [String] CSS selector for update target field (default: nil)
+# @param update_field_source [String] Source key for update field (default: "name")
+# @param disable_typing [Boolean] Disable typing in the control input (default: false)
+# @param scroll_buttons [Boolean] Show scroll buttons in dropdown (default: false)
+# @param show_count [Boolean] Show count for multi-select (default: false)
+# @param count_text [String] Text after count (default: "selected")
+# @param count_text_singular [String] Singular count text (default: nil)
+# @param tags_position [String] Tags position: "inline", "above", "below", or container ID (default: "inline")
+# @param enable_flag_toggle [Boolean] Enable flag toggle on tags (default: false)
+# @param image_field [String] Field for image URL (default: nil)
+# @param subtitle_field [String] Field for subtitle (default: nil)
+# @param meta_fields [String] Comma-separated metadata fields (default: nil)
+# @param badge_field [String] Field for badge (default: nil)
+# @param render_template [String] Custom rendering template (default: nil)
+# @param no_more_results_text [String] Text when no more results (default: "No more results")
+# @param no_results_text [String] Text when no results (default: "No results found for")
+# @param loading_text [String] Loading text (default: "Loading...")
+# @param create_text [String] Create option text (default: "Add")
+# @param dropdown_placeholder [String] Dropdown search placeholder (default: "Search...")
+# @param dropdown_input_placeholder [String, nil] Alias for dropdown_placeholder
+# @param classes [String] Additional wrapper classes (default: nil)
+# @param data [Hash] Additional data attributes for the select element (default: {})
+
+# Set defaults for all local variables
+options ||= []
+selected ||= nil
+name ||= nil
+id ||= "combobox_#{SecureRandom.hex(4)}"
+label ||= nil
+description ||= nil
+placeholder ||= "Select..."
+multiple ||= false
+searchable = local_assigns.fetch(:searchable, true)
+dropdown_input = local_assigns.fetch(:dropdown_input, nil)
+searchable = dropdown_input unless dropdown_input.nil?
+clearable = local_assigns.fetch(:clearable, true)
+clear_button = local_assigns.fetch(:clear_button, nil)
+clearable = clear_button unless clear_button.nil?
+disabled ||= false
+required ||= false
+allow_create = local_assigns.fetch(:allow_create, false)
+allow_new = local_assigns.fetch(:allow_new, nil)
+allow_create = allow_new unless allow_new.nil?
+grouped_options ||= nil
+url ||= nil
+value_field ||= "value"
+label_field ||= "label"
+search_param ||= "query"
+per_page ||= 60
+virtual_scroll = local_assigns.fetch(:virtual_scroll, false)
+response_data_field ||= "data"
+optgroup_columns = local_assigns.fetch(:optgroup_columns, false)
+submit_on_change ||= false
+update_field = local_assigns.fetch(:update_field, false)
+update_field_target ||= nil
+update_field_source ||= "name"
+disable_typing = local_assigns.fetch(:disable_typing, false)
+scroll_buttons = local_assigns.fetch(:scroll_buttons, false)
+show_count ||= false
+count_text ||= "selected"
+count_text_singular ||= nil
+tags_position ||= "inline"
+enable_flag_toggle ||= false
+image_field ||= nil
+subtitle_field ||= nil
+meta_fields ||= nil
+badge_field ||= nil
+render_template ||= nil
+no_more_results_text ||= "No more results"
+no_results_text ||= "No results found for"
+loading_text ||= "Loading..."
+create_text ||= "Add"
+dropdown_placeholder ||= "Search..."
+dropdown_input_placeholder = local_assigns.fetch(:dropdown_input_placeholder, nil)
+dropdown_placeholder = dropdown_input_placeholder unless dropdown_input_placeholder.nil?
+classes ||= nil
+data ||= {}
+
+# Build data attributes
+data_attrs = { controller: "select" }
+
+# Core functionality
+data_attrs[:select_dropdown_input_value] = searchable
+data_attrs[:select_clear_button_value] = clearable unless multiple
+data_attrs[:select_allow_new_value] = allow_create if allow_create
+data_attrs[:select_disable_typing_value] = true if disable_typing
+data_attrs[:select_scroll_buttons_value] = true if scroll_buttons
+data_attrs[:select_optgroup_columns_value] = true if optgroup_columns
+
+# Async/API configuration
+if url.present?
+  data_attrs[:select_url_value] = url
+  data_attrs[:select_value_field_value] = value_field
+  data_attrs[:select_label_field_value] = label_field
+  data_attrs[:select_search_param_value] = search_param if search_param != "query"
+  data_attrs[:select_per_page_value] = per_page if per_page != 60
+  data_attrs[:select_virtual_scroll_value] = true if virtual_scroll
+  data_attrs[:select_response_data_field_value] = response_data_field if response_data_field != "data"
+end
+
+# Form behavior
+data_attrs[:select_submit_on_change_value] = true if submit_on_change
+if update_field
+  data_attrs[:select_update_field_value] = true
+  data_attrs[:select_update_field_target_value] = update_field_target if update_field_target.present?
+  data_attrs[:select_update_field_source_value] = update_field_source if update_field_source != "name"
+end
+
+# Multi-select count display
+if multiple && show_count
+  data_attrs[:select_show_count_value] = true
+  data_attrs[:select_count_text_value] = count_text
+  data_attrs[:select_count_text_singular_value] = count_text_singular if count_text_singular
+end
+
+# Tags position for multi-select
+if multiple && tags_position != "inline"
+  data_attrs[:select_tags_position_value] = tags_position
+end
+
+# Flag toggle
+data_attrs[:select_enable_flag_toggle_value] = true if enable_flag_toggle
+
+# API response rendering
+data_attrs[:select_image_field_value] = image_field if image_field
+data_attrs[:select_subtitle_field_value] = subtitle_field if subtitle_field
+data_attrs[:select_meta_fields_value] = meta_fields if meta_fields.present?
+data_attrs[:select_badge_field_value] = badge_field if badge_field
+data_attrs[:select_render_template_value] = render_template if render_template.present?
+
+# Internationalization
+data_attrs[:select_no_more_results_text_value] = no_more_results_text if no_more_results_text != "No more results"
+data_attrs[:select_no_search_results_text_value] = no_results_text if no_results_text != "No results found for"
+data_attrs[:select_loading_text_value] = loading_text if loading_text != "Loading..."
+data_attrs[:select_create_text_value] = create_text if create_text != "Add"
+data_attrs[:select_dropdown_input_placeholder_value] = dropdown_placeholder if dropdown_placeholder != "Search..."
+data_attrs = data_attrs.merge(data)
+
+# Build wrapper classes
+wrapper_classes = ["w-full", classes].compact.reject(&:empty?).join(" ")
+
+# Label/description classes
+label_color_class = disabled ? "text-neutral-400 dark:text-neutral-500" : "text-neutral-700 dark:text-neutral-300"
+label_classes = ["block text-sm font-medium mb-1", label_color_class].join(" ")
+description_color_class = disabled ? "text-neutral-400 dark:text-neutral-500" : "text-neutral-500 dark:text-neutral-400"
+description_classes = ["text-xs", description_color_class, "mt-1"].join(" ")
+
+# Build select options
+select_options_html = if grouped_options.present?
+  grouped_options_for_select(grouped_options, selected)
+elsif options.present?
+  options_for_select(options, selected)
+else
+  nil
+end
+%>
+
+<div class="<%= wrapper_classes %>">
+  <% if label.present? %>
+    <label for="<%= id %>" class="<%= label_classes %>">
+      <%= label %>
+      <% if required %><span class="text-red-500">*</span><% end %>
+    </label>
+  <% end %>
+
+  <% if description.present? && label.present? %>
+    <p class="<%= description_classes %> mb-2 -mt-0.5"><%= description %></p>
+  <% end %>
+
+  <%= select_tag name,
+      select_options_html,
+      id: id,
+      multiple: multiple,
+      disabled: disabled,
+      required: required,
+      include_blank: placeholder,
+      class: "w-full",
+      style: "visibility: hidden;",
+      data: data_attrs %>
+
+  <% if description.present? && label.blank? %>
+    <p class="<%= description_classes %>"><%= description %></p>
+  <% end %>
+</div>

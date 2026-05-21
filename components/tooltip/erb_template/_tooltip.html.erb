@@ -1,0 +1,80 @@
+<%#
+  Tooltip Component
+  Displays contextual information on hover, focus, or click.
+
+  Required locals:
+    - text: String - The tooltip text content
+
+  Optional locals:
+    - placement: String (default: "top") - Tooltip placement: "top", "top-start", "top-end", "bottom", "bottom-start", "bottom-end", "left", "left-start", "left-end", "right", "right-start", "right-end"
+    - offset: Integer (default: 8) - Distance from trigger element in pixels
+    - max_width: Integer (default: 200) - Maximum width of tooltip in pixels
+    - delay: Integer (default: 0) - Delay before showing tooltip in milliseconds
+    - size: String (default: "regular") - Text size: "small", "regular", "large"
+    - animation: String (default: "fade") - Animation type: "fade", "origin", "fade origin", "none"
+    - trigger: String (default: "auto") - Trigger events: "mouseenter", "focus", "click", "auto" (space-separated)
+    - kbd: String (default: nil) - Optional keyboard shortcut displayed at the end of the tooltip
+    - mac_kbd: String (default: nil) - Optional Mac-specific keyboard shortcut
+    - non_mac_kbd: String (default: nil) - Optional Windows/Linux keyboard shortcut
+    - arrow: Boolean (default: true) - Whether to show the arrow
+    - classes: String (default: nil) - Additional CSS classes for the trigger wrapper
+    - tag: String (default: "span") - HTML tag for the wrapper element
+
+  Usage:
+    render "shared/components/tooltip/tooltip", text: "Helpful info" do
+      ...
+    end
+%>
+
+<% text ||= "" %>
+<% placement ||= "top" %>
+<% offset ||= 8 %>
+<% max_width ||= 200 %>
+<% delay ||= 0 %>
+<% size ||= "regular" %>
+<% animation ||= "fade" %>
+<% trigger ||= "auto" %>
+<% kbd ||= nil %>
+<% mac_kbd ||= nil %>
+<% non_mac_kbd ||= nil %>
+<% arrow = true if local_assigns[:arrow].nil? %>
+<% classes ||= nil %>
+<% tag ||= "span" %>
+
+<%
+  valid_placements = %w[
+    top top-start top-end
+    bottom bottom-start bottom-end
+    left left-start left-end
+    right right-start right-end
+  ]
+  placement = valid_placements.include?(placement.to_s) ? placement.to_s : "top"
+
+  # Build data attributes hash
+  data_attrs = {
+    controller: "tooltip",
+    tooltip_content: text
+  }
+
+  # Only add non-default values to keep HTML clean
+  data_attrs[:tooltip_placement_value] = placement unless placement == "top"
+  data_attrs[:tooltip_offset_value] = offset unless offset == 8
+  data_attrs[:tooltip_max_width_value] = max_width unless max_width == 200
+  data_attrs[:tooltip_delay_value] = delay unless delay == 0
+  data_attrs[:tooltip_size_value] = size unless size == "regular"
+  data_attrs[:tooltip_animation_value] = animation unless animation == "fade"
+  data_attrs[:tooltip_trigger_value] = trigger unless trigger == "auto"
+  data_attrs[:tooltip_kbd_value] = kbd if kbd.present?
+  data_attrs[:tooltip_mac_kbd_value] = mac_kbd if mac_kbd.present?
+  data_attrs[:tooltip_non_mac_kbd_value] = non_mac_kbd if non_mac_kbd.present?
+  data_attrs[:tooltip_arrow] = "false" unless arrow
+
+  # Build wrapper classes
+  wrapper_classes = [classes].compact.reject(&:empty?).join(" ")
+%>
+
+<% if text.present? && block_given? %>
+<%= content_tag tag, data: data_attrs, class: wrapper_classes.presence do %>
+  <%= yield %>
+<% end %>
+<% end %>

@@ -1,0 +1,186 @@
+<%#
+  Scroll Area Component
+  Custom scrollbar styling and scroll containers with auto-hide behavior.
+
+  Required locals:
+    None - all options have defaults
+
+  Optional locals:
+    - height: String (default: nil) - Fixed height class (e.g., "h-64", "h-80")
+    - max_height: String (default: nil) - Maximum height class (e.g., "max-h-96")
+    - width: String (default: nil) - Fixed width class (e.g., "w-full", "w-96")
+    - max_width: String (default: nil) - Maximum width class (e.g., "max-w-md")
+    - orientation: String (default: "vertical") - Scroll direction: "vertical", "horizontal", "both"
+    - scrollbar_style: String (default: "default") - Style: "default", "minimal", "overlay"
+    - scroll_fade: String (default: "none") - Fade effect: "none", "y", "x", "both"
+    - hide_delay: Integer (default: 600) - Delay in ms before hiding scrollbars
+    - rounded: String (default: "rounded-lg") - Border radius class
+    - border: Boolean (default: false) - Show border
+    - background: Boolean (default: false) - Add background color
+    - padding: String (default: nil) - Padding class (e.g., "p-4")
+    - classes: String (default: nil) - Additional wrapper classes
+    - viewport_classes: String (default: nil) - Additional viewport classes
+%>
+
+<% height ||= nil %>
+<% max_height ||= nil %>
+<% width ||= nil %>
+<% max_width ||= nil %>
+<% orientation ||= "vertical" %>
+<% scrollbar_style ||= "default" %>
+<% scroll_fade ||= "none" %>
+<% hide_delay ||= 600 %>
+<% rounded ||= "rounded-lg" %>
+<% border = false if local_assigns[:border].nil? %>
+<% background = false if local_assigns[:background].nil? %>
+<% padding ||= nil %>
+<% classes ||= nil %>
+<% viewport_classes ||= nil %>
+
+<%
+  # Determine scrollbar visibility
+  show_vertical = orientation.to_s == "vertical" || orientation.to_s == "both"
+  show_horizontal = orientation.to_s == "horizontal" || orientation.to_s == "both"
+
+  # Build border classes
+  border_classes = border ? "border border-neutral-200 dark:border-neutral-700" : ""
+
+  # Build background classes
+  background_classes = background ? "bg-white dark:bg-neutral-800" : ""
+
+  # Build overflow classes
+  overflow_classes = case orientation.to_s
+    when "vertical" then "overflow-y-auto overflow-x-hidden"
+    when "horizontal" then "overflow-x-auto overflow-y-hidden"
+    when "both" then "overflow-auto"
+    else "overflow-y-auto"
+    end
+
+  # Build scroll fade classes
+  scroll_fade_classes = case scroll_fade.to_s
+    when "y" then "scroll-fade-y"
+    when "x" then "scroll-fade-x"
+    when "both" then "scroll-fade-both"
+    else ""
+    end
+
+  # Build padding classes (add extra right padding for vertical scrollbar)
+  padding_classes = if padding.present?
+    if show_vertical && !padding.include?("pr-")
+      padding.to_s
+    else
+      padding
+    end
+  else
+    ""
+  end
+
+  # Build wrapper classes
+  wrapper_classes = [
+    "relative",
+    height,
+    max_height,
+    width,
+    max_width,
+    rounded,
+    border_classes,
+    background_classes,
+    classes
+  ].compact.reject(&:empty?).join(" ")
+
+  # Build viewport classes
+  viewport_class_list = [
+    "h-full",
+    overflow_classes,
+    "scrollbar-hide",
+    scroll_fade_classes,
+    padding_classes,
+    viewport_classes
+  ].compact.reject(&:empty?).join(" ")
+
+  # Build scrollbar track classes
+  track_base_classes = "absolute rounded-full opacity-0 transition-opacity duration-150 delay-300 pointer-events-none data-[hovering]:opacity-100 data-[hovering]:duration-100 data-[hovering]:delay-0 data-[hovering]:pointer-events-auto data-[scrolling]:opacity-100 data-[scrolling]:duration-100 data-[scrolling]:delay-0 data-[scrolling]:pointer-events-auto data-[visible=false]:hidden"
+
+  track_style_classes = case scrollbar_style.to_s
+    when "minimal" then ""
+    else "bg-black/5 backdrop-blur-sm dark:bg-white/10"
+    end
+
+  vertical_track_position_classes = if orientation.to_s == "both"
+    "right-2 top-12 bottom-4 flex w-1.5 justify-center"
+  else
+    "right-2 top-2 bottom-2 flex w-1.5 justify-center"
+  end
+
+  horizontal_track_position_classes = if orientation.to_s == "both"
+    "left-2 right-4 bottom-2 flex h-1.5 items-center"
+  else
+    "left-2 right-2 bottom-2 flex h-1.5 items-center"
+  end
+
+  vertical_track_classes = [track_base_classes, track_style_classes, vertical_track_position_classes].compact.reject(&:empty?).join(" ")
+  horizontal_track_classes = [track_base_classes, track_style_classes, horizontal_track_position_classes].compact.reject(&:empty?).join(" ")
+
+  # Build thumb classes
+  thumb_color = case scrollbar_style.to_s
+    when "minimal" then "bg-neutral-400 dark:bg-neutral-500"
+    else "bg-neutral-500 dark:bg-neutral-400"
+    end
+
+  thumb_classes = "relative rounded-full transition-opacity duration-100 #{thumb_color}"
+
+  # Build data attributes
+  root_data = {
+    controller: "scroll-area",
+    scroll_area_target: "root",
+    action: "mouseenter->scroll-area#onRootMouseEnter mouseleave->scroll-area#onRootMouseLeave"
+  }
+  root_data[:scroll_area_hide_delay_value] = hide_delay if hide_delay != 600
+%>
+
+<div class="<%= wrapper_classes %>" <%= tag.attributes(data: root_data) %>>
+  <%# Viewport %>
+  <div
+    class="<%= viewport_class_list %>"
+    data-scroll-area-target="viewport"
+    data-action="scroll->scroll-area#onViewportScroll"
+  >
+    <% if local_assigns[:content].present? %>
+      <%= content.html_safe %>
+    <% else %>
+      <%= yield %>
+    <% end %>
+  </div>
+
+  <% if show_vertical %>
+    <%# Vertical Scrollbar %>
+    <div
+      data-scroll-area-target="scrollbar"
+      data-scroll-area-orientation-value="vertical"
+      data-action="click->scroll-area#onScrollbarClick"
+      class="<%= vertical_track_classes %>"
+    >
+      <div
+        data-scroll-area-target="thumb"
+        data-action="mousedown->scroll-area#onThumbMouseDown"
+        class="w-full <%= thumb_classes %>"
+      ></div>
+    </div>
+  <% end %>
+
+  <% if show_horizontal %>
+    <%# Horizontal Scrollbar %>
+    <div
+      data-scroll-area-target="scrollbar"
+      data-scroll-area-orientation-value="horizontal"
+      data-action="click->scroll-area#onScrollbarClick"
+      class="<%= horizontal_track_classes %>"
+    >
+      <div
+        data-scroll-area-target="thumb"
+        data-action="mousedown->scroll-area#onThumbMouseDown"
+        class="h-full <%= thumb_classes %>"
+      ></div>
+    </div>
+  <% end %>
+</div>

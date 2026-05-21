@@ -1,0 +1,30 @@
+<% label ||= "" %>
+<% value ||= "" %>
+<% name ||= "items[]" %>
+<% checked ||= false %>
+<% disabled ||= false %>
+<% id ||= "checkbox-#{SecureRandom.hex(4)}" %>
+<% classes ||= nil %>
+
+<%
+  base_classes = "px-4 py-3 hover:bg-neutral-50 dark:hover:bg-neutral-900/50 has-[:checked]:bg-neutral-50 dark:has-[:checked]:bg-neutral-800/50"
+  item_classes = [base_classes, classes].compact.reject(&:empty?).join(" ")
+%>
+
+<div class="<%= item_classes %>">
+  <div class="flex items-center gap-x-3">
+    <input
+      type="checkbox"
+      id="<%= id %>"
+      name="<%= name %>"
+      value="<%= value %>"
+      tabindex="0"
+      <% if checked %>checked<% end %>
+      <% if disabled %>disabled<% end %>
+      data-checkbox-select-all-target="checkbox"
+      data-action="click->checkbox-select-all#toggle">
+    <label for="<%= id %>" class="inline-block text-sm cursor-pointer select-none<% if disabled %> opacity-50<% end %>">
+      <%= label %>
+    </label>
+  </div>
+</div>

@@ -1,0 +1,9 @@
+<% if render_multiple? %>
+  <div class="space-y-2">
+    <% count.times do %>
+      <div class="<%= skeleton_classes %>"></div>
+    <% end %>
+  </div>
+<% else %>
+  <div class="<%= skeleton_classes %>"></div>
+<% end %>

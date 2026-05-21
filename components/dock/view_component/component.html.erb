@@ -1,0 +1,24 @@
+<div class="<%= wrapper_classes %>" <%= tag.attributes(controller_data) %>>
+  <%# Desktop dock %>
+  <div class="<%= dock_container_classes %>">
+    <% items.each do |item| %>
+      <%= item %>
+    <% end %>
+  </div>
+
+  <% if show_mobile? %>
+    <%# Mobile menu (expanded items) %>
+    <div class="<%= mobile_menu_classes %>" data-dock-target="mobileMenu">
+      <% items.each do |item| %>
+        <%= item.render_mobile %>
+      <% end %>
+    </div>
+
+    <%# Mobile toggle button %>
+    <div class="absolute right-5 bottom-5 block md:hidden" data-action="click->dock#toggleMobile">
+      <button data-dock-target="mobileButton" class="<%= mobile_button_classes %>">
+        <%= chevron_svg %>
+      </button>
+    </div>
+  <% end %>
+</div>

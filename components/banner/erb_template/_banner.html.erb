@@ -1,0 +1,319 @@
+<%#
+  Banner Component
+  Displays announcement banners, cookie notices, promotional messages, and notifications.
+
+  Required locals:
+    - title: String - The banner title/message
+
+  Optional locals:
+    - description: String (default: nil) - Optional description text (can include HTML)
+    - position: String (default: "top") - Banner position: "top", "bottom", "floating"
+    - variant: String (default: "default") - Visual variant: "default", "info", "warning", "success", "promotional"
+    - dismissible: Boolean (default: true) - Whether the banner can be dismissed
+    - sticky: Boolean (default: true) - Whether the banner is fixed position
+    - show_icon: Boolean (default: true) - Whether to show an icon
+    - custom_icon: String (default: nil) - Custom icon HTML/SVG
+    - action_text: String (default: nil) - Optional CTA button text
+    - action_url: String (default: nil) - Optional CTA button URL
+    - cookie_name: String (default: "banner_dismissed") - Cookie name for dismissal persistence
+    - cookie_days: Integer (default: -1) - How long to persist dismissal (-1 = no cookie, 0 = session, >0 = days)
+    - countdown_end_time: String (default: nil) - ISO 8601 date string for countdown timer
+    - auto_hide: Boolean (default: false) - Auto hide after countdown expires
+    - classes: String (default: nil) - Additional CSS classes
+%>
+
+<% title ||= "" %>
+<% description ||= nil %>
+<% position ||= "top" %>
+<% variant ||= "default" %>
+<% dismissible = true if local_assigns[:dismissible].nil? %>
+<% sticky = true if local_assigns[:sticky].nil? %>
+<% show_icon = true if local_assigns[:show_icon].nil? %>
+<% custom_icon ||= nil %>
+<% action_text ||= nil %>
+<% action_url ||= nil %>
+<% cookie_name ||= "banner_dismissed" %>
+<% cookie_days ||= -1 %>
+<% countdown_end_time ||= nil %>
+<% auto_hide ||= false %>
+<% classes ||= nil %>
+
+<%
+  # Normalize position and variant
+  position = position.to_s
+  variant = variant.to_s
+
+  # Determine color/style classes based on variant
+  variant_colors = case variant
+    when "info"
+      {
+        border: "border-blue-200 dark:border-blue-800",
+        bg: "bg-blue-50 dark:bg-blue-900/20",
+        gradient: "from-blue-50 via-blue-25 to-blue-100 dark:from-blue-900/50 dark:via-blue-950 dark:to-blue-900/30",
+        icon_bg: "bg-blue-100 dark:bg-blue-800/50",
+        icon: "text-blue-500 dark:text-blue-400",
+        title: "text-blue-800 dark:text-blue-200",
+        text: "text-blue-700 dark:text-blue-300"
+      }
+    when "warning"
+      {
+        border: "border-amber-200 dark:border-amber-800",
+        bg: "bg-amber-50 dark:bg-amber-900/20",
+        gradient: "from-amber-50 via-amber-25 to-amber-100 dark:from-amber-900/50 dark:via-amber-950 dark:to-amber-900/30",
+        icon_bg: "bg-amber-100 dark:bg-amber-800/50",
+        icon: "text-amber-500 dark:text-amber-400",
+        title: "text-amber-800 dark:text-amber-200",
+        text: "text-amber-700 dark:text-amber-300"
+      }
+    when "success"
+      {
+        border: "border-green-200 dark:border-green-800",
+        bg: "bg-green-50 dark:bg-green-900/20",
+        gradient: "from-green-50 via-green-25 to-green-100 dark:from-green-900/50 dark:via-green-950 dark:to-green-900/30",
+        icon_bg: "bg-green-100 dark:bg-green-800/50",
+        icon: "text-green-500 dark:text-green-400",
+        title: "text-green-800 dark:text-green-200",
+        text: "text-green-700 dark:text-green-300"
+      }
+    when "promotional"
+      {
+        border: "border-red-200 dark:border-red-800",
+        bg: "bg-gradient-to-r from-red-50 to-orange-50 dark:from-red-900/20 dark:to-orange-900/20",
+        gradient: "from-red-50 via-orange-25 to-orange-100 dark:from-red-900/50 dark:via-orange-950 dark:to-orange-900/30",
+        icon_bg: "bg-gradient-to-br from-red-500/20 to-orange-500/20",
+        icon: "text-red-500 dark:text-red-400",
+        title: "text-red-800 dark:text-red-200",
+        text: "text-red-700 dark:text-red-300"
+      }
+    else
+      {
+        border: "border-black/10 dark:border-white/10",
+        bg: "bg-white dark:bg-neutral-900",
+        gradient: "from-white via-neutral-50 to-neutral-100 dark:from-neutral-900 dark:via-neutral-950 dark:to-black",
+        icon_bg: "bg-neutral-100 dark:bg-neutral-800",
+        icon: "text-neutral-700 dark:text-neutral-300",
+        title: "text-neutral-900 dark:text-white",
+        text: "text-neutral-600 dark:text-neutral-400"
+      }
+    end
+
+  # Determine position classes
+  position_classes = case position
+    when "top"
+      "fixed top-0 left-0 right-0 z-50 -translate-y-full"
+    when "bottom"
+      "fixed bottom-0 left-0 right-0 z-50 translate-y-full"
+    when "floating"
+      "fixed bottom-4 left-1/2 z-50 w-full max-w-2xl mx-auto px-4 -translate-x-1/2 translate-y-full"
+    else
+      "fixed top-0 left-0 right-0 z-50 -translate-y-full"
+    end
+  position_classes = "" unless sticky
+
+  # Build wrapper classes
+  base_classes = "hidden transition-all duration-300 ease-in-out opacity-0"
+  wrapper_classes = [base_classes, position_classes, classes].compact.reject(&:empty?).join(" ")
+  wrapper_classes += " #{variant_colors[:border]} #{variant_colors[:bg]}" unless position == "floating"
+
+  # Build controller data attributes
+  data_attributes = {
+    controller: "banner",
+    banner_cookie_name_value: cookie_name,
+    banner_cookie_days_value: cookie_days
+  }
+  data_attributes[:banner_countdown_end_time_value] = countdown_end_time if countdown_end_time.present?
+  data_attributes[:banner_auto_hide_value] = auto_hide if auto_hide
+  controller_data = { data: data_attributes }
+
+  # Determine if we have a countdown
+  has_countdown = countdown_end_time.present?
+  is_floating = position == "floating"
+
+  # Icon SVGs based on variant
+  icon_svg = if custom_icon.present?
+    custom_icon.html_safe
+  else
+    case variant
+    when "info"
+      '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="opacity-90">
+        <path d="M9 16.25C13.004 16.25 16.25 13.004 16.25 9C16.25 4.996 13.004 1.75 9 1.75C4.996 1.75 1.75 4.996 1.75 9C1.75 13.004 4.996 16.25 9 16.25Z"></path>
+        <path d="M9 12.75V9.25C9 8.9739 8.7761 8.75 8.5 8.75H7.75"></path>
+        <path d="M9 6.75C8.448 6.75 8 6.301 8 5.75C8 5.199 8.448 4.75 9 4.75C9.552 4.75 10 5.199 10 5.75C10 6.301 9.552 6.75 9 6.75Z" fill="currentColor" data-stroke="none" stroke="none"></path>
+      </svg>'.html_safe
+    when "warning"
+      '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="opacity-90">
+        <path d="M7.63796 3.48996L2.21295 12.89C1.60795 13.9399 2.36395 15.25 3.57495 15.25H14.425C15.636 15.25 16.392 13.9399 15.787 12.89L10.362 3.48996C9.75696 2.44996 8.24296 2.44996 7.63796 3.48996Z"></path>
+        <path d="M9 6.75V9.75"></path>
+        <path d="M9 13.5C8.448 13.5 8 13.05 8 12.5C8 11.95 8.448 11.5 9 11.5C9.552 11.5 10 11.9501 10 12.5C10 13.0499 9.552 13.5 9 13.5Z" fill="currentColor" data-stroke="none" stroke="none"></path>
+      </svg>'.html_safe
+    when "success"
+      '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="opacity-90">
+        <circle cx="9" cy="9" r="7.25"></circle>
+        <polyline points="5.75 9.25 8 11.75 12.25 6.25"></polyline>
+      </svg>'.html_safe
+    when "promotional"
+      '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="opacity-90">
+        <circle cx="7" cy="7" r="1" fill="currentColor" data-stroke="none" stroke="none"></circle>
+        <circle cx="11" cy="11" r="1" fill="currentColor" data-stroke="none" stroke="none"></circle>
+        <line x1="6.75" y1="11.25" x2="11.25" y2="6.75"></line>
+        <path d="M14.5,9c0-.967,.784-1.75,1.75-1.75v-1.5c0-1.104-.895-2-2-2H3.75c-1.105,0-2,.896-2,2v1.5c.966,0,1.75,.783,1.75,1.75s-.784,1.75-1.75,1.75v1.5c0,1.104,.895,2,2,2H14.25c1.105,0,2-.896,2-2v-1.5c-.966,0-1.75-.783-1.75-1.75Z"></path>
+      </svg>'.html_safe
+    else
+      '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="opacity-90">
+        <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+        <path d="m2 17 10 5 10-5"></path>
+        <path d="m2 12 10 5 10-5"></path>
+      </svg>'.html_safe
+    end
+  end
+%>
+
+<div class="<%= wrapper_classes %>" <%= tag.attributes(controller_data) %>>
+  <% if is_floating %>
+    <div class="relative bg-gradient-to-br <%= variant_colors[:gradient] %> text-neutral-900 dark:text-white rounded-2xl shadow-lg overflow-hidden border <%= variant_colors[:border] %>">
+      <%# Background pattern for floating banners %>
+      <div class="absolute inset-0 opacity-5">
+        <svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern id="banner-grid-<%= cookie_name.parameterize %>" width="20" height="20" patternUnits="userSpaceOnUse">
+              <circle cx="10" cy="10" r="1" fill="currentColor"/>
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#banner-grid-<%= cookie_name.parameterize %>)"/>
+        </svg>
+      </div>
+
+      <div class="relative px-4 sm:px-6 py-4">
+        <div class="flex items-start gap-4">
+          <% if show_icon %>
+            <div class="hidden sm:flex size-9 shrink-0 items-center justify-center rounded-full <%= variant_colors[:icon_bg] %> backdrop-blur-sm ring-1 ring-neutral-900/10 dark:ring-white/10" aria-hidden="true">
+              <span class="<%= variant_colors[:icon] %>">
+                <%= icon_svg %>
+              </span>
+            </div>
+          <% end %>
+
+          <div class="flex-1 min-w-0">
+            <div class="flex items-start justify-between gap-2 sm:gap-4">
+              <div>
+                <h3 class="text-sm sm:text-base font-bold mb-1 <%= dismissible ? 'pr-6' : '' %> <%= variant_colors[:title] %>">
+                  <%= title %>
+                </h3>
+                <% if description.present? %>
+                  <p class="text-xs sm:text-sm <%= variant_colors[:text] %> mb-3">
+                    <%= description.respond_to?(:html_safe) ? description.html_safe : description %>
+                  </p>
+                <% end %>
+
+                <% if has_countdown %>
+                  <div class="flex flex-wrap gap-2 items-center mb-3">
+                    <div class="flex justify-center items-center divide-x divide-neutral-200 dark:divide-neutral-700/75 rounded-lg bg-neutral-100 dark:bg-neutral-950/50 text-sm border border-neutral-200 dark:border-neutral-700/75">
+                      <span class="flex h-9 items-center justify-center px-3 py-2">
+                        <span data-banner-target="days" class="text-xs sm:text-sm font-mono font-semibold">00</span>
+                        <span class="ml-0.5 text-xs text-neutral-600 dark:text-neutral-400">d</span>
+                      </span>
+                      <span class="flex h-9 items-center justify-center px-3 py-2">
+                        <span data-banner-target="hours" class="text-xs sm:text-sm font-mono font-semibold">00</span>
+                        <span class="ml-0.5 text-xs text-neutral-600 dark:text-neutral-400">h</span>
+                      </span>
+                      <span class="flex h-9 items-center justify-center px-3 py-2">
+                        <span data-banner-target="minutes" class="text-xs sm:text-sm font-mono font-semibold">00</span>
+                        <span class="ml-0.5 text-xs text-neutral-600 dark:text-neutral-400">m</span>
+                      </span>
+                      <span class="flex h-9 items-center justify-center px-3 py-2">
+                        <span data-banner-target="seconds" class="text-xs sm:text-sm font-mono font-semibold">00</span>
+                        <span class="ml-0.5 text-xs text-neutral-600 dark:text-neutral-400">s</span>
+                      </span>
+                    </div>
+                  </div>
+                <% end %>
+
+                <% if action_text.present? || dismissible %>
+                  <div class="flex flex-wrap gap-2">
+                    <% if action_text.present? && action_url.present? %>
+                      <a href="<%= action_url %>" data-action="click->banner#hideAndNavigate" class="flex items-center justify-center gap-1.5 rounded-lg border border-neutral-400/30 bg-neutral-800 px-3.5 py-2 text-sm font-medium whitespace-nowrap text-white shadow-sm transition-all duration-100 ease-in-out select-none hover:bg-neutral-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-600 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-white dark:text-neutral-800 dark:hover:bg-neutral-100 dark:focus-visible:outline-neutral-200">
+                        <%= action_text %>
+                      </a>
+                    <% end %>
+                    <% if dismissible %>
+                      <button data-action="click->banner#hide" class="flex items-center justify-center gap-1.5 rounded-lg border border-black/10 bg-white/90 px-3.5 py-2 text-sm font-medium whitespace-nowrap text-neutral-800 shadow-xs transition-all duration-100 ease-in-out select-none hover:bg-neutral-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-600 disabled:cursor-not-allowed disabled:opacity-50 dark:border-white/10 dark:bg-neutral-700/50 dark:text-neutral-50 dark:hover:bg-neutral-700/75 dark:focus-visible:outline-neutral-200">
+                        Maybe Later
+                      </button>
+                    <% end %>
+                  </div>
+                <% end %>
+              </div>
+
+              <% if dismissible %>
+                <button data-action="click->banner#hide" class="inline-flex items-center justify-center p-1.5 absolute right-2 top-2 rounded-full opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-hidden hover:bg-neutral-500/15 active:bg-neutral-500/25 disabled:pointer-events-none" aria-label="Close banner">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="size-4" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" x2="6" y1="6" y2="18"></line><line x1="6" x2="18" y1="6" y2="18"></line></svg>
+                </button>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% else %>
+    <%# Top/Bottom position layout %>
+    <div class="border-b <%= variant_colors[:border] %> shadow-xs <%= variant_colors[:bg] %>">
+      <div class="container mx-auto px-4">
+        <div class="flex items-center justify-between gap-2 sm:gap-4 py-3">
+          <div class="flex items-center gap-3 flex-1">
+            <% if show_icon %>
+              <div class="hidden sm:flex size-9 shrink-0 items-center justify-center rounded-full <%= variant_colors[:icon_bg] %>" aria-hidden="true">
+                <span class="<%= variant_colors[:icon] %>">
+                  <%= icon_svg %>
+                </span>
+              </div>
+            <% end %>
+            <div class="space-y-1">
+              <p class="text-sm font-semibold <%= variant_colors[:title] %>"><%= title %></p>
+              <% if description.present? %>
+                <p class="hidden sm:block text-xs <%= variant_colors[:text] %>">
+                  <%= description.respond_to?(:html_safe) ? description.html_safe : description %>
+                </p>
+              <% end %>
+            </div>
+          </div>
+
+          <% if has_countdown %>
+            <div class="hidden md:flex gap-3 items-center">
+              <div class="flex justify-center items-center divide-x divide-neutral-200 dark:divide-neutral-700/75 rounded-lg bg-neutral-100 dark:bg-neutral-950/50 text-sm border border-neutral-200 dark:border-neutral-700/75">
+                <span class="flex h-9 items-center justify-center px-3 py-2">
+                  <span data-banner-target="days" class="text-xs sm:text-sm font-mono font-semibold">00</span>
+                  <span class="ml-0.5 text-xs text-neutral-600 dark:text-neutral-400">d</span>
+                </span>
+                <span class="flex h-9 items-center justify-center px-3 py-2">
+                  <span data-banner-target="hours" class="text-xs sm:text-sm font-mono font-semibold">00</span>
+                  <span class="ml-0.5 text-xs text-neutral-600 dark:text-neutral-400">h</span>
+                </span>
+                <span class="flex h-9 items-center justify-center px-3 py-2">
+                  <span data-banner-target="minutes" class="text-xs sm:text-sm font-mono font-semibold">00</span>
+                  <span class="ml-0.5 text-xs text-neutral-600 dark:text-neutral-400">m</span>
+                </span>
+                <span class="flex h-9 items-center justify-center px-3 py-2">
+                  <span data-banner-target="seconds" class="text-xs sm:text-sm font-mono font-semibold">00</span>
+                  <span class="ml-0.5 text-xs text-neutral-600 dark:text-neutral-400">s</span>
+                </span>
+              </div>
+            </div>
+          <% end %>
+
+          <div class="flex items-center gap-2">
+            <% if action_text.present? && action_url.present? %>
+              <a href="<%= action_url %>" data-action="click->banner#hideAndNavigate" class="inline-flex items-center justify-center gap-1.5 rounded-lg border border-neutral-400/30 bg-neutral-800 px-3 py-1.5 text-sm font-medium whitespace-nowrap text-white shadow-sm transition-all duration-100 ease-in-out select-none hover:bg-neutral-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-600 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-white dark:text-neutral-800 dark:hover:bg-neutral-100 dark:focus-visible:outline-neutral-200">
+                <%= action_text %>
+              </a>
+            <% end %>
+            <% if dismissible %>
+              <button data-action="click->banner#hide" class="inline-flex items-center justify-center p-1.5 right-2 top-2 rounded-full opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-hidden hover:bg-neutral-500/15 active:bg-neutral-500/25 disabled:pointer-events-none" aria-label="Close banner">
+                <svg xmlns="http://www.w3.org/2000/svg" class="size-4" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" x2="6" y1="6" y2="18"></line><line x1="6" x2="18" y1="6" y2="18"></line></svg>
+              </button>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>

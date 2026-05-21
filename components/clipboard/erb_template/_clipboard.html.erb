@@ -1,0 +1,131 @@
+<%#
+  Clipboard Component
+  Copy text to clipboard with visual feedback and optional tooltip.
+
+  Required locals:
+    - content: String - The text content to copy to clipboard
+
+  Optional locals:
+    - button_text: String (default: "Copy") - Text displayed on the copy button
+    - copied_text: String (default: "Copied!") - Text displayed after successful copy
+    - success_message: String (default: "Copied!") - Tooltip message shown on successful copy
+    - error_message: String (default: "Failed to copy!") - Tooltip message shown on copy failure
+    - show_tooltip: Boolean (default: true) - Whether to show the floating tooltip
+    - tooltip_placement: String (default: "top") - Position of the tooltip
+    - tooltip_offset: Integer (default: 8) - Distance of tooltip from trigger in pixels
+    - tooltip_duration: Integer (default: 2000) - How long tooltip stays visible in milliseconds
+    - show_icon: Boolean (default: true) - Whether to show the copy/check icons
+    - show_copied_state: Boolean (default: true) - Whether to show visual feedback when copied
+    - variant: String (default: "primary") - Button style: "primary", "secondary", "outline", "ghost"
+    - size: String (default: "md") - Button size: "sm", "md", "lg"
+    - icon_only: Boolean (default: false) - Whether to show only the icon without text
+    - classes: String (default: nil) - Additional CSS classes for the button
+%>
+
+<% content ||= "" %>
+<% button_text ||= "Copy" %>
+<% copied_text ||= "Copied!" %>
+<% success_message ||= "Copied!" %>
+<% error_message ||= "Failed to copy!" %>
+<% show_tooltip = true if local_assigns[:show_tooltip].nil? %>
+<% tooltip_placement ||= "top" %>
+<% tooltip_offset ||= 8 %>
+<% tooltip_duration ||= 2000 %>
+<% show_icon = true if local_assigns[:show_icon].nil? %>
+<% show_copied_state = true if local_assigns[:show_copied_state].nil? %>
+<% variant ||= "primary" %>
+<% size ||= "md" %>
+<% icon_only ||= false %>
+<% classes ||= nil %>
+
+<%
+  # Valid placements
+  valid_placements = %w[top top-start top-end bottom bottom-start bottom-end left left-start left-end right right-start right-end]
+  tooltip_placement = valid_placements.include?(tooltip_placement) ? tooltip_placement : "top"
+
+  # Base classes
+  base_classes = "inline-flex items-center justify-center gap-1.5 font-medium whitespace-nowrap transition-all duration-100 ease-in-out select-none focus-visible:outline-2 focus-visible:outline-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+
+  # Size classes
+  size_classes = if icon_only
+    case size.to_s
+    when "sm" then "p-1.5 text-xs"
+    when "lg" then "p-3 text-base"
+    else "p-2.5 text-sm"
+    end
+  else
+    case size.to_s
+    when "sm" then "px-2.5 py-1.5 text-xs"
+    when "lg" then "px-4 py-2.5 text-base"
+    else "px-3.5 py-2 text-sm"
+    end
+  end
+
+  # Variant classes
+  variant_classes = case variant.to_s
+  when "primary"
+    "rounded-lg border border-neutral-400/30 bg-neutral-800 text-white shadow-xs hover:bg-neutral-700 focus-visible:outline-neutral-600 dark:bg-white dark:text-neutral-800 dark:hover:bg-neutral-100 dark:focus-visible:outline-neutral-200"
+  when "secondary"
+    "rounded-lg border border-black/10 bg-white/90 text-neutral-800 shadow-xs hover:bg-neutral-50 focus-visible:outline-neutral-600 dark:border-white/10 dark:bg-neutral-700/50 dark:text-neutral-50 dark:hover:bg-neutral-700/75 dark:focus-visible:outline-neutral-200"
+  when "outline"
+    "rounded-lg border border-neutral-300 bg-transparent text-neutral-700 hover:bg-neutral-50 focus-visible:outline-neutral-600 dark:border-neutral-600 dark:text-neutral-200 dark:hover:bg-neutral-700/30 dark:focus-visible:outline-neutral-200"
+  when "ghost"
+    "rounded-lg text-neutral-800 hover:bg-neutral-100 focus-visible:outline-neutral-600 dark:text-neutral-50 dark:hover:bg-neutral-700/50 dark:focus-visible:outline-neutral-200"
+  else
+    "rounded-lg border border-neutral-400/30 bg-neutral-800 text-white shadow-xs hover:bg-neutral-700 focus-visible:outline-neutral-600 dark:bg-white dark:text-neutral-800 dark:hover:bg-neutral-100 dark:focus-visible:outline-neutral-200"
+  end
+
+  # Icon size classes
+  icon_size_class = case size.to_s
+  when "sm" then "size-3"
+  when "lg" then "size-5"
+  else "size-3.5 sm:size-4"
+  end
+
+  # Build button classes
+  button_classes = [base_classes, size_classes, variant_classes, classes].compact.reject(&:empty?).join(" ")
+%>
+
+<% if content.present? %>
+<button
+  type="button"
+  class="<%= button_classes %>"
+  data-controller="clipboard"
+  data-clipboard-text="<%= content %>"
+  data-clipboard-success-message-value="<%= success_message %>"
+  data-clipboard-error-message-value="<%= error_message %>"
+  data-clipboard-show-tooltip-value="<%= show_tooltip %>"
+  data-clipboard-tooltip-placement-value="<%= tooltip_placement %>"
+  data-clipboard-tooltip-offset-value="<%= tooltip_offset %>"
+  data-clipboard-tooltip-duration-value="<%= tooltip_duration %>">
+  <% if show_copied_state %>
+    <div data-clipboard-target="copyContent" class="flex items-center gap-1.5">
+      <% unless icon_only %><span><%= button_text %></span><% end %>
+      <% if show_icon %>
+        <svg xmlns="http://www.w3.org/2000/svg" class="<%= icon_size_class %>" width="18" height="18" viewBox="0 0 18 18">
+          <g fill="currentColor">
+            <path d="M12.75,2h-.275c-.123-.846-.845-1.5-1.725-1.5h-3.5c-.879,0-1.602,.654-1.725,1.5h-.275c-1.517,0-2.75,1.233-2.75,2.75V14.25c0,1.517,1.233,2.75,2.75,2.75h7.5c1.517,0,2.75-1.233,2.75-2.75V4.75c0-1.517-1.233-2.75-2.75-2.75Zm-5.75,.25c0-.138,.112-.25,.25-.25h3.5c.138,0,.25,.112,.25,.25v1c0,.138-.112,.25-.25,.25h-3.5c-.138,0-.25-.112-.25-.25v-1Zm4.75,10.25H6.25c-.414,0-.75-.336-.75-.75s.336-.75,.75-.75h5.5c.414,0,.75,.336,.75,.75s-.336,.75-.75,.75Zm0-3H6.25c-.414,0-.75-.336-.75-.75s.336-.75,.75-.75h5.5c.414,0,.75,.336,.75,.75s-.336,.75-.75,.75Z"></path>
+          </g>
+        </svg>
+      <% end %>
+    </div>
+    <div data-clipboard-target="copiedContent" class="hidden flex items-center gap-1.5 text-green-500 dark:text-green-400">
+      <% unless icon_only %><span><%= copied_text %></span><% end %>
+      <svg xmlns="http://www.w3.org/2000/svg" class="<%= icon_size_class %>" width="18" height="18" viewBox="0 0 18 18">
+        <g fill="currentColor">
+          <path d="M6.75,15h-.002c-.227,0-.442-.104-.583-.281L2.165,9.719c-.259-.324-.207-.795,.117-1.054,.325-.259,.796-.206,1.054,.117l3.418,4.272L14.667,3.278c.261-.322,.732-.373,1.055-.111,.322,.261,.372,.733,.111,1.055L7.333,14.722c-.143,.176-.357,.278-.583,.278Z"></path>
+        </g>
+      </svg>
+    </div>
+  <% else %>
+    <% unless icon_only %><span><%= button_text %></span><% end %>
+    <% if show_icon %>
+      <svg xmlns="http://www.w3.org/2000/svg" class="<%= icon_size_class %>" width="18" height="18" viewBox="0 0 18 18">
+        <g fill="currentColor">
+          <path d="M12.75,2h-.275c-.123-.846-.845-1.5-1.725-1.5h-3.5c-.879,0-1.602,.654-1.725,1.5h-.275c-1.517,0-2.75,1.233-2.75,2.75V14.25c0,1.517,1.233,2.75,2.75,2.75h7.5c1.517,0,2.75-1.233,2.75-2.75V4.75c0-1.517-1.233-2.75-2.75-2.75Zm-5.75,.25c0-.138,.112-.25,.25-.25h3.5c.138,0,.25,.112,.25,.25v1c0,.138-.112,.25-.25,.25h-3.5c-.138,0-.25-.112-.25-.25v-1Zm4.75,10.25H6.25c-.414,0-.75-.336-.75-.75s.336-.75,.75-.75h5.5c.414,0,.75,.336,.75,.75s-.336,.75-.75,.75Zm0-3H6.25c-.414,0-.75-.336-.75-.75s.336-.75,.75-.75h5.5c.414,0,.75,.336,.75,.75s-.336,.75-.75,.75Z"></path>
+        </g>
+      </svg>
+    <% end %>
+  <% end %>
+</button>
+<% end %>

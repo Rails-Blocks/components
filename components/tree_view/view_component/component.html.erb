@@ -1,0 +1,24 @@
+<div class="<%= wrapper_classes %>" <%= tag.attributes(controller_data) %>>
+  <% if selectable && show_select_all %>
+    <!-- Header with Select All -->
+    <div class="flex items-center gap-2 rounded-md px-2 py-1.5 hover:bg-neutral-100 dark:hover:bg-neutral-700/50 has-[:checked]:bg-neutral-200 dark:has-[:checked]:bg-neutral-700">
+      <input
+        type="checkbox"
+        id="tree-select-all-<%= unique_id %>"
+        tabindex="0"
+        data-checkbox-select-all-target="selectAll"
+        data-action="click->checkbox-select-all#toggleAll">
+      <label for="tree-select-all-<%= unique_id %>" class="text-sm font-semibold text-neutral-900 dark:text-neutral-100 cursor-pointer select-none">
+        <%= select_all_label %>
+      </label>
+    </div>
+    <hr class="my-2 border-neutral-200 dark:border-neutral-700">
+  <% end %>
+
+  <!-- Tree content -->
+  <div class="flex flex-col gap-y-1">
+    <% nodes.each do |node| %>
+      <%= node %>
+    <% end %>
+  </div>
+</div>

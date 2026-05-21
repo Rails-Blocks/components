@@ -1,0 +1,90 @@
+<% items ||= [] %>
+<% groups ||= [] %>
+<% select_all_label ||= "Select All" %>
+<% name ||= "items[]" %>
+<% toggle_key ||= nil %>
+<% total_items ||= nil %>
+<% base_amount ||= nil %>
+<% show_action_bar ||= false %>
+<% show_count ||= false %>
+<% classes ||= nil %>
+
+<%
+  # Build wrapper classes
+  base_wrapper = "w-full"
+  wrapper_classes = [base_wrapper, classes].compact.reject(&:empty?).join(" ")
+
+  # Build data attributes
+  data_attrs = { controller: "checkbox-select-all" }
+  data_attrs[:"checkbox-select-all-toggle-key-value"] = toggle_key if toggle_key.present?
+  data_attrs[:"checkbox-select-all-total-items-value"] = total_items if total_items.present?
+  data_attrs[:"checkbox-select-all-base-amount-value"] = base_amount if base_amount.present?
+
+  # Generate unique ID for this instance
+  unique_id = SecureRandom.hex(4)
+%>
+
+<div class="<%= wrapper_classes %>" <%= tag.attributes(data: data_attrs) %>>
+  <div class="bg-white dark:bg-neutral-900 rounded-xl border border-black/10 dark:border-white/10 shadow-xs overflow-hidden">
+    <!-- Header with Select All -->
+    <div class="px-4 py-3 border-b border-black/10 dark:border-white/10">
+      <div class="flex items-center gap-x-3">
+        <input
+          type="checkbox"
+          id="select-all-<%= unique_id %>"
+          tabindex="0"
+          data-checkbox-select-all-target="selectAll"
+          data-action="click->checkbox-select-all#toggleAll">
+        <label for="select-all-<%= unique_id %>" class="inline-block font-medium text-sm cursor-pointer select-none">
+          <%= select_all_label %>
+        </label>
+      </div>
+    </div>
+
+    <!-- Items List -->
+    <div class="divide-y divide-black/10 dark:divide-white/10">
+      <% if groups.any? %>
+        <% groups.each do |group| %>
+          <%= render "shared/components/checkbox_select_all/checkbox_select_all_group",
+            label: group[:label],
+            description: group[:description],
+            icon: group[:icon],
+            name: group[:name] || name,
+            items: group[:items] || [],
+            groups: group[:groups] || [],
+            classes: group[:classes]
+          %>
+        <% end %>
+      <% else %>
+        <% items.each_with_index do |item, index| %>
+          <%= render "shared/components/checkbox_select_all/checkbox_select_all_item",
+            label: item[:label],
+            value: item[:value],
+            name: item[:name] || name,
+            checked: item[:checked] || false,
+            disabled: item[:disabled] || false,
+            id: item[:id] || "checkbox-#{unique_id}-#{index}",
+            classes: item[:classes]
+          %>
+        <% end %>
+      <% end %>
+    </div>
+
+    <% if show_action_bar %>
+      <!-- Action Bar (shown when items are selected) -->
+      <div class="px-4 py-3 border-t border-black/10 dark:border-white/10" data-checkbox-select-all-target="actionBar" hidden>
+        <div class="flex justify-between items-center gap-4">
+          <% if show_count %>
+            <div class="flex gap-1 text-sm font-medium text-neutral-700 dark:text-neutral-300">
+              <span data-checkbox-select-all-target="count">0</span>
+              <span>selected</span>
+            </div>
+          <% end %>
+          <div class="flex items-center gap-2">
+            <%= yield if block_given? %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,138 @@
+<%#
+  Button Component
+  Versatile button component with multiple variants, sizes, and styles.
+
+  Required locals:
+    - text: String - The button text content (can be nil for icon-only buttons)
+
+  Optional locals:
+    - variant: String (default: "primary") - Button variant: "primary", "secondary", "outline", "ghost", "destructive"
+    - size: String (default: "md") - Size: "xs", "sm", "md", "lg"
+    - style: String (default: "basic") - Visual style: "basic", "fancy" (with enhanced shadows)
+    - pill: Boolean (default: false) - Whether to use pill shape (rounded-full)
+    - disabled: Boolean (default: false) - Whether the button is disabled
+    - loading: Boolean (default: false) - Whether to show loading spinner
+    - icon: String (default: nil) - Optional icon SVG HTML
+    - icon_position: String (default: "left") - Icon position: "left", "right"
+    - icon_only: Boolean (default: false) - Whether this is an icon-only button
+    - full_width: Boolean (default: false) - Whether button should take full width
+    - href: String (default: nil) - If provided, renders as an anchor tag
+    - type: String (default: "button") - Button type: "button", "submit", "reset"
+    - classes: String (default: nil) - Additional CSS classes
+    - data: Hash (default: {}) - Data attributes for the button
+%>
+
+<% text ||= nil %>
+<% variant ||= "primary" %>
+<% size ||= "md" %>
+<% style ||= "basic" %>
+<% pill ||= false %>
+<% disabled ||= false %>
+<% loading ||= false %>
+<% icon ||= nil %>
+<% icon_position ||= "left" %>
+<% icon_only ||= false %>
+<% full_width ||= false %>
+<% href ||= nil %>
+<% type ||= "button" %>
+<% classes ||= nil %>
+<% data ||= {} %>
+
+<%
+  # Set disabled if loading
+  disabled = true if loading
+
+  # Base classes
+  base_classes = "inline-flex items-center justify-center gap-1.5 font-medium whitespace-nowrap transition-all duration-100 ease-in-out select-none focus-visible:outline-2 focus-visible:outline-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+
+  # Size classes
+  size_classes = if icon_only
+    case size.to_s
+    when "xs" then "p-1.5 text-xs"
+    when "sm" then "p-2 text-xs"
+    when "lg" then "p-3 text-sm"
+    else "p-2.5 text-xs" # md
+    end
+  else
+    case size.to_s
+    when "xs" then "px-2.5 py-1.5 text-xs"
+    when "sm" then "px-3 py-2 text-xs"
+    when "lg" then "px-4 py-2.5 text-base"
+    else "px-3.5 py-2 text-sm" # md
+    end
+  end
+
+  # Shape classes
+  shape_classes = pill ? "rounded-full" : "rounded-lg"
+
+  # Icon size classes
+  icon_size_classes = case size.to_s
+    when "xs" then "size-3"
+    when "sm" then "size-3 sm:size-3.5"
+    when "lg" then "size-4 sm:size-5"
+    else "size-3.5 sm:size-4" # md
+  end
+
+  # Variant classes - Basic style
+  basic_variant_classes = case variant.to_s
+    when "primary"
+      "border border-neutral-400/30 bg-neutral-800 text-white shadow-sm hover:bg-neutral-700 focus-visible:outline-neutral-600 dark:bg-white dark:text-neutral-800 dark:hover:bg-neutral-100 dark:focus-visible:outline-neutral-200"
+    when "secondary"
+      "border border-black/10 bg-white/90 text-neutral-800 shadow-xs hover:bg-neutral-50 focus-visible:outline-neutral-600 dark:border-white/10 dark:bg-neutral-700/50 dark:text-neutral-50 dark:hover:bg-neutral-700/75 dark:focus-visible:outline-neutral-200"
+    when "outline"
+      "border border-neutral-300 bg-transparent text-neutral-700 hover:bg-neutral-100 focus-visible:outline-neutral-600 dark:border-neutral-600 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:focus-visible:outline-neutral-200"
+    when "ghost"
+      "bg-transparent text-neutral-800 hover:bg-neutral-100 hover:text-neutral-900 focus-visible:outline-neutral-600 dark:text-neutral-50 dark:hover:bg-neutral-600/50 dark:hover:text-white dark:focus-visible:outline-neutral-200"
+    when "destructive"
+      "border border-red-300/30 bg-red-600 text-white shadow-sm hover:bg-red-500 focus-visible:outline-neutral-600 dark:focus-visible:outline-neutral-200"
+    else
+      "border border-neutral-400/30 bg-neutral-800 text-white shadow-sm hover:bg-neutral-700 focus-visible:outline-neutral-600 dark:bg-white dark:text-neutral-800 dark:hover:bg-neutral-100 dark:focus-visible:outline-neutral-200"
+  end
+
+  # Variant classes - Fancy style
+  fancy_variant_classes = case variant.to_s
+    when "primary"
+      "relative bg-neutral-900 text-white shadow-[0_4px_12px_0_rgb(from_theme(colors.neutral.900)_r_g_b_/_0.15),0_2px_4px_0_rgb(from_theme(colors.neutral.950)_r_g_b_/_0.2),0_0_0_1px_theme(colors.neutral.900),inset_0_1px_0_0_rgb(from_theme(colors.white)_r_g_b_/_0.15),inset_0_0_0_1px_rgb(from_theme(colors.white)_r_g_b_/_0.03)] transition-all duration-200 ease-out before:pointer-events-none before:absolute before:inset-0 before:z-10 before:rounded-[inherit] before:bg-gradient-to-b before:from-white/25 before:via-white/5 before:to-transparent before:p-px before:[mask:linear-gradient(#fff_0_0)_content-box,linear-gradient(#fff_0_0)] hover:bg-neutral-800 hover:shadow-[0_4px_12px_0_rgb(from_theme(colors.neutral.900)_r_g_b_/_0.15),0_2px_4px_0_rgb(from_theme(colors.neutral.950)_r_g_b_/_0.2),0_0_0_1px_theme(colors.neutral.900),inset_0_1px_0_0_rgb(from_theme(colors.white)_r_g_b_/_0.25),inset_0_0_0_1px_rgb(from_theme(colors.white)_r_g_b_/_0.03)] focus-visible:outline-neutral-600 dark:bg-neutral-100 dark:text-neutral-900 dark:shadow-[0_4px_12px_0_rgb(from_theme(colors.neutral.900)_r_g_b_/_0.15),0_2px_4px_0_rgb(from_theme(colors.black)_r_g_b_/_0.08),0_0_0_1px_theme(colors.neutral.200),inset_0_1px_0_0_rgb(from_theme(colors.white)_r_g_b_/_0.8)] dark:before:from-white/20 dark:hover:bg-white dark:hover:shadow-[0_4px_12px_0_rgb(from_theme(colors.black)_r_g_b_/_0.2),0_2px_4px_0_rgb(from_theme(colors.black)_r_g_b_/_0.1),0_0_0_1px_theme(colors.white),inset_0_1px_0_0_rgb(from_theme(colors.white)_r_g_b_/_0.9)] dark:focus-visible:outline-neutral-200"
+    when "secondary"
+      "relative bg-white text-neutral-800 shadow-[0_4px_12px_0_rgb(from_theme(colors.neutral.900)_r_g_b_/_0.08),0_2px_4px_0_rgb(from_theme(colors.black)_r_g_b_/_0.06),0_0_0_1px_rgb(from_theme(colors.black)_r_g_b_/_0.1),inset_0_1px_0_0_rgb(from_theme(colors.white)_r_g_b_/_0.8),inset_0_0_0_1px_rgb(from_theme(colors.white)_r_g_b_/_0.03)] transition-all duration-200 ease-out before:pointer-events-none before:absolute before:inset-0 before:z-10 before:rounded-[inherit] before:bg-gradient-to-b before:from-white/15 before:to-white/5 before:p-px before:[mask:linear-gradient(#fff_0_0)_content-box,linear-gradient(#fff_0_0)] hover:bg-neutral-50 hover:shadow-[0_4px_12px_0_rgb(from_theme(colors.neutral.900)_r_g_b_/_0.08),0_2px_4px_0_rgb(from_theme(colors.black)_r_g_b_/_0.08),0_0_0_1px_rgb(from_theme(colors.black)_r_g_b_/_0.12),inset_0_1px_0_0_rgb(from_theme(colors.white)_r_g_b_/_0.9),inset_0_0_0_1px_rgb(from_theme(colors.white)_r_g_b_/_0.03)] focus-visible:outline-neutral-600 dark:bg-neutral-950 dark:text-neutral-100 dark:shadow-[0_4px_12px_0_rgb(from_theme(colors.black)_r_g_b_/_0.25),0_2px_4px_0_rgb(from_theme(colors.black)_r_g_b_/_0.3),0_0_0_1px_theme(colors.neutral.950),inset_0_1px_0_0_rgb(from_theme(colors.white)_r_g_b_/_0.17),inset_0_0_0_1px_rgb(from_theme(colors.white)_r_g_b_/_0.01)] dark:before:from-white/10 dark:before:to-white/5 dark:hover:bg-neutral-900 dark:hover:shadow-[0_4px_12px_0_rgb(from_theme(colors.black)_r_g_b_/_0.45),0_2px_4px_0_rgb(from_theme(colors.black)_r_g_b_/_0.3),0_0_0_1px_theme(colors.neutral.950),inset_0_1px_0_0_rgb(from_theme(colors.white)_r_g_b_/_0.20),inset_0_0_0_1px_rgb(from_theme(colors.white)_r_g_b_/_0.02)] dark:focus-visible:outline-neutral-200"
+    when "destructive"
+      "relative bg-red-600 text-white shadow-[0_4px_12px_0_rgb(from_theme(colors.neutral.900)_r_g_b_/_0.15),0_2px_4px_0_rgb(from_theme(colors.zinc.950)_r_g_b_/_0.2),0_0_0_1px_theme(colors.red.600),inset_0_1px_0_0_rgb(from_theme(colors.white)_r_g_b_/_0.25),inset_0_0_0_1px_rgb(from_theme(colors.white)_r_g_b_/_0.03)] transition-all duration-200 ease-out before:pointer-events-none before:absolute before:inset-0 before:z-10 before:rounded-[inherit] before:bg-gradient-to-b before:from-white/25 before:via-white/5 before:to-transparent before:p-px before:[mask:linear-gradient(#fff_0_0)_content-box,linear-gradient(#fff_0_0)] hover:bg-red-500 hover:shadow-[0_4px_12px_0_rgb(from_theme(colors.neutral.900)_r_g_b_/_0.15),0_2px_4px_0_rgb(from_theme(colors.zinc.950)_r_g_b_/_0.2),0_0_0_1px_theme(colors.red.600),inset_0_1px_0_0_rgb(from_theme(colors.white)_r_g_b_/_0.25),inset_0_0_0_1px_rgb(from_theme(colors.white)_r_g_b_/_0.03)] focus-visible:outline-neutral-600 dark:before:from-white/20 dark:focus-visible:outline-neutral-200"
+    else
+      basic_variant_classes # Fallback to basic for outline/ghost
+  end
+
+  # Select variant classes based on style
+  variant_classes = (style.to_s == "fancy" && %w[primary secondary destructive].include?(variant.to_s)) ? fancy_variant_classes : basic_variant_classes
+
+  # Build final button classes
+  button_classes = [base_classes, size_classes, shape_classes, variant_classes, full_width ? "w-full" : nil, classes].compact.reject(&:empty?).join(" ")
+
+  # Loading spinner SVG
+  loading_spinner = %(<svg class="animate-spin #{icon_size_classes}" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>)
+%>
+
+<% if href.present? %>
+  <a href="<%= href %>" role="button" class="<%= button_classes %>" <%= "aria-disabled=true" if disabled %> <% data.each do |key, value| %> data-<%= key %>="<%= value %>"<% end %>>
+<% else %>
+  <button type="<%= type %>" class="<%= button_classes %>" <%= "disabled" if disabled %> <% data.each do |key, value| %> data-<%= key %>="<%= value %>"<% end %>>
+<% end %>
+
+  <% if loading %>
+    <%= loading_spinner.html_safe %>
+  <% elsif icon.present? && (icon_position.to_s == "left" || icon_only) %>
+    <span class="<%= icon_size_classes %>"><%= icon.html_safe %></span>
+  <% end %>
+
+  <% if text.present? && !icon_only %>
+    <%= text %>
+  <% end %>
+
+  <% if icon.present? && icon_position.to_s == "right" && !icon_only && !loading %>
+    <span class="<%= icon_size_classes %>"><%= icon.html_safe %></span>
+  <% end %>
+
+<% if href.present? %>
+  </a>
+<% else %>
+  </button>
+<% end %>

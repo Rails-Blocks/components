@@ -1,0 +1,91 @@
+<% title = local_assigns.fetch(:title, "") %>
+<% content = local_assigns.fetch(:content, "") %>
+<% default_open = local_assigns.fetch(:default_open, false) %>
+<% icon = local_assigns.fetch(:icon, "chevron") %>
+<% animated = local_assigns.fetch(:animated, true) %>
+<% disabled = local_assigns.fetch(:disabled, false) %>
+<% classes = local_assigns[:classes] %>
+<% trigger_classes = local_assigns[:trigger_classes] %>
+<% content_classes = local_assigns[:content_classes] %>
+<% visible_content = local_assigns.fetch(:visible_content, nil) %>
+<% summary_content = local_assigns.fetch(:summary_content, nil) %>
+<% summary_text = local_assigns.fetch(:summary_text, nil) %>
+
+<% state = default_open ? "open" : "closed" %>
+
+<% wrapper_classes = classes.presence || "w-[350px] space-y-2" %>
+<% button_classes = ["relative flex items-center justify-center gap-1.5 rounded-lg bg-transparent p-1.5 -sm font-medium whitespace-nowrap text-neutral-800 transition-all duration-100 ease-in-out select-none hover:bg-neutral-100 hover:text-neutral-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-600 disabled:cursor-not-allowed disabled:opacity-50 dark:text-neutral-50 dark:hover:bg-neutral-600/50 dark:hover:text-white dark:focus-visible:outline-neutral-200", trigger_classes].compact.reject(&:empty?).join(" ") %>
+<% content_layout_classes = content_classes.presence || "space-y-2" %>
+<% content_area_classes = [content_layout_classes, "overflow-hidden", (animated ? "transition-all duration-300 ease-in-out" : nil)].compact.reject(&:empty?).join(" ") %>
+<% collapsed_icon_style = "opacity: 0;" %>
+<% expanded_icon_style = default_open ? "opacity: 1;" : "opacity: 0;" %>
+<% content_style = default_open ? "max-height: none; opacity: 1;" : "max-height: 0; opacity: 0;" %>
+<% resolved_visible_content = visible_content.presence || summary_content.presence || summary_text %>
+
+<div class="<%= wrapper_classes %>" <%= tag.attributes(data: { controller: "collapsible", collapsible_open_value: default_open, collapsible_animated_value: animated, state: state }) unless disabled %>>
+  <!-- Header with toggle button -->
+  <div class="flex items-center justify-between space-x-4">
+    <h4 class="text-sm font-semibold"><%= title %></h4>
+
+    <% unless disabled %>
+      <button type="button" class="<%= button_classes %>" data-action="click->collapsible#toggle">
+        <!-- Collapsed state icon (visible by default) -->
+        <% if icon.to_s == "arrows" %>
+          <svg data-collapsible-target="collapsedIcon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" class="absolute size-4.5" style="<%= collapsed_icon_style %>">
+            <g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" stroke="currentColor">
+              <polyline points="12.5 6.25 9 2.75 5.5 6.25"></polyline>
+              <polyline points="12.5 11.75 9 15.25 5.5 11.75"></polyline>
+            </g>
+          </svg>
+
+          <!-- Expanded state icon (hidden by default) -->
+          <svg data-collapsible-target="expandedIcon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" class="size-4.5" style="<%= expanded_icon_style %>">
+            <g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" stroke="currentColor">
+              <polyline points="5.5 3.5 9 7 12.5 3.5"></polyline>
+              <polyline points="5.5 14.5 9 11 12.5 14.5"></polyline>
+            </g>
+          </svg>
+        <% elsif icon.to_s == "plus_minus" %>
+          <svg data-collapsible-target="collapsedIcon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" class="absolute size-4.5" style="<%= collapsed_icon_style %>">
+            <g fill="currentColor">
+              <path d="M14.75,9.75H3.25c-.414,0-.75-.336-.75-.75s.336-.75,.75-.75H14.75c.414,0,.75,.336,.75,.75s-.336,.75-.75,.75Z"></path>
+              <path d="M9,15.5c-.414,0-.75-.336-.75-.75V3.25c0-.414,.336-.75,.75-.75s.75,.336,.75,.75V14.75c0,.414-.336,.75-.75,.75Z"></path>
+            </g>
+          </svg>
+
+          <!-- Expanded state icon (hidden by default) -->
+          <svg data-collapsible-target="expandedIcon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" class="size-4.5" style="<%= expanded_icon_style %>">
+            <g fill="currentColor">
+              <path d="M14.75,9.75H3.25c-.414,0-.75-.336-.75-.75s.336-.75,.75-.75H14.75c.414,0,.75,.336,.75,.75s-.336,.75-.75,.75Z"></path>
+            </g>
+          </svg>
+        <% else %>
+          <svg data-collapsible-target="collapsedIcon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" class="absolute size-4.5" style="<%= collapsed_icon_style %>">
+            <g fill="currentColor">
+              <path d="M8.99999 13.5C8.80799 13.5 8.61599 13.4271 8.46999 13.2801L2.21999 7.03005C1.92699 6.73705 1.92699 6.26202 2.21999 5.96902C2.51299 5.67602 2.98799 5.67602 3.28099 5.96902L9.00099 11.689L14.721 5.96902C15.014 5.67602 15.489 5.67602 15.782 5.96902C16.075 6.26202 16.075 6.73705 15.782 7.03005L9.53199 13.2801C9.38599 13.4261 9.19399 13.5 9.00199 13.5H8.99999Z"></path>
+            </g>
+          </svg>
+
+          <!-- Expanded state icon (hidden by default) -->
+          <svg data-collapsible-target="expandedIcon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" class="size-4.5" style="<%= expanded_icon_style %>">
+            <g fill="currentColor">
+              <path d="M9.00001 4.5C9.19201 4.5 9.38401 4.5729 9.53001 4.7199L15.78 10.9699C16.073 11.2629 16.073 11.738 15.78 12.031C15.487 12.324 15.012 12.324 14.719 12.031L8.99901 6.311L3.27901 12.031C2.98601 12.324 2.51101 12.324 2.21801 12.031C1.92501 11.738 1.92501 11.2629 2.21801 10.9699L8.46801 4.7199C8.61401 4.5739 8.80601 4.5 8.99801 4.5H9.00001Z"></path>
+            </g>
+          </svg>
+        <% end %>
+
+        <span class="sr-only">Toggle</span>
+      </button>
+    <% end %>
+  </div>
+
+  <% if resolved_visible_content.present? %>
+    <!-- Always visible content -->
+    <%= resolved_visible_content.respond_to?(:html_safe) ? resolved_visible_content.html_safe : resolved_visible_content.to_s %>
+  <% end %>
+
+  <!-- Collapsible content -->
+  <div data-collapsible-target="content" data-state="<%= state %>" class="<%= content_area_classes %>" style="<%= content_style %>">
+    <%= content.respond_to?(:html_safe) ? content.html_safe : content.to_s %>
+  </div>
+</div>

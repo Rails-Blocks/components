@@ -1,0 +1,61 @@
+<nav aria-label="Pagination" class="<%= wrapper_classes %>">
+  <%# Info section %>
+  <% if @show_info %>
+    <div class="flex items-center gap-3">
+      <p class="<%= info_classes %>">
+        Showing <span class="font-medium text-neutral-900 dark:text-white"><%= @pagy.from %></span>–<span class="font-medium text-neutral-900 dark:text-white"><%= @pagy.to %></span> of <span class="font-medium text-neutral-900 dark:text-white"><%= @pagy.count %></span>
+      </p>
+
+      <% if @variant == :compact %>
+        <span class="hidden sm:block border-l border-black/10 h-4 dark:border-white/10"></span>
+        <p class="hidden sm:block <%= info_classes %>">
+          Page <span class="font-medium text-neutral-900 dark:text-white"><%= @pagy.page %></span> of <span class="font-medium text-neutral-900 dark:text-white"><%= @pagy.pages %></span>
+        </p>
+      <% end %>
+    </div>
+  <% end %>
+
+  <%# Navigation controls %>
+  <div class="flex flex-wrap items-center gap-3">
+    <% case @variant %>
+    <% when :full %>
+      <%# Full numbered pagination %>
+      <div class="pagy <%= nav_wrapper_classes %>">
+        <%== nav_html %>
+      </div>
+
+      <% if @show_page_form %>
+        <%= form_with url: form_path, method: :get, data: { turbo_frame: @frame_id }, class: "flex items-center", local: true do %>
+          <% query_params.except(limit_key).each do |k, v| %>
+            <%= hidden_field_tag k, v %>
+          <% end %>
+          <%= hidden_field_tag limit_key, @pagy.limit %>
+          <label class="text-xs text-neutral-500 dark:text-neutral-300 mr-2">Jump to Page</label>
+          <%= number_field_tag page_key, @pagy.page, min: 1, max: @pagy.pages, class: "w-fit rounded-l-md border border-black/10 bg-white pl-2 leading-7 text-sm dark:border-white/10 dark:bg-white/10 dark:text-white focus-visible:outline-neutral-600 dark:focus-visible:outline-neutral-200" %>
+          <%= submit_tag "Go", class: "cursor-pointer rounded-r-md border border-l-0 border-black/10 bg-white px-2.5 py-1 text-sm font-medium text-neutral-800 hover:bg-neutral-50 dark:border-white/10 dark:bg-white/10 dark:text-white dark:hover:bg-white/20" %>
+        <% end %>
+      <% end %>
+
+    <% when :compact, :minimal %>
+      <%# Prev/Next only %>
+      <div class="pagy <%= nav_wrapper_classes %>">
+        <%== prev_html %>
+        <%== next_html %>
+      </div>
+    <% end %>
+
+    <% if @show_limit_form %>
+      <%= form_with url: form_path, method: :get, data: { turbo_frame: @frame_id }, class: "flex items-center gap-2", local: true do %>
+        <% query_params.except(limit_key).each do |k, v| %>
+          <%= hidden_field_tag k, v %>
+        <% end %>
+        <%= hidden_field_tag page_key, 1 %>
+        <label class="text-xs text-neutral-500 dark:text-neutral-300">Rows</label>
+        <%= select_tag limit_key,
+          options_for_select(@limit_options, @pagy.limit),
+          class: "rounded-md border border-black/10 bg-white px-2 py-1 text-sm text-neutral-900 shadow-xs dark:border-white/10 dark:bg-neutral-900 dark:text-white",
+          onchange: "this.form.requestSubmit()" %>
+      <% end %>
+    <% end %>
+  </div>
+</nav>

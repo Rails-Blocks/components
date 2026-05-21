@@ -1,0 +1,30 @@
+<div class="<%= wrapper_classes %>">
+  <input
+    type="checkbox"
+    id="<%= @id %>"
+    <% if @name.present? %>name="<%= @name %>"<% end %>
+    value="<%= @value %>"
+    class="<%= input_classes %>"
+    <% if @checked %>checked <% end %>
+    <% if @disabled %>disabled <% end %>
+    <% if @required %>required <% end %>
+    <% input_data_attributes.each do |key, val| %>
+      data-<%= key %>="<%= val %>"
+    <% end %>
+  >
+
+  <div class="<%= text_content_classes %>">
+    <label for="<%= @id %>" class="<%= label_classes %>">
+      <%= @label %>
+      <% if @required %><span class="text-red-500">*</span><% end %>
+    </label>
+    <% if @description.present? %>
+      <p class="<%= description_classes %>">
+        <%= @description %>
+      </p>
+    <% end %>
+    <% if @error.present? %>
+      <p class="<%= error_classes %>"><%= @error %></p>
+    <% end %>
+  </div>
+</div>

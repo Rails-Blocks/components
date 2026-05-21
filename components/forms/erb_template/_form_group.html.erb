@@ -1,0 +1,145 @@
+<%#
+  Form Group Component
+  A styled wrapper for form fields with label, input, helper text, and error states.
+
+  Required locals:
+    - (none - all are optional, but you should provide at least label or content)
+
+  Optional locals:
+    - label: String (default: nil) - The form field label text
+    - name: String (default: nil) - The input name attribute (used for auto-generating id)
+    - id: String (default: auto-generated) - The input id attribute
+    - required: Boolean (default: false) - Whether the field is required
+    - disabled: Boolean (default: false) - Whether the field is disabled
+    - helper_text: String (default: nil) - Optional helper text below the input
+    - error: String (default: nil) - Error message to display
+    - size: String (default: "md") - Size: "sm" (small), "md" (medium), "lg" (large)
+    - variant: String (default: "default") - Layout: "default", "floating", "stacked", "inline"
+    - label_hidden: Boolean (default: false) - Visually hide the label (still accessible)
+    - classes: String (default: nil) - Additional CSS classes for the wrapper
+    - label_classes: String (default: nil) - Additional CSS classes for the label
+    - input_wrapper_classes: String (default: nil) - Additional CSS classes for the input wrapper
+    - addon_left: String (default: nil) - Content to prepend inside input wrapper
+    - addon_right: String (default: nil) - Content to append inside input wrapper
+%>
+
+<% label ||= nil %>
+<% name ||= nil %>
+<% id ||= name ? name.to_s.gsub(/[\[\]]/, "_").gsub(/_+$/, "") : "form_field_#{SecureRandom.hex(4)}" %>
+<% required ||= false %>
+<% disabled ||= false %>
+<% helper_text ||= nil %>
+<% error ||= nil %>
+<% size ||= "md" %>
+<% variant ||= "default" %>
+<% label_hidden ||= false %>
+<% classes ||= nil %>
+<% label_classes ||= nil %>
+<% input_wrapper_classes ||= nil %>
+<% addon_left ||= nil %>
+<% addon_right ||= nil %>
+
+<%
+  # Wrapper classes based on variant
+  wrapper_base = case variant.to_s
+    when "inline" then "flex items-center gap-4"
+    when "floating" then "relative"
+    else "flex flex-col gap-y-1.5"
+    end
+  wrapper_classes = [wrapper_base, classes].compact.reject(&:empty?).join(" ")
+
+  # Label size class
+  label_size_class = case size.to_s
+    when "sm" then "text-xs"
+    when "lg" then "text-base"
+    else "text-sm"
+    end
+
+  # Label visibility class
+  label_visibility_class = label_hidden ? "sr-only" : ""
+
+  # Label color class
+  label_color_class = if disabled
+    "text-neutral-400 dark:text-neutral-500"
+  elsif error.present?
+    "text-red-700 dark:text-red-400"
+  else
+    "text-neutral-700 dark:text-neutral-300"
+  end
+
+  # Label width for inline variant
+  label_width_class = variant.to_s == "inline" ? "shrink-0" : ""
+
+  # Combined label classes
+  computed_label_classes = ["font-medium", label_size_class, label_visibility_class, label_color_class, label_width_class, label_classes].compact.reject(&:empty?).join(" ")
+
+  # Input wrapper classes
+  input_wrapper_base = variant.to_s == "inline" ? "flex-1" : ""
+  addon_class = (addon_left.present? || addon_right.present?) ? "flex" : ""
+  computed_input_wrapper_classes = [input_wrapper_base, addon_class, input_wrapper_classes].compact.reject(&:empty?).join(" ")
+
+  addon_base_classes = "inline-flex items-center px-3 text-neutral-500 dark:text-neutral-400 bg-neutral-100 dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600"
+  addon_size_class = case size.to_s
+    when "sm" then "text-xs"
+    when "lg" then "text-base"
+    else "text-sm"
+    end
+
+  left_addon_classes = [addon_base_classes, addon_size_class, "rounded-l-lg border-r-0"].join(" ")
+  right_addon_classes = [addon_base_classes, addon_size_class, "rounded-r-lg border-l-0"].join(" ")
+
+  # Helper text classes
+  helper_size_class = case size.to_s
+    when "sm" then "text-[11px]"
+    when "lg" then "text-sm"
+    else "text-xs"
+    end
+  helper_color_class = disabled ? "text-neutral-400 dark:text-neutral-500" : "text-neutral-500 dark:text-neutral-400"
+  computed_helper_classes = [helper_size_class, helper_color_class, "mt-1"].join(" ")
+
+  # Error classes
+  error_size_class = case size.to_s
+    when "sm" then "text-[11px]"
+    when "lg" then "text-sm"
+    else "text-xs"
+    end
+  computed_error_classes = [error_size_class, "text-red-600 dark:text-red-400 mt-1"].join(" ")
+%>
+
+<div class="<%= wrapper_classes %>">
+  <% if label.present? && variant.to_s != "floating" %>
+    <label for="<%= id %>" class="<%= computed_label_classes %>">
+      <%= label %>
+      <% if required %><span class="text-red-500 ml-0.5">*</span><% end %>
+    </label>
+  <% end %>
+
+  <div class="<%= computed_input_wrapper_classes %>">
+    <% if addon_left.present? %>
+      <div class="<%= left_addon_classes %>">
+        <%= addon_left %>
+      </div>
+    <% end %>
+
+    <%= yield if block_given? %>
+
+    <% if addon_right.present? %>
+      <div class="<%= right_addon_classes %>">
+        <%= addon_right %>
+      </div>
+    <% end %>
+  </div>
+
+  <% if variant.to_s == "floating" && label.present? %>
+    <label for="<%= id %>" class="absolute left-3 -top-2 bg-white dark:bg-neutral-900 px-1 text-xs font-medium <%= error.present? ? 'text-red-600 dark:text-red-400' : 'text-neutral-500 dark:text-neutral-400' %>">
+      <%= label %>
+      <% if required %><span class="text-red-500 ml-0.5">*</span><% end %>
+    </label>
+  <% end %>
+
+  <% if error.present? %>
+    <p class="<%= computed_error_classes %>"><%= error %></p>
+  <% elsif helper_text.present? %>
+    <p class="<%= computed_helper_classes %>"><%= helper_text %></p>
+  <% end %>
+</div>

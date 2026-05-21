@@ -1,0 +1,10 @@
+<tr class="<%= row_classes %>">
+  <% cells.each do |cell| %>
+    <td class="<%= cell.td_classes %>">
+      <%= cell %>
+    </td>
+  <% end %>
+  <% if content? %>
+    <%= content %>
+  <% end %>
+</tr>

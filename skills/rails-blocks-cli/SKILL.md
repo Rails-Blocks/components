@@ -19,13 +19,14 @@ Default to ERB partials unless the app already uses ViewComponent.
 
 1. Confirm the command is being run from the Rails app root.
 2. Check the CLI with `rails-blocks doctor`. If the command is missing, install it with `gem install rails-blocks-cli`.
-3. Discover components with `rails-blocks list`, `rails-blocks list --free`, or `rails-blocks search QUERY`.
-4. Read docs before installing with `rails-blocks docs COMPONENT`; inspect examples with `rails-blocks examples COMPONENT` when useful.
-5. Preview file writes before changing the app: `rails-blocks install COMPONENT --dry-run`.
-6. Summarize the files the dry run would write and ask before making changes.
-7. Install with `rails-blocks install COMPONENT --as erb_template` unless ViewComponent is the better fit.
-8. Use custom paths instead of moving files after install: `--path app/views/components` and `--stimulus-path app/javascript/controllers`.
-9. After installation, inspect `git diff` and report the changed files.
+3. Before installing components, complete the Rails Blocks installation guide once for the app.
+4. Discover components with `rails-blocks list`, `rails-blocks list --free`, or `rails-blocks search QUERY`.
+5. Read docs before installing with `rails-blocks docs COMPONENT`; inspect examples with `rails-blocks examples COMPONENT` when useful.
+6. Preview file writes before changing the app: `rails-blocks install COMPONENT --dry-run`.
+7. Summarize the files the dry run would write and ask before making changes.
+8. Install with `rails-blocks install COMPONENT --as erb_template` unless ViewComponent is the better fit.
+9. Use custom paths instead of moving files after install: `--path app/views/components` and `--stimulus-path app/javascript/controllers`.
+10. After installation, inspect `git diff` and report the changed files.
 
 ## Updates
 

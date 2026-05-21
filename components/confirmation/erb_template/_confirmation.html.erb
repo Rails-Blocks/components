@@ -1,0 +1,225 @@
+<%#
+  Confirmation component partial.
+  Render with:
+  render "shared/components/confirmation/confirmation", title: "Delete Account"
+%>
+
+<% title ||= "" %>
+<% message ||= nil %>
+<% confirm_text ||= nil %>
+<% confirm_button_text ||= "Confirm" %>
+<% cancel_button_text ||= "Cancel" %>
+<% variant ||= "danger" %>
+<% show_icon = true if local_assigns[:show_icon].nil? %>
+<% case_sensitive ||= false %>
+<% show_card = true if local_assigns[:show_card].nil? %>
+<% classes ||= nil %>
+
+<%
+  # Generate unique ID for accessibility
+  unique_id = "confirmation-#{SecureRandom.hex(4)}"
+
+  # Default placeholder
+  input_placeholder ||= confirm_text.present? ? "Type #{confirm_text} to confirm" : "Type to confirm"
+
+  # Default label with styled confirm text
+  input_label ||= confirm_text.present? ? "Type <span class=\"inline rounded-md border border-black/10 bg-white px-1 py-0.5 font-mono text-neutral-800 dark:border-white/10 dark:bg-neutral-900 dark:text-neutral-200\">#{confirm_text}</span> to confirm:" : nil
+
+  # Build data attributes
+  data_attrs = { controller: "confirmation" }
+  data_attrs[:confirmation_confirm_text_value] = confirm_text if confirm_text.present?
+  data_attrs[:confirmation_case_sensitive_value] = true if case_sensitive
+
+  # Determine color classes based on variant
+  colors = case variant.to_s
+    when "danger"
+      {
+        border: "border-red-200 dark:border-red-800",
+        bg: "bg-red-100 dark:bg-red-900/30",
+        icon: "text-red-600 dark:text-red-400",
+        icon_bg: "bg-red-100 dark:bg-red-900/30 border-red-200 dark:border-red-800",
+        button: "border-red-300/30 bg-red-600 hover:bg-red-500 text-white",
+        title: "text-red-800 dark:text-red-200",
+        text: "text-red-700 dark:text-red-300"
+      }
+    when "warning"
+      {
+        border: "border-amber-200 dark:border-amber-800",
+        bg: "bg-amber-100 dark:bg-amber-900/30",
+        icon: "text-amber-600 dark:text-amber-400",
+        icon_bg: "bg-amber-100 dark:bg-amber-900/30 border-amber-200 dark:border-amber-800",
+        button: "border-amber-300/30 bg-amber-600 hover:bg-amber-500 text-white",
+        title: "text-amber-800 dark:text-amber-200",
+        text: "text-amber-700 dark:text-amber-300"
+      }
+    when "info"
+      {
+        border: "border-blue-200 dark:border-blue-800",
+        bg: "bg-blue-100 dark:bg-blue-900/30",
+        icon: "text-blue-600 dark:text-blue-400",
+        icon_bg: "bg-blue-100 dark:bg-blue-900/30 border-blue-200 dark:border-blue-800",
+        button: "border-blue-300/30 bg-blue-600 hover:bg-blue-500 text-white",
+        title: "text-blue-800 dark:text-blue-200",
+        text: "text-blue-700 dark:text-blue-300"
+      }
+    else # neutral
+      {
+        border: "border-neutral-200 dark:border-neutral-700",
+        bg: "bg-neutral-100 dark:bg-neutral-800/50",
+        icon: "text-neutral-600 dark:text-neutral-400",
+        icon_bg: "bg-neutral-100 dark:bg-neutral-800/50 border-neutral-200 dark:border-neutral-700",
+        button: "border-neutral-400/30 bg-neutral-800 hover:bg-neutral-700 text-white dark:bg-white dark:text-neutral-800 dark:hover:bg-neutral-100",
+        title: "text-neutral-800 dark:text-neutral-200",
+        text: "text-neutral-600 dark:text-neutral-400"
+      }
+    end
+
+  # Wrapper classes
+  wrapper_classes = if show_card
+    base = "max-w-md bg-white dark:bg-neutral-800 border border-black/10 dark:border-white/10 rounded-xl shadow-xs overflow-hidden px-4 py-5 sm:p-6"
+    [base, classes].compact.reject(&:empty?).join(" ")
+  else
+    classes.to_s
+  end
+
+  # Button classes
+  cancel_button_classes = "flex items-center justify-center gap-1.5 rounded-lg border border-black/10 bg-white/90 px-3.5 py-2 text-sm font-medium whitespace-nowrap text-neutral-800 shadow-xs transition-all duration-100 ease-in-out select-none hover:bg-neutral-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-600 disabled:cursor-not-allowed disabled:opacity-50 dark:border-white/10 dark:bg-neutral-700/50 dark:text-neutral-50 dark:hover:bg-neutral-700/75 dark:focus-visible:outline-neutral-200"
+
+  confirm_button_base = "flex items-center justify-center gap-1.5 rounded-lg border px-3.5 py-2 text-sm font-medium whitespace-nowrap shadow-sm transition-all duration-100 ease-in-out select-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-600 disabled:cursor-not-allowed disabled:opacity-50 dark:focus-visible:outline-neutral-200"
+  confirm_button_classes = [confirm_button_base, colors[:button]].compact.join(" ")
+
+  # Icon wrapper classes
+  icon_wrapper_classes = "flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center border #{colors[:icon_bg]}"
+
+  # Icon SVGs
+  danger_icon = tag.svg(
+    xmlns: "http://www.w3.org/2000/svg",
+    class: "size-5 #{colors[:icon]}",
+    width: "20",
+    height: "20",
+    viewBox: "0 0 20 20"
+  ) do
+    tag.g(fill: "currentColor") do
+      tag.path(
+        "fill-rule": "evenodd",
+        d: "M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495ZM10 5a.75.75 0 0 1 .75.75v3.5a.75.75 0 0 1-1.5 0v-3.5A.75.75 0 0 1 10 5Zm0 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z",
+        "clip-rule": "evenodd"
+      )
+    end
+  end
+
+  warning_icon = tag.svg(
+    xmlns: "http://www.w3.org/2000/svg",
+    class: "size-5 #{colors[:icon]}",
+    width: "18",
+    height: "18",
+    viewBox: "0 0 18 18"
+  ) do
+    tag.g(fill: "none", "stroke-linecap": "round", "stroke-linejoin": "round", "stroke-width": "1.5", stroke: "currentColor") do
+      safe_join([
+        tag.path(d: "M7.63796 3.48996L2.21295 12.89C1.60795 13.9399 2.36395 15.25 3.57495 15.25H14.425C15.636 15.25 16.392 13.9399 15.787 12.89L10.362 3.48996C9.75696 2.44996 8.24296 2.44996 7.63796 3.48996Z"),
+        tag.path(d: "M9 6.75V9.75"),
+        tag.path(d: "M9 13.5C8.448 13.5 8 13.05 8 12.5C8 11.95 8.448 11.5 9 11.5C9.552 11.5 10 11.9501 10 12.5C10 13.0499 9.552 13.5 9 13.5Z", fill: "currentColor", "data-stroke": "none", stroke: "none")
+      ])
+    end
+  end
+
+  info_icon = tag.svg(
+    xmlns: "http://www.w3.org/2000/svg",
+    class: "size-5 #{colors[:icon]}",
+    width: "18",
+    height: "18",
+    viewBox: "0 0 18 18"
+  ) do
+    tag.g(fill: "none", "stroke-linecap": "round", "stroke-linejoin": "round", "stroke-width": "1.5", stroke: "currentColor") do
+      safe_join([
+        tag.path(d: "M9 16.25C13.004 16.25 16.25 13.004 16.25 9C16.25 4.996 13.004 1.75 9 1.75C4.996 1.75 1.75 4.996 1.75 9C1.75 13.004 4.996 16.25 9 16.25Z"),
+        tag.path(d: "M9 12.75V9.25C9 8.9739 8.7761 8.75 8.5 8.75H7.75"),
+        tag.path(d: "M9 6.75C8.448 6.75 8 6.301 8 5.75C8 5.199 8.448 4.75 9 4.75C9.552 4.75 10 5.199 10 5.75C10 6.301 9.552 6.75 9 6.75Z", fill: "currentColor", "data-stroke": "none", stroke: "none")
+      ])
+    end
+  end
+
+  neutral_icon = tag.svg(
+    xmlns: "http://www.w3.org/2000/svg",
+    class: "size-5 #{colors[:icon]}",
+    width: "18",
+    height: "18",
+    viewBox: "0 0 18 18"
+  ) do
+    tag.g(fill: "none", "stroke-linecap": "round", "stroke-linejoin": "round", "stroke-width": "1.5", stroke: "currentColor") do
+      safe_join([
+        tag.circle(cx: "9", cy: "9", r: "7.25"),
+        tag.path(d: "M9 5.75V9.25"),
+        tag.path(d: "M9 12.5C8.448 12.5 8 12.05 8 11.5C8 10.95 8.448 10.5 9 10.5C9.552 10.5 10 10.95 10 11.5C10 12.05 9.552 12.5 9 12.5Z", fill: "currentColor", "data-stroke": "none", stroke: "none")
+      ])
+    end
+  end
+
+  icon_svg = case variant.to_s
+    when "danger" then danger_icon
+    when "warning" then warning_icon
+    when "info" then info_icon
+    else neutral_icon
+  end
+%>
+
+<div class="<%= wrapper_classes %>">
+  <div class="mb-4">
+    <% if show_icon %>
+      <div class="flex items-center gap-3 mb-3">
+        <div class="<%= icon_wrapper_classes %>">
+          <%= icon_svg %>
+        </div>
+        <div>
+          <h3 class="text-lg font-semibold text-neutral-900 dark:text-white"><%= title %></h3>
+          <% if message.present? %>
+            <p class="text-sm text-neutral-600 dark:text-neutral-400"><%= message %></p>
+          <% end %>
+        </div>
+      </div>
+    <% else %>
+      <h3 class="text-lg font-semibold text-neutral-900 dark:text-white mb-2"><%= title %></h3>
+      <% if message.present? %>
+        <p class="text-sm text-neutral-600 dark:text-neutral-400"><%= message %></p>
+      <% end %>
+    <% end %>
+  </div>
+
+  <% if block_given? %>
+    <div class="mb-4">
+      <%= yield %>
+    </div>
+  <% end %>
+
+  <form <%= tag.attributes(data: data_attrs) %>>
+    <% if confirm_text.present? %>
+      <div class="mb-4">
+        <label for="<%= unique_id %>" class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
+          <%= input_label.html_safe %>
+        </label>
+        <input type="text"
+               id="<%= unique_id %>"
+               data-confirmation-target="input"
+               class="form-control"
+               autocomplete="off"
+               placeholder="<%= input_placeholder %>">
+      </div>
+    <% end %>
+
+    <div class="flex gap-3 justify-end">
+      <button type="button"
+              data-action="click->confirmation#cancel"
+              class="<%= cancel_button_classes %>">
+        <%= cancel_button_text %>
+      </button>
+      <button type="button"
+              data-confirmation-target="confirmButton"
+              data-action="click->confirmation#confirm"
+              <%= "disabled" if confirm_text.present? %>
+              class="<%= confirm_button_classes %>">
+        <%= confirm_button_text %>
+      </button>
+    </div>
+  </form>
+</div>

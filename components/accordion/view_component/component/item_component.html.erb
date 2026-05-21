@@ -1,0 +1,51 @@
+<div <% unless disabled %>data-accordion-target="item"<% end %> data-state="<%= state %>" class="<%= item_classes %>">
+  <h3 data-state="<%= state %>" class="<%= h3_classes %>">
+    <% if disabled %>
+      <div class="<%= disabled_trigger_classes %>">
+        <% if icon_left? %>
+          <%= render_icon(static: true) %>
+          <span class="flex-1 font-medium text-neutral-600 dark:text-neutral-300"><%= title %></span>
+        <% else %>
+          <span class="text-neutral-600 dark:text-neutral-300"><%= title %></span>
+          <%= render_icon(static: true) %>
+        <% end %>
+      </div>
+    <% else %>
+      <button
+        type="button"
+        data-accordion-target="trigger"
+        data-action="click->accordion#toggle"
+        aria-controls="accordion-content-<%= unique_id %>"
+        aria-expanded="<%= aria_expanded %>"
+        data-state="<%= state %>"
+        id="accordion-trigger-<%= unique_id %>"
+        class="<%= trigger_classes %>"
+      >
+        <% if icon_left? %>
+          <%= render_icon %>
+          <span class="flex-1 font-medium"><%= title %></span>
+        <% else %>
+          <%= title %>
+          <%= render_icon %>
+        <% end %>
+      </button>
+    <% end %>
+  </h3>
+  <% unless disabled %>
+    <div
+      data-accordion-target="content"
+      data-state="<%= state %>"
+      id="accordion-content-<%= unique_id %>"
+      role="region"
+      aria-labelledby="accordion-trigger-<%= unique_id %>"
+      class="<%= content_classes %>"
+      <% if content_hidden? %>hidden<% end %>
+    >
+      <div class="<%= content_inner_classes %>">
+        <div class="<%= content_padding_classes %> <%= content_body_classes %>" data-state="<%= state %>">
+          <%= content %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>

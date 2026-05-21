@@ -1,0 +1,64 @@
+<%#
+  Animated Number Component
+  Displays smooth slot-machine style animated number transitions.
+  Powered by Number Flow library with a Stimulus controller.
+
+  Required locals:
+    - end_value: Numeric - The ending value for the animation
+
+  Optional locals:
+    - start_value: Numeric (default: 0) - The starting value for the animation
+    - duration: Integer (default: 700) - Animation duration in milliseconds
+    - trigger: String (default: "viewport") - When to trigger: "viewport", "load", or "manual"
+    - prefix: String (default: nil) - Text to display before the number
+    - suffix: String (default: nil) - Text to display after the number
+    - format_options: Hash (default: nil) - Intl.NumberFormat options (style, currency, notation, etc.)
+    - trend: Integer (default: nil) - Direction trend for continuous animation (-1, 0, 1)
+    - realtime: Boolean (default: false) - Use real-time ticking instead of smooth animation
+    - update_interval: Integer (default: 1000) - Interval in ms for realtime updates
+    - continuous: Boolean (default: true) - Enable continuous plugin for smooth transitions
+    - spin_easing: String (default: nil) - Easing function for digit spin animations
+    - transform_easing: String (default: nil) - Easing function for layout transforms
+    - opacity_easing: String (default: nil) - Easing function for fade effects
+    - classes: String (default: nil) - Additional CSS classes for the wrapper span
+%>
+
+<% end_value ||= 0 %>
+<% start_value ||= 0 %>
+<% duration ||= 700 %>
+<% trigger ||= "viewport" %>
+<% prefix ||= nil %>
+<% suffix ||= nil %>
+<% format_options ||= nil %>
+<% trend ||= nil %>
+<% realtime ||= false %>
+<% update_interval ||= 1000 %>
+<% continuous = true if local_assigns[:continuous].nil? %>
+<% spin_easing ||= nil %>
+<% transform_easing ||= nil %>
+<% opacity_easing ||= nil %>
+<% classes ||= nil %>
+
+<%
+  # Build data attributes hash
+  data_attrs = {
+    controller: "animated-number",
+    "animated-number-start-value": start_value,
+    "animated-number-end-value": end_value,
+    "animated-number-duration-value": duration,
+    "animated-number-trigger-value": trigger
+  }
+
+  data_attrs["animated-number-prefix-value"] = prefix if prefix.present?
+  data_attrs["animated-number-suffix-value"] = suffix if suffix.present?
+  data_attrs["animated-number-format-options-value"] = format_options.to_json if format_options.present?
+  data_attrs["animated-number-trend-value"] = trend if trend.present?
+  data_attrs["animated-number-realtime-value"] = realtime if realtime
+  data_attrs["animated-number-update-interval-value"] = update_interval if realtime && update_interval != 1000
+  data_attrs["animated-number-continuous-value"] = continuous unless continuous
+  data_attrs["animated-number-spin-easing-value"] = spin_easing if spin_easing.present?
+  data_attrs["animated-number-transform-easing-value"] = transform_easing if transform_easing.present?
+  data_attrs["animated-number-opacity-easing-value"] = opacity_easing if opacity_easing.present?
+%>
+
+<span <%= tag.attributes(data: data_attrs) %> class="<%= classes %>"></span>

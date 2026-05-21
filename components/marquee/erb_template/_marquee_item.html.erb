@@ -1,0 +1,24 @@
+<%#
+  Marquee Item Partial
+  Individual item within a marquee component.
+
+  Required locals:
+    - content: String/HTML - The item content
+
+  Optional locals:
+    - item_classes: String (default: nil) - Additional CSS classes for the item
+    - unique_id: String (default: nil) - Unique identifier for the item
+%>
+
+<% content ||= "" %>
+<% item_classes ||= nil %>
+<% unique_id ||= nil %>
+
+<%
+  base_item = "flex items-center shrink-0"
+  computed_classes = [base_item, item_classes].compact.reject(&:empty?).join(" ")
+%>
+
+<div class="<%= computed_classes %>" <%= "id=\"#{unique_id}\"" if unique_id %>>
+  <%= content.html_safe %>
+</div>

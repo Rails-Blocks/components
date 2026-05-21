@@ -1,0 +1,25 @@
+<% if single_key? %>
+  <%= tag.kbd keys.first, class: kbd_classes %>
+<% elsif os_aware %>
+  <span class="<%= wrapper_classes %>" data-controller="os-detect">
+    <%= tag.kbd mac_key, data: { os_detect_target: "mac" }, class: hidden_kbd_classes %>
+    <%= tag.kbd non_mac_key, data: { os_detect_target: "nonMac" }, class: hidden_kbd_classes %>
+    <% keys.each_with_index do |k, index| %>
+      <% if index > 0 || mac_key.present? %>
+        <% if show_separator %>
+          <span class="<%= separator_classes %>"><%= separator %></span>
+        <% end %>
+      <% end %>
+      <%= tag.kbd k, class: kbd_classes %>
+    <% end %>
+  </span>
+<% else %>
+  <span class="<%= wrapper_classes %>">
+    <% keys.each_with_index do |k, index| %>
+      <% if index > 0 && show_separator %>
+        <span class="<%= separator_classes %>"><%= separator %></span>
+      <% end %>
+      <%= tag.kbd k, class: kbd_classes %>
+    <% end %>
+  </span>
+<% end %>

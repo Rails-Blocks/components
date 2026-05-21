@@ -1,0 +1,51 @@
+<div class="<%= wrapper_classes %>">
+  <% case type %>
+  <% when :spinner %>
+    <% if stepped %>
+      <%# Stepped spinner (iOS-style) %>
+      <svg xmlns="http://www.w3.org/2000/svg" class="<%= spinner_classes %>" viewBox="0 0 18 18">
+        <g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" stroke="currentColor">
+          <line x1="9" y1="1.75" x2="9" y2="4.25" opacity=".13"></line>
+          <line x1="14.127" y1="3.873" x2="12.359" y2="5.641" opacity=".25"></line>
+          <line x1="16.25" y1="9" x2="13.75" y2="9" opacity=".38"></line>
+          <line x1="14.127" y1="14.127" x2="12.359" y2="12.359" opacity=".5"></line>
+          <line x1="9" y1="16.25" x2="9" y2="13.75" opacity=".63"></line>
+          <line x1="3.873" y1="14.127" x2="5.641" y2="12.359" opacity=".75"></line>
+          <line x1="1.75" y1="9" x2="4.25" y2="9" opacity=".88"></line>
+          <line x1="3.873" y1="3.873" x2="5.641" y2="5.641"></line>
+        </g>
+      </svg>
+    <% else %>
+      <%# Smooth circular spinner %>
+      <svg xmlns="http://www.w3.org/2000/svg" class="<%= spinner_classes %>" viewBox="0 0 18 18">
+        <g fill="currentColor">
+          <path d="m9,17c-4.4111,0-8-3.5889-8-8S4.5889,1,9,1s8,3.5889,8,8-3.5889,8-8,8Zm0-14.5c-3.584,0-6.5,2.916-6.5,6.5s2.916,6.5,6.5,6.5,6.5-2.916,6.5-6.5-2.916-6.5-6.5-6.5Z" opacity=".4" stroke-width="0"></path>
+          <path d="m16.25,9.75c-.4141,0-.75-.3359-.75-.75,0-3.584-2.916-6.5-6.5-6.5-.4141,0-.75-.3359-.75-.75s.3359-.75.75-.75c4.4111,0,8,3.5889,8,8,0,.4141-.3359.75-.75.75Z" stroke-width="0"></path>
+        </g>
+      </svg>
+    <% end %>
+
+  <% when :dots %>
+    <div class="flex space-x-1.5">
+      <% 3.times do |i| %>
+        <div class="<%= dot_classes(i) %>" style="<%= dot_style(i) %>"></div>
+      <% end %>
+    </div>
+
+  <% when :bars %>
+    <div class="flex items-end space-x-1">
+      <% 4.times do |i| %>
+        <div class="<%= bar_classes(i) %>" style="<%= bar_style(i) %>"></div>
+      <% end %>
+    </div>
+
+  <% when :progress %>
+    <div class="<%= progress_wrapper_classes %> w-full min-w-24">
+      <div class="<%= progress_bar_classes %>" style="<%= progress_width %>"></div>
+    </div>
+  <% end %>
+
+  <% if text.present? %>
+    <span class="<%= text_classes %>"><%= text %></span>
+  <% end %>
+</div>

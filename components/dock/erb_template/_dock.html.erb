@@ -1,0 +1,67 @@
+<% items ||= [] %>
+<% position ||= "bottom" %>
+<% variant ||= "default" %>
+<% show_mobile ||= true %>
+<% classes ||= nil %>
+
+<%
+  # Determine tooltip placement based on position
+  tooltip_placement = position.to_s == "bottom" ? "top" : "bottom"
+
+  # Build wrapper classes
+  base_wrapper = "flex w-fit mx-auto items-center justify-center"
+  wrapper_classes = [base_wrapper, classes].compact.reject(&:empty?).join(" ")
+
+  # Build dock container classes
+  base_dock = "mx-auto hidden h-16 gap-4 bg-neutral-50 px-4 md:flex dark:bg-neutral-950 border border-neutral-200/50 dark:border-neutral-600/50"
+  position_class = position.to_s == "bottom" ? "items-end pb-3" : "items-start pt-3"
+
+  variant_class = case variant.to_s
+                  when "pill"
+                    "rounded-full"
+                  when "rounded"
+                    "rounded-xl"
+                  else
+                    "rounded-2xl"
+                  end
+
+  dock_container_classes = [base_dock, position_class, variant_class].join(" ")
+%>
+
+<div class="<%= wrapper_classes %>" data-controller="dock">
+  <%# Desktop dock %>
+  <div class="<%= dock_container_classes %>">
+    <% items.each do |item| %>
+      <%= render "shared/components/dock/dock_item",
+        url: item[:url],
+        tooltip: item[:tooltip],
+        icon: item[:icon],
+        hotkey: item[:hotkey],
+        active: item[:active] || false,
+        tooltip_placement: tooltip_placement,
+        item_classes: item[:classes]
+      %>
+    <% end %>
+  </div>
+
+  <% if show_mobile %>
+    <%# Mobile menu (expanded items) %>
+    <div class="absolute right-5 bottom-17 flex items-end flex-col gap-2 hidden md:hidden" data-dock-target="mobileMenu">
+      <% items.each do |item| %>
+        <%= render "shared/components/dock/dock_item_mobile",
+          url: item[:url],
+          tooltip: item[:tooltip],
+          icon: item[:icon],
+          active: item[:active] || false
+        %>
+      <% end %>
+    </div>
+
+    <%# Mobile toggle button %>
+    <div class="absolute right-5 bottom-5 block md:hidden" data-action="click->dock#toggleMobile">
+      <button data-dock-target="mobileButton" class="flex h-10 w-10 items-center justify-center border border-neutral-200/50 rounded-full bg-neutral-50 dark:bg-neutral-800 dark:border-neutral-600/50">
+        <svg class="size-5 rotate-0 text-neutral-500 dark:text-neutral-400" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18"><g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" stroke="currentColor"><polyline points="2.75 11.5 9 5.25 15.25 11.5"></polyline></g></svg>
+      </button>
+    </div>
+  <% end %>
+</div>

@@ -2,12 +2,12 @@
 
 Free, open-source Rails UI components from [Rails Blocks](https://railsblocks.com), ready to browse, copy, and install in your Rails app.
 
-This repo is the source for the free Rails Blocks component files. You can read the docs, inspect the examples, download the packages, or let the Rails Blocks CLI and MCP server pull from GitHub for you.
+This repo is the source for the free Rails Blocks component files. You can read the docs, inspect the examples, or use the Rails Blocks CLI and MCP server to install components from GitHub for you.
 
 ## What's Included
 
 - `registry.json` - the component index used by the Rails Blocks CLI and MCP server.
-- `components/` - docs, usage examples, and package manifests for each free component.
+- `components/` - docs, usage examples, unpacked ERB/ViewComponent source files, and package manifests for each free component.
 - `stylesheets/rails_blocks.css` - the Rails Blocks custom CSS used by the components.
 - `stimulus_controllers/` - Stimulus controllers used by the free components.
 - `packages/0.1.1/` - immutable zip packages and SHA256 checksums.

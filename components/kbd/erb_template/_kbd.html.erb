@@ -1,0 +1,111 @@
+<%#
+  Kbd Component
+  Displays keyboard keys and shortcuts with semantic styling.
+
+  Required locals:
+    - key: String or Array<String> - The key(s) to display (e.g., "A", "Ctrl+S", ["Ctrl", "Shift", "P"])
+
+  Optional locals:
+    - size: String (default: "md") - Size modifier: "xs", "sm", "md", "lg"
+    - variant: String (default: "default") - Color modifier: "default", "light", "dark", "outline"
+    - separator: String (default: "+") - Separator for key combinations
+    - show_separator: Boolean (default: true) - Whether to show the separator visually
+    - os_aware: Boolean (default: false) - Adapt for Mac/Windows display (requires os-detect controller)
+    - mac_key: String - Key to show on Mac (e.g., "⌘") - only used with os_aware
+    - non_mac_key: String - Key to show on non-Mac (e.g., "Ctrl") - only used with os_aware
+    - classes: String (default: nil) - Additional CSS classes for the kbd elements
+%>
+
+<% key ||= "" %>
+<% size ||= "md" %>
+<% variant ||= "default" %>
+<% separator ||= "+" %>
+<% show_separator = true if local_assigns[:show_separator].nil? %>
+<% os_aware ||= false %>
+<% mac_key ||= nil %>
+<% non_mac_key ||= nil %>
+<% classes ||= nil %>
+
+<%
+  # Parse keys from input
+  keys = case key
+    when Array
+      key.map(&:to_s)
+    when String
+      key.include?(separator) ? key.split(separator).map(&:strip) : [key]
+    else
+      []
+    end
+
+  single_key = keys.length == 1 && !os_aware
+
+  # Optional size modifier classes. The default (md) relies on global `kbd` CSS.
+  size_classes = case size.to_s
+    when "xs"
+      "inline-flex items-center justify-center min-w-[1.25rem] h-5 px-1 text-[10px]"
+    when "sm"
+      "inline-flex items-center justify-center min-w-[1.5rem] h-6 px-1.5 text-xs"
+    when "lg"
+      "inline-flex items-center justify-center min-w-[2.25rem] h-9 px-3 text-base"
+    else # "md" and unknown values
+      nil
+    end
+
+  # Optional variant modifier classes. The default relies on global `kbd` CSS.
+  variant_classes = case variant.to_s
+    when "light"
+      "bg-white dark:bg-neutral-800 dark:text-neutral-300"
+    when "dark"
+      "bg-neutral-800 text-neutral-100 dark:bg-neutral-900"
+    when "outline"
+      "bg-transparent text-neutral-600 dark:text-neutral-400"
+    else # "default"
+      nil
+    end
+
+  # Combined optional kbd classes
+  kbd_classes = [size_classes, variant_classes, classes].compact.reject(&:empty?).join(" ").presence
+
+  # Wrapper classes
+  wrapper_classes = "inline-flex items-center gap-1"
+
+  # Separator classes
+  separator_classes = case size.to_s
+    when "xs"
+      "text-[10px] text-neutral-400 dark:text-neutral-500"
+    when "sm"
+      "text-xs text-neutral-400 dark:text-neutral-500"
+    when "lg"
+      "text-base text-neutral-400 dark:text-neutral-500"
+    else # "md"
+      "text-sm text-neutral-400 dark:text-neutral-500"
+    end
+%>
+
+<% if key.present? || os_aware %>
+  <% if single_key %>
+    <%= tag.kbd keys.first, class: kbd_classes %>
+  <% elsif os_aware %>
+    <span class="<%= wrapper_classes %>" data-controller="os-detect">
+      <%= tag.kbd mac_key, data: { os_detect_target: "mac" }, class: ["hidden", kbd_classes] %>
+      <%= tag.kbd non_mac_key, data: { os_detect_target: "nonMac" }, class: ["hidden", kbd_classes] %>
+      <% keys.each_with_index do |k, index| %>
+        <% if index > 0 || mac_key.present? %>
+          <% if show_separator %>
+            <span class="<%= separator_classes %>"><%= separator %></span>
+          <% end %>
+        <% end %>
+        <%= tag.kbd k, class: kbd_classes %>
+      <% end %>
+    </span>
+  <% else %>
+    <span class="<%= wrapper_classes %>">
+      <% keys.each_with_index do |k, index| %>
+        <% if index > 0 && show_separator %>
+          <span class="<%= separator_classes %>"><%= separator %></span>
+        <% end %>
+        <%= tag.kbd k, class: kbd_classes %>
+      <% end %>
+    </span>
+  <% end %>
+<% end %>

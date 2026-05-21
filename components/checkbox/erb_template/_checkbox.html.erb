@@ -1,0 +1,134 @@
+<%#
+  Checkbox Component
+  A styled checkbox input with label, description, and various states.
+
+  Required locals:
+    - label: String - The checkbox label text
+
+  Optional locals:
+    - name: String (default: nil) - The input name attribute for form submission
+    - id: String (default: auto-generated) - The input id attribute
+    - value: String (default: "1") - The input value attribute
+    - checked: Boolean (default: false) - Whether the checkbox is checked
+    - disabled: Boolean (default: false) - Whether the checkbox is disabled
+    - required: Boolean (default: false) - Whether the checkbox is required
+    - description: String (default: nil) - Optional description text below the label
+    - size: String (default: "md") - Size: "sm" (small), "md" (medium), "lg" (large)
+    - indeterminate: Boolean (default: false) - Whether to show indeterminate state
+    - error: String (default: nil) - Error message to display
+    - classes: String (default: nil) - Additional CSS classes for the wrapper
+    - input_classes: String (default: nil) - Additional CSS classes for the input
+    - label_classes: String (default: nil) - Additional CSS classes for the label
+%>
+
+<% label ||= "" %>
+<% name ||= nil %>
+<% id ||= "checkbox_#{SecureRandom.hex(4)}" %>
+<% value ||= "1" %>
+<% checked ||= false %>
+<% disabled ||= false %>
+<% required ||= false %>
+<% description ||= nil %>
+<% size ||= "md" %>
+<% indeterminate ||= false %>
+<% error ||= nil %>
+<% classes ||= nil %>
+<% input_classes ||= nil %>
+<% label_classes ||= nil %>
+
+<%
+  has_supporting_text = description.present? || error.present?
+
+  # Base input classes
+  base_input_classes = "rounded border-neutral-300 text-neutral-900 focus:ring-neutral-500 focus:ring-offset-0 " \
+    "dark:border-neutral-600 dark:bg-neutral-800 dark:text-neutral-100 dark:focus:ring-neutral-400 " \
+    "dark:checked:bg-neutral-600 dark:checked:border-neutral-500"
+
+  # Size classes for input
+  size_input_classes = case size.to_s
+    when "sm" then "!size-3.5"
+    when "lg" then "!size-5"
+    else "!size-4" # :md (default)
+    end
+
+  # State classes for input
+  state_input_classes = []
+  state_input_classes << "cursor-not-allowed opacity-50" if disabled
+  state_input_classes << "border-red-500 dark:border-red-400 focus:ring-red-500" if error.present?
+  state_input_classes << "mt-0.5" if has_supporting_text
+  state_input_classes = state_input_classes.join(" ")
+
+  # Combined input classes
+  computed_input_classes = [base_input_classes, size_input_classes, state_input_classes, input_classes].compact.reject(&:empty?).join(" ")
+
+  # Wrapper classes
+  wrapper_base = has_supporting_text ? "flex items-start gap-2.5" : "flex items-center gap-2.5"
+  wrapper_classes = [wrapper_base, classes].compact.reject(&:empty?).join(" ")
+
+  # Label size class
+  label_size_class = case size.to_s
+    when "sm" then has_supporting_text ? "!text-xs leading-snug" : "!text-xs/none"
+    when "lg" then has_supporting_text ? "!text-base leading-snug" : "!text-base/none"
+    else has_supporting_text ? "!text-sm leading-snug" : "!text-sm/none" # :md
+    end
+
+  # Label color class
+  label_color_class = if disabled
+    "text-neutral-400 dark:text-neutral-500 cursor-not-allowed"
+  elsif error.present?
+    "text-red-700 dark:text-red-400"
+  else
+    "text-neutral-700 dark:text-neutral-300"
+  end
+
+  # Combined label classes
+  computed_label_classes = ["font-medium", label_size_class, label_color_class, label_classes].compact.reject(&:empty?).join(" ")
+
+  # Description classes
+  desc_size_class = case size.to_s
+    when "sm" then "text-[11px]"
+    when "lg" then "text-sm"
+    else "text-xs"
+    end
+  desc_color_class = disabled ? "text-neutral-400 dark:text-neutral-500" : "text-neutral-500 dark:text-neutral-400"
+  description_classes = [desc_size_class, desc_color_class, "leading-normal"].join(" ")
+
+  # Error classes
+  error_size_class = case size.to_s
+    when "sm" then "text-[11px]"
+    when "lg" then "text-sm"
+    else "text-xs"
+    end
+  error_classes = [error_size_class, "text-red-600 dark:text-red-400 leading-normal"].join(" ")
+
+  text_content_classes = ["min-w-0 flex-1 flex flex-col leading-snug", has_supporting_text ? "gap-0.5" : "gap-0"].join(" ")
+%>
+
+<div class="<%= wrapper_classes %>">
+  <input
+    type="checkbox"
+    id="<%= id %>"
+    <% if name.present? %>name="<%= name %>"<% end %>
+    value="<%= value %>"
+    class="<%= computed_input_classes %>"
+    <% if checked %>checked <% end %>
+    <% if disabled %>disabled <% end %>
+    <% if required %>required <% end %>
+    <% if indeterminate %>data-indeterminate="true"<% end %>
+  >
+
+  <div class="<%= text_content_classes %>">
+    <label for="<%= id %>" class="<%= computed_label_classes %>">
+      <%= label %>
+      <% if required %><span class="text-red-500">*</span><% end %>
+    </label>
+    <% if description.present? %>
+      <p class="<%= description_classes %>">
+        <%= description %>
+      </p>
+    <% end %>
+    <% if error.present? %>
+      <p class="<%= error_classes %>"><%= error %></p>
+    <% end %>
+  </div>
+</div>

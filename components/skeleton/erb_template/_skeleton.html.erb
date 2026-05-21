@@ -1,0 +1,89 @@
+<%#
+  Skeleton Component
+  Displays loading placeholder animations while content is being fetched.
+
+  Optional locals:
+    - variant: String (default: "text") - Shape variant: "text", "circle", "rectangle", "image", "button", "input"
+    - width: String (default: nil) - Width classes (e.g., "w-full", "w-1/2", "w-32")
+    - height: String (default: nil) - Height classes (e.g., "h-4", "h-10", "h-48")
+    - rounded: String (default: nil) - Border radius: "none", "sm", "md", "lg", "xl", "2xl", "full"
+    - animated: Boolean (default: true) - Whether to show pulse animation
+    - count: Integer (default: 1) - Number of skeleton elements to render
+    - classes: String (default: nil) - Additional CSS classes
+%>
+
+<% variant ||= "text" %>
+<% width ||= nil %>
+<% height ||= nil %>
+<% rounded ||= nil %>
+<% animated = true if local_assigns[:animated].nil? %>
+<% count ||= 1 %>
+<% classes ||= nil %>
+
+<%
+  # Base skeleton classes
+  base_classes = "bg-neutral-200 dark:bg-neutral-700"
+
+  # Animation classes
+  animation_classes = animated ? "animate-pulse" : ""
+
+  # Default dimensions based on variant
+  default_dimensions = case variant.to_s
+    when "circle"
+      { width: "w-10", height: "h-10" }
+    when "text"
+      { width: "w-full", height: "h-4" }
+    when "rectangle"
+      { width: "w-full", height: "h-20" }
+    when "image"
+      { width: "w-full", height: "h-48" }
+    when "button"
+      { width: "w-24", height: "h-10" }
+    when "input"
+      { width: "w-full", height: "h-10" }
+    else
+      { width: "w-full", height: "h-4" }
+    end
+
+  # Use provided or default dimensions
+  width_class = width || default_dimensions[:width]
+  height_class = height || default_dimensions[:height]
+  dimension_classes = "#{width_class} #{height_class}"
+
+  # Default rounded based on variant
+  default_rounded = case variant.to_s
+    when "circle" then "full"
+    when "text" then "md"
+    when "rectangle" then "lg"
+    when "image" then "lg"
+    when "button" then "md"
+    when "input" then "md"
+    else "md"
+    end
+
+  # Rounded classes
+  radius = rounded || default_rounded
+  rounded_classes = case radius.to_s
+    when "none" then "rounded-none"
+    when "sm" then "rounded-sm"
+    when "md" then "rounded-md"
+    when "lg" then "rounded-lg"
+    when "xl" then "rounded-xl"
+    when "2xl" then "rounded-2xl"
+    when "full" then "rounded-full"
+    else "rounded"
+    end
+
+  # Build final skeleton classes
+  skeleton_classes = [base_classes, animation_classes, dimension_classes, rounded_classes, classes].compact.reject(&:empty?).join(" ")
+%>
+
+<% if count.to_i > 1 %>
+  <div class="space-y-2">
+    <% count.to_i.times do %>
+      <div class="<%= skeleton_classes %>"></div>
+    <% end %>
+  </div>
+<% else %>
+  <div class="<%= skeleton_classes %>"></div>
+<% end %>

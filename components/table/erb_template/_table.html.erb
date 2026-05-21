@@ -1,0 +1,220 @@
+<%#
+  Table Component
+  Styled data tables with support for striping, hovering, and sticky headers.
+
+  Required locals:
+    None - all options have defaults. Pass columns/rows arrays or use a block.
+
+  Optional locals:
+    - columns: Array of column definitions [{label: "Name", align: "left"}]
+    - rows: Array of row data arrays [[cell1, cell2, ...], ...]
+    - striped: Boolean (default: false) - Alternate row background colors
+    - hoverable: Boolean (default: false) - Highlight rows on hover
+    - bordered: Boolean (default: true) - Show borders
+    - density: String (default: "default") - "default" or "compact"
+    - sticky_header: Boolean (default: false) - Make header sticky on scroll
+    - rounded: String (default: "xl") - Border radius: "none", "sm", "md", "lg", "xl"
+    - full_width: Boolean (default: true) - Table takes full container width
+    - responsive: Boolean (default: true) - Enable horizontal scroll
+    - max_height: String (default: nil) - Max height for scrollable table (e.g., "400px")
+    - container: Boolean (default: true) - Wrap table in styled container
+    - caption: String (default: nil) - Table caption text
+    - classes: String (default: nil) - Additional CSS classes for the table
+    - container_classes: String (default: nil) - Additional CSS classes for the container
+
+    Content sections (use capture or pass strings):
+    - head_content: String/HTML - Custom thead content
+    - body_content: String/HTML - Custom tbody content
+    - foot_content: String/HTML - Custom tfoot content
+%>
+
+<% columns ||= [] %>
+<% rows ||= [] %>
+<% striped ||= false %>
+<% hoverable ||= false %>
+<% bordered = true if local_assigns[:bordered].nil? %>
+<% density ||= "default" %>
+<% sticky_header ||= false %>
+<% rounded ||= "xl" %>
+<% full_width = true if local_assigns[:full_width].nil? %>
+<% responsive = true if local_assigns[:responsive].nil? %>
+<% max_height ||= nil %>
+<% container = true if local_assigns[:container].nil? %>
+<% caption ||= nil %>
+<% classes ||= nil %>
+<% container_classes ||= nil %>
+
+<% head_content ||= nil %>
+<% body_content ||= nil %>
+<% foot_content ||= nil %>
+
+<%
+  # Build rounded classes
+  rounded_classes = case rounded.to_s
+    when "none" then ""
+    when "sm" then "rounded-sm"
+    when "md" then "rounded-md"
+    when "lg" then "rounded-lg"
+    when "xl" then "rounded-xl"
+    else "rounded-xl"
+  end
+
+  # Build container wrapper classes
+  container_wrapper_classes = [
+    "bg-white dark:bg-neutral-900 overflow-hidden",
+    rounded_classes,
+    bordered ? "border border-black/10 dark:border-white/10" : "",
+    "shadow-xs",
+    container_classes
+  ].compact.reject(&:empty?).join(" ")
+
+  # Build scroll wrapper classes
+  scroll_wrapper_classes = [
+    "overflow-x-auto",
+    max_height ? "overflow-y-auto small-scrollbar" : ""
+  ].compact.reject(&:empty?).join(" ")
+
+  scroll_wrapper_style = max_height ? "max-height: #{max_height};" : nil
+
+  # Build table classes
+  table_classes = [
+    full_width ? "w-full" : "",
+    classes
+  ].compact.reject(&:empty?).join(" ")
+
+  # Build thead classes
+  thead_classes = if sticky_header
+    "sticky top-0 z-10 bg-neutral-100/75 dark:bg-neutral-800/75 backdrop-blur-sm backdrop-filter"
+  else
+    "bg-neutral-100 dark:bg-neutral-800"
+  end
+
+  # Build tbody classes
+  tbody_classes = [
+    striped ? "*:even:bg-neutral-50 dark:*:even:bg-neutral-800/50" : "",
+    density.to_s == "compact" ? "*:*:py-3" : "*:*:py-4"
+  ].compact.reject(&:empty?).join(" ")
+
+  # Header row classes
+  th_row_classes = [
+    density.to_s == "compact" ? "*:py-2.5" : "*:py-3",
+    "*:text-left *:[box-shadow:inset_0_-1px_0_0_rgb(229_229_229)] dark:*:[box-shadow:inset_0_-1px_0_0_rgb(46_46_46)]"
+  ].join(" ")
+
+  # Row border style
+  row_border = "[box-shadow:inset_0_-1px_0_0_rgb(229_229_229)] dark:[box-shadow:inset_0_-1px_0_0_rgb(46_46_46)]"
+  row_hover = hoverable ? "hover:bg-neutral-50 dark:hover:bg-neutral-800/50" : ""
+%>
+
+<% if container %>
+  <div class="<%= container_wrapper_classes %>">
+    <div class="<%= scroll_wrapper_classes %>"<%= " style=\"#{scroll_wrapper_style}\"".html_safe if scroll_wrapper_style %>>
+<% end %>
+      <table class="<%= table_classes %>">
+        <% if caption.present? %>
+          <caption class="px-6 py-3 text-left text-sm text-neutral-500 dark:text-neutral-400 bg-white dark:bg-neutral-900">
+            <%= caption %>
+          </caption>
+        <% end %>
+
+        <% if head_content.present? %>
+          <thead class="<%= thead_classes %>">
+            <%= head_content.html_safe %>
+          </thead>
+        <% elsif columns.any? %>
+          <thead class="<%= thead_classes %>">
+            <tr class="<%= th_row_classes %>">
+              <% columns.each_with_index do |col, idx| %>
+                <%
+                  col = { label: col } if col.is_a?(String)
+                  col_label = col[:label] || col["label"]
+                  col_align = (col[:align] || col["align"] || "left").to_s
+                  col_classes = col[:classes] || col["classes"]
+                  
+                  align_class = case col_align
+                    when "center" then "text-center"
+                    when "right" then "text-right"
+                    else "text-left"
+                  end
+                  
+                  th_classes = [
+                    "text-sm font-semibold text-neutral-900 dark:text-neutral-50",
+                    align_class,
+                    idx == 0 ? "pl-6 pr-3" : (idx == columns.length - 1 ? "pl-3 pr-6" : "px-3"),
+                    col_classes
+                  ].compact.reject(&:empty?).join(" ")
+                %>
+                <th scope="col" class="<%= th_classes %>">
+                  <%= col_label %>
+                </th>
+              <% end %>
+            </tr>
+          </thead>
+        <% end %>
+
+        <% if body_content.present? %>
+          <tbody class="<%= tbody_classes %>">
+            <%= body_content.html_safe %>
+          </tbody>
+        <% elsif rows.any? %>
+          <tbody class="<%= tbody_classes %>">
+            <% rows.each_with_index do |row, row_idx| %>
+              <%
+                row_data = row.is_a?(Hash) ? (row[:cells] || row["cells"] || []) : row
+                row_custom_classes = row.is_a?(Hash) ? (row[:classes] || row["classes"]) : nil
+                is_last_row = row_idx == rows.length - 1
+                
+                tr_classes = [
+                  is_last_row ? "" : row_border,
+                  row_hover,
+                  row_custom_classes
+                ].compact.reject(&:empty?).join(" ")
+              %>
+              <tr class="<%= tr_classes %>">
+                <% row_data.each_with_index do |cell, cell_idx| %>
+                  <%
+                    cell = { content: cell } unless cell.is_a?(Hash)
+                    cell_content = cell[:content] || cell["content"]
+                    cell_align = (cell[:align] || cell["align"] || "left").to_s
+                    cell_primary = cell[:primary] || cell["primary"] || false
+                    cell_classes = cell[:classes] || cell["classes"]
+                    
+                    align_class = case cell_align
+                      when "center" then "text-center"
+                      when "right" then "text-right"
+                      else ""
+                    end
+                    
+                    color_class = cell_primary ? "font-medium text-neutral-900 dark:text-neutral-100" : "text-neutral-500 dark:text-neutral-400"
+                    
+                    td_classes = [
+                      "text-sm",
+                      color_class,
+                      align_class,
+                      cell_idx == 0 ? "pl-6 pr-3" : (cell_idx == row_data.length - 1 ? "pl-3 pr-6" : "px-3"),
+                      cell_classes
+                    ].compact.reject(&:empty?).join(" ")
+                  %>
+                  <td class="<%= td_classes %>">
+                    <%= cell_content.is_a?(String) ? cell_content.html_safe : cell_content %>
+                  </td>
+                <% end %>
+              </tr>
+            <% end %>
+          </tbody>
+        <% elsif block_given? %>
+          <tbody class="<%= tbody_classes %>">
+            <%= yield %>
+          </tbody>
+        <% end %>
+
+        <% if foot_content.present? %>
+          <tfoot class="bg-neutral-50 dark:bg-neutral-800/50">
+            <%= foot_content.html_safe %>
+          </tfoot>
+        <% end %>
+      </table>
+<% if container %>
+    </div>
+  </div>
+<% end %>

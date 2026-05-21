@@ -1,0 +1,40 @@
+<%#
+  Carousel Slide Component
+  Individual slide - usually rendered by the parent carousel partial.
+
+  Required locals:
+    - content: String/HTML - The slide content
+    - unique_id: String - Unique identifier
+
+  Optional locals:
+    - slide_classes: String (default: nil) - Additional CSS classes
+    - slide_size: String (default: "half") - Slide width: "full", "three_quarters", "two_thirds", "half", "third", "quarter"
+    - axis: String (default: "x") - Carousel axis for spacing direction
+%>
+
+<% slide_classes ||= nil %>
+<% slide_size ||= "half" %>
+<% axis ||= "x" %>
+<% unique_id ||= SecureRandom.hex(4) %>
+
+<%
+  # Slide size classes mapping
+  size_classes = {
+    "full" => "basis-full",
+    "three_quarters" => "basis-full sm:basis-3/4",
+    "two_thirds" => "basis-full sm:basis-3/4 md:basis-2/3",
+    "half" => "basis-full sm:basis-3/4 md:basis-2/3 lg:basis-1/2",
+    "third" => "basis-full sm:basis-1/2 md:basis-1/3",
+    "quarter" => "basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4"
+  }
+
+  # Base classes
+  base = "flex-shrink-0 flex-grow-0 min-w-0 relative select-none"
+  size = size_classes[slide_size.to_s] || size_classes["half"]
+  spacing = axis.to_s == "y" ? "mb-2 sm:mb-3 md:mb-4" : "mr-2 sm:mr-3 md:mr-4"
+  computed_classes = [base, size, spacing, slide_classes].compact.reject(&:empty?).join(" ")
+%>
+
+<div class="<%= computed_classes %>" id="<%= unique_id %>">
+  <%= content.respond_to?(:html_safe) ? content.html_safe : content %>
+</div>

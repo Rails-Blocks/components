@@ -1,0 +1,30 @@
+<div class="<%= wrapper_classes %>" <%= tag.attributes(controller_data) %>>
+  <!-- Button -->
+  <button type="button" class="<%= button_classes %>" data-feedback-target="button" data-action="click->feedback#toggle">
+    <span class="flex items-center gap-1.5" data-feedback-target="buttonText">
+      <%= button_text %>
+    </span>
+  </button>
+
+  <!-- Form -->
+  <div class="<%= form_wrapper_classes %>" data-feedback-target="form">
+    <form class="<%= form_inner_classes %>" <% if form_action %> action="<%= form_action %>" method="<%= form_method %>"<% end %> data-action="submit->feedback#submit">
+      <% if form_action && form_method.downcase == "post" %>
+        <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+      <% end %>
+
+      <textarea
+        class="<%= textarea_classes %>"
+        required
+        placeholder="<%= placeholder %>"
+        name="<%= name %>"
+        data-feedback-target="textarea"></textarea>
+
+      <div class="<%= footer_classes %>">
+        <button type="submit" class="<%= submit_button_classes %>">
+          <span><%= submit_text %></span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

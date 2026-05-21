@@ -1,0 +1,116 @@
+<%#
+  Feedback Component
+  An expandable feedback widget with animated button-to-form transition.
+
+  Required locals:
+    (none - all have defaults)
+
+  Optional locals:
+    - button_text: String (default: "Feedback") - Text displayed on the feedback button
+    - placeholder: String (default: "Tell us what you think...") - Placeholder text for the textarea
+    - submit_text: String (default: "Send feedback") - Text for the submit button
+    - anchor_point: String (default: "center") - Where the form expands from: "center", "top-left", "top", "top-right", "left", "right", "bottom-left", "bottom", "bottom-right"
+    - form_action: String (default: nil) - Optional form action URL (defaults to no action - JS handles submission)
+    - form_method: String (default: "post") - Form method: "post", "get"
+    - name: String (default: "feedback") - Name attribute for the textarea (for form submissions)
+    - classes: String (default: nil) - Additional CSS classes for the wrapper
+%>
+
+<% button_text ||= "Feedback" %>
+<% placeholder ||= "Tell us what you think..." %>
+<% submit_text ||= "Send feedback" %>
+<% anchor_point ||= "center" %>
+<% form_action ||= nil %>
+<% form_method ||= "post" %>
+<% name ||= "feedback" %>
+<% classes ||= nil %>
+
+<%
+  # Normalize anchor_point to hyphenated format
+  anchor_point_normalized = anchor_point.to_s.tr("_", "-")
+
+  # Determine wrapper alignment classes based on anchor point
+  wrapper_base = case anchor_point_normalized
+    when "top-left", "top", "top-right"
+      "flex items-start justify-center relative"
+    when "bottom-left", "bottom", "bottom-right"
+      "flex items-end justify-center relative"
+    when "left"
+      "flex items-center justify-start relative"
+    when "right"
+      "flex items-center justify-end relative"
+    else # "center"
+      "flex items-center justify-center relative"
+    end
+
+  wrapper_classes = [wrapper_base, classes].compact.reject(&:empty?).join(" ")
+
+  button_classes = [
+    "flex items-center justify-center gap-1.5 rounded-lg border border-black/10",
+    "bg-white/90 px-3.5 py-2 text-sm font-medium whitespace-nowrap text-neutral-800",
+    "shadow-xs transition-all duration-100 ease-in-out select-none",
+    "hover:bg-neutral-50 focus-visible:outline-2 focus-visible:outline-offset-2",
+    "focus-visible:outline-neutral-600 disabled:cursor-not-allowed disabled:opacity-50",
+    "dark:border-white/10 dark:bg-neutral-700/50 dark:text-neutral-50",
+    "dark:hover:bg-neutral-700/75 dark:focus-visible:outline-neutral-200"
+  ].join(" ")
+
+  form_wrapper_classes = [
+    "absolute hidden h-32 w-64 sm:h-48 sm:w-96 overflow-hidden rounded-lg",
+    "border border-black/5 bg-neutral-100 p-1.5 shadow-xs outline-none",
+    "dark:border-white/10 dark:bg-neutral-900 dark:shadow-neutral-900/50"
+  ].join(" ")
+
+  form_inner_classes = [
+    "flex h-full flex-col overflow-hidden rounded-lg border border-black/10",
+    "bg-white dark:border-neutral-600 dark:bg-neutral-700/75"
+  ].join(" ")
+
+  textarea_classes = [
+    "small-scrollbar w-full flex-1 resize-none rounded-t-lg p-3 text-sm",
+    "text-black placeholder-neutral-500 outline-none",
+    "dark:text-neutral-100 dark:placeholder-neutral-400"
+  ].join(" ")
+
+  footer_classes = [
+    "relative flex h-12 items-center border-t border-dashed border-black/10",
+    "bg-neutral-50 px-2.5 dark:border-white/20 dark:bg-neutral-800"
+  ].join(" ")
+
+  submit_button_classes = [
+    "ml-auto flex items-center justify-center rounded-md bg-neutral-800",
+    "py-1 px-2 text-xs font-medium text-white transition-colors duration-200",
+    "hover:bg-neutral-700 dark:bg-white dark:text-neutral-800 dark:hover:bg-neutral-100"
+  ].join(" ")
+%>
+
+<div class="<%= wrapper_classes %>" data-controller="feedback" data-feedback-expanded-value="false" data-feedback-anchor-point-value="<%= anchor_point_normalized %>" data-feedback-target="container">
+  <!-- Button -->
+  <button type="button" class="<%= button_classes %>" data-feedback-target="button" data-action="click->feedback#toggle">
+    <span class="flex items-center gap-1.5" data-feedback-target="buttonText">
+      <%= button_text %>
+    </span>
+  </button>
+
+  <!-- Form -->
+  <div class="<%= form_wrapper_classes %>" data-feedback-target="form">
+    <form class="<%= form_inner_classes %>" <% if form_action.present? %> action="<%= form_action %>" method="<%= form_method %>"<% end %> data-action="submit->feedback#submit">
+      <% if form_action.present? && form_method.to_s.downcase == "post" %>
+        <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+      <% end %>
+
+      <textarea
+        class="<%= textarea_classes %>"
+        required
+        placeholder="<%= placeholder %>"
+        name="<%= name %>"
+        data-feedback-target="textarea"></textarea>
+
+      <div class="<%= footer_classes %>">
+        <button type="submit" class="<%= submit_button_classes %>">
+          <span><%= submit_text %></span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

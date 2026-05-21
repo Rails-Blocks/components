@@ -1,0 +1,35 @@
+<div class="<%= group_classes %>" data-checkbox-select-all-target="parent">
+  <!-- Parent checkbox -->
+  <div class="flex items-start gap-x-3 -mx-2 px-2 py-2 rounded-lg border border-transparent has-[:checked]:bg-neutral-100 dark:has-[:checked]:bg-neutral-800 has-[:checked]:border-black/5 dark:has-[:checked]:border-white/10">
+    <input
+      type="checkbox"
+      id="<%= unique_id %>"
+      class="mt-0.5"
+      tabindex="0"
+      data-checkbox-select-all-target="checkbox"
+      data-action="click->checkbox-select-all#toggleChildren click->checkbox-select-all#toggle">
+    <label for="<%= unique_id %>" class="inline-block cursor-pointer select-none flex-1">
+      <div class="flex items-center gap-x-1.5 text-sm has-[:checked]:text-neutral-900 dark:has-[:checked]:text-neutral-50">
+        <% if icon.present? %>
+          <%= icon.html_safe %>
+        <% end %>
+        <%= label %>
+      </div>
+      <% if description.present? %>
+        <div class="text-xs text-neutral-500 dark:text-neutral-400 mt-0.5">
+          <%= description %>
+        </div>
+      <% end %>
+    </label>
+  </div>
+
+  <!-- Nested children -->
+  <div class="ml-[7px] pl-5 space-y-2 border-l-2 border-black/10 dark:border-white/10 has-[:checked]:border-neutral-400 dark:has-[:checked]:border-neutral-500">
+    <% items.each do |item| %>
+      <%= item %>
+    <% end %>
+    <% groups.each do |group| %>
+      <%= group %>
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,206 @@
+<%#
+  Card Component
+  Content containers with optional headers, bodies, footers, and images.
+
+  Required locals:
+    None - all options have defaults
+
+  Optional locals:
+    - variant: String (default: "default") - Style: "default", "elevated", "well"
+    - padding: String (default: "md") - Padding: "none", "sm", "md", "lg"
+    - shadow: String (default: "xs") - Shadow: "none", "xs", "sm", "md", "lg", "xl"
+    - rounded: String (default: "xl") - Radius: "none", "sm", "md", "lg", "xl", "full"
+    - border: Boolean (default: true) - Show border
+    - hoverable: Boolean (default: false) - Add hover shadow effect
+    - clickable: Boolean (default: false) - Make card appear clickable
+    - divide: Boolean (default: false) - Add dividers between sections
+    - full_width_mobile: Boolean (default: false) - Edge-to-edge on mobile
+    - classes: String (default: nil) - Additional CSS classes
+
+    Content sections (use capture or pass strings):
+    - header_content: String/HTML - Header section content
+    - body_content: String/HTML - Body section content (or use block)
+    - footer_content: String/HTML - Footer section content
+
+    Image options:
+    - image_src: String - Image URL
+    - image_alt: String (default: "") - Image alt text
+    - image_position: String (default: "top") - "top" or "bottom"
+    - image_aspect: String (default: nil) - "square", "video", "wide", or nil for auto
+    - image_classes: String - Additional image wrapper classes
+%>
+
+<% variant ||= "default" %>
+<% padding ||= "md" %>
+<% shadow ||= "xs" %>
+<% rounded ||= "xl" %>
+<% border = true if local_assigns[:border].nil? %>
+<% hoverable ||= false %>
+<% clickable ||= false %>
+<% divide ||= false %>
+<% full_width_mobile ||= false %>
+<% classes ||= nil %>
+
+<% header_content ||= nil %>
+<% body_content ||= nil %>
+<% footer_content ||= nil %>
+
+<% image_src ||= nil %>
+<% image_alt ||= "" %>
+<% image_position ||= "top" %>
+<% image_aspect ||= nil %>
+<% image_classes ||= nil %>
+
+<%
+  # Build variant classes
+  variant_classes = case variant
+  when :well then "bg-neutral-50 dark:bg-neutral-900/50"
+  else # :default (elevated)
+    "bg-white dark:bg-neutral-800"
+  end
+
+  # Build shadow classes
+  shadow_classes = if variant.to_s == "well"
+    ""
+  else
+    case shadow.to_s
+    when "none" then ""
+    when "sm" then "shadow-sm"
+    when "md" then "shadow-md"
+    when "lg" then "shadow-lg"
+    when "xl" then "shadow-xl"
+    else "shadow-xs" # :xs
+    end
+  end
+
+  # Build rounded classes
+  rounded_classes = if full_width_mobile
+    case rounded.to_s
+    when "none" then ""
+    when "sm" then "sm:rounded-sm"
+    when "md" then "sm:rounded-md"
+    when "lg" then "sm:rounded-lg"
+    when "full" then "sm:rounded-full"
+    else "sm:rounded-xl" # :xl
+    end
+  else
+    case rounded.to_s
+    when "none" then ""
+    when "sm" then "rounded-sm"
+    when "md" then "rounded-md"
+    when "lg" then "rounded-lg"
+    when "full" then "rounded-full"
+    else "rounded-xl" # :xl
+    end
+  end
+
+  # Build border classes
+  border_classes = if border
+    if full_width_mobile
+      "border-y sm:border border-black/10 dark:border-white/10"
+    else
+      "border border-black/10 dark:border-white/10"
+    end
+  else
+    ""
+  end
+
+  # Build hover classes
+  hover_classes = if hoverable || clickable
+    hover_parts = ["transition-all duration-200"]
+    hover_parts << "hover:shadow-md dark:hover:shadow-neutral-900/50" if hoverable
+    hover_parts << "cursor-pointer hover:bg-neutral-50 dark:hover:bg-neutral-700/50" if clickable
+    hover_parts.join(" ")
+  else
+    ""
+  end
+
+  # Build divide classes
+  divide_classes = divide ? "divide-y divide-black/10 dark:divide-white/10" : ""
+
+  # Build wrapper classes
+  wrapper_classes = ["overflow-hidden", variant_classes, shadow_classes, rounded_classes, border_classes, hover_classes, divide_classes, classes].compact.reject(&:empty?).join(" ")
+
+  # Padding classes
+  header_padding = case padding.to_s
+    when "none" then ""
+    when "sm" then "px-3 py-3 sm:px-4"
+    when "md" then "px-4 py-5 sm:px-6"
+    when "lg" then "px-6 py-6 sm:px-8"
+    else "px-4 py-5 sm:px-6"
+    end
+
+  body_padding = case padding.to_s
+    when "none" then ""
+    when "sm" then "px-3 py-3 sm:p-4"
+    when "md" then "px-4 py-5 sm:p-6"
+    when "lg" then "px-6 py-6 sm:p-8"
+    else "px-4 py-5 sm:p-6"
+    end
+
+  footer_padding = case padding.to_s
+    when "none" then ""
+    when "sm" then "px-3 py-3 sm:px-4"
+    when "md" then "px-4 py-4 sm:px-6"
+    when "lg" then "px-6 py-5 sm:px-8"
+    else "px-4 py-4 sm:px-6"
+    end
+
+  # Header background (only when divide is true)
+  header_bg = divide ? "bg-neutral-50 dark:bg-neutral-900/50 border-b border-black/10 dark:border-white/10" : ""
+
+  # Footer background
+  footer_bg = "bg-neutral-50 dark:bg-neutral-900/50"
+
+  # Image aspect classes
+  image_aspect_classes = case image_aspect.to_s
+    when "square" then "aspect-square"
+    when "video" then "aspect-video"
+    when "wide" then "aspect-[21/9]"
+    else ""
+    end
+
+  image_wrapper_classes = [image_aspect_classes, "bg-neutral-200 dark:bg-neutral-700", image_classes].compact.reject(&:empty?).join(" ")
+
+  # Determine if we have content
+  has_header = header_content.present?
+  has_footer = footer_content.present?
+  has_image = image_src.present?
+  has_body = body_content.present? || block_given?
+%>
+
+<div class="<%= wrapper_classes %>">
+  <% if has_image && image_position.to_s == "top" %>
+    <div class="<%= image_wrapper_classes %>">
+      <%= image_tag(image_src, alt: image_alt, class: "w-full h-full object-center object-cover") %>
+    </div>
+  <% end %>
+
+  <% if has_header %>
+    <div class="<%= [header_padding, header_bg].compact.reject(&:empty?).join(' ') %>">
+      <%= header_content.html_safe %>
+    </div>
+  <% end %>
+
+  <% if has_body %>
+    <div class="<%= body_padding %>">
+      <% if body_content.present? %>
+        <%= body_content.html_safe %>
+      <% else %>
+        <%= yield %>
+      <% end %>
+    </div>
+  <% end %>
+
+  <% if has_footer %>
+    <div class="<%= [footer_padding, footer_bg].compact.reject(&:empty?).join(' ') %>">
+      <%= footer_content.html_safe %>
+    </div>
+  <% end %>
+
+  <% if has_image && image_position.to_s == "bottom" %>
+    <div class="<%= image_wrapper_classes %>">
+      <%= image_tag(image_src, alt: image_alt, class: "w-full h-full object-center object-cover") %>
+    </div>
+  <% end %>
+</div>

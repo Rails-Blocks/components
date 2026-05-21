@@ -2,9 +2,9 @@
 <%= render "shared/components/navbar/navbar",
   items: [
     { label: "Home", href: "/" },
-    { label: "Products", href: "/products" },
-    { label: "About", href: "/about" },
-    { label: "Contact", href: "/contact" }
+    { label: "Products", href: "#products" },
+    { label: "About", href: "#about" },
+    { label: "Contact", href: "#contact" }
   ]
 %>
 
@@ -14,7 +14,7 @@
     { label: "Home", href: "/" },
     { label: "Products", dropdown: true, content_id: "products-dropdown", mobile_hidden: true },
     { label: "Resources", dropdown: true, content_id: "resources-dropdown", mobile_hidden: true },
-    { label: "Contact", href: "/contact", mobile_hidden: true }
+    { label: "Contact", href: "#contact", mobile_hidden: true }
   ],
   dropdown_contents: [
     {
@@ -22,11 +22,11 @@
       width: "w-[calc(100vw-2rem)] sm:w-[500px]",
       columns: 2,
       content: '
-        <a href="/products/software" class="block rounded-lg p-3 no-underline hover:bg-neutral-100 dark:hover:bg-neutral-700">
+        <a href="#products" class="block rounded-lg p-3 no-underline hover:bg-neutral-100 dark:hover:bg-neutral-700">
           <div class="mb-1 font-medium text-neutral-900 dark:text-neutral-100">Software</div>
           <p class="m-0 text-sm text-neutral-600 dark:text-neutral-400">Our software solutions.</p>
         </a>
-        <a href="/products/hardware" class="block rounded-lg p-3 no-underline hover:bg-neutral-100 dark:hover:bg-neutral-700">
+        <a href="#products" class="block rounded-lg p-3 no-underline hover:bg-neutral-100 dark:hover:bg-neutral-700">
           <div class="mb-1 font-medium text-neutral-900 dark:text-neutral-100">Hardware</div>
           <p class="m-0 text-sm text-neutral-600 dark:text-neutral-400">Physical products.</p>
         </a>
@@ -41,7 +41,7 @@
           <div class="mb-1 font-medium text-neutral-900 dark:text-neutral-100">Blog</div>
           <p class="m-0 text-sm text-neutral-600 dark:text-neutral-400">Read our latest posts.</p>
         </a>
-        <a href="/docs" class="block rounded-lg p-3 no-underline hover:bg-neutral-100 dark:hover:bg-neutral-700">
+        <a href="#docs" class="block rounded-lg p-3 no-underline hover:bg-neutral-100 dark:hover:bg-neutral-700">
           <div class="mb-1 font-medium text-neutral-900 dark:text-neutral-100">Documentation</div>
           <p class="m-0 text-sm text-neutral-600 dark:text-neutral-400">Technical guides.</p>
         </a>
@@ -52,9 +52,9 @@
       width: "w-[calc(100vw-2rem)]",
       columns: 1,
       content: '
-        <a href="/products" class="block rounded-lg p-3 no-underline hover:bg-neutral-100 dark:hover:bg-neutral-700">Products</a>
-        <a href="/resources" class="block rounded-lg p-3 no-underline hover:bg-neutral-100 dark:hover:bg-neutral-700">Resources</a>
-        <a href="/contact" class="block rounded-lg p-3 no-underline hover:bg-neutral-100 dark:hover:bg-neutral-700">Contact</a>
+        <a href="#products" class="block rounded-lg p-3 no-underline hover:bg-neutral-100 dark:hover:bg-neutral-700">Products</a>
+        <a href="#resources" class="block rounded-lg p-3 no-underline hover:bg-neutral-100 dark:hover:bg-neutral-700">Resources</a>
+        <a href="#contact" class="block rounded-lg p-3 no-underline hover:bg-neutral-100 dark:hover:bg-neutral-700">Contact</a>
       '
     }
   ]
@@ -66,9 +66,9 @@
     <span class="font-bold text-neutral-900 dark:text-white">MyBrand</span>
   </a>',
   items: [
-    { label: "Features", href: "/features" },
-    { label: "Pricing", href: "/pricing" },
-    { label: "Docs", href: "/docs" }
+    { label: "Features", href: "#features" },
+    { label: "Pricing", href: "#pricing" },
+    { label: "Docs", href: "#docs" }
   ],
   actions: '<li class="ml-2 pl-2 border-l border-neutral-200 dark:border-neutral-700">
     <a href="/login" class="block rounded-md px-3 py-2 text-sm font-medium text-neutral-700 no-underline hover:bg-neutral-100 dark:text-neutral-300 dark:hover:bg-neutral-700">
@@ -82,7 +82,7 @@
   variant: "transparent",
   items: [
     { label: "Home", href: "/" },
-    { label: "About", href: "/about" }
+    { label: "About", href: "#about" }
   ],
   show_mobile_menu: false
 %>

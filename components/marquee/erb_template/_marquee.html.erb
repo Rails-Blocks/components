@@ -1,0 +1,73 @@
+<%#
+  Marquee Component
+  Infinitely scrolling/ticker content with smooth CSS animation.
+
+  Required locals:
+    - items: Array - Array of item hashes with content
+
+  Optional locals:
+    - speed: Integer (default: 20) - Animation duration in seconds (lower = faster)
+    - hover_speed: Integer (default: 0) - Speed on hover (0 to pause completely)
+    - direction: String (default: "left") - Scroll direction: "left", "right", "up", or "down"
+    - clones: Integer (default: 2) - Number of content clones for seamless loop
+    - gap: String (default: "gap-8") - Gap between items (Tailwind class)
+    - pause_on_hover: Boolean (default: true) - Whether to pause/slow on hover
+    - show_fade: Boolean (default: true) - Show edge fade mask on the wrapper
+    - show_gradients: Boolean (deprecated alias) - Backward-compatible alias for show_fade
+    - classes: String (default: nil) - Additional CSS classes for the wrapper
+
+  Item hash keys:
+    - content: String/HTML - The item content
+    - classes: String - Additional CSS classes for this item
+%>
+
+<% items ||= [] %>
+<% speed ||= 20 %>
+<% hover_speed ||= 0 %>
+<% direction ||= "left" %>
+<% clones ||= 2 %>
+<% gap ||= "gap-8" %>
+<% pause_on_hover = true if local_assigns[:pause_on_hover].nil? %>
+<% show_fade = local_assigns.key?(:show_fade) ? local_assigns[:show_fade] : local_assigns[:show_gradients] %>
+<% show_fade = true if show_fade.nil? %>
+<% classes ||= nil %>
+
+<%
+  # Wrapper classes
+  base_wrapper = "relative overflow-hidden w-full"
+  fade_mask_classes = "[--marquee-fade-size:1.25rem] [mask-image:linear-gradient(to_right,transparent,black_var(--marquee-fade-size),black_calc(100%-var(--marquee-fade-size)),transparent)] [-webkit-mask-image:linear-gradient(to_right,transparent,black_var(--marquee-fade-size),black_calc(100%-var(--marquee-fade-size)),transparent)]"
+  wrapper_classes = [base_wrapper, (show_fade ? fade_mask_classes : nil), classes].compact.reject(&:empty?).join(" ")
+
+  # Build data attributes
+  data_attrs = { controller: "marquee" }
+  data_attrs[:marquee_speed_value] = speed
+  data_attrs[:marquee_hover_speed_value] = hover_speed
+  data_attrs[:marquee_direction_value] = direction if direction.to_s != "left"
+  data_attrs[:marquee_clones_value] = clones if clones != 2
+
+  if pause_on_hover
+    data_attrs[:action] = "mouseenter->marquee#pauseAnimation mouseleave->marquee#resumeAnimation"
+  end
+
+  # List classes
+  base_list = if %w[up down].include?(direction.to_s)
+    "flex w-full shrink-0 flex-col items-stretch"
+  else
+    "flex w-full shrink-0 flex-nowrap items-center justify-around"
+  end
+  list_classes = [base_list, gap].compact.reject(&:empty?).join(" ")
+%>
+
+<div class="<%= wrapper_classes %>" <%= tag.attributes(data: data_attrs) %>>
+  <div data-marquee-target="track" class="relative flex w-full">
+    <div data-marquee-target="list" class="<%= list_classes %>">
+      <% items.each_with_index do |item, index| %>
+        <%= render "shared/components/marquee/marquee_item",
+          content: item[:content],
+          item_classes: item[:classes],
+          unique_id: "marquee-#{object_id}-item-#{index}"
+        %>
+      <% end %>
+    </div>
+  </div>
+</div>

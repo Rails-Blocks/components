@@ -1,0 +1,273 @@
+<%#
+  Select Component
+  A styled select/dropdown input powered by Tom Select with search, icons, and rich options.
+
+  Required locals:
+    (none - all options have defaults)
+
+  Optional locals:
+    - name: String (default: nil) - The input name attribute for form submission
+    - id: String (default: auto-generated) - The input id attribute
+    - options: Array (default: []) - Array of options, can be:
+        - Simple: [["Label", "value"], ["Label 2", "value2"]]
+        - Rich: [{ label: "Label", value: "val", icon: "<svg>...</svg>", description: "..." }]
+    - selected: String/Array (default: nil) - Currently selected value(s)
+    - placeholder: String (default: "Select an option...") - Placeholder text
+    - multiple: Boolean (default: false) - Allow multiple selections
+    - dropdown_input: Boolean (default: false) - Enable search/filter in dropdown
+    - searchable: Boolean/nil (default: nil) - Alias for dropdown_input
+    - clearable: Boolean (default: true) - Show clear button (single select only)
+    - clear_button: Boolean/nil (default: nil) - Alias for clearable
+    - disabled: Boolean (default: false) - Disable the select
+    - required: Boolean (default: false) - Mark as required field
+    - grouped: Boolean (default: false) - Whether options are grouped
+    - label: String (default: nil) - Label text
+    - description: String (default: nil) - Description text
+    - error: String (default: nil) - Error message
+    - size: String (default: "md") - Size: "sm", "md", "lg"
+    - allow_new: Boolean (default: false) - Allow creating new options
+    - allow_create: Boolean/nil (default: nil) - Alias for allow_new
+    - scroll_buttons: Boolean (default: false) - Show scroll buttons
+    - disable_typing: Boolean (default: true) - Disable keyboard typing
+    - submit_on_change: Boolean (default: false) - Submit form on change
+    - update_field: Boolean (default: false) - Update target field with selected option data
+    - update_field_target: String (default: nil) - CSS selector of target field
+    - update_field_source: String (default: "name") - Source key copied to target field
+    - url: String (default: nil) - URL for remote options loading
+    - value_field: String (default: "value") - Value field for remote data
+    - label_field: String (default: "label") - Label field for remote data
+    - search_param: String (default: "query") - Search query param
+    - per_page: Integer (default: 60) - Remote page size
+    - virtual_scroll: Boolean (default: false) - Enable virtual scroll
+    - optgroup_columns: Boolean (default: false) - Enable optgroup columns
+    - response_data_field: String (default: "data") - Path to response array
+    - dropdown_input_placeholder: String (default: "Search...") - Placeholder for dropdown input
+    - show_count: Boolean (default: false) - Show selected count for multi-select
+    - count_text: String (default: "selected") - Count suffix text
+    - count_text_singular: String (default: nil) - Singular count suffix text
+    - tags_position: String (default: "inline") - Tag position for multi-select
+    - enable_flag_toggle: Boolean (default: false) - Enable tag flag toggles
+    - image_field: String (default: nil) - API image field
+    - subtitle_field: String (default: nil) - API subtitle field
+    - meta_fields: String (default: nil) - Comma-separated metadata fields
+    - badge_field: String (default: nil) - API badge field
+    - render_template: String (default: nil) - Custom option render template
+    - no_more_results_text: String (default: "No more results") - No-more-results copy
+    - no_results_text: String (default: "No results found for") - No-search-results copy
+    - loading_text: String (default: "Loading...") - Loading copy
+    - create_text: String (default: "Add") - Create option copy
+    - classes: String (default: nil) - Additional wrapper classes
+    - input_classes: String (default: nil) - Additional select element classes
+    - data: Hash (default: {}) - Additional data attributes
+%>
+
+<% name ||= nil %>
+<% id ||= "select_#{SecureRandom.hex(4)}" %>
+<% options ||= [] %>
+<% selected ||= nil %>
+<% placeholder ||= "Select an option..." %>
+<% multiple ||= false %>
+<% dropdown_input = local_assigns.fetch(:dropdown_input, false) %>
+<% searchable = local_assigns.fetch(:searchable, nil) %>
+<% dropdown_input = searchable unless searchable.nil? %>
+<% clearable = local_assigns.fetch(:clearable, true) %>
+<% clear_button = local_assigns.fetch(:clear_button, nil) %>
+<% clearable = clear_button unless clear_button.nil? %>
+<% disabled ||= false %>
+<% required ||= false %>
+<% grouped ||= false %>
+<% label ||= nil %>
+<% description ||= nil %>
+<% error ||= nil %>
+<% size ||= "md" %>
+<% allow_new = local_assigns.fetch(:allow_new, false) %>
+<% allow_create = local_assigns.fetch(:allow_create, nil) %>
+<% allow_new = allow_create unless allow_create.nil? %>
+<% scroll_buttons ||= false %>
+<% disable_typing = local_assigns.fetch(:disable_typing, true) %>
+<% submit_on_change ||= false %>
+<% update_field ||= false %>
+<% update_field_target ||= nil %>
+<% update_field_source ||= "name" %>
+<% url ||= nil %>
+<% value_field ||= "value" %>
+<% label_field ||= "label" %>
+<% search_param ||= "query" %>
+<% per_page ||= 60 %>
+<% virtual_scroll ||= false %>
+<% optgroup_columns ||= false %>
+<% response_data_field ||= "data" %>
+<% dropdown_input_placeholder ||= "Search..." %>
+<% show_count ||= false %>
+<% count_text ||= "selected" %>
+<% count_text_singular ||= nil %>
+<% tags_position ||= "inline" %>
+<% enable_flag_toggle ||= false %>
+<% image_field ||= nil %>
+<% subtitle_field ||= nil %>
+<% meta_fields ||= nil %>
+<% badge_field ||= nil %>
+<% render_template ||= nil %>
+<% no_more_results_text ||= "No more results" %>
+<% no_results_text ||= "No results found for" %>
+<% loading_text ||= "Loading..." %>
+<% create_text ||= "Add" %>
+<% classes ||= nil %>
+<% input_classes ||= nil %>
+<% data ||= {} %>
+
+<%
+  # Wrapper classes
+  wrapper_base = "w-full"
+  wrapper_classes = [wrapper_base, classes].compact.reject(&:empty?).join(" ")
+
+  # Select classes
+  base_select_classes = "w-full [&>*:first-child]:!cursor-pointer"
+  size_classes = case size.to_s
+    when "sm" then "text-sm"
+    when "lg" then "text-lg"
+    else ""
+    end
+  state_classes = disabled ? "cursor-not-allowed" : ""
+  computed_select_classes = [base_select_classes, size_classes, state_classes, input_classes].compact.reject(&:empty?).join(" ")
+
+  # Label classes
+  label_size_class = case size.to_s
+    when "sm" then "text-xs"
+    when "lg" then "text-base"
+    else "text-sm"
+    end
+  label_color_class = if disabled
+    "text-neutral-400 dark:text-neutral-500"
+  elsif error.present?
+    "text-red-700 dark:text-red-400"
+  else
+    "text-neutral-700 dark:text-neutral-300"
+  end
+  label_classes = ["block font-medium mb-1", label_size_class, label_color_class].join(" ")
+
+  # Description classes
+  desc_size_class = case size.to_s
+    when "sm" then "text-[11px]"
+    when "lg" then "text-sm"
+    else "text-xs"
+    end
+  desc_color_class = disabled ? "text-neutral-400 dark:text-neutral-500" : "text-neutral-500 dark:text-neutral-400"
+  description_classes = [desc_size_class, desc_color_class, "mt-1"].join(" ")
+
+  # Error classes
+  error_size_class = case size.to_s
+    when "sm" then "text-[11px]"
+    when "lg" then "text-sm"
+    else "text-xs"
+    end
+  error_classes = [error_size_class, "text-red-600 dark:text-red-400 mt-1"].join(" ")
+
+  # Data attributes
+  data_attrs = {
+    controller: "select",
+    select_dropdown_input_value: dropdown_input,
+    select_disable_typing_value: disable_typing,
+    select_clear_button_value: clearable && !multiple,
+    select_scroll_buttons_value: scroll_buttons
+  }
+  data_attrs[:select_url_value] = url if url.present?
+  data_attrs[:select_value_field_value] = value_field if value_field != "value"
+  data_attrs[:select_label_field_value] = label_field if label_field != "label"
+  data_attrs[:select_search_param_value] = search_param if search_param != "query"
+  data_attrs[:select_per_page_value] = per_page if per_page != 60
+  data_attrs[:select_virtual_scroll_value] = true if virtual_scroll
+  data_attrs[:select_response_data_field_value] = response_data_field if response_data_field != "data"
+  data_attrs[:select_allow_new_value] = true if allow_new
+  data_attrs[:select_optgroup_columns_value] = true if optgroup_columns
+  data_attrs[:select_submit_on_change_value] = true if submit_on_change
+  data_attrs[:select_dropdown_input_placeholder_value] = dropdown_input_placeholder if dropdown_input_placeholder != "Search..."
+  if update_field
+    data_attrs[:select_update_field_value] = true
+    data_attrs[:select_update_field_target_value] = update_field_target if update_field_target.present?
+    data_attrs[:select_update_field_source_value] = update_field_source if update_field_source != "name"
+  end
+  if multiple && show_count
+    data_attrs[:select_show_count_value] = true
+    data_attrs[:select_count_text_value] = count_text
+    data_attrs[:select_count_text_singular_value] = count_text_singular if count_text_singular.present?
+  end
+  data_attrs[:select_tags_position_value] = tags_position if multiple && tags_position != "inline"
+  data_attrs[:select_enable_flag_toggle_value] = true if enable_flag_toggle
+  data_attrs[:select_image_field_value] = image_field if image_field.present?
+  data_attrs[:select_subtitle_field_value] = subtitle_field if subtitle_field.present?
+  data_attrs[:select_meta_fields_value] = meta_fields if meta_fields.present?
+  data_attrs[:select_badge_field_value] = badge_field if badge_field.present?
+  data_attrs[:select_render_template_value] = render_template if render_template.present?
+  data_attrs[:select_no_more_results_text_value] = no_more_results_text if no_more_results_text != "No more results"
+  data_attrs[:select_no_search_results_text_value] = no_results_text if no_results_text != "No results found for"
+  data_attrs[:select_loading_text_value] = loading_text if loading_text != "Loading..."
+  data_attrs[:select_create_text_value] = create_text if create_text != "Add"
+  data_attrs = data_attrs.merge(data)
+
+  # Format options for select helper
+  formatted_options = options.map do |opt|
+    if opt.is_a?(Hash)
+      if opt[:icon] || opt[:description] || opt[:side]
+        json_data = {
+          icon: opt[:icon],
+          name: opt[:label] || opt[:name],
+          description: opt[:description],
+          side: opt[:side]
+        }.compact.to_json
+        [json_data, opt[:value]]
+      else
+        [opt[:label] || opt[:name], opt[:value]]
+      end
+    elsif opt.is_a?(Array) && opt.length >= 2
+      opt
+    else
+      [opt.to_s, opt.to_s]
+    end
+  end
+%>
+
+<div class="<%= wrapper_classes %>">
+  <% if label.present? %>
+    <label for="<%= id %>" class="<%= label_classes %>">
+      <%= label %>
+      <% if required %><span class="text-red-500">*</span><% end %>
+    </label>
+  <% end %>
+
+  <% if description.present? && label.present? %>
+    <p class="<%= description_classes %> mb-2 -mt-0.5"><%= description %></p>
+  <% end %>
+
+  <% if grouped %>
+    <%= select_tag name,
+        grouped_options_for_select(options, selected),
+        id: id,
+        include_blank: placeholder,
+        multiple: multiple,
+        disabled: disabled,
+        required: required,
+        class: computed_select_classes,
+        style: "visibility: hidden;",
+        data: data_attrs %>
+  <% else %>
+    <%= select_tag name,
+        options_for_select(formatted_options, selected),
+        id: id,
+        include_blank: placeholder,
+        multiple: multiple,
+        disabled: disabled,
+        required: required,
+        class: computed_select_classes,
+        style: "visibility: hidden;",
+        data: data_attrs %>
+  <% end %>
+
+  <% if error.present? %>
+    <p class="<%= error_classes %>"><%= error %></p>
+  <% end %>
+
+  <% if description.present? && label.blank? %>
+    <p class="<%= description_classes %>"><%= description %></p>
+  <% end %>
+</div>

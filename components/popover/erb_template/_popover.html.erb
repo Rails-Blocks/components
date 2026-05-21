@@ -1,0 +1,87 @@
+<%#
+  Popover Component
+  A floating content panel triggered by click or hover, positioned using Floating UI.
+
+  Required locals: (none - all have defaults)
+
+  Optional locals:
+    - placement: String (default: "top") - Popover position: "top", "top-start", "top-end", "bottom", "bottom-start", "bottom-end", "left", "left-start", "left-end", "right", "right-start", "right-end"
+    - trigger_type: String (default: "hover") - How to trigger: "hover" or "click"
+    - interactive: Boolean (default: false) - Whether content can be interacted with
+    - offset: Integer (default: 10) - Distance from trigger in pixels
+    - max_width: Integer (default: 300) - Maximum width in pixels
+    - arrow: Boolean (default: true) - Whether to show an arrow
+    - animation: String (default: "fade") - Animation type: "fade", "origin", "fade origin", or "none"
+    - delay: Integer (default: 0) - Delay before showing in milliseconds
+    - trigger_text: String (default: "Open Popover") - Text for default trigger button
+    - trigger_classes: String (default: nil) - Additional classes for trigger
+    - classes: String (default: nil) - Additional wrapper classes
+    - title: String (default: nil) - Optional header title for the popover
+    - content_text: String (default: nil) - Simple text content (alternative to block)
+
+%>
+
+<% placement ||= "top" %>
+<% trigger_type ||= "hover" %>
+<% interactive ||= false %>
+<% offset ||= 10 %>
+<% max_width ||= 300 %>
+<% arrow = true if local_assigns[:arrow].nil? %>
+<% animation ||= "fade" %>
+<% delay ||= 0 %>
+<% trigger_text ||= "Open Popover" %>
+<% trigger_classes ||= nil %>
+<% classes ||= nil %>
+<% title ||= nil %>
+<% content_text ||= nil %>
+
+<%
+  # Build data attributes
+  data_attrs = { controller: "popover" }
+  data_attrs[:popover_placement_value] = placement unless placement.to_s == "top"
+
+  trigger_value = case trigger_type.to_s
+    when "click" then "click"
+    else "mouseenter focus"
+  end
+  data_attrs[:popover_trigger_value] = trigger_value unless trigger_value == "mouseenter focus"
+
+  data_attrs[:popover_interactive_value] = true if interactive
+  data_attrs[:popover_offset_value] = offset unless offset == 10
+  data_attrs[:popover_max_width_value] = max_width unless max_width == 300
+  data_attrs[:popover_has_arrow_value] = false unless arrow
+  data_attrs[:popover_animation_value] = animation.to_s unless animation.to_s == "fade"
+  data_attrs[:popover_delay_value] = delay unless delay == 0
+
+  # Wrapper classes
+  base_wrapper = "inline-block relative"
+  wrapper_classes = [base_wrapper, classes].compact.reject(&:empty?).join(" ")
+
+  # Trigger button classes
+  base_trigger_classes = "flex items-center justify-center gap-1.5 rounded-lg border border-black/10 bg-white/90 px-3.5 py-2 text-sm font-medium whitespace-nowrap text-neutral-800 shadow-xs transition-all duration-100 ease-in-out select-none hover:bg-neutral-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-600 disabled:cursor-not-allowed disabled:opacity-50 dark:border-white/10 dark:bg-neutral-700/50 dark:text-neutral-50 dark:hover:bg-neutral-700/75 dark:focus-visible:outline-neutral-200"
+  trigger_button_classes = [trigger_classes, base_trigger_classes].compact.reject(&:empty?).join(" ")
+%>
+
+<div class="<%= wrapper_classes %>" <%= tag.attributes(data: data_attrs) %>>
+  <button type="button" class="<%= trigger_button_classes %>">
+    <%= trigger_text %>
+  </button>
+
+  <template data-popover-target="content">
+    <% if title.present? %>
+      <p class="border-b border-b-neutral-100 bg-neutral-50 px-3 py-2.5 rounded-t-[0.4375rem] font-semibold dark:border-neutral-700/75 dark:bg-neutral-700/25 text-neutral-700 dark:text-neutral-200">
+        <%= title %>
+      </p>
+    <% end %>
+
+    <% if block_given? %>
+      <div class="<%= title.present? ? 'p-3 flex flex-col gap-y-3 text-neutral-500 dark:text-neutral-300 font-normal' : '' %>">
+        <%= yield %>
+      </div>
+    <% elsif content_text.present? %>
+      <div class="p-3 flex flex-col gap-y-3 text-neutral-500 dark:text-neutral-300 font-normal">
+        <p><%= content_text %></p>
+      </div>
+    <% end %>
+  </template>
+</div>

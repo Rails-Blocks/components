@@ -1,0 +1,17 @@
+<div class="<%= item_classes %>">
+  <div class="flex items-center gap-x-3">
+    <input
+      type="checkbox"
+      id="<%= unique_id %>"
+      name="<%= name %>"
+      value="<%= value %>"
+      tabindex="0"
+      <% if checked %>checked<% end %>
+      <% if disabled %>disabled<% end %>
+      data-checkbox-select-all-target="<%= checkbox_targets %>"
+      data-action="click->checkbox-select-all#toggle">
+    <label for="<%= unique_id %>" class="<%= label_classes %>">
+      <%= content.presence || label %>
+    </label>
+  </div>
+</div>

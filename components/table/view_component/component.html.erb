@@ -1,0 +1,53 @@
+<% if render_with_container? %>
+  <div class="<%= container_wrapper_classes %>">
+    <div class="<%= scroll_wrapper_classes %>"<%= " style=\"#{scroll_wrapper_style}\"".html_safe if scroll_wrapper_style %>>
+<% end %>
+      <table class="<%= table_classes %>">
+        <% if caption? %>
+          <caption class="px-6 py-3 text-left text-sm text-neutral-500 dark:text-neutral-400 bg-white dark:bg-neutral-900">
+            <%= caption %>
+          </caption>
+        <% end %>
+
+        <% if head? %>
+          <thead class="<%= thead_classes %>">
+            <%= head %>
+          </thead>
+        <% elsif simple_structure? && columns.any? %>
+          <thead class="<%= thead_classes %>">
+            <tr class="<%= th_classes %>">
+              <% columns.each do |column| %>
+                <th scope="col" class="<%= column.th_classes %>">
+                  <%= column.label %>
+                </th>
+              <% end %>
+            </tr>
+          </thead>
+        <% end %>
+
+        <% if body? %>
+          <tbody class="<%= tbody_classes %>">
+            <%= body %>
+          </tbody>
+        <% elsif simple_structure? && rows.any? %>
+          <tbody class="<%= tbody_classes %>">
+            <% rows.each do |row| %>
+              <%= row %>
+            <% end %>
+          </tbody>
+        <% elsif content? %>
+          <tbody class="<%= tbody_classes %>">
+            <%= content %>
+          </tbody>
+        <% end %>
+
+        <% if foot? %>
+          <tfoot class="bg-neutral-50 dark:bg-neutral-800/50">
+            <%= foot %>
+          </tfoot>
+        <% end %>
+      </table>
+<% if render_with_container? %>
+    </div>
+  </div>
+<% end %>

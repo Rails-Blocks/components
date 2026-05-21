@@ -1,0 +1,22 @@
+<div class="<%= wrapper_classes %>">
+  <div class="<%= layout_classes %>">
+    <% if @show_icon %>
+      <div class="flex items-center h-full">
+        <span class="<%= colors[:icon] %>">
+          <%= icon_svg %>
+        </span>
+      </div>
+    <% end %>
+
+    <h3 class="text-sm font-medium <%= colors[:title] %>">
+      <%= @title %>
+    </h3>
+
+    <% if @description.present? %>
+      <div></div>
+      <div class="text-sm <%= colors[:text] %>">
+        <%= @description.html_safe %>
+      </div>
+    <% end %>
+  </div>
+</div>

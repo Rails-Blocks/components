@@ -1,0 +1,46 @@
+<% placeholder ||= nil %>
+<% name ||= nil %>
+<% id ||= nil %>
+<% rows ||= 1 %>
+<% min_height ||= "2.5rem" %>
+<% max_height ||= "13rem" %>
+<% value ||= nil %>
+<% required ||= false %>
+<% disabled ||= false %>
+<% resize ||= false %>
+<% classes ||= nil %>
+<% data ||= {} %>
+
+<%
+  # Build textarea classes
+  base_classes = "form-control small-scrollbar"
+  resize_class = resize ? "" : "resize-none"
+  textarea_classes = [base_classes, resize_class, classes].compact.reject(&:empty?).join(" ")
+
+  # Build style for min/max height
+  styles = []
+  styles << "min-height: #{min_height}" if min_height.present?
+  styles << "max-height: #{max_height}" if max_height.present?
+  textarea_style = styles.join("; ")
+
+  # Build data attributes
+  data_attrs = {
+    controller: "autogrow",
+    action: "input->autogrow#autogrow"
+  }.merge(data)
+
+  # Build all attributes
+  textarea_attrs = {
+    class: textarea_classes,
+    style: textarea_style,
+    data: data_attrs,
+    rows: rows
+  }
+  textarea_attrs[:placeholder] = placeholder if placeholder.present?
+  textarea_attrs[:name] = name if name.present?
+  textarea_attrs[:id] = id if id.present?
+  textarea_attrs[:required] = true if required
+  textarea_attrs[:disabled] = true if disabled
+%>
+
+<%= text_area_tag(name || "", value, **textarea_attrs) %>

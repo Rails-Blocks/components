@@ -1,0 +1,199 @@
+<%#
+  Switch Component
+  A styled toggle switch input with label, description, and various states.
+
+  Optional locals:
+    - label: String (default: nil) - The switch label text
+    - name: String (default: nil) - The input name attribute for form submission
+    - id: String (default: auto-generated) - The input id attribute
+    - value: String (default: "1") - The input value attribute
+    - checked: Boolean (default: false) - Whether the switch is on
+    - disabled: Boolean (default: false) - Whether the switch is disabled
+    - required: Boolean (default: false) - Whether the switch is required
+    - description: String (default: nil) - Optional description text below the label
+    - size: String (default: "md") - Size: "sm" (small), "md" (medium), "lg" (large)
+    - show_icons: Boolean (default: false) - Whether to show check/x icons inside the switch
+    - label_position: String (default: "right") - Position of label: "left" or "right"
+    - error: String (default: nil) - Error message to display
+    - classes: String (default: nil) - Additional CSS classes for the wrapper
+    - switch_classes: String (default: nil) - Additional CSS classes for the switch track
+    - label_classes: String (default: nil) - Additional CSS classes for the label
+%>
+
+<% label ||= nil %>
+<% name ||= nil %>
+<% id ||= "switch_#{SecureRandom.hex(4)}" %>
+<% value ||= "1" %>
+<% checked ||= false %>
+<% disabled ||= false %>
+<% required ||= false %>
+<% description ||= nil %>
+<% size ||= "md" %>
+<% show_icons ||= false %>
+<% label_position ||= "right" %>
+<% error ||= nil %>
+<% classes ||= nil %>
+<% switch_classes ||= nil %>
+<% label_classes ||= nil %>
+
+<%
+  has_supporting_text = description.present? || error.present?
+  custom_checked_background = switch_classes.to_s.match?(/(?:^|\s)(?:dark:)?peer-checked:bg-\S+/)
+
+  # Base track classes
+  base_track_classes = "relative rounded-full transition-all duration-150 ease-in-out " \
+    "bg-neutral-200 border border-black/10 " \
+    "group-hover:bg-neutral-300 " \
+    "dark:bg-neutral-700 dark:border-white/10 dark:group-hover:bg-neutral-600 " \
+    "peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-neutral-600 " \
+    "dark:peer-focus-visible:outline-neutral-200"
+
+  checked_track_classes = if custom_checked_background
+    "peer-checked:border-white/10 dark:peer-checked:border-black/20"
+  else
+    "peer-checked:bg-neutral-800 peer-checked:group-hover:bg-neutral-700 peer-checked:border-white/10 " \
+    "dark:peer-checked:bg-neutral-50 dark:peer-checked:group-hover:bg-neutral-100 dark:peer-checked:border-black/20"
+  end
+
+  # Size classes for track
+  size_track_classes = case size.to_s
+    when "sm" then "w-8 h-5"
+    when "lg" then "w-14 h-8"
+    else "w-10 h-6"
+  end
+
+  # State classes for track
+  state_track_classes = disabled ? "opacity-50 cursor-not-allowed" : ""
+
+  # Combined track classes
+  computed_track_classes = [base_track_classes, checked_track_classes, size_track_classes, state_track_classes, switch_classes].compact.reject(&:empty?).join(" ")
+
+  # Base thumb classes
+  base_thumb_classes = "absolute bg-white rounded-full shadow-sm transition-all duration-150 ease-in-out " \
+    "flex items-center justify-center " \
+    "dark:bg-neutral-200 dark:peer-checked:bg-neutral-800"
+
+  # Size classes for thumb
+  size_thumb_classes = case size.to_s
+    when "sm" then "top-[2px] left-[2px] w-4 h-4"
+    when "lg" then "top-[4px] left-[4px] w-[24px] h-[24px]"
+    else "top-[3px] left-[3px] w-[18px] h-[18px]"
+  end
+
+  # Translate classes for thumb
+  size_thumb_translate = case size.to_s
+    when "sm" then "peer-checked:translate-x-3"
+    when "lg" then "peer-checked:translate-x-6"
+    else "peer-checked:translate-x-4"
+  end
+
+  # Combined thumb classes
+  computed_thumb_classes = [base_thumb_classes, size_thumb_classes, size_thumb_translate].join(" ")
+
+  # Icon size classes
+  icon_size_classes = case size.to_s
+    when "sm" then "size-2.5"
+    when "lg" then "size-4"
+    else "size-3"
+  end
+
+  # Wrapper classes
+  wrapper_base = "group flex"
+  align_class = has_supporting_text ? "items-start" : "items-center"
+  gap_class = label.present? ? "gap-2.5" : "gap-0"
+  cursor_class = disabled ? "cursor-not-allowed" : "cursor-pointer"
+  direction_class = label_position.to_s == "left" ? "flex-row-reverse justify-end" : ""
+  wrapper_classes = [wrapper_base, align_class, gap_class, cursor_class, direction_class, classes].compact.reject(&:empty?).join(" ")
+
+  control_wrapper_classes = ["relative flex-shrink-0", (has_supporting_text && label.present?) ? "mt-0.5" : nil].compact.join(" ")
+
+  # Label size class
+  label_size_class = case size.to_s
+    when "sm" then has_supporting_text ? "text-xs leading-snug" : "text-xs leading-none"
+    when "lg" then has_supporting_text ? "text-base leading-snug" : "text-base leading-none"
+    else has_supporting_text ? "text-sm leading-snug" : "text-sm leading-none"
+  end
+
+  # Label color class
+  label_color_class = if disabled
+    "text-neutral-400 dark:text-neutral-500"
+  elsif error.present?
+    "text-red-700 dark:text-red-400"
+  else
+    "text-neutral-700 dark:text-neutral-300"
+  end
+
+  # Combined label classes
+  computed_label_classes = ["font-medium select-none", label_size_class, label_color_class, label_classes].compact.reject(&:empty?).join(" ")
+
+  # Description classes
+  desc_size_class = case size.to_s
+    when "sm" then "text-[11px]"
+    when "lg" then "text-sm"
+    else "text-xs"
+  end
+  desc_color_class = disabled ? "text-neutral-400 dark:text-neutral-500" : "text-neutral-500 dark:text-neutral-400"
+  description_classes = [desc_size_class, desc_color_class, "leading-normal"].join(" ")
+
+  # Error classes
+  error_size_class = case size.to_s
+    when "sm" then "text-[11px]"
+    when "lg" then "text-sm"
+    else "text-xs"
+  end
+  error_classes = [error_size_class, "text-red-600 dark:text-red-400 leading-normal"].join(" ")
+
+  text_content_classes = ["min-w-0 flex-1 flex flex-col leading-snug", has_supporting_text ? "gap-0.5" : "gap-0"].join(" ")
+%>
+
+<label class="<%= wrapper_classes %>">
+  <div class="<%= control_wrapper_classes %>">
+    <input
+      type="checkbox"
+      id="<%= id %>"
+      <% if name.present? %>name="<%= name %>"<% end %>
+      value="<%= value %>"
+      class="sr-only peer"
+      <% if checked %>checked<% end %>
+      <% if disabled %>disabled<% end %>
+      <% if required %>required<% end %>
+    >
+    <!-- Track -->
+    <div class="<%= computed_track_classes %>"></div>
+    <!-- Thumb -->
+    <div class="<%= computed_thumb_classes %>">
+      <% if show_icons %>
+        <!-- X icon for unchecked state -->
+        <svg xmlns="http://www.w3.org/2000/svg" class="<%= icon_size_classes %> text-neutral-400 transition-all duration-150 ease-in-out group-has-[:checked]:opacity-0 dark:text-neutral-500" viewBox="0 0 20 20">
+          <g fill="currentColor">
+            <line x1="7" y1="7" x2="13" y2="13" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></line>
+            <line x1="7" y1="13" x2="13" y2="7" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></line>
+          </g>
+        </svg>
+        <!-- Checkmark icon for checked state -->
+        <svg xmlns="http://www.w3.org/2000/svg" class="absolute <%= icon_size_classes %> text-neutral-700 transition-all duration-150 ease-in-out opacity-0 group-has-[:checked]:opacity-100 dark:text-neutral-100" viewBox="0 0 20 20">
+          <g fill="currentColor">
+            <polyline points="6.5 10.5 8.75 13 13.5 7" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></polyline>
+          </g>
+        </svg>
+      <% end %>
+    </div>
+  </div>
+
+  <% if label.present? %>
+    <div class="<%= text_content_classes %>">
+      <span class="<%= computed_label_classes %>">
+        <%= label %>
+        <% if required %><span class="text-red-500">*</span><% end %>
+      </span>
+      <% if description.present? %>
+        <p class="<%= description_classes %>">
+          <%= description %>
+        </p>
+      <% end %>
+      <% if error.present? %>
+        <p class="<%= error_classes %>"><%= error %></p>
+      <% end %>
+    </div>
+  <% end %>
+</label>

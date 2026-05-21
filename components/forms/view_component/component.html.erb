@@ -1,0 +1,41 @@
+<div class="<%= wrapper_classes %>">
+  <% if @label.present? && @variant != :floating %>
+    <label for="<%= @id %>" class="<%= label_classes %>">
+      <%= @label %>
+      <% if @required %><span class="text-red-500 ml-0.5">*</span><% end %>
+    </label>
+  <% end %>
+
+  <div class="<%= input_wrapper_classes %>">
+    <% if addon_left? %>
+      <div class="<%= addon_classes(:left) %>">
+        <%= addon_left %>
+      </div>
+    <% end %>
+
+    <% if input? %>
+      <%= input %>
+    <% else %>
+      <%= content %>
+    <% end %>
+
+    <% if addon_right? %>
+      <div class="<%= addon_classes(:right) %>">
+        <%= addon_right %>
+      </div>
+    <% end %>
+  </div>
+
+  <% if @variant == :floating && @label.present? %>
+    <label for="<%= @id %>" class="absolute left-3 -top-2 bg-white dark:bg-neutral-900 px-1 text-xs font-medium <%= @error.present? ? 'text-red-600 dark:text-red-400' : 'text-neutral-500 dark:text-neutral-400' %>">
+      <%= @label %>
+      <% if @required %><span class="text-red-500 ml-0.5">*</span><% end %>
+    </label>
+  <% end %>
+
+  <% if @error.present? %>
+    <p class="<%= error_classes %>"><%= @error %></p>
+  <% elsif @helper_text.present? %>
+    <p class="<%= helper_text_classes %>"><%= @helper_text %></p>
+  <% end %>
+</div>

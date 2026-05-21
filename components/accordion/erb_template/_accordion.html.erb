@@ -1,0 +1,31 @@
+<% items ||= [] %>
+<% allow_multiple ||= false %>
+<% icon ||= "chevron" %>
+<% variant ||= "default" %>
+<% classes ||= nil %>
+
+<%
+  # Build wrapper classes based on variant
+  base_wrapper = "w-full"
+  variant_wrapper = variant.to_s == "bordered" ? "flex flex-col gap-2" : ""
+  wrapper_classes = [base_wrapper, variant_wrapper, classes].compact.reject(&:empty?).join(" ")
+
+  # Build data attributes
+  data_attrs = { controller: "accordion" }
+  data_attrs[:accordion_allow_multiple_value] = true if allow_multiple
+%>
+
+<div class="<%= wrapper_classes %>" <%= tag.attributes(data: data_attrs) %>>
+  <% items.each_with_index do |item, index| %>
+    <%= render "shared/components/accordion/accordion_item",
+      title: item[:title],
+      content: item[:content],
+      default_open: item[:default_open] || false,
+      disabled: item[:disabled] || false,
+      icon: icon,
+      variant: variant,
+      item_classes: item[:classes],
+      unique_id: "accordion-#{object_id}-#{index}"
+    %>
+  <% end %>
+</div>

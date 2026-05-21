@@ -1,0 +1,108 @@
+<% items ||= [] %>
+<% variant ||= "default" %>
+<% sticky ||= false %>
+<% show_mobile_menu ||= true %>
+<% mobile_menu_content_id ||= "mobile-menu-content" %>
+<% classes ||= nil %>
+<% logo ||= nil %>
+<% actions ||= nil %>
+<% dropdown_contents ||= [] %>
+
+<%
+  # Build nav classes
+  base_nav = "flex w-fit justify-center"
+  sticky_class = sticky ? "sticky top-0 z-50" : ""
+  nav_classes = [base_nav, sticky_class, classes].compact.reject(&:empty?).join(" ")
+
+  # Build menu classes based on variant
+  base_menu = "m-0 flex list-none items-center gap-1 p-1"
+  variant_menu = case variant.to_s
+                 when "bordered"
+                   "rounded-lg border border-neutral-200 bg-white shadow dark:border-neutral-700 dark:bg-neutral-800"
+                 when "transparent"
+                   "bg-transparent"
+                 else
+                   "rounded-lg border border-neutral-200 bg-white shadow dark:border-neutral-700 dark:bg-neutral-800"
+                 end
+  menu_classes = [base_menu, variant_menu].join(" ")
+%>
+
+<nav class="<%= nav_classes %>" data-controller="navbar">
+  <div class="relative">
+    <!-- Menu List -->
+    <ul data-navbar-target="menu" class="<%= menu_classes %>">
+      <% if logo.present? %>
+        <li>
+          <%= logo.html_safe %>
+        </li>
+      <% end %>
+
+      <% items.each_with_index do |item, index| %>
+        <%= render "shared/components/navbar/navbar_item",
+          label: item[:label],
+          href: item[:href],
+          dropdown: item[:dropdown] || false,
+          content_id: item[:content_id],
+          align: item[:align] || "center",
+          mobile_hidden: item[:mobile_hidden] || false,
+          item_classes: item[:classes],
+          unique_id: "navbar-#{object_id}-#{index}"
+        %>
+      <% end %>
+
+      <% if show_mobile_menu %>
+        <!-- Mobile Menu Button -->
+        <li class="relative sm:hidden">
+          <button
+            type="button"
+            data-navbar-target="trigger"
+            data-content-id="<%= mobile_menu_content_id %>"
+            aria-controls="<%= mobile_menu_content_id %>"
+            aria-expanded="false"
+            data-align="end"
+            data-action="click->navbar#toggleMenu pointerenter->navbar#handlePointerEnter pointermove->navbar#handlePointerMove pointerleave->navbar#handlePointerLeave keydown->navbar#handleTriggerKeydown"
+            data-state="closed"
+            class="group flex items-center gap-1 rounded-md px-2 py-2 text-sm font-medium text-neutral-700 select-none hover:bg-neutral-100 dark:text-neutral-300 dark:hover:bg-neutral-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-600 dark:focus-visible:outline-neutral-200"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
+              <g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" stroke="currentColor">
+                <line x1="2.25" y1="9" x2="15.75" y2="9"></line>
+                <line x1="2.25" y1="3.75" x2="15.75" y2="3.75"></line>
+                <line x1="2.25" y1="14.25" x2="15.75" y2="14.25"></line>
+              </g>
+            </svg>
+          </button>
+        </li>
+      <% end %>
+
+      <% if actions.present? %>
+        <%= actions.html_safe %>
+      <% end %>
+    </ul>
+
+    <!-- Viewport Container -->
+    <div
+      data-navbar-target="viewport"
+      data-action="pointerenter->navbar#cancelClose pointerleave->navbar#handlePointerLeave"
+      data-state="closed"
+      class="absolute top-full z-50 mt-2 origin-top transition-all duration-200 ease-out data-[state=closed]:pointer-events-none data-[state=closed]:scale-95 data-[state=closed]:opacity-0 data-[state=closing]:pointer-events-none data-[state=closing]:scale-95 data-[state=closing]:opacity-0 data-[state=open]:pointer-events-auto data-[state=open]:scale-100 data-[state=open]:opacity-100 left-1/2 -translate-x-1/2 sm:left-0 sm:translate-x-0"
+    >
+      <!-- Indicator Arrow -->
+      <div data-navbar-target="indicator" class="pointer-events-none absolute -top-1 z-10 flex h-2 w-10 items-end justify-center overflow-visible transition-opacity duration-200">
+        <div class="h-2 w-2 rotate-45 border-t border-l border-neutral-200 bg-white dark:border-neutral-700 dark:bg-neutral-800"></div>
+      </div>
+
+      <div data-navbar-target="background" class="relative z-0 rounded-lg border border-neutral-200 bg-white shadow-xl dark:border-neutral-700 dark:bg-neutral-800">
+        <% dropdown_contents.each do |dropdown| %>
+          <%= render "shared/components/navbar/navbar_dropdown_content",
+            id: dropdown[:id],
+            width: dropdown[:width],
+            columns: dropdown[:columns] || 1,
+            content_classes: dropdown[:classes],
+            content: dropdown[:content]
+          %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</nav>

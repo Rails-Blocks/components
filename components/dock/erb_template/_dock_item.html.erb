@@ -1,0 +1,40 @@
+<% url ||= "#" %>
+<% tooltip ||= "" %>
+<% icon ||= nil %>
+<% hotkey ||= nil %>
+<% active ||= false %>
+<% tooltip_placement ||= "top" %>
+<% item_classes ||= nil %>
+
+<%
+  # Build icon box classes
+  base_icon = "size-10 relative flex aspect-square items-center justify-center rounded-full border border-neutral-200/50 dark:border-neutral-600/50"
+  state_class = if active
+                  "text-neutral-50 dark:text-neutral-800 bg-neutral-800 dark:bg-neutral-100 active:bg-neutral-700 dark:active:bg-neutral-200"
+                else
+                  "text-neutral-500 dark:text-neutral-300 bg-neutral-200 dark:bg-neutral-800 active:bg-neutral-300 dark:active:bg-neutral-700"
+                end
+  icon_box_classes = [item_classes, base_icon, state_class].compact.reject(&:empty?).join(" ")
+
+  # Build data attributes
+  data_attrs = {
+    "dock-target": "icon",
+    tooltip: tooltip,
+    "tooltip-placement": tooltip_placement
+  }
+  data_attrs["tooltip-hotkey"] = hotkey if hotkey.present?
+
+  # Hotkey data attributes
+  if hotkey.present?
+    data_attrs[:controller] = "hotkey"
+    data_attrs[:action] = "keydown.#{hotkey}@document->hotkey#click"
+  end
+%>
+
+<a href="<%= url %>" class="rounded-full" <%= tag.attributes(data: data_attrs) %>>
+  <div class="<%= icon_box_classes %>">
+    <div class="flex items-center justify-center *:size-full" style="width: 50%; height: 50%">
+      <%= raw(icon) if icon.present? %>
+    </div>
+  </div>
+</a>

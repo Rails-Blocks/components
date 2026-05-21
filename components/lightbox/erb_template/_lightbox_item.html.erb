@@ -1,0 +1,72 @@
+<%#
+  Lightbox Item Component
+  Individual lightbox item - usually rendered by the parent lightbox partial.
+
+  Required locals:
+    - src: String - Full-size image URL
+
+  Optional locals:
+    - thumbnail_src: String (default: src) - Thumbnail image URL
+    - width: Integer (default: nil) - Full-size image width in pixels
+    - height: Integer (default: nil) - Full-size image height in pixels
+    - alt: String (default: "") - Alt text for the image
+    - caption: String (default: nil) - Caption shown in lightbox overlay
+    - variant: String (default: "grid") - Layout variant from parent
+    - rounded: Boolean (default: true) - Apply rounded corners
+    - hover_effect: Boolean (default: true) - Apply hover scale effect
+    - item_classes: String (default: nil) - Additional CSS classes
+%>
+
+<% thumbnail_src ||= src %>
+<% width ||= nil %>
+<% height ||= nil %>
+<% alt ||= "" %>
+<% caption ||= nil %>
+<% variant ||= "grid" %>
+<% rounded = true if local_assigns[:rounded].nil? %>
+<% hover_effect = true if local_assigns[:hover_effect].nil? %>
+<% item_classes ||= nil %>
+
+<%
+  # Build data attributes for PhotoSwipe
+  data_attrs = { pswp_src: src }
+  data_attrs[:pswp_width] = width if width.present?
+  data_attrs[:pswp_height] = height if height.present?
+  data_attrs[:pswp_caption] = caption if caption.present?
+  data_attrs[:pswp_alt] = alt if alt.present?
+
+  # Link classes based on variant
+  base_link = "group relative overflow-hidden"
+  rounded_class = rounded ? "rounded-lg" : ""
+  outline_class = "outline -outline-offset-1 outline-black/10 dark:outline-white/10"
+
+  variant_class = case variant.to_s
+    when "masonry"
+      "block break-inside-avoid mb-4"
+    when "inline"
+      "inline-block"
+    else
+      "block"
+    end
+
+  link_classes = [base_link, rounded_class, outline_class, variant_class, item_classes].compact.reject(&:empty?).join(" ")
+
+  # Image classes
+  base_img = "w-full h-full object-cover"
+  hover_class = hover_effect ? "transition-transform duration-300 group-hover:scale-110" : ""
+  image_classes = [base_img, hover_class].compact.reject(&:empty?).join(" ")
+
+  # Overlay classes (only if hover effect is enabled)
+  overlay_classes = "absolute inset-0 bg-black opacity-0 group-hover:opacity-20 transition-opacity duration-300"
+%>
+
+<a href="<%= src %>"
+   <%= tag.attributes(data: data_attrs) %>
+   class="<%= link_classes %>">
+  <img src="<%= thumbnail_src %>"
+       alt="<%= alt %>"
+       class="<%= image_classes %>">
+  <% if hover_effect %>
+    <div class="<%= overlay_classes %>"></div>
+  <% end %>
+</a>

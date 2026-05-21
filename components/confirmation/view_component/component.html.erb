@@ -1,0 +1,59 @@
+<div class="<%= wrapper_classes %>">
+  <div class="mb-4">
+    <% if show_icon %>
+      <div class="flex items-center gap-3 mb-3">
+        <div class="<%= icon_wrapper_classes %>">
+          <%= icon_svg %>
+        </div>
+        <div>
+          <h3 class="text-lg font-semibold text-neutral-900 dark:text-white"><%= title %></h3>
+          <% if message.present? %>
+            <p class="text-sm text-neutral-600 dark:text-neutral-400"><%= message %></p>
+          <% end %>
+        </div>
+      </div>
+    <% else %>
+      <h3 class="text-lg font-semibold text-neutral-900 dark:text-white mb-2"><%= title %></h3>
+      <% if message.present? %>
+        <p class="text-sm text-neutral-600 dark:text-neutral-400"><%= message %></p>
+      <% end %>
+    <% end %>
+  </div>
+
+  <% if content? %>
+    <div class="mb-4">
+      <%= content %>
+    </div>
+  <% end %>
+
+  <form <%= tag.attributes(controller_data) %>>
+    <% if confirm_text.present? %>
+      <div class="mb-4">
+        <label for="<%= unique_id %>" class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
+          <%= input_label.html_safe %>
+        </label>
+        <input type="text"
+               id="<%= unique_id %>"
+               data-confirmation-target="input"
+               class="form-control"
+               autocomplete="off"
+               placeholder="<%= input_placeholder %>">
+      </div>
+    <% end %>
+
+    <div class="flex gap-3 justify-end">
+      <button type="button"
+              data-action="click->confirmation#cancel"
+              class="<%= cancel_button_classes %>">
+        <%= cancel_button_text %>
+      </button>
+      <button type="button"
+              data-confirmation-target="confirmButton"
+              data-action="click->confirmation#confirm"
+              <%= "disabled" if confirm_text.present? %>
+              class="<%= confirm_button_classes %>">
+        <%= confirm_button_text %>
+      </button>
+    </div>
+  </form>
+</div>

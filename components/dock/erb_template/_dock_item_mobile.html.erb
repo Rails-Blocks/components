@@ -1,0 +1,19 @@
+<% url ||= "#" %>
+<% tooltip ||= "" %>
+<% icon ||= nil %>
+<% active ||= false %>
+
+<%
+  base_mobile = "opacity-0 px-3 no-underline gap-2 w-fit size-10 flex items-center justify-center rounded-full border border-neutral-200/50 dark:border-neutral-600/50"
+  state_class = if active
+                  "text-neutral-50 dark:text-neutral-800 hover:text-neutral-50 dark:hover:text-neutral-800 bg-neutral-800 dark:bg-neutral-100 active:bg-neutral-700 dark:active:bg-neutral-200"
+                else
+                  "text-neutral-500 dark:text-neutral-300 hover:text-neutral-500 dark:hover:text-neutral-300 bg-neutral-50 dark:bg-neutral-800 active:bg-neutral-100 dark:active:bg-neutral-700"
+                end
+  mobile_item_classes = [base_mobile, state_class].join(" ")
+%>
+
+<a href="<%= url %>" data-tooltip="<%= tooltip %>" class="<%= mobile_item_classes %>">
+  <span class="text-sm"><%= tooltip %></span>
+  <span class="*:size-5"><%= raw(icon) if icon.present? %></span>
+</a>

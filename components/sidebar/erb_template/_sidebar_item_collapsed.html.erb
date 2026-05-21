@@ -1,0 +1,25 @@
+<% label ||= "" %>
+<% href ||= "#" %>
+<% icon ||= nil %>
+<% active ||= false %>
+<% disabled ||= false %>
+
+<%
+  base_classes = "flex h-8 w-8.5 items-center justify-center rounded-lg"
+  state_classes = if disabled
+                    "text-neutral-400 cursor-not-allowed opacity-50 dark:text-neutral-500"
+                  elsif active
+                    "text-neutral-900 bg-neutral-100 dark:text-neutral-100 dark:bg-neutral-800"
+                  else
+                    "text-neutral-700 hover:bg-neutral-100 focus:outline-none focus-visible:bg-neutral-100 disabled:opacity-50 dark:text-neutral-100 hover:text-neutral-700 dark:hover:text-neutral-100 dark:hover:bg-neutral-800 focus-visible:dark:bg-neutral-800"
+                  end
+  classes = [base_classes, state_classes].join(" ")
+%>
+
+<a href="<%= href %>" aria-label="<%= label %>" data-controller="tooltip" data-tooltip-content="<%= label %>" data-tooltip-placement-value="right" data-tooltip-arrow="true" data-tooltip-animation-value="fade origin" data-tooltip-size-value="small" class="<%= classes %>">
+  <% if icon.present? %>
+    <%= icon.html_safe %>
+  <% else %>
+    <span class="size-4 sm:size-4.5 flex items-center justify-center text-xs font-medium"><%= label.first.upcase %></span>
+  <% end %>
+</a>

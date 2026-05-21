@@ -1,0 +1,242 @@
+<% items ||= [] %>
+<% sections ||= [] %>
+<% variant ||= "default" %>
+<% collapsible ||= true %>
+<% default_collapsed ||= false %>
+<% position ||= "left" %>
+<% storage_key ||= "sidebarOpen" %>
+<% width ||= "w-64" %>
+<% collapsed_width ||= "w-13" %>
+<% min_height_class ||= "min-h-screen" %>
+<% show_mobile_toggle ||= true %>
+<% classes ||= nil %>
+<% logo ||= nil %>
+<% footer ||= nil %>
+<% collapsed_footer ||= footer %>
+
+<%
+  # Build wrapper classes
+  base_wrapper = "flex h-full w-full flex-col relative"
+  wrapper_classes = [base_wrapper, classes].compact.reject(&:empty?).join(" ")
+
+  # Build sidebar classes based on variant
+  base_sidebar = "#{collapsed_width} open:#{width} group/sidebar relative z-20 h-full shrink-0 overflow-hidden max-md:hidden motion-safe:transition-all motion-safe:duration-300"
+  variant_sidebar = case variant.to_s
+                    when "bordered"
+                      "border-r border-neutral-200 bg-neutral-50 dark:border-neutral-800 dark:bg-neutral-900"
+                    when "minimal"
+                      "bg-white dark:bg-neutral-950"
+                    else
+                      "border-r border-neutral-200 bg-neutral-50 dark:border-neutral-800 dark:bg-neutral-900"
+                    end
+  sidebar_classes = [base_sidebar, variant_sidebar].join(" ")
+
+  # Build mobile panel classes
+  base_mobile = "absolute inset-y-0 w-64 shadow-xl transition-transform duration-300 ease-out"
+  position_mobile = position.to_s == "right" ? "right-0" : "left-0"
+  variant_mobile = case variant.to_s
+                   when "minimal"
+                     "bg-white dark:bg-neutral-950 border-r border-neutral-200 dark:border-neutral-800"
+                   else
+                     "bg-neutral-50 border-r border-neutral-200 dark:bg-neutral-900 dark:border-neutral-800"
+                   end
+  mobile_panel_classes = [base_mobile, position_mobile, variant_mobile].join(" ")
+
+  # Build nav classes
+  base_nav = "#{min_height_class} relative flex h-full w-full flex-1 flex-col overflow-y-auto select-none"
+  bg_nav = variant.to_s == "minimal" ? "bg-white dark:bg-neutral-950" : "bg-neutral-50 dark:bg-neutral-900"
+  nav_classes = [base_nav, bg_nav].join(" ")
+
+  # Build header/footer classes
+  base_header = "sticky top-0 z-30"
+  base_footer = "sticky bottom-0 z-30 p-1.5 empty:hidden sm:p-2"
+  base_collapsed_footer = "sticky bottom-0 z-30 py-1.5 empty:hidden sm:py-2"
+  bg_class = variant.to_s == "minimal" ? "bg-white dark:bg-neutral-950" : "bg-neutral-50 dark:bg-neutral-900"
+  header_classes = [base_header, bg_class].join(" ")
+  footer_classes = [base_footer, bg_class].join(" ")
+  collapsed_footer_classes = base_collapsed_footer
+
+  # Build content classes
+  content_classes = "#{width} h-full overflow-x-clip overflow-y-auto text-clip whitespace-nowrap #{bg_class}"
+%>
+
+<div class="<%= wrapper_classes %>" data-controller="sidebar" data-sidebar-storage-key-value="<%= storage_key %>">
+  <!-- Mobile Sidebar Overlay -->
+  <div class="absolute inset-0 z-50 md:hidden hidden" data-sidebar-target="mobileSidebar">
+    <!-- Backdrop -->
+    <div class="absolute inset-0 bg-black/50 transition-opacity duration-300" data-sidebar-target="mobileBackdrop" data-action="click->sidebar#closeMobile"></div>
+
+    <!-- Sidebar Panel -->
+    <div class="<%= mobile_panel_classes %>" data-sidebar-target="mobilePanel">
+      <div data-sidebar-target="sharedContent"></div>
+    </div>
+  </div>
+
+  <div class="relative z-0 flex h-full w-full">
+    <div class="relative flex h-full flex-row">
+      <% if collapsible %>
+        <details class="<%= sidebar_classes %>" data-sidebar-target="desktopSidebar">
+          <!-- Collapsed Sidebar Summary -->
+          <summary class="group-open/sidebar:hidden flex <%= min_height_class %> h-full cursor-e-resize list-none flex-col items-start pl-2 pr-1.5">
+            <div class="flex h-13 w-full items-center justify-start">
+              <button class="cursor-e-resize flex size-10 items-center justify-center rounded-lg text-neutral-500 hover:bg-neutral-100 focus:outline-none focus-visible:bg-neutral-100 disabled:opacity-50 sm:size-9 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-100 dark:hover:bg-neutral-800 focus-visible:dark:bg-neutral-800" data-action="click->sidebar#open" aria-label="Expand sidebar">
+                <svg xmlns="http://www.w3.org/2000/svg" class="size-4 sm:size-4.5" width="18" height="18" viewBox="0 0 18 18"><g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" stroke="currentColor"><line x1="6.25" y1="2.75" x2="6.25" y2="15.25"></line><polyline points="10.25 6.5 12.75 9 10.25 11.5"></polyline><rect x="1.75" y="2.75" width="14.5" height="12.5" rx="2" ry="2" transform="translate(18 18) rotate(180)"></rect></g></svg>
+              </button>
+            </div>
+
+            <!-- Collapsed Nav Items -->
+            <div class="mt-1.5 sm:mt-2 flex w-full flex-col items-start">
+              <% items.each do |item| %>
+                <%= render "shared/components/sidebar/sidebar_item_collapsed",
+                  label: item[:label],
+                  href: item[:href] || "#",
+                  icon: item[:icon],
+                  active: item[:active] || false,
+                  disabled: item[:disabled] || false
+                %>
+              <% end %>
+            </div>
+
+            <div class="flex-grow"></div>
+
+            <!-- Collapsed Footer -->
+            <% if collapsed_footer.present? %>
+              <div class="<%= collapsed_footer_classes %>">
+                <%= collapsed_footer.html_safe %>
+              </div>
+            <% end %>
+          </summary>
+
+          <!-- Expanded Sidebar Content -->
+          <div class="<%= content_classes %>" data-sidebar-target="desktopContent">
+            <!-- Shared Sidebar Content Template -->
+            <template data-sidebar-target="contentTemplate">
+              <nav class="<%= nav_classes %>">
+                <div class="<%= header_classes %>">
+                  <div class="px-1.5 sm:px-2">
+                    <div class="flex h-13 items-center justify-between">
+                      <!-- Logo -->
+                      <% if logo.present? %>
+                        <%= logo.html_safe %>
+                      <% end %>
+                      <div class="flex">
+                        <button class="flex size-10 cursor-w-resize items-center justify-center rounded-lg text-neutral-500 hover:bg-neutral-100 focus:outline-none focus-visible:bg-neutral-100 disabled:opacity-50 sm:size-9 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-100 dark:hover:bg-neutral-800 focus-visible:dark:bg-neutral-800" aria-expanded="true" aria-label="Collapse sidebar" data-state="closed" data-action="click->sidebar#close">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="size-4 sm:size-4.5" width="18" height="18" viewBox="0 0 18 18"><g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" stroke="currentColor"><line x1="11.75" y1="2.75" x2="11.75" y2="15.25"></line><polyline points="7.75 6.5 5.25 9 7.75 11.5"></polyline><rect x="1.75" y="2.75" width="14.5" height="12.5" rx="2" ry="2"></rect></g></svg>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Main Nav Items -->
+                <aside class="relative p-1.5 last:mb-5 sm:p-2 <%= variant.to_s == 'minimal' ? '' : 'bg-neutral-50 dark:bg-neutral-900' %>">
+                  <% items.each do |item| %>
+                    <%= render "shared/components/sidebar/sidebar_item",
+                      label: item[:label],
+                      href: item[:href] || "#",
+                      icon: item[:icon],
+                      shortcut: item[:shortcut],
+                      active: item[:active] || false,
+                      disabled: item[:disabled] || false,
+                      badge: item[:badge],
+                      item_classes: item[:classes]
+                    %>
+                  <% end %>
+                </aside>
+
+                <!-- Sections -->
+                <% sections.each do |section| %>
+                  <% section_content = section[:content] %>
+                  <% if section_content.present? %>
+                    <%= render("shared/components/sidebar/sidebar_section",
+                      title: section[:title],
+                      default_open: section[:default_open] != false,
+                      items: section[:items] || [],
+                      section_classes: section[:classes]) do %>
+                      <%= section_content.is_a?(String) ? section_content.html_safe : section_content %>
+                    <% end %>
+                  <% else %>
+                    <%= render "shared/components/sidebar/sidebar_section",
+                      title: section[:title],
+                      default_open: section[:default_open] != false,
+                      items: section[:items] || [],
+                      section_classes: section[:classes] %>
+                  <% end %>
+                <% end %>
+
+                <div class="grow"></div>
+
+                <!-- Footer -->
+                <% if footer.present? %>
+                  <div class="<%= footer_classes %>">
+                    <%= footer.html_safe %>
+                  </div>
+                <% end %>
+              </nav>
+            </template>
+          </div>
+        </details>
+      <% else %>
+        <!-- Non-collapsible Sidebar -->
+        <div class="<%= sidebar_classes.gsub('group/sidebar', '') %>" data-sidebar-target="desktopSidebar">
+          <nav class="<%= nav_classes %>">
+            <div class="<%= header_classes %>">
+              <div class="px-1.5 sm:px-2">
+                <div class="flex h-13 items-center justify-between">
+                  <% if logo.present? %>
+                    <%= logo.html_safe %>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+
+            <aside class="relative p-1.5 last:mb-5 sm:p-2">
+              <% items.each do |item| %>
+                <%= render "shared/components/sidebar/sidebar_item",
+                  label: item[:label],
+                  href: item[:href] || "#",
+                  icon: item[:icon],
+                  shortcut: item[:shortcut],
+                  active: item[:active] || false,
+                  disabled: item[:disabled] || false,
+                  badge: item[:badge],
+                  item_classes: item[:classes]
+                %>
+              <% end %>
+            </aside>
+
+            <% sections.each do |section| %>
+              <%= render "shared/components/sidebar/sidebar_section",
+                title: section[:title],
+                default_open: section[:default_open] != false,
+                items: section[:items] || [],
+                section_classes: section[:classes]
+              %>
+            <% end %>
+
+            <div class="grow"></div>
+
+            <% if footer.present? %>
+              <div class="<%= footer_classes %>">
+                <%= footer.html_safe %>
+              </div>
+            <% end %>
+          </nav>
+        </div>
+      <% end %>
+    </div>
+
+    <!-- Main Content Area -->
+    <main class="<%= min_height_class %> grow h-auto w-auto bg-white dark:bg-neutral-950 flex flex-col relative">
+      <% if show_mobile_toggle %>
+        <div class="w-full absolute top-0 z-10 flex items-center md:hidden p-2">
+          <button type="button" class="size-9 inline-flex items-center justify-center rounded-md focus:bg-neutral-100 focus:outline-hidden focus:ring-inset dark:focus:bg-neutral-700/50 active:opacity-50" data-action="click->sidebar#openMobile" aria-label="Open sidebar">
+            <span class="sr-only">Open sidebar</span>
+            <svg xmlns="http://www.w3.org/2000/svg" class="size-4 sm:size-4.5" width="18" height="18" viewBox="0 0 18 18"><g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" stroke="currentColor"><line x1="2.25" y1="9" x2="15.75" y2="9"></line><line x1="2.25" y1="3.75" x2="15.75" y2="3.75"></line><line x1="2.25" y1="14.25" x2="8.25" y2="14.25"></line></g></svg>
+          </button>
+        </div>
+      <% end %>
+      <%= yield if block_given? %>
+    </main>
+  </div>
+</div>

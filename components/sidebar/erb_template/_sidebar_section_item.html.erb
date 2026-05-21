@@ -1,0 +1,40 @@
+<% label ||= "" %>
+<% href ||= "#" %>
+<% icon ||= nil %>
+<% badge ||= nil %>
+<% active ||= false %>
+<% disabled ||= false %>
+<% item_classes ||= nil %>
+
+<%
+  base_classes = "w-full flex items-center justify-between gap-2 rounded-md pl-2 pr-9 py-1.5 text-left text-sm"
+  state_classes = if disabled
+                    "text-neutral-400 cursor-not-allowed opacity-50 dark:text-neutral-500"
+                  elsif active
+                    "text-neutral-900 bg-neutral-100 dark:text-neutral-100 dark:bg-neutral-700/50"
+                  else
+                    "text-neutral-700 hover:bg-neutral-100 focus-visible:bg-neutral-100 focus:outline-hidden disabled:cursor-not-allowed disabled:opacity-50 dark:text-neutral-100 dark:hover:bg-neutral-700/50 dark:focus-visible:bg-neutral-700/50"
+                  end
+  classes = [base_classes, state_classes, item_classes].compact.reject(&:empty?).join(" ")
+%>
+
+<div class="w-full group relative flex items-center">
+  <a href="<%= href %>" class="<%= classes %>">
+    <div class="flex min-w-0 items-center gap-1.5">
+      <% if icon.present? %>
+        <div class="flex items-center justify-center group-disabled:opacity-50 group-data-disabled:opacity-50">
+          <%= icon.html_safe %>
+        </div>
+      <% end %>
+      <div class="flex min-w-0 grow items-center gap-2.5 group-data-no-contents-gap:gap-0">
+        <div class="truncate"><%= label %></div>
+      </div>
+    </div>
+    <% if badge.present? %>
+      <div class="mr-auto text-xs text-neutral-500 dark:text-neutral-400"><%= badge %></div>
+    <% end %>
+  </a>
+  <button class="absolute right-0 hidden group-hover:flex size-8 rounded-md items-center justify-center text-neutral-500 dark:text-neutral-400 hover:bg-neutral-100 focus-visible:bg-neutral-100 focus:outline-hidden disabled:cursor-not-allowed disabled:opacity-50 dark:hover:bg-neutral-700/50 dark:focus-visible:bg-neutral-700/50">
+    <svg xmlns="http://www.w3.org/2000/svg" class="size-4" width="12" height="12" viewBox="0 0 12 12"><g fill="currentColor"><circle cx="6" cy="6" r="1" stroke-width="0"></circle><circle cx="2" cy="6" r="1" stroke-width="0"></circle><circle cx="10" cy="6" r="1" stroke-width="0"></circle></g></svg>
+  </button>
+</div>

@@ -1,0 +1,9 @@
+<div class="<%= wrapper_classes %>" <%= tag.attributes(controller_data) %>>
+  <div data-marquee-target="track" class="relative flex w-full">
+    <div data-marquee-target="list" class="<%= list_classes %>">
+      <% items.each do |item| %>
+        <%= item %>
+      <% end %>
+    </div>
+  </div>
+</div>

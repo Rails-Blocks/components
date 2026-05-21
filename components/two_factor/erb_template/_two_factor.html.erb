@@ -1,0 +1,126 @@
+<%#
+  Two Factor Component
+  OTP code input fields with auto-focus, paste support, and keyboard navigation.
+
+  Optional locals:
+    - length: Integer (default: 6) - Number of digits in the OTP code (4-8)
+    - name: String (default: nil) - Base name for inputs (will be suffixed with index)
+    - id_prefix: String (default: auto-generated) - Prefix for input IDs
+    - auto_submit: Boolean (default: false) - Automatically submit form when complete
+    - autofocus: Boolean (default: true) - Focus first input on mount
+    - numeric_only: Boolean (default: true) - Restrict input to digits only
+    - separator: Boolean (default: true) - Show separator between input groups
+    - separator_position: Integer (default: 3) - Position after which to show separator
+    - size: String (default: "md") - Input size: "sm", "md", "lg"
+    - disabled: Boolean (default: false) - Disable all inputs
+    - required: Boolean (default: true) - Mark inputs as required
+    - label: String (default: nil) - Optional label text
+    - hint: String (default: nil) - Hint text below inputs
+    - error: String (default: nil) - Error message to display
+    - classes: String (default: nil) - Additional wrapper classes
+    - input_classes: String (default: nil) - Additional input classes
+%>
+
+<% length ||= 6 %>
+<% length = [[length.to_i, 4].max, 8].min %>
+<% name ||= nil %>
+<% id_prefix ||= "otp_#{SecureRandom.hex(4)}" %>
+<% auto_submit ||= false %>
+<% autofocus = true if local_assigns[:autofocus].nil? %>
+<% numeric_only = true if local_assigns[:numeric_only].nil? %>
+<% separator = true if local_assigns[:separator].nil? %>
+<% separator_position ||= 3 %>
+<% separator_position = [[separator_position.to_i, 1].max, length - 1].min %>
+<% size ||= "md" %>
+<% disabled ||= false %>
+<% required = true if local_assigns[:required].nil? %>
+<% label ||= nil %>
+<% hint ||= nil %>
+<% error ||= nil %>
+<% classes ||= nil %>
+<% input_classes ||= nil %>
+
+<%
+  # Wrapper classes
+  wrapper_base = "w-full"
+  wrapper_classes = [wrapper_base, classes].compact.reject(&:empty?).join(" ")
+
+  # Input size classes
+  input_size = case size.to_s
+  when "sm"
+    "w-7 h-8 text-sm px-1.5 py-1"
+  when "lg"
+    "w-12 h-14 text-xl px-3 py-2"
+  else # md
+    "w-8 h-10 text-base px-2 py-1"
+  end
+
+  # Input classes
+  input_base = "block rounded-lg border text-center placeholder-neutral-500 focus:outline-neutral-800 focus:border-neutral-800 dark:focus:outline-neutral-50 dark:focus:border-neutral-50 dark:bg-neutral-800 dark:placeholder-neutral-400"
+  input_border = error.present? ? "border-red-500 dark:border-red-500" : "border-neutral-200 dark:border-neutral-600"
+  input_disabled = disabled ? "opacity-50 cursor-not-allowed bg-neutral-100 dark:bg-neutral-700" : ""
+  computed_input_classes = [input_base, input_border, input_size, input_disabled, input_classes].compact.reject(&:empty?).join(" ")
+
+  # Separator classes
+  separator_cls = case size.to_s
+  when "sm"
+    "text-xs text-neutral-400 dark:text-neutral-600"
+  when "lg"
+    "text-lg text-neutral-400 dark:text-neutral-600"
+  else
+    "text-sm text-neutral-400 dark:text-neutral-600"
+  end
+
+  # Label classes
+  label_base = "label mb-2 text-sm block"
+  label_color = error.present? ? "text-red-700 dark:text-red-400" : ""
+  label_classes = [label_base, label_color].compact.reject(&:empty?).join(" ")
+%>
+
+<div class="<%= wrapper_classes %>">
+  <% if label.present? %>
+    <label class="<%= label_classes %>">
+      <%= label %>
+      <% if required %><span class="text-red-500">*</span><% end %>
+    </label>
+  <% end %>
+
+  <div data-controller="two-factor"
+       data-two-factor-auto-submit-value="<%= auto_submit %>"
+       data-two-factor-autofocus-value="<%= autofocus %>"
+       data-two-factor-numeric-only-value="<%= numeric_only %>">
+
+    <div class="inline-flex items-center gap-1.5">
+      <% length.times do |i| %>
+        <%
+          input_name = name.present? ? "#{name}[#{i}]" : "num#{i + 1}"
+          input_id = "#{id_prefix}_#{i + 1}"
+          autocomplete_val = i.zero? ? "one-time-code" : "off"
+          input_mode = numeric_only ? "numeric" : "text"
+        %>
+        <input
+          data-two-factor-target="digit"
+          data-action="input->two-factor#handleInput keydown->two-factor#handleKeydown paste->two-factor#handlePaste"
+          type="text"
+          inputmode="<%= input_mode %>"
+          id="<%= input_id %>"
+          name="<%= input_name %>"
+          maxlength="1"
+          autocomplete="<%= autocomplete_val %>"
+          <% if required %>required<% end %>
+          <% if disabled %>disabled<% end %>
+          class="<%= computed_input_classes %>">
+
+        <% if separator && (i + 1) == separator_position %>
+          <span class="<%= separator_cls %>">-</span>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+
+  <% if error.present? %>
+    <p class="text-xs text-red-600 dark:text-red-400 mt-2"><%= error %></p>
+  <% elsif hint.present? %>
+    <p class="text-xs text-neutral-500 dark:text-neutral-400 mt-2"><%= hint %></p>
+  <% end %>
+</div>

@@ -1,0 +1,149 @@
+<%
+# Date Picker Component - Shared Partial
+#
+# A flexible date/datetime picker component with support for single dates, ranges,
+# time selection, and various display modes.
+#
+# @param id [String] Unique identifier for the date picker input (auto-generated if not provided)
+# @param name [String] Name attribute for the input field (optional)
+# @param value [String] Initial selected date value in YYYY-MM-DD format (optional)
+# @param placeholder [String] Placeholder text for the input field (default: "Select date...")
+# @param range [Boolean] Enable date range selection mode (default: false)
+# @param timepicker [Boolean] Enable time selection alongside date (default: false)
+# @param time_only [Boolean] Show only time picker, no date selection (default: false)
+# @param week_picker [Boolean] Enable week selection mode (default: false)
+# @param inline [Boolean] Display calendar inline, always visible (default: false)
+# @param date_format [String] Date display format, e.g., 'MM/dd/yyyy' (optional)
+# @param time_format [String] Time display format, e.g., 'hh:mm AA' (optional)
+# @param min_date [String] Minimum selectable date in YYYY-MM-DD format (optional)
+# @param max_date [String] Maximum selectable date in YYYY-MM-DD format (optional)
+# @param disabled_dates [Array<String>] Array of disabled dates in YYYY-MM-DD format (optional)
+# @param start_view [String] Initial calendar view: 'days', 'months', 'years' (default: 'days')
+# @param min_view [String] Minimum navigable view: 'days', 'months', 'years' (default: 'days')
+# @param placement [String] Dropdown placement relative to input (default: 'bottom-start')
+# @param show_today_button [Boolean] Show 'Today' button in calendar (default: false)
+# @param show_clear_button [Boolean] Show 'Clear' button in calendar (default: false)
+# @param show_this_month_button [Boolean] Show 'This month' button (default: false)
+# @param show_this_year_button [Boolean] Show 'This year' button (default: false)
+# @param min_hours [Integer] Minimum selectable hour for timepicker (optional)
+# @param max_hours [Integer] Maximum selectable hour for timepicker (optional)
+# @param minutes_step [Integer] Minutes increment step for timepicker (optional)
+# @param readonly [Boolean] Make input readonly (default: true)
+# @param required [Boolean] Make input required (default: false)
+# @param disabled [Boolean] Disable the input (default: false)
+# @param show_icon [Boolean] Show calendar/clock icon in input (default: true)
+# @param input_class [String] Additional CSS classes for the input (optional)
+# @param classes [String] Additional CSS classes for the wrapper (optional)
+
+id ||= "date_picker_#{SecureRandom.hex(4)}"
+name ||= nil
+value ||= nil
+placeholder ||= "Select date..."
+range ||= false
+timepicker ||= false
+time_only ||= false
+week_picker ||= false
+inline ||= false
+date_format ||= nil
+time_format ||= nil
+min_date ||= nil
+max_date ||= nil
+disabled_dates ||= []
+start_view ||= "days"
+min_view ||= "days"
+placement ||= "bottom-start"
+show_today_button ||= false
+show_clear_button ||= false
+show_this_month_button ||= false
+show_this_year_button ||= false
+min_hours ||= nil
+max_hours ||= nil
+minutes_step ||= nil
+readonly = local_assigns.fetch(:readonly, true)
+required ||= false
+disabled ||= false
+show_icon = local_assigns.fetch(:show_icon, true)
+input_class ||= ""
+classes ||= ""
+
+# Format value if it's a Date/Time object
+formatted_value = case value
+                  when Date
+                    value.strftime("%Y-%m-%d")
+                  when Time, DateTime
+                    timepicker || time_only ? value.strftime("%Y-%m-%d %H:%M") : value.strftime("%Y-%m-%d")
+                  when Array
+                    value.map { |v| v.respond_to?(:strftime) ? v.strftime("%Y-%m-%d") : v }.to_json
+                  else
+                    value
+                  end
+
+# Build wrapper classes
+wrapper_classes = ["relative"]
+wrapper_classes << (inline ? "" : "w-full max-w-sm")
+wrapper_classes << classes if classes.present?
+wrapper_class_string = wrapper_classes.compact.reject(&:empty?).join(" ")
+
+# Build input classes
+input_classes = ["block w-full rounded-lg border-0 px-3 py-2 text-neutral-900 shadow-sm ring-1 ring-inset ring-neutral-300 placeholder:text-neutral-500 focus:ring-2 focus:ring-neutral-600 outline-hidden dark:bg-neutral-700 dark:ring-neutral-600 dark:placeholder-neutral-300 dark:text-white dark:focus:ring-neutral-500 text-base/6 sm:text-sm/6"]
+input_classes << "pr-10" if show_icon && !inline
+input_classes << "hidden" if inline
+input_classes << input_class if input_class.present?
+input_class_string = input_classes.compact.reject(&:empty?).join(" ")
+%>
+
+<div class="<%= wrapper_class_string %>"
+     data-controller="date-picker"
+     data-date-picker-placement-value="<%= placement %>"
+     data-date-picker-start-view-value="<%= start_view %>"
+     data-date-picker-min-view-value="<%= min_view %>"
+     <% if range %>data-date-picker-range-value="true"<% end %>
+     <% if timepicker %>data-date-picker-timepicker-value="true"<% end %>
+     <% if time_only %>data-date-picker-time-only-value="true"<% end %>
+     <% if week_picker %>data-date-picker-week-picker-value="true"<% end %>
+     <% if inline %>data-date-picker-inline-value="true"<% end %>
+     <% if show_today_button %>data-date-picker-show-today-button-value="true"<% end %>
+     <% if show_clear_button %>data-date-picker-show-clear-button-value="true"<% end %>
+     <% if show_this_month_button %>data-date-picker-show-this-month-button-value="true"<% end %>
+     <% if show_this_year_button %>data-date-picker-show-this-year-button-value="true"<% end %>
+     <% if formatted_value.present? %>data-date-picker-initial-date-value="<%= formatted_value.is_a?(String) && formatted_value.start_with?("[") ? formatted_value : formatted_value %>"<% end %>
+     <% if date_format.present? %>data-date-picker-date-format-value="<%= date_format %>"<% end %>
+     <% if time_format.present? %>data-date-picker-time-format-value="<%= time_format %>"<% end %>
+     <% if min_date.present? %>data-date-picker-min-date-value="<%= min_date.respond_to?(:strftime) ? min_date.strftime('%Y-%m-%d') : min_date %>"<% end %>
+     <% if max_date.present? %>data-date-picker-max-date-value="<%= max_date.respond_to?(:strftime) ? max_date.strftime('%Y-%m-%d') : max_date %>"<% end %>
+     <% if disabled_dates.any? %>data-date-picker-disabled-dates-value="<%= disabled_dates.to_json %>"<% end %>
+     <% if min_hours.present? %>data-date-picker-min-hours-value="<%= min_hours %>"<% end %>
+     <% if max_hours.present? %>data-date-picker-max-hours-value="<%= max_hours %>"<% end %>
+     <% if minutes_step.present? %>data-date-picker-minutes-step-value="<%= minutes_step %>"<% end %>>
+
+  <input id="<%= id %>"
+         <% if name.present? %>name="<%= name %>"<% end %>
+         <% if formatted_value.present? && !formatted_value.to_s.start_with?("[") %>value="<%= formatted_value %>"<% end %>
+         <%= "readonly" if readonly %>
+         <%= "required" if required %>
+         <%= "disabled" if disabled %>
+         data-date-picker-target="input"
+         placeholder="<%= placeholder %>"
+         class="<%= input_class_string %>">
+
+  <% if show_icon && !inline %>
+    <div class="pointer-events-none absolute inset-y-0 right-3 flex items-center justify-center opacity-80">
+      <% if time_only %>
+        <svg xmlns="http://www.w3.org/2000/svg" class="size-4" viewBox="0 0 18 18">
+          <g fill="currentColor">
+            <path d="M9,1C4.589,1,1,4.589,1,9s3.589,8,8,8,8-3.589,8-8S13.411,1,9,1Zm0,14.5c-3.584,0-6.5-2.916-6.5-6.5S5.416,2.5,9,2.5s6.5,2.916,6.5,6.5-2.916,6.5-6.5,6.5Z"></path>
+            <path d="M12.25,8.25h-2.5V5c0-.414-.336-.75-.75-.75s-.75,.336-.75,.75v4c0,.414,.336,.75,.75,.75h3.25c.414,0,.75-.336,.75-.75s-.336-.75-.75-.75Z"></path>
+          </g>
+        </svg>
+      <% else %>
+        <svg xmlns="http://www.w3.org/2000/svg" class="size-4" viewBox="0 0 18 18">
+          <g fill="currentColor">
+            <path d="M5.75,3.5c-.414,0-.75-.336-.75-.75V.75c0-.414,.336-.75,.75-.75s.75,.336,.75,.75V2.75c0,.414-.336,.75-.75,.75Z"></path>
+            <path d="M12.25,3.5c-.414,0-.75-.336-.75-.75V.75c0-.414,.336-.75,.75-.75s.75,.336,.75,.75V2.75c0,.414-.336,.75-.75,.75Z"></path>
+            <path d="M13.75,2H4.25c-1.517,0-2.75,1.233-2.75,2.75V13.25c0,1.517,1.233,2.75,2.75,2.75H13.75c1.517,0,2.75-1.233,2.75-2.75V4.75c0-1.517-1.233-2.75-2.75-2.75Zm0,12.5H4.25c-.689,0-1.25-.561-1.25-1.25V7H15v6.25c0,.689-.561,1.25-1.25,1.25Z"></path>
+          </g>
+        </svg>
+      <% end %>
+    </div>
+  <% end %>
+</div>

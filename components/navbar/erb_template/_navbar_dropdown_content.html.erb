@@ -1,0 +1,28 @@
+<% id ||= "dropdown-content" %>
+<% width ||= "w-[calc(100vw-2rem)] sm:w-[400px]" %>
+<% columns ||= 1 %>
+<% content_classes ||= nil %>
+<% content ||= nil %>
+
+<%
+  # Build grid columns class
+  grid_columns = case columns.to_i
+                 when 1 then "grid-cols-1"
+                 when 2 then "grid-cols-1 sm:grid-cols-2"
+                 when 3 then "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
+                 when 4 then "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4"
+                 else "grid-cols-1"
+                 end
+
+  inner_classes = ["grid gap-2 p-2", width, grid_columns, content_classes].compact.reject(&:empty?).join(" ")
+%>
+
+<div id="<%= id %>" data-navbar-target="content" data-state="closed" class="hidden">
+  <div class="<%= inner_classes %>">
+    <% if content.present? %>
+      <%= content.html_safe %>
+    <% else %>
+      <%= yield if block_given? %>
+    <% end %>
+  </div>
+</div>

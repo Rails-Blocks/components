@@ -1,0 +1,137 @@
+<%#
+  Breadcrumb Component
+  Display navigation breadcrumbs to show the current page location.
+
+  Required locals:
+    - items: Array<Hash> - Array of breadcrumb items with { label:, href:, icon: (optional) }
+
+  Optional locals:
+    - separator: String (default: "slash") - Separator type: "slash" or "chevron"
+    - variant: String (default: "default") - Style variant: "default", "with_background", "with_icons"
+    - show_home_icon: Boolean (default: true) - Show home icon on first item (with_icons variant)
+    - truncate_at: Integer (default: nil) - Max visible items before truncation (nil = show all)
+    - current_max_width: String (default: nil) - Max width for current page text (e.g., "200px")
+    - classes: String (default: nil) - Additional CSS classes for the nav wrapper
+%>
+
+<% items ||= [] %>
+<% separator ||= "slash" %>
+<% variant ||= "default" %>
+<% show_home_icon = true if local_assigns[:show_home_icon].nil? %>
+<% truncate_at ||= nil %>
+<% current_max_width ||= nil %>
+<% classes ||= nil %>
+
+<%
+  # Compute visible items (with truncation if needed)
+  visible_items = if truncate_at.nil? || items.length <= truncate_at
+    items
+  else
+    first = [items.first]
+    last_items = items.last(truncate_at - 1)
+    first + [{ ellipsis: true }] + last_items
+  end
+
+  # Determine if we should use chevron separator
+  use_chevron = separator.to_s == "chevron" || variant.to_s == "with_icons" || variant.to_s == "with_background"
+
+  # CSS Classes based on variant
+  nav_classes = ["flex justify-center overflow-x-auto whitespace-nowrap", classes].compact.reject(&:empty?).join(" ")
+
+  list_spacing = variant.to_s == "with_icons" ? "space-x-1" : "space-x-2"
+  list_bg = variant.to_s == "with_background" ? "bg-neutral-50 dark:bg-neutral-800/50 px-4 py-2 rounded-lg border border-black/10 dark:border-white/10" : ""
+  list_classes = ["flex items-center text-sm", list_spacing, list_bg].compact.reject(&:empty?).join(" ")
+
+  link_classes = case variant.to_s
+  when "with_background"
+    "text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100 transition-colors font-medium"
+  when "with_icons"
+    "flex items-center text-neutral-500 hover:text-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-200 transition-colors p-1.5 rounded hover:bg-neutral-100 dark:hover:bg-neutral-800"
+  else
+    "text-neutral-500 hover:text-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-200 transition-colors"
+  end
+
+  current_weight = variant.to_s == "with_background" ? "font-semibold" : "font-medium"
+  current_padding = variant.to_s == "with_icons" ? "p-1.5" : ""
+  current_truncate = current_max_width.present? ? "truncate" : ""
+  current_classes = ["text-neutral-900 dark:text-neutral-100", current_weight, current_padding, current_truncate].compact.reject(&:empty?).join(" ")
+  current_style = current_max_width.present? ? "max-width: #{current_max_width}" : nil
+
+  separator_classes = "text-neutral-400 dark:text-neutral-600"
+
+  # SVG Icons
+  home_icon = '<svg xmlns="http://www.w3.org/2000/svg" class="size-4 shrink-0" width="18" height="18" viewBox="0 0 18 18"><g fill="currentColor"><path d="M7.94127 1.36281C8.56694 0.887445 9.4333 0.886569 10.0591 1.36312L15.3088 5.35287C15.7448 5.68398 16 6.20008 16 6.746V14.25C16 15.7692 14.7692 17 13.25 17H10.75V13.251C10.75 12.699 10.302 12.251 9.75 12.251H8.25C7.698 12.251 7.25 12.699 7.25 13.251V17H4.75C3.23079 17 2 15.7692 2 14.25V6.746C2 6.19867 2.2559 5.68346 2.69155 5.3526L7.94127 1.36281Z"></path></g></svg>'.html_safe
+
+  chevron_icon = '<svg xmlns="http://www.w3.org/2000/svg" class="size-4 shrink-0" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" /></svg>'.html_safe
+
+  slash_separator = content_tag(:span, "/", class: separator_classes)
+  separator_html = use_chevron ? chevron_icon : slash_separator
+%>
+
+<nav aria-label="Breadcrumb" class="<%= nav_classes %>">
+  <ol class="<%= list_classes %>">
+    <% visible_items.each_with_index do |item, index| %>
+      <% is_first = index == 0 %>
+      <% is_last = index == visible_items.length - 1 %>
+      <% is_ellipsis = item[:ellipsis] %>
+
+      <% if is_ellipsis %>
+        <%# Ellipsis for truncated items %>
+        <li class="flex items-center <%= variant.to_s == 'with_icons' ? '' : 'space-x-2' %>">
+          <% unless is_first %>
+            <%= separator_html %>
+          <% end %>
+          <button
+            type="button"
+            class="<%= link_classes %> <%= variant.to_s == 'with_icons' ? 'ml-1' : '' %>"
+            aria-label="Show hidden breadcrumb items"
+          >
+            ...
+          </button>
+        </li>
+      <% elsif is_last %>
+        <%# Current page (last item) %>
+        <li class="flex items-center <%= variant.to_s == 'with_icons' ? '' : 'space-x-2' %>">
+          <% unless is_first %>
+            <%= separator_html %>
+          <% end %>
+          <span
+            class="<%= current_classes %> <%= variant.to_s == 'with_icons' ? 'ml-1 flex items-center gap-1' : '' %>"
+            aria-current="page"
+            <% if current_style %> style="<%= current_style %>"<% end %>
+            <% if current_max_width.present? %> title="<%= item[:label] %>"<% end %>
+          >
+            <% if item[:icon].present? %>
+              <%= item[:icon].html_safe %>
+            <% end %>
+            <%= item[:label] %>
+          </span>
+        </li>
+      <% else %>
+        <%# Regular breadcrumb link %>
+        <li class="<%= is_first ? '' : 'flex items-center' %> <%= variant.to_s == 'with_icons' ? '' : (is_first ? '' : 'space-x-2') %>">
+          <% unless is_first %>
+            <%= separator_html %>
+          <% end %>
+
+          <a
+            href="<%= item[:href] || '#' %>"
+            class="<%= link_classes %> <%= variant.to_s == 'with_icons' && !is_first ? 'ml-1' : '' %>"
+          >
+            <% if show_home_icon && variant.to_s == "with_icons" && is_first %>
+              <%= home_icon %>
+              <span class="sr-only"><%= item[:label] %></span>
+            <% elsif item[:icon].present? %>
+              <span class="flex items-center gap-1.5">
+                <%= item[:icon].html_safe %>
+                <span><%= item[:label] %></span>
+              </span>
+            <% else %>
+              <%= item[:label] %>
+            <% end %>
+          </a>
+        </li>
+      <% end %>
+    <% end %>
+  </ol>
+</nav>

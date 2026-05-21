@@ -1,0 +1,78 @@
+<% if folder? %>
+  <!-- Folder node -->
+  <div class="<%= node_classes %>"<% if selectable %> data-checkbox-select-all-target="parent"<% end %>>
+    <% if selectable %>
+      <div class="<%= row_classes %>">
+        <input
+          type="checkbox"
+          id="<%= unique_id %>"
+          tabindex="-1"
+          <%= "checked" if @checked %>
+          <%= "disabled" if disabled %>
+          <%= tag.attributes(data: checkbox_data_attrs) %>>
+        <button type="button"
+                data-action="click->tree-view#toggle"
+                aria-controls="<%= unique_id %>-content"
+                aria-expanded="<%= aria_expanded %>"
+                data-state="<%= state %>"
+                class="<%= folder_button_classes %>">
+          <%= render_folder_icon %>
+          <span class="font-medium"><%= label %></span>
+        </button>
+      </div>
+    <% else %>
+      <button type="button"
+              data-action="click->tree-view#toggle"
+              aria-controls="<%= unique_id %>-content"
+              aria-expanded="<%= aria_expanded %>"
+              data-state="<%= state %>"
+              class="<%= folder_button_classes %>">
+        <%= render_folder_icon %>
+        <span class="font-medium"><%= label %></span>
+      </button>
+    <% end %>
+
+    <!-- Folder content -->
+    <div id="<%= unique_id %>-content"
+         data-state="<%= state %>"
+         role="region"
+         class="<%= content_classes %>"
+         data-tree-view-target="content"
+         <% if content_hidden? %>hidden<% end %>>
+      <div class="<%= content_inner_classes %>">
+        <% children.each do |child| %>
+          <%= child %>
+        <% end %>
+        <%= content %>
+      </div>
+    </div>
+  </div>
+<% else %>
+  <!-- File node -->
+  <% if selectable %>
+    <div class="<%= file_row_classes %>">
+      <input
+        type="checkbox"
+        name="<%= @name %>"
+        value="<%= value %>"
+        tabindex="-1"
+        <%= "checked" if @checked %>
+        <%= "disabled" if disabled %>
+        <%= tag.attributes(data: checkbox_data_attrs) %>>
+      <button type="button"
+              data-tree-view-item
+              data-action="click->tree-view#selectFile"
+              class="<%= file_button_classes %>">
+        <%= @icon&.html_safe || file_svg %>
+        <span><%= label %></span>
+      </button>
+    </div>
+  <% else %>
+    <button type="button"
+            data-tree-view-item
+            class="<%= file_row_classes %>">
+      <%= @icon&.html_safe || file_svg %>
+      <span><%= label %></span>
+    </button>
+  <% end %>
+<% end %>

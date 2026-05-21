@@ -1,0 +1,79 @@
+<nav aria-label="Breadcrumb" class="<%= nav_classes %>">
+  <ol class="<%= list_classes %>">
+    <% visible_items.each_with_index do |item, index| %>
+      <% if item[:ellipsis] %>
+        <%# Ellipsis for truncated items %>
+        <li class="flex items-center <%= @variant == :with_icons ? '' : 'space-x-2' %>">
+          <% unless first_item?(index) %>
+            <% if @variant == :with_icons %>
+              <%= separator_html %>
+            <% else %>
+              <%= separator_html %>
+            <% end %>
+          <% end %>
+          <button
+            type="button"
+            class="<%= link_classes %> <%= @variant == :with_icons ? 'ml-1' : '' %>"
+            aria-label="Show hidden breadcrumb items"
+          >
+            ...
+          </button>
+        </li>
+      <% elsif last_item?(index) %>
+        <%# Current page (last item) %>
+        <li class="flex items-center <%= @variant == :with_icons ? '' : 'space-x-2' %>">
+          <% unless first_item?(index) %>
+            <% if @variant == :with_icons %>
+              <%= separator_html %>
+            <% elsif @variant == :with_background %>
+              <%= separator_html %>
+            <% else %>
+              <%= separator_html %>
+            <% end %>
+          <% end %>
+          <span
+            class="<%= current_classes %> <%= @variant == :with_icons ? 'ml-1 flex items-center gap-1' : '' %>"
+            aria-current="page"
+            <% if current_style %> style="<%= current_style %>"<% end %>
+            <% if @current_max_width.present? %> title="<%= item[:label] %>"<% end %>
+          >
+            <% if item[:icon].present? %>
+              <%= render_item_icon(item[:icon]) %>
+            <% end %>
+            <%= item[:label] %>
+          </span>
+        </li>
+      <% else %>
+        <%# Regular breadcrumb link %>
+        <li class="<%= first_item?(index) ? '' : 'flex items-center' %> <%= @variant == :with_icons ? '' : (first_item?(index) ? '' : 'space-x-2') %>">
+          <% unless first_item?(index) %>
+            <% if @variant == :with_icons %>
+              <%= separator_html %>
+            <% elsif @variant == :with_background %>
+              <%= separator_html %>
+            <% else %>
+              <%= separator_html %>
+            <% end %>
+          <% end %>
+
+          <a
+            href="<%= item[:href] || '#' %>"
+            class="<%= link_classes %> <%= @variant == :with_icons && !first_item?(index) ? 'ml-1' : '' %> <%= @variant == :with_background && !first_item?(index) ? '' : '' %>"
+          >
+            <% if show_home_icon_for_item?(item, index) %>
+              <%= home_icon_svg %>
+              <span class="sr-only"><%= item[:label] %></span>
+            <% elsif item[:icon].present? %>
+              <span class="flex items-center gap-1.5">
+                <%= render_item_icon(item[:icon]) %>
+                <span><%= item[:label] %></span>
+              </span>
+            <% else %>
+              <%= item[:label] %>
+            <% end %>
+          </a>
+        </li>
+      <% end %>
+    <% end %>
+  </ol>
+</nav>
