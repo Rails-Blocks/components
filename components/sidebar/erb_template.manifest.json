@@ -10,12 +10,12 @@
     {
       "path": "sidebar/_sidebar.html.erb",
       "relative_path": "_sidebar.html.erb",
-      "checksum": "7b3ba10a0d95154f901cf0a2410fb81e71f64affb01bc0d8601db2ab52dc8b97"
+      "checksum": "75bad0ff635a3ca9021de9ea1a29e7d54cc432ee1b476fb47d0674c3e389b96d"
     },
     {
       "path": "sidebar/_sidebar_item_collapsed.html.erb",
       "relative_path": "_sidebar_item_collapsed.html.erb",
-      "checksum": "d4ee42f225b12c900253202c829d72f699f69a31d8adf91f5c47bd99b95774ea"
+      "checksum": "91ad25f7de1b4a82fa149c421ac51ec3c61430bc28eb35e03510a01d5a9f8099"
     },
     {
       "path": "sidebar/_sidebar_section.html.erb",

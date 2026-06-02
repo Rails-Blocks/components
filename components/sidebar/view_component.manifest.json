@@ -15,7 +15,7 @@
     {
       "path": "sidebar/component/item_component.rb",
       "relative_path": "component/item_component.rb",
-      "checksum": "1b3a731dc3376ffeb3cdb3ec8d6a335d75f76f7731388d7c526d074177daad8d"
+      "checksum": "6b7b951cd0d9503b944424cdc6653af6dee5000876405fd2e250c866920d24a4"
     },
     {
       "path": "sidebar/component/section_component.html.erb",
@@ -40,7 +40,7 @@
     {
       "path": "sidebar/component.html.erb",
       "relative_path": "component.html.erb",
-      "checksum": "596e5318b070abfe21a3aa1ac83d4226270af1aeb657bdeab5a48c20179dc746"
+      "checksum": "3947d63a71b3aada79083df545ceda3d889ea062a9fdfaac5c3bad2c66a07b3d"
     }
   ]
 }

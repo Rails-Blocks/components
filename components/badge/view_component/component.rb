@@ -45,7 +45,7 @@ module Badge
                       dot: "bg-red-500 dark:bg-red-400",
                       button_bg: "bg-red-100 dark:bg-red-400/10",
                       button_text: "text-red-600 dark:text-red-400",
-                      button_hover: "hover:bg-red-200 hover:dark:bg-red-400/20",
+                      button_hover: "hover:bg-red-200 dark:hover:bg-red-400/20",
                       button_outline: "outline outline-red-500/20 dark:outline-red-400/25"
                     }
                   when :orange
@@ -56,7 +56,7 @@ module Badge
                       dot: "bg-orange-500 dark:bg-orange-400",
                       button_bg: "bg-orange-100 dark:bg-orange-400/10",
                       button_text: "text-orange-600 dark:text-orange-400",
-                      button_hover: "hover:bg-orange-200 hover:dark:bg-orange-400/20",
+                      button_hover: "hover:bg-orange-200 dark:hover:bg-orange-400/20",
                       button_outline: "outline outline-orange-500/20 dark:outline-orange-400/25"
                     }
                   when :yellow
@@ -67,7 +67,7 @@ module Badge
                       dot: "bg-yellow-500 dark:bg-yellow-400",
                       button_bg: "bg-yellow-100 dark:bg-yellow-400/10",
                       button_text: "text-yellow-600 dark:text-yellow-400",
-                      button_hover: "hover:bg-yellow-200 hover:dark:bg-yellow-400/20",
+                      button_hover: "hover:bg-yellow-200 dark:hover:bg-yellow-400/20",
                       button_outline: "outline outline-yellow-500/20 dark:outline-yellow-400/25"
                     }
                   when :green
@@ -78,7 +78,7 @@ module Badge
                       dot: "bg-green-500 dark:bg-green-400",
                       button_bg: "bg-green-100 dark:bg-green-400/10",
                       button_text: "text-green-600 dark:text-green-400",
-                      button_hover: "hover:bg-green-200 hover:dark:bg-green-400/20",
+                      button_hover: "hover:bg-green-200 dark:hover:bg-green-400/20",
                       button_outline: "outline outline-green-500/20 dark:outline-green-400/25"
                     }
                   when :blue
@@ -89,7 +89,7 @@ module Badge
                       dot: "bg-blue-500 dark:bg-blue-400",
                       button_bg: "bg-blue-100 dark:bg-blue-400/10",
                       button_text: "text-blue-600 dark:text-blue-400",
-                      button_hover: "hover:bg-blue-200 hover:dark:bg-blue-400/20",
+                      button_hover: "hover:bg-blue-200 dark:hover:bg-blue-400/20",
                       button_outline: "outline outline-blue-500/20 dark:outline-blue-400/25"
                     }
                   when :purple
@@ -100,7 +100,7 @@ module Badge
                       dot: "bg-purple-500 dark:bg-purple-400",
                       button_bg: "bg-purple-100 dark:bg-purple-400/10",
                       button_text: "text-purple-600 dark:text-purple-400",
-                      button_hover: "hover:bg-purple-200 hover:dark:bg-purple-400/20",
+                      button_hover: "hover:bg-purple-200 dark:hover:bg-purple-400/20",
                       button_outline: "outline outline-purple-500/20 dark:outline-purple-400/25"
                     }
                   when :pink
@@ -111,7 +111,7 @@ module Badge
                       dot: "bg-pink-500 dark:bg-pink-400",
                       button_bg: "bg-pink-100 dark:bg-pink-400/10",
                       button_text: "text-pink-600 dark:text-pink-400",
-                      button_hover: "hover:bg-pink-200 hover:dark:bg-pink-400/20",
+                      button_hover: "hover:bg-pink-200 dark:hover:bg-pink-400/20",
                       button_outline: "outline outline-pink-500/20 dark:outline-pink-400/25"
                     }
                   else # :neutral
@@ -122,7 +122,7 @@ module Badge
                       dot: "bg-neutral-500 dark:bg-neutral-400",
                       button_bg: "bg-neutral-100 dark:bg-neutral-400/10",
                       button_text: "text-neutral-600 dark:text-neutral-400",
-                      button_hover: "hover:bg-neutral-200 hover:dark:bg-neutral-400/20",
+                      button_hover: "hover:bg-neutral-200 dark:hover:bg-neutral-400/20",
                       button_outline: "outline outline-neutral-500/20 dark:outline-neutral-400/25"
                     }
                   end
@@ -137,7 +137,7 @@ module Badge
         colors[:button_hover],
         colors[:button_outline],
         button_size_classes,
-        "focus-visible:outline-neutral-500 focus-visible:dark:outline-neutral-400"
+        "focus-visible:outline-neutral-500 dark:focus-visible:outline-neutral-400"
       ].join(" ")
     end
 

@@ -72,6 +72,10 @@ export default class extends Controller {
     });
   }
 
+  isMobileViewport() {
+    return window.innerWidth < 640;
+  }
+
   toggleMenu(event) {
     const trigger = event.currentTarget;
     const contentId = trigger.dataset.contentId;
@@ -108,6 +112,12 @@ export default class extends Controller {
   }
 
   handlePointerEnter(event) {
+    // Hover behavior is desktop-only. Mobile layout uses the hamburger menu and
+    // nested click triggers, so viewport pointerleave events should not close it.
+    if (this.isMobileViewport()) {
+      return;
+    }
+
     // Skip hover behavior on touch devices to prevent conflicts with tap/click
     if (this.isTouchDevice) {
       return;
@@ -156,6 +166,10 @@ export default class extends Controller {
   }
 
   handlePointerMove(event) {
+    if (this.isMobileViewport()) {
+      return;
+    }
+
     // Skip hover behavior on touch devices to prevent conflicts with tap/click
     if (this.isTouchDevice) {
       return;
@@ -204,6 +218,10 @@ export default class extends Controller {
   }
 
   handlePointerLeave(event) {
+    if (this.isMobileViewport()) {
+      return;
+    }
+
     // Skip hover behavior on touch devices to prevent conflicts with tap/click
     if (this.isTouchDevice) {
       return;
@@ -240,6 +258,10 @@ export default class extends Controller {
   }
 
   cancelClose(event) {
+    if (this.isMobileViewport()) {
+      return;
+    }
+
     // Skip hover behavior on touch devices to prevent conflicts with tap/click
     if (this.isTouchDevice) {
       return;
