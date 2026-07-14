@@ -130,7 +130,7 @@ export default class extends Controller {
 
     this.tooltipElement = document.createElement("div");
     this.tooltipElement.className =
-      "tooltip-content pointer-events-none wrap-break-word shadow-sm border rounded-lg border-white/10 absolute bg-[#333333] text-white py-1 px-2 z-[1000]";
+      "tooltip-content pointer-events-none wrap-break-word shadow-sm border rounded-lg border-white/10 fixed bg-[#333333] text-white py-1 px-2 z-[1000]";
 
     const sizeClasses = {
       small: "text-xs",
@@ -347,6 +347,7 @@ export default class extends Controller {
     }
 
     const { x, y, placement, middlewareData } = await computePosition(this.element, this.tooltipElement, {
+      strategy: "fixed",
       placement: primaryPlacement,
       middleware: middleware,
     });
