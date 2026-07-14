@@ -1,0 +1,13 @@
+<%= content_tag(:div, **wrapper_attributes) do %>
+  <% avatars.each_with_index do |avatar, index| %>
+    <span class="<%= item_wrapper_classes %>" <% if item_wrapper_style(index) %>style="<%= item_wrapper_style(index) %>"<% end %>>
+      <%= avatar %>
+    </span>
+  <% end %>
+
+  <% if remaining? %>
+    <span class="<%= item_wrapper_classes %>" <% if item_wrapper_style(avatars.size) %>style="<%= item_wrapper_style(avatars.size) %>"<% end %>>
+      <span class="<%= count_classes %>" role="img" aria-label="<%= remaining_label %>">+<%= @remaining_count %></span>
+    </span>
+  <% end %>
+<% end %>

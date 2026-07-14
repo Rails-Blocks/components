@@ -1,0 +1,39 @@
+<!-- Basic avatar -->
+<%= render "shared/components/avatar/avatar",
+  src: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=160&h=160&fit=crop&crop=face&auto=format&q=80",
+  alt: "Olivia Martin",
+  size: "lg" %>
+
+<!-- Avatar with an accessible, pulsing online status -->
+<%= render "shared/components/avatar/avatar",
+  src: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=160&h=160&fit=crop&crop=face&auto=format&q=80",
+  alt: "Noah Williams",
+  size: "lg",
+  status: "online",
+  status_label: "Online" %>
+
+<!-- Initials fallback -->
+<%= render "shared/components/avatar/avatar", alt: "Avery Stone", size: "md" %>
+
+<!-- Avatar group -->
+<%= render "shared/components/avatar/avatar_group",
+  avatars: [
+    { src: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=160&h=160&fit=crop&crop=face&auto=format&q=80", alt: "Olivia Martin" },
+    { src: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=160&h=160&fit=crop&crop=face&auto=format&q=80", alt: "Noah Williams" },
+    { src: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=160&h=160&fit=crop&crop=face&auto=format&q=80", alt: "Emma Davis" }
+  ],
+  size: "md",
+  remaining_count: 3,
+  label: "Project members" %>
+
+<!-- Animated avatar group -->
+<%= render "shared/components/avatar/avatar_group",
+  avatars: [
+    { src: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=160&h=160&fit=crop&crop=face&auto=format&q=80", alt: "Olivia Martin" },
+    { src: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=160&h=160&fit=crop&crop=face&auto=format&q=80", alt: "Noah Williams" },
+    { src: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=160&h=160&fit=crop&crop=face&auto=format&q=80", alt: "Emma Davis" }
+  ],
+  size: "md",
+  remaining_count: 3,
+  label: "Project members",
+  animated: true %>

@@ -1,0 +1,97 @@
+<%#
+  Avatar
+
+  Required locals:
+    - alt: String - Accessible image description. Use "" only for decorative avatars.
+
+  Optional locals:
+    - src: String (default: nil) - Image URL. Falls back to initials when omitted.
+    - fallback: String (default: nil) - Explicit fallback text.
+    - size: String (default: "md") - "xs", "sm", "md", "lg", or "xl".
+    - status: String (default: nil) - Currently supports "online".
+    - status_label: String (default: "Online") - Screen-reader status label.
+    - pulse: Boolean (default: true) - Whether the online indicator pulses.
+    - classes: String (default: nil) - Additional wrapper classes.
+    - html_options: Hash (default: {}) - Additional wrapper attributes.
+    - image_options: Hash (default: {}) - Additional image attributes.
+%>
+
+<%
+  alt = local_assigns.fetch(:alt)
+  src = local_assigns[:src]
+  fallback = local_assigns[:fallback]
+  size = local_assigns.fetch(:size, "md").to_s
+  status = local_assigns[:status].to_s
+  status_label = local_assigns.fetch(:status_label, "Online")
+  pulse = local_assigns.fetch(:pulse, true)
+  classes = local_assigns[:classes]
+  html_options = local_assigns.fetch(:html_options, {}).to_h.deep_dup.symbolize_keys
+  image_options = local_assigns.fetch(:image_options, {}).to_h.deep_dup.symbolize_keys
+
+  size = "md" unless %w[xs sm md lg xl].include?(size)
+
+  size_classes = {
+    "xs" => "size-6",
+    "sm" => "size-8",
+    "md" => "size-10",
+    "lg" => "size-12",
+    "xl" => "size-16"
+  }
+  fallback_text_classes = {
+    "xs" => "text-[8px]",
+    "sm" => "text-[10px]",
+    "md" => "text-xs",
+    "lg" => "text-sm",
+    "xl" => "text-base"
+  }
+  status_size_classes = {
+    "xs" => "size-2 ring-1",
+    "sm" => "size-2 ring-1",
+    "md" => "size-2.5 ring-2",
+    "lg" => "size-3 ring-2",
+    "xl" => "size-4 ring-2"
+  }
+
+  wrapper_classes = [
+    "relative isolate inline-flex shrink-0 overflow-visible rounded-full bg-neutral-100 select-none",
+    "after:pointer-events-none after:absolute after:inset-0 after:z-10 after:rounded-full after:content-[''] after:shadow-[inset_0_0_0_1px_rgb(0_0_0_/_10%)]",
+    "dark:bg-neutral-800 dark:after:shadow-[inset_0_0_0_1px_rgb(255_255_255_/_10%)]",
+    size_classes.fetch(size),
+    classes,
+    html_options.delete(:class)
+  ].compact.reject(&:blank?).join(" ")
+
+  html_options[:class] = wrapper_classes
+  unless src.present?
+    html_options[:role] ||= "img"
+    html_options[:aria] = { label: alt }.merge(html_options.fetch(:aria, {}).symbolize_keys) if alt.present?
+  end
+
+  fallback_text = fallback.presence || alt.to_s.split.filter_map { |word| word[0] }.first(2).join.upcase
+  fallback_classes = "flex size-full items-center justify-center rounded-full font-medium uppercase text-neutral-600 #{fallback_text_classes.fetch(size)} dark:text-neutral-300"
+  dot_size_class = status_size_classes.fetch(size).split.first
+  status_wrapper_classes = "absolute right-0 bottom-0 z-20 flex #{dot_size_class}"
+  status_dot_classes = "relative inline-flex rounded-full bg-green-500 ring-white #{status_size_classes.fetch(size)} dark:bg-green-400 dark:ring-neutral-950"
+
+  image_options[:src] = src
+  image_options[:alt] = alt
+  image_options[:class] = ["size-full rounded-full object-cover", image_options[:class]].compact.reject(&:blank?).join(" ")
+%>
+
+<span <%= tag.attributes(html_options) %>>
+  <% if src.present? %>
+    <%= tag.img(**image_options) %>
+  <% else %>
+    <span class="<%= fallback_classes %>" aria-hidden="true"><%= fallback_text %></span>
+  <% end %>
+
+  <% if status == "online" %>
+    <span class="<%= status_wrapper_classes %>">
+      <% if pulse %>
+        <span class="absolute inline-flex size-full animate-ping rounded-full bg-green-400 opacity-75 motion-reduce:animate-none dark:bg-green-300" aria-hidden="true"></span>
+      <% end %>
+      <span class="<%= status_dot_classes %>" aria-hidden="true"></span>
+      <span class="sr-only"><%= status_label %></span>
+    </span>
+  <% end %>
+</span>

@@ -1,0 +1,103 @@
+<%#
+  Avatar Group
+
+  Required locals:
+    - avatars: Array<Hash> - Avatar options. Each entry requires :alt.
+
+  Optional locals:
+    - size: String (default: "md") - Shared avatar size.
+    - remaining_count: Integer (default: nil) - Number displayed after visible avatars.
+    - label: String (default: "Avatar group") - Accessible group label.
+    - animated: Boolean (default: false) - Expand compact overlap on hover.
+    - classes: String (default: nil) - Additional wrapper classes.
+    - html_options: Hash (default: {}) - Additional wrapper attributes.
+%>
+
+<%
+  avatars = local_assigns.fetch(:avatars)
+  size = local_assigns.fetch(:size, "md").to_s
+  remaining_count = local_assigns[:remaining_count]
+  label = local_assigns.fetch(:label, "Avatar group")
+  animated = local_assigns.fetch(:animated, false)
+  classes = local_assigns[:classes]
+  html_options = local_assigns.fetch(:html_options, {}).to_h.deep_dup.symbolize_keys
+
+  size = "md" unless %w[xs sm md lg xl].include?(size)
+
+  overlap_classes = {
+    "xs" => "-space-x-2",
+    "sm" => "-space-x-3",
+    "md" => "-space-x-4",
+    "lg" => "-space-x-5",
+    "xl" => "-space-x-6"
+  }
+  compact_overlap_classes = {
+    "xs" => "-space-x-4",
+    "sm" => "-space-x-5",
+    "md" => "-space-x-6",
+    "lg" => "-space-x-7",
+    "xl" => "-space-x-8"
+  }
+  size_classes = {
+    "xs" => "size-6",
+    "sm" => "size-8",
+    "md" => "size-10",
+    "lg" => "size-12",
+    "xl" => "size-16"
+  }
+  fallback_text_classes = {
+    "xs" => "text-[8px]",
+    "sm" => "text-[10px]",
+    "md" => "text-xs",
+    "lg" => "text-sm",
+    "xl" => "text-base"
+  }
+
+  wrapper_classes = [
+    animated ? "group flex w-fit" : "flex w-fit",
+    animated ? compact_overlap_classes.fetch(size) : overlap_classes.fetch(size),
+    classes,
+    html_options.delete(:class)
+  ].compact.reject(&:blank?).join(" ")
+  html_options[:class] = wrapper_classes
+  html_options[:role] ||= "group"
+  html_options[:aria] = { label: label }.merge(html_options.fetch(:aria, {}).symbolize_keys)
+
+  item_wrapper_classes = if animated
+    "inline-flex isolate transition-transform duration-200 ease-in-out group-hover:translate-x-[var(--avatar-offset)] motion-reduce:transform-none motion-reduce:transition-none"
+  else
+    "inline-flex isolate"
+  end
+
+  count_classes = [
+    "relative isolate inline-flex shrink-0 items-center justify-center rounded-full bg-neutral-100 font-medium text-neutral-600 select-none",
+    "after:pointer-events-none after:absolute after:inset-0 after:z-10 after:rounded-full after:content-[''] after:shadow-[inset_0_0_0_1px_rgb(0_0_0_/_10%)]",
+    "dark:bg-neutral-800 dark:text-neutral-300 dark:after:shadow-[inset_0_0_0_1px_rgb(255_255_255_/_10%)]",
+    size_classes.fetch(size),
+    fallback_text_classes.fetch(size)
+  ].join(" ")
+%>
+
+<div <%= tag.attributes(html_options) %>>
+  <% avatars.each_with_index do |avatar, index| %>
+    <span class="<%= item_wrapper_classes %>" <% if animated %>style="--avatar-offset: <%= index * 0.5 %>rem"<% end %>>
+      <%= render "shared/components/avatar/avatar",
+        src: avatar[:src],
+        alt: avatar.fetch(:alt),
+        fallback: avatar[:fallback],
+        size: size,
+        status: avatar[:status],
+        status_label: avatar.fetch(:status_label, "Online"),
+        pulse: avatar.fetch(:pulse, true),
+        classes: avatar[:classes],
+        html_options: avatar.fetch(:html_options, {}),
+        image_options: avatar.fetch(:image_options, {}) %>
+    </span>
+  <% end %>
+
+  <% if remaining_count.to_i.positive? %>
+    <span class="<%= item_wrapper_classes %>" <% if animated %>style="--avatar-offset: <%= avatars.size * 0.5 %>rem"<% end %>>
+      <span class="<%= count_classes %>" role="img" aria-label="<%= remaining_count %> more">+<%= remaining_count %></span>
+    </span>
+  <% end %>
+</div>

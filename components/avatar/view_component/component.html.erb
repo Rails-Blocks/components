@@ -1,0 +1,17 @@
+<%= content_tag(:span, **wrapper_attributes) do %>
+  <% if image? %>
+    <%= tag.img(**image_attributes) %>
+  <% else %>
+    <span class="<%= fallback_classes %>" aria-hidden="true"><%= fallback_text %></span>
+  <% end %>
+
+  <% if online? %>
+    <span class="<%= status_wrapper_classes %>">
+      <% if pulse %>
+        <span class="absolute inline-flex size-full animate-ping rounded-full bg-green-400 opacity-75 motion-reduce:animate-none dark:bg-green-300" aria-hidden="true"></span>
+      <% end %>
+      <span class="<%= status_dot_classes %>" aria-hidden="true"></span>
+      <span class="sr-only"><%= status_label %></span>
+    </span>
+  <% end %>
+<% end %>

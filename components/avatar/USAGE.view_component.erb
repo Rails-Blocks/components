@@ -1,0 +1,32 @@
+<!-- Basic avatar -->
+<%= render Avatar::Component.new(
+  src: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=160&h=160&fit=crop&crop=face&auto=format&q=80",
+  alt: "Olivia Martin",
+  size: :lg
+) %>
+
+<!-- Avatar with an accessible, pulsing online status -->
+<%= render Avatar::Component.new(
+  src: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=160&h=160&fit=crop&crop=face&auto=format&q=80",
+  alt: "Noah Williams",
+  size: :lg,
+  status: :online,
+  status_label: "Online"
+) %>
+
+<!-- Initials fallback -->
+<%= render Avatar::Component.new(alt: "Avery Stone", size: :md) %>
+
+<!-- Avatar group -->
+<%= render Avatar::GroupComponent.new(size: :md, remaining_count: 3, label: "Project members") do |group| %>
+  <% group.with_avatar(src: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=160&h=160&fit=crop&crop=face&auto=format&q=80", alt: "Olivia Martin") %>
+  <% group.with_avatar(src: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=160&h=160&fit=crop&crop=face&auto=format&q=80", alt: "Noah Williams") %>
+  <% group.with_avatar(src: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=160&h=160&fit=crop&crop=face&auto=format&q=80", alt: "Emma Davis") %>
+<% end %>
+
+<!-- Animated avatar group: compact at rest, normal overlap on hover -->
+<%= render Avatar::GroupComponent.new(size: :md, remaining_count: 3, label: "Project members", animated: true) do |group| %>
+  <% group.with_avatar(src: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=160&h=160&fit=crop&crop=face&auto=format&q=80", alt: "Olivia Martin") %>
+  <% group.with_avatar(src: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=160&h=160&fit=crop&crop=face&auto=format&q=80", alt: "Noah Williams") %>
+  <% group.with_avatar(src: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=160&h=160&fit=crop&crop=face&auto=format&q=80", alt: "Emma Davis") %>
+<% end %>

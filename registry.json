@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-06-02T22:05:57Z",
+  "generated_at": "2026-07-14T14:38:10Z",
   "version": "0.1.1",
   "source": "rails-blocks",
   "stimulus_controllers": {
@@ -169,6 +169,29 @@
       "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/autogrow.zip.sha256",
       "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/autogrow-stimulus.zip",
       "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/autogrow-stimulus.zip.sha256"
+    },
+    {
+      "slug": "avatar",
+      "title": "Avatar",
+      "pro": false,
+      "dependencies": [
+        "tailwindcss"
+      ],
+      "required_stimulus_controllers": [],
+      "requires_stimulus_controller": false,
+      "has_complex_installation": false,
+      "markdown_available": true,
+      "view_component_available": true,
+      "erb_template_available": true,
+      "docs_path": "/docs/avatar.md",
+      "docs_url": "https://railsblocks.com/docs/avatar",
+      "markdown_url": "https://railsblocks.com/docs/avatar.md",
+      "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/avatar/AVATAR.md",
+      "upgrade_url": null,
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/avatar.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/avatar.zip.sha256",
+      "stimulus_package_url": null,
+      "stimulus_checksum_url": null
     },
     {
       "slug": "badge",

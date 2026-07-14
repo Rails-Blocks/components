@@ -1,0 +1,26 @@
+{
+  "component": "avatar",
+  "implementation": "view_component",
+  "files": [
+    {
+      "path": "avatar/group_component.html.erb",
+      "relative_path": "group_component.html.erb",
+      "checksum": "db1bb5e35b5c2d41c2d6fc18b597e0ffc83c8e4540e724d99de2993e2561887c"
+    },
+    {
+      "path": "avatar/component.rb",
+      "relative_path": "component.rb",
+      "checksum": "af7aa3a1e9f7f93d12483e4fe965c4bec7276569002812df68883a1d4093c887"
+    },
+    {
+      "path": "avatar/group_component.rb",
+      "relative_path": "group_component.rb",
+      "checksum": "d41608b2aadf52efcc6a73232f44df0c85cd3df424b1672084dd3419f781c9d0"
+    },
+    {
+      "path": "avatar/component.html.erb",
+      "relative_path": "component.html.erb",
+      "checksum": "dd753edcb9c6c281a119ab070d801f97cc4e65d7519484f702c3b3f6751154d9"
+    }
+  ]
+}

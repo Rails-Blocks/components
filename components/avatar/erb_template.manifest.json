@@ -1,0 +1,16 @@
+{
+  "component": "avatar",
+  "implementation": "erb_template",
+  "files": [
+    {
+      "path": "avatar/_avatar_group.html.erb",
+      "relative_path": "_avatar_group.html.erb",
+      "checksum": "d2d7efc73d9d3d4dac237f2beb7bb205732d4497ae97455056dcb6c6ae63cab1"
+    },
+    {
+      "path": "avatar/_avatar.html.erb",
+      "relative_path": "_avatar.html.erb",
+      "checksum": "d7ee7791571aaac7b303f620fea6c911b108fd5104e8e69e9b3ce56dd1cd4b02"
+    }
+  ]
+}
