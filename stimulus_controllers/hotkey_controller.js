@@ -17,11 +17,7 @@ export default class extends Controller {
     if (this.hasAllowWhileTypingValue && this.allowWhileTypingValue === true) return false;
 
     const targetElement =
-      event.target instanceof Element
-        ? event.target
-        : event.target instanceof Node
-          ? event.target.parentElement
-          : null;
+      event.target instanceof Element ? event.target : event.target instanceof Node ? event.target.parentElement : null;
 
     if (!targetElement) return false;
 

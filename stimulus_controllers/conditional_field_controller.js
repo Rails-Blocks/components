@@ -18,8 +18,8 @@ export default class extends Controller {
 
   updateVisibility() {
     // Find all checked inputs (works for both radios and checkboxes)
-    const checkedInputs = this.element.querySelectorAll('input:checked');
-    const selectedValues = Array.from(checkedInputs).map(input => input.value);
+    const checkedInputs = this.element.querySelectorAll("input:checked");
+    const selectedValues = Array.from(checkedInputs).map((input) => input.value);
 
     // Hide all conditional fields first
     this.conditionalFieldTargets.forEach((field) => {
@@ -31,7 +31,7 @@ export default class extends Controller {
       if (this.fieldMapValue[selectedValue]) {
         const targetFieldName = this.fieldMapValue[selectedValue];
         const targetField = this.conditionalFieldTargets.find(
-          (field) => field.dataset.conditionalField === targetFieldName
+          (field) => field.dataset.conditionalField === targetFieldName,
         );
 
         if (targetField) {

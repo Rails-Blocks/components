@@ -137,7 +137,7 @@ export default class extends Controller {
       "dark:bg-lime-400",
       "dark:bg-green-400",
       "bg-neutral-300",
-      "dark:bg-neutral-600"
+      "dark:bg-neutral-600",
     );
 
     if (strength === 0) {
@@ -169,7 +169,7 @@ export default class extends Controller {
           "dark:text-red-400",
           "dark:text-yellow-400",
           "dark:text-lime-400",
-          "dark:text-green-400"
+          "dark:text-green-400",
         );
 
         // Update text content and color classes

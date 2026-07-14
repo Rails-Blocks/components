@@ -66,7 +66,10 @@ export default class extends Controller {
 
     // Validate the date
     if (isNaN(endTime.getTime())) {
-      console.error("Invalid countdown end time. Please provide a valid ISO 8601 date string (e.g., '2024-12-31T23:59:59'):", this.countdownEndTimeValue);
+      console.error(
+        "Invalid countdown end time. Please provide a valid ISO 8601 date string (e.g., '2024-12-31T23:59:59'):",
+        this.countdownEndTimeValue,
+      );
       return;
     }
 
@@ -223,4 +226,3 @@ export default class extends Controller {
     this.setCookie(shownCookieName, "true", 0);
   }
 }
-

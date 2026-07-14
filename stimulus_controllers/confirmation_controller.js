@@ -141,7 +141,7 @@ export default class extends Controller {
           value: this.getConfirmationValue(),
           controller: this,
         },
-      })
+      }),
     );
 
     return true;
@@ -161,7 +161,7 @@ export default class extends Controller {
     this.element.dispatchEvent(
       new CustomEvent("confirmation:cancelled", {
         detail: { controller: this },
-      })
+      }),
     );
   }
 

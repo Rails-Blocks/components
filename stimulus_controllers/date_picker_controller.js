@@ -329,7 +329,7 @@ export default class extends Controller {
             }
           });
         },
-        { animationFrame: true }
+        { animationFrame: true },
       );
 
       this.cleanupAutoUpdate = this.currentPositionCleanupAutoUpdate;
@@ -502,7 +502,7 @@ export default class extends Controller {
     // This method is called from the inline calendar to sync to main picker
     // Find the main date picker controller in the parent dropdown
     const dropdownElement = this.element.closest(
-      '[data-controller*="dropdown-popover"][data-controller*="date-picker"]'
+      '[data-controller*="dropdown-popover"][data-controller*="date-picker"]',
     );
     if (dropdownElement) {
       const mainController = this.application.getControllerForElementAndIdentifier(dropdownElement, "date-picker");
@@ -514,7 +514,7 @@ export default class extends Controller {
           // Format the dates for the main input
           const formattedValue = mainController._formatDateRange(
             selectedDates[0],
-            selectedDates[selectedDates.length - 1]
+            selectedDates[selectedDates.length - 1],
           );
           mainController.inputTarget.value = formattedValue;
 
@@ -549,7 +549,7 @@ export default class extends Controller {
         if (mainController.rangeValue ? selectedDates.length >= 2 : selectedDates.length >= 1) {
           const dropdownController = this.application.getControllerForElementAndIdentifier(
             dropdownElement,
-            "dropdown-popover"
+            "dropdown-popover",
           );
           if (dropdownController) {
             dropdownController.close();

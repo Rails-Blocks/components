@@ -52,7 +52,7 @@ export default class extends Controller {
     // Add transform utility for smooth size mapping
     const sizeTransformer = transform(
       [-150, 0, 150], // Input range (distance from center)
-      [40, 80, 40] // Output range (icon size)
+      [40, 80, 40], // Output range (icon size)
     );
 
     this.iconTargets.forEach((icon) => {
@@ -74,7 +74,7 @@ export default class extends Controller {
           damping: 80,
           mass: 0.7,
           restDelta: 0.1,
-        }
+        },
       );
     });
   }
@@ -151,7 +151,7 @@ export default class extends Controller {
         damping: 80,
         mass: 5,
         restDelta: 0.1,
-      }
+      },
     ).finished;
   }
 
