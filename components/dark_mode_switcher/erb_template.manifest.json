@@ -1,0 +1,11 @@
+{
+  "component": "dark_mode_switcher",
+  "implementation": "erb_template",
+  "files": [
+    {
+      "path": "dark_mode_switcher/_dark_mode_switcher.html.erb",
+      "relative_path": "_dark_mode_switcher.html.erb",
+      "checksum": "b8de839fb0eb16276a335f2cfd054906b4e61081d6110e8e9bca5eaa82025143"
+    }
+  ]
+}

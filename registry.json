@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-07-15T16:01:04Z",
+  "generated_at": "2026-07-15T22:40:03Z",
   "version": "0.1.1",
   "source": "rails-blocks",
   "stimulus_controllers": {
@@ -35,6 +35,7 @@
       "sidebar_controller.js",
       "shoelace_color_picker_controller.js",
       "toast_controller.js",
+      "theme_controller.js",
       "tooltip_controller.js",
       "tree_view_controller.js",
       "two_factor_controller.js"
@@ -620,6 +621,34 @@
       "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/date_picker.zip.sha256",
       "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/date_picker-stimulus.zip",
       "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/date_picker-stimulus.zip.sha256"
+    },
+    {
+      "slug": "dark_mode_switcher",
+      "title": "Dark Mode Switcher",
+      "pro": false,
+      "dependencies": [
+        "tailwindcss",
+        "stimulus",
+        "floating_ui"
+      ],
+      "required_stimulus_controllers": [
+        "theme_controller.js",
+        "tooltip_controller.js"
+      ],
+      "requires_stimulus_controller": true,
+      "has_complex_installation": true,
+      "markdown_available": true,
+      "view_component_available": true,
+      "erb_template_available": true,
+      "docs_path": "/docs/dark-mode-switcher.md",
+      "docs_url": "https://railsblocks.com/docs/dark-mode-switcher",
+      "markdown_url": "https://railsblocks.com/docs/dark-mode-switcher.md",
+      "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/dark_mode_switcher/DARK_MODE_SWITCHER.md",
+      "upgrade_url": null,
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/dark_mode_switcher.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/dark_mode_switcher.zip.sha256",
+      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/dark_mode_switcher-stimulus.zip",
+      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/dark_mode_switcher-stimulus.zip.sha256"
     },
     {
       "slug": "dock",

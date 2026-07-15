@@ -1,0 +1,16 @@
+{
+  "component": "dark_mode_switcher",
+  "implementation": "view_component",
+  "files": [
+    {
+      "path": "dark_mode_switcher/component.rb",
+      "relative_path": "component.rb",
+      "checksum": "cebf88c693688fef1eb368e4f8db24da1f95f8e092ab14727f3fb394e7cfb167"
+    },
+    {
+      "path": "dark_mode_switcher/component.html.erb",
+      "relative_path": "component.html.erb",
+      "checksum": "e9916d3e40cd1795ed0cbb3494e1fa182e7be7eadfc4942118e1ea875c938267"
+    }
+  ]
+}
