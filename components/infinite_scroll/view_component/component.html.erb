@@ -1,0 +1,25 @@
+<%= content_tag(:div, **wrapper_attributes) do %>
+  <div <%= tag.attributes(viewport_attributes) %>>
+    <%= content_tag(items_tag, content, **items_attributes) %>
+
+    <div class="<%= sentinel_classes %>" data-infinite-scroll-target="sentinel"></div>
+
+    <div class="<%= controls_classes %>" data-infinite-scroll-target="controls">
+      <button
+        type="button"
+        class="pointer-events-auto inline-flex min-h-9 min-w-32 items-center justify-center gap-2 rounded-full bg-neutral-100/75 px-4 py-2 text-sm font-medium text-neutral-600 opacity-0 shadow-lg shadow-black/10 ring-1 ring-black/10 backdrop-blur-sm backdrop-filter transition-[color,background-color,opacity] duration-150 ease-out motion-reduce:transition-none hover:bg-neutral-100 hover:text-neutral-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-600 disabled:cursor-wait dark:bg-neutral-800/75 dark:text-neutral-300 dark:ring-white/15 dark:hover:bg-neutral-800 dark:hover:text-white dark:focus-visible:outline-neutral-300"
+        data-infinite-scroll-target="button"
+        data-action="infinite-scroll#load"
+        <% unless next_page? && manual? %>hidden<% end %>>
+        <svg hidden data-infinite-scroll-target="spinner" class="size-4 animate-spin motion-reduce:animate-none" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <circle class="opacity-25" cx="12" cy="12" r="9" stroke="currentColor" stroke-width="3"></circle>
+          <path class="opacity-80" fill="currentColor" d="M21 12a9 9 0 0 0-9-9v3a6 6 0 0 1 6 6h3Z"></path>
+        </svg>
+        <span class="motion-reduce:animate-none" data-infinite-scroll-target="label"><%= load_more_label %></span>
+      </button>
+      <p <% if next_page? %>hidden<% end %> class="rounded-full bg-neutral-100/75 px-4 py-2 text-sm text-neutral-500 shadow-lg shadow-black/10 ring-1 ring-black/10 backdrop-blur-sm backdrop-filter dark:bg-neutral-800/75 dark:text-neutral-400 dark:ring-white/15" data-infinite-scroll-target="end"><%= end_message %></p>
+    </div>
+  </div>
+
+  <p class="sr-only" aria-live="polite" data-infinite-scroll-target="status"></p>
+<% end %>

@@ -1,0 +1,65 @@
+<%
+  preview_product = Struct.new(:id, :name, :description, keyword_init: true)
+  preview_activity = Struct.new(:id, :description, keyword_init: true)
+  products = @products.presence || Array.new(30) do |index|
+    preview_product.new(
+      id: index + 1,
+      name: "Workspace template #{index + 1}",
+      description: "A flexible starting point your team can customize."
+    )
+  end
+  activities = @activities.presence || Array.new(30) do |index|
+    preview_activity.new(
+      id: index + 1,
+      description: "Team update #{index + 1} was added to the workspace."
+    )
+  end
+  next_page = @pagy&.next
+  previewing = @pagy.nil?
+  visible_products = previewing ? products.first(6) : products
+  visible_activities = previewing ? activities.first(6) : activities
+  products_next_url = if next_page
+    products_path(page: next_page)
+  elsif previewing
+    infinite_scroll_items_path(page: 2, preview: "products")
+  end
+  activities_next_url = if next_page
+    activities_path(page: next_page)
+  elsif previewing
+    infinite_scroll_items_path(page: 2, preview: "activities")
+  end
+%>
+
+<!-- A page-level responsive card grid. Each card is a direct child of the items container. -->
+<%= render(InfiniteScroll::Component.new(
+  next_url: products_next_url,
+  manual: true,
+  scroll_root: :container,
+  viewport_classes: "max-h-[32rem] overflow-y-auto overscroll-contain",
+  items_classes: "grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3",
+  classes: "w-full overflow-hidden"
+)) do %>
+  <% visible_products.each do |product| %>
+    <article id="product_<%= product.id %>" class="rounded-xl border border-black/10 bg-white p-5 shadow-xs dark:border-white/10 dark:bg-neutral-900">
+      <h3 class="font-semibold text-neutral-950 dark:text-white"><%= product.name %></h3>
+      <p class="mt-2 text-sm text-neutral-500 dark:text-neutral-400"><%= product.description %></p>
+    </article>
+  <% end %>
+<% end %>
+
+<!-- An internally scrolling semantic activity list. -->
+<%= render(InfiniteScroll::Component.new(
+  next_url: activities_next_url,
+  scroll_root: :container,
+  items_tag: :ol,
+  viewport_classes: "max-h-[32rem] overflow-y-auto overscroll-contain",
+  items_classes: "divide-y divide-neutral-200 dark:divide-neutral-800",
+  classes: "overflow-hidden rounded-xl border border-black/10 dark:border-white/10"
+)) do %>
+  <% visible_activities.each do |activity| %>
+    <li id="activity_<%= activity.id %>" class="p-4"><%= activity.description %></li>
+  <% end %>
+<% end %>
+
+<!-- The JSON endpoint returns item HTML only; every top-level element is appended. -->
+<%# render json: { html: render_to_string(partial: "products/products", locals: { products: @products }), next_url: @next_page_url } %>

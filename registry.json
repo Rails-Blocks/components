@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-07-14T14:38:10Z",
+  "generated_at": "2026-07-15T16:01:04Z",
   "version": "0.1.1",
   "source": "rails-blocks",
   "stimulus_controllers": {
@@ -22,6 +22,7 @@
       "emoji_picker_controller.js",
       "feedback_controller.js",
       "hotkey_controller.js",
+      "infinite_scroll_controller.js",
       "lightbox_controller.js",
       "marquee_controller.js",
       "navbar_controller.js",
@@ -773,6 +774,33 @@
       "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/forms.zip.sha256",
       "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/forms-stimulus.zip",
       "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/forms-stimulus.zip.sha256"
+    },
+    {
+      "slug": "infinite_scroll",
+      "title": "Infinite Scroll",
+      "pro": false,
+      "dependencies": [
+        "tailwindcss",
+        "stimulus",
+        "pagy"
+      ],
+      "required_stimulus_controllers": [
+        "infinite_scroll_controller.js"
+      ],
+      "requires_stimulus_controller": true,
+      "has_complex_installation": true,
+      "markdown_available": true,
+      "view_component_available": true,
+      "erb_template_available": true,
+      "docs_path": "/docs/infinite-scroll.md",
+      "docs_url": "https://railsblocks.com/docs/infinite-scroll",
+      "markdown_url": "https://railsblocks.com/docs/infinite-scroll.md",
+      "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/infinite_scroll/INFINITE_SCROLL.md",
+      "upgrade_url": null,
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/infinite_scroll.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/infinite_scroll.zip.sha256",
+      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/infinite_scroll-stimulus.zip",
+      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.1/infinite_scroll-stimulus.zip.sha256"
     },
     {
       "slug": "kbd",

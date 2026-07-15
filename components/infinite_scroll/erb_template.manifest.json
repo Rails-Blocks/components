@@ -1,0 +1,11 @@
+{
+  "component": "infinite_scroll",
+  "implementation": "erb_template",
+  "files": [
+    {
+      "path": "infinite_scroll/_infinite_scroll.html.erb",
+      "relative_path": "_infinite_scroll.html.erb",
+      "checksum": "6df0847220a0043e481475fa244d5c0e7f7c5a4d459069a587cab47ca5a30601"
+    }
+  ]
+}

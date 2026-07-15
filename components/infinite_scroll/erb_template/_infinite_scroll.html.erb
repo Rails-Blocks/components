@@ -1,0 +1,85 @@
+<%#
+  Flexible Infinite Scroll
+
+  Required locals:
+    - next_url: String or nil - URL for the next JSON batch; nil marks the collection complete
+
+  Content:
+    Pass arbitrary direct child elements in a render block, or with the content local.
+    The JSON endpoint must return { html: "...", next_url: "..." }. Each top-level
+    element in html is appended directly to the items container.
+
+  Optional locals:
+    - scroll_root: "window" or "container" (default: "window")
+    - root_margin: IntersectionObserver root margin (default: "0px 0px 120px")
+    - animate: Animate initial and appended items (default: true)
+    - manual: Disable automatic loading and show a Load more button (default: false)
+    - items_tag: "div", "ul", or "ol" (default: "div")
+    - classes, viewport_classes, items_classes: Additional layout classes
+    - sentinel_classes: Additional floating-controls wrapper classes
+    - load_more_label, loading_label, end_message, error_message: UI copy
+    - html_options: Additional wrapper attributes
+%>
+
+<% scroll_root = local_assigns.fetch(:scroll_root, "window").to_s %>
+<% scroll_root = "window" unless %w[window container].include?(scroll_root) %>
+<% root_margin = local_assigns.fetch(:root_margin, "0px 0px 120px") %>
+<% root_margin = "0px 0px 120px" if root_margin.blank? %>
+<% animate = local_assigns.fetch(:animate, true) %>
+<% manual = local_assigns.fetch(:manual, false) %>
+<% items_tag = local_assigns.fetch(:items_tag, "div").to_s %>
+<% items_tag = "div" unless %w[div ul ol].include?(items_tag) %>
+<% classes = local_assigns[:classes] %>
+<% viewport_classes = local_assigns[:viewport_classes] %>
+<% items_classes = local_assigns[:items_classes] %>
+<% sentinel_classes = local_assigns[:sentinel_classes] %>
+<% load_more_label = local_assigns.fetch(:load_more_label, "Load more") %>
+<% loading_label = local_assigns.fetch(:loading_label, "Loading...") %>
+<% end_message = local_assigns.fetch(:end_message, "You're all caught up") %>
+<% error_message = local_assigns.fetch(:error_message, "More items could not be loaded. Try again.") %>
+<% html_options = local_assigns.fetch(:html_options, {}).to_h.deep_dup.deep_symbolize_keys %>
+<% item_content = local_assigns.key?(:content) ? content : (capture { yield } if block_given?) %>
+
+<%
+  data = html_options.fetch(:data, {})
+  data[:controller] = [data[:controller], "infinite-scroll"].compact.join(" ")
+  data[:infinite_scroll_url_value] = next_url if next_url.present?
+  data[:infinite_scroll_scroll_root_value] = scroll_root
+  data[:infinite_scroll_root_margin_value] = root_margin
+  data[:infinite_scroll_animate_value] = animate
+  data[:infinite_scroll_manual_value] = manual
+  data[:infinite_scroll_load_more_label_value] = load_more_label
+  data[:infinite_scroll_loading_label_value] = loading_label
+  data[:infinite_scroll_end_message_value] = end_message
+  data[:infinite_scroll_error_message_value] = error_message
+  html_options[:data] = data
+  html_options[:class] = ["relative", classes, html_options[:class]].compact.reject(&:blank?).join(" ")
+  sentinel_class_names = "h-20 [overflow-anchor:none]"
+  controls_class_names = ["pointer-events-none bottom-0 z-10 -mt-20 flex h-20 items-center justify-center px-4 py-3", ("sticky" if next_url.present?), sentinel_classes].compact.reject(&:blank?).join(" ")
+%>
+
+<%= content_tag(:div, **html_options) do %>
+  <div class="<%= viewport_classes %>" data-infinite-scroll-target="viewport">
+    <%= content_tag(items_tag, item_content, class: items_classes, data: { infinite_scroll_target: "list" }) %>
+
+    <div class="<%= sentinel_class_names %>" data-infinite-scroll-target="sentinel"></div>
+
+    <div class="<%= controls_class_names %>" data-infinite-scroll-target="controls">
+      <button
+        type="button"
+        class="pointer-events-auto inline-flex min-h-9 min-w-32 items-center justify-center gap-2 rounded-full bg-neutral-100/75 px-4 py-2 text-sm font-medium text-neutral-600 opacity-0 shadow-lg shadow-black/10 ring-1 ring-black/10 backdrop-blur-sm backdrop-filter transition-[color,background-color,opacity] duration-150 ease-out motion-reduce:transition-none hover:bg-neutral-100 hover:text-neutral-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-600 disabled:cursor-wait dark:bg-neutral-800/75 dark:text-neutral-300 dark:ring-white/15 dark:hover:bg-neutral-800 dark:hover:text-white dark:focus-visible:outline-neutral-300"
+        data-infinite-scroll-target="button"
+        data-action="infinite-scroll#load"
+        <% unless next_url.present? && manual %>hidden<% end %>>
+        <svg hidden data-infinite-scroll-target="spinner" class="size-4 animate-spin motion-reduce:animate-none" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <circle class="opacity-25" cx="12" cy="12" r="9" stroke="currentColor" stroke-width="3"></circle>
+          <path class="opacity-80" fill="currentColor" d="M21 12a9 9 0 0 0-9-9v3a6 6 0 0 1 6 6h3Z"></path>
+        </svg>
+        <span class="motion-reduce:animate-none" data-infinite-scroll-target="label"><%= load_more_label %></span>
+      </button>
+      <p <% if next_url.present? %>hidden<% end %> class="rounded-full bg-neutral-100/75 px-4 py-2 text-sm text-neutral-500 shadow-lg shadow-black/10 ring-1 ring-black/10 backdrop-blur-sm backdrop-filter dark:bg-neutral-800/75 dark:text-neutral-400 dark:ring-white/15" data-infinite-scroll-target="end"><%= end_message %></p>
+    </div>
+  </div>
+
+  <p class="sr-only" aria-live="polite" data-infinite-scroll-target="status"></p>
+<% end %>
