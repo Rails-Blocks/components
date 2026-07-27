@@ -159,6 +159,10 @@ option:hover {
   @apply size-4 cursor-pointer appearance-none rounded-sm border border-neutral-300 bg-white accent-primary checked:border-primary checked:bg-primary focus:outline-2 focus:outline-offset-2 focus:outline-primary-content focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-content disabled:border-neutral-300 disabled:bg-neutral-100 disabled:checked:bg-neutral-100 dark:border-white/20 dark:bg-neutral-800 dark:checked:border-primary dark:checked:bg-primary dark:focus:outline-primary-content dark:focus-visible:outline-primary-content dark:disabled:border-neutral-500 dark:disabled:bg-neutral-400 dark:disabled:checked:bg-neutral-500 forced-colors:appearance-auto;
 }
 
+.dark [type="checkbox"]:focus {
+  outline-color: var(--color-primary-content);
+}
+
 /* Default primary flips to white without overwriting a generated theme. */
 .dark {
   --color-primary: var(--rb-primary, var(--color-white));
@@ -185,7 +189,8 @@ option:hover {
 }
 
 [type="checkbox"]:indeterminate {
-  @apply border-primary bg-primary;
+  border-color: var(--color-primary);
+  background-color: var(--color-primary);
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3e%3cg fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' %3e%3cline x1='10.75' y1='6' x2='1.25' y2='6'%3e%3c/line%3e%3c/g%3e%3c/svg%3e");
   background-size: 75% 75%;
   background-position: center;
@@ -214,6 +219,10 @@ option:hover {
 
 [type="radio"] {
   @apply size-4 cursor-pointer appearance-none rounded-full border border-neutral-300 bg-white accent-primary checked:border-primary checked:bg-primary focus:outline-2 focus:outline-offset-2 focus:outline-primary-content focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-content disabled:border-neutral-300 disabled:bg-neutral-100 disabled:checked:bg-neutral-100 dark:border-white/20 dark:bg-neutral-800 dark:checked:border-primary dark:checked:bg-primary dark:focus:outline-primary-content dark:focus-visible:outline-primary-content dark:disabled:border-neutral-500 dark:disabled:bg-neutral-400 dark:disabled:checked:bg-neutral-500 forced-colors:appearance-auto;
+}
+
+.dark [type="radio"]:focus {
+  outline-color: var(--color-primary-content);
 }
 
 [type="radio"]:checked {
