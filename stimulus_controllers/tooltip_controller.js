@@ -225,22 +225,25 @@ export default class extends Controller {
 
     if (!kbdValue) {
       this.tooltipElement.innerHTML = this.tooltipContent;
-      return;
+    } else {
+      const contentElement = document.createElement("span");
+      contentElement.className = "min-w-0";
+      contentElement.innerHTML = this.tooltipContent;
+
+      const kbdElement = document.createElement("span");
+      kbdElement.className = tooltipKbdClasses;
+      this._renderKbdValue(kbdElement, kbdValue);
+
+      const contentWrapper = document.createElement("span");
+      contentWrapper.className = "flex items-center gap-1.5";
+      contentWrapper.append(contentElement, kbdElement);
+
+      this.tooltipElement.replaceChildren(contentWrapper);
     }
 
-    const contentElement = document.createElement("span");
-    contentElement.className = "min-w-0";
-    contentElement.innerHTML = this.tooltipContent;
-
-    const kbdElement = document.createElement("span");
-    kbdElement.className = tooltipKbdClasses;
-    this._renderKbdValue(kbdElement, kbdValue);
-
-    const contentWrapper = document.createElement("span");
-    contentWrapper.className = "flex items-center gap-1.5";
-    contentWrapper.append(contentElement, kbdElement);
-
-    this.tooltipElement.replaceChildren(contentWrapper);
+    // Updating dynamic tooltip content replaces its children, including the
+    // positioning arrow. Restore the existing arrow after every re-render.
+    if (this.arrowContainer) this.tooltipElement.appendChild(this.arrowContainer);
   }
 
   _resolvedKbdValue() {

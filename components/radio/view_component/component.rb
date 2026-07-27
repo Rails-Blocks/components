@@ -109,9 +109,8 @@ module Radio
     end
 
     def base_input_classes
-      "rounded-full border-neutral-300 text-neutral-900 focus:ring-neutral-500 focus:ring-offset-0 " \
-        "dark:border-neutral-600 dark:bg-neutral-800 dark:text-neutral-100 dark:focus:ring-neutral-400 " \
-        "dark:checked:bg-neutral-600 dark:checked:border-neutral-500"
+      "rounded-full border-neutral-300 accent-primary text-primary focus:ring-primary-content focus:ring-offset-0 " \
+        "dark:border-neutral-600 dark:bg-neutral-800 dark:focus:ring-primary-content"
     end
 
     def size_input_classes

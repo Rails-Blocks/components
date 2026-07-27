@@ -21,7 +21,7 @@ export default class extends Controller {
 
     if (!targetElement) return false;
 
-    return !!targetElement.closest("input, textarea, [contenteditable], trix-editor, .trix-dialog");
+    return !!targetElement.closest("input, textarea, [contenteditable], lexxy-editor, lexxy-link-dropdown");
   }
 
   get #isClickable() {

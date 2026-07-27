@@ -8,9 +8,7 @@
     <% if @checked %>checked <% end %>
     <% if @disabled %>disabled <% end %>
     <% if @required %>required <% end %>
-    <% input_data_attributes.each do |key, val| %>
-      data-<%= key %>="<%= val %>"
-    <% end %>
+    <%= tag.attributes(data: input_data_attributes) if input_data_attributes.present? %>
   >
 
   <div class="<%= text_content_classes %>">

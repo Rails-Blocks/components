@@ -40,9 +40,8 @@
   has_supporting_text = description.present? || error.present?
 
   # Base input classes
-  base_input_classes = "rounded border-neutral-300 text-neutral-900 focus:ring-neutral-500 focus:ring-offset-0 " \
-    "dark:border-neutral-600 dark:bg-neutral-800 dark:text-neutral-100 dark:focus:ring-neutral-400 " \
-    "dark:checked:bg-neutral-600 dark:checked:border-neutral-500"
+  base_input_classes = "rounded border-neutral-300 accent-primary text-primary focus:ring-primary-content focus:ring-offset-0 " \
+    "dark:border-neutral-600 dark:bg-neutral-800 dark:focus:ring-primary-content"
 
   # Size classes for input
   size_input_classes = case size.to_s

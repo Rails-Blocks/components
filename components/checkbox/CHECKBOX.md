@@ -12,6 +12,7 @@ Styled checkbox inputs with labels, descriptions, and various states. Perfect fo
 - Zero JavaScript required
 - Accessibility-friendly markup
 - Form integration with name/value attributes
+- Theme-aware semantic primary color
 - Customizable styling via class overrides
 
 ## Implementation Options
@@ -69,6 +70,27 @@ Use the object-oriented ViewComponent approach for better testing and Ruby-based
 | `classes` | String | `nil` | Additional CSS classes for the wrapper |
 | `input_classes` | String | `nil` | Additional CSS classes for the input |
 | `label_classes` | String | `nil` | Additional CSS classes for the label |
+| `data` | Hash | `{}` | ViewComponent-only data attributes for the input, including Stimulus targets and actions |
+
+---
+
+## Theming
+
+The Rails Blocks installation CSS defines `primary`, `primary-content`, and `accent` semantic tokens. Checked fills, focus rings, and native accent color follow those tokens, including generated Theme Builder recipes in light and dark mode.
+
+Keep status colors such as red or amber for validation and status UI. To customize the brand color, set the `--rb-primary`, `--rb-primary-content`, and related variables rather than adding numbered `primary-*` utilities.
+
+The ViewComponent accepts Stimulus data attributes directly:
+
+```erb
+<%= render Checkbox::Component.new(
+  label: "Select all",
+  data: {
+    checkbox_select_all_target: "selectAll",
+    action: "click->checkbox-select-all#toggleAll"
+  }
+) %>
+```
 
 ---
 

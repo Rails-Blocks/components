@@ -1,3 +1,16 @@
+/* Semantic theme tokens. Custom themes override the --rb-* variables. */
+@theme inline {
+  --color-primary: var(--rb-primary, var(--color-neutral-800));
+  --color-primary-hover: var(--rb-primary-hover, var(--color-neutral-700));
+  --color-primary-content: var(--rb-primary-content, var(--color-neutral-800));
+  --color-primary-foreground: var(--rb-primary-foreground, var(--color-white));
+  --color-accent: var(--rb-primary, var(--color-neutral-800));
+}
+
+:root {
+  accent-color: var(--color-accent);
+}
+
 kbd {
   @apply rounded-md border border-black/10 bg-white px-1 font-mono text-[11px] text-neutral-800 shadow-[0px_1.5px_0px_0px_rgba(0,0,0,0.05)] dark:border-white/10 dark:bg-neutral-900 dark:text-neutral-200 dark:shadow-[0px_1px_0px_0px_rgba(255,255,255,0.1)];
 }
@@ -143,23 +156,45 @@ option:hover {
 }
 
 [type="checkbox"] {
-  @apply size-4 cursor-pointer appearance-none rounded-sm border border-neutral-300 bg-white checked:border-neutral-700 checked:bg-neutral-700 focus:outline-2 focus:outline-offset-2 focus:outline-neutral-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-600 disabled:border-neutral-300 disabled:bg-neutral-100 disabled:checked:bg-neutral-100 dark:border-white/20 dark:bg-neutral-800 dark:checked:border-white/20 dark:checked:bg-neutral-900 dark:focus:outline-neutral-200 dark:focus-visible:outline-neutral-200 dark:disabled:border-neutral-500 dark:disabled:bg-neutral-400 dark:disabled:checked:bg-neutral-500 forced-colors:appearance-auto;
+  @apply size-4 cursor-pointer appearance-none rounded-sm border border-neutral-300 bg-white accent-primary checked:border-primary checked:bg-primary focus:outline-2 focus:outline-offset-2 focus:outline-primary-content focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-content disabled:border-neutral-300 disabled:bg-neutral-100 disabled:checked:bg-neutral-100 dark:border-white/20 dark:bg-neutral-800 dark:checked:border-primary dark:checked:bg-primary dark:focus:outline-primary-content dark:focus-visible:outline-primary-content dark:disabled:border-neutral-500 dark:disabled:bg-neutral-400 dark:disabled:checked:bg-neutral-500 forced-colors:appearance-auto;
+}
+
+/* Default primary flips to white without overwriting a generated theme. */
+.dark {
+  --color-primary: var(--rb-primary, var(--color-white));
+  --color-primary-hover: var(--rb-primary-hover, var(--color-neutral-200));
+  --color-primary-content: var(--rb-primary-content, var(--color-white));
+  --color-primary-foreground: var(--rb-primary-foreground, var(--color-neutral-900));
+  --color-accent: var(--rb-primary, var(--color-white));
 }
 
 [type="checkbox"]:checked {
-  @apply text-white dark:text-neutral-800;
+  border-color: var(--color-primary);
+  background-color: var(--color-primary);
   background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e");
   background-size: 100% 100%;
   background-position: center;
   background-repeat: no-repeat;
 }
 
+/* Dark marks when primary-foreground is dark (amber, yellow, white primary in dark mode).
+   Theme preview opts out with data-primary-mark="light" for colored primaries. */
+:where([data-primary-mark="dark"]) [type="checkbox"]:checked,
+.dark:where(:not([data-primary-mark="light"])) [type="checkbox"]:checked {
+  background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='%23171717' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e");
+}
+
 [type="checkbox"]:indeterminate {
-  @apply border-neutral-400 bg-neutral-500 dark:border-white/20 dark:bg-neutral-700;
+  @apply border-primary bg-primary;
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3e%3cg fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' %3e%3cline x1='10.75' y1='6' x2='1.25' y2='6'%3e%3c/line%3e%3c/g%3e%3c/svg%3e");
   background-size: 75% 75%;
   background-position: center;
   background-repeat: no-repeat;
+}
+
+:where([data-primary-mark="dark"]) [type="checkbox"]:indeterminate,
+.dark:where(:not([data-primary-mark="light"])) [type="checkbox"]:indeterminate {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3e%3cg fill='none' stroke='%23171717' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' %3e%3cline x1='10.75' y1='6' x2='1.25' y2='6'%3e%3c/line%3e%3c/g%3e%3c/svg%3e");
 }
 
 [type="checkbox"]:disabled {
@@ -178,15 +213,21 @@ option:hover {
 }
 
 [type="radio"] {
-  @apply size-4 cursor-pointer appearance-none rounded-full border border-neutral-300 bg-white checked:border-neutral-700 checked:bg-neutral-700 focus:outline-2 focus:outline-offset-2 focus:outline-neutral-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-600 disabled:border-neutral-300 disabled:bg-neutral-100 disabled:checked:bg-neutral-100 dark:border-white/20 dark:bg-neutral-800 dark:checked:border-white/20 dark:checked:bg-neutral-900 dark:focus:outline-neutral-200 dark:focus-visible:outline-neutral-200 dark:disabled:border-neutral-500 dark:disabled:bg-neutral-400 dark:disabled:checked:bg-neutral-500 forced-colors:appearance-auto;
+  @apply size-4 cursor-pointer appearance-none rounded-full border border-neutral-300 bg-white accent-primary checked:border-primary checked:bg-primary focus:outline-2 focus:outline-offset-2 focus:outline-primary-content focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-content disabled:border-neutral-300 disabled:bg-neutral-100 disabled:checked:bg-neutral-100 dark:border-white/20 dark:bg-neutral-800 dark:checked:border-primary dark:checked:bg-primary dark:focus:outline-primary-content dark:focus-visible:outline-primary-content dark:disabled:border-neutral-500 dark:disabled:bg-neutral-400 dark:disabled:checked:bg-neutral-500 forced-colors:appearance-auto;
 }
 
 [type="radio"]:checked {
-  @apply text-white dark:text-neutral-800;
+  border-color: var(--color-primary);
+  background-color: var(--color-primary);
   background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3ccircle cx='8' cy='8' r='3'/%3e%3c/svg%3e");
   background-size: 100% 100%;
   background-position: center;
   background-repeat: no-repeat;
+}
+
+:where([data-primary-mark="dark"]) [type="radio"]:checked,
+.dark:where(:not([data-primary-mark="light"])) [type="radio"]:checked {
+  background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='%23171717' xmlns='http://www.w3.org/2000/svg'%3e%3ccircle cx='8' cy='8' r='3'/%3e%3c/svg%3e");
 }
 
 [type="radio"]:disabled {
@@ -640,7 +681,8 @@ em-emoji-picker {
 .dark {
   em-emoji-picker {
     border: 1px solid #353535;
-    --color-border: rgba(12, 12, 12, 0.8) !important;
+    --color-border: rgba(255, 255, 255, 0.1);
+    --color-border-over: rgba(255, 255, 255, 0.2);
   }
 }
 

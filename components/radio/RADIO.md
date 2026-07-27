@@ -12,6 +12,7 @@ Styled radio button inputs with labels, descriptions, and various states. Perfec
 - Zero JavaScript required
 - Accessibility-friendly markup
 - Form integration with name/value attributes
+- Theme-aware semantic primary color
 - Customizable styling via class overrides
 - Radio groups (multiple radios with same name)
 
@@ -71,6 +72,14 @@ Use the object-oriented ViewComponent approach for better testing and Ruby-based
 | `classes` | String | `nil` | Additional CSS classes for the wrapper |
 | `input_classes` | String | `nil` | Additional CSS classes for the input |
 | `label_classes` | String | `nil` | Additional CSS classes for the label |
+
+---
+
+## Theming
+
+The Rails Blocks installation CSS defines `primary`, `primary-content`, and `accent` semantic tokens. Selected fills, focus rings, and native accent color follow those tokens, including generated Theme Builder recipes in light and dark mode.
+
+Keep status colors such as red or amber for validation and status UI. To customize the brand color, set the `--rb-primary`, `--rb-primary-content`, and related variables rather than adding numbered `primary-*` utilities.
 
 ---
 
