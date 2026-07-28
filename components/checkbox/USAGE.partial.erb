@@ -82,6 +82,14 @@
   label: "Custom input",
   input_classes: "text-blue-600 focus:ring-blue-500" %>
 
+<!-- With Stimulus data attributes -->
+<%= render "shared/components/checkbox/checkbox",
+  label: "Select all",
+  data: {
+    checkbox_select_all_target: "selectAll",
+    action: "click->checkbox-select-all#toggleAll"
+  } %>
+
 <!-- All options combined -->
 <%= render "shared/components/checkbox/checkbox",
   label: "Full featured checkbox",

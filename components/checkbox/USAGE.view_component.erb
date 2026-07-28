@@ -97,6 +97,15 @@
   input_classes: "text-blue-600 focus:ring-blue-500"
 ) %>
 
+<!-- With Stimulus data attributes -->
+<%= render Checkbox::Component.new(
+  label: "Select all",
+  data: {
+    checkbox_select_all_target: "selectAll",
+    action: "click->checkbox-select-all#toggleAll"
+  }
+) %>
+
 <!-- All options combined -->
 <%= render Checkbox::Component.new(
   label: "Full featured checkbox",

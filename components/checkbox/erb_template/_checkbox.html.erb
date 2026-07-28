@@ -19,6 +19,7 @@
     - classes: String (default: nil) - Additional CSS classes for the wrapper
     - input_classes: String (default: nil) - Additional CSS classes for the input
     - label_classes: String (default: nil) - Additional CSS classes for the label
+    - data: Hash (default: {}) - Data attributes for the input (e.g. Stimulus targets/actions)
 %>
 
 <% label ||= "" %>
@@ -35,9 +36,13 @@
 <% classes ||= nil %>
 <% input_classes ||= nil %>
 <% label_classes ||= nil %>
+<% data ||= {} %>
 
 <%
   has_supporting_text = description.present? || error.present?
+
+  input_data_attributes = data.deep_dup
+  input_data_attributes[:indeterminate] = true if indeterminate
 
   # Base input classes
   base_input_classes = "rounded border-neutral-300 accent-primary text-primary focus:ring-primary-content focus:ring-offset-0 " \
@@ -113,7 +118,7 @@
     <% if checked %>checked <% end %>
     <% if disabled %>disabled <% end %>
     <% if required %>required <% end %>
-    <% if indeterminate %>data-indeterminate="true"<% end %>
+    <%= tag.attributes(data: input_data_attributes) if input_data_attributes.present? %>
   >
 
   <div class="<%= text_content_classes %>">

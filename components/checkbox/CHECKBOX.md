@@ -70,7 +70,7 @@ Use the object-oriented ViewComponent approach for better testing and Ruby-based
 | `classes` | String | `nil` | Additional CSS classes for the wrapper |
 | `input_classes` | String | `nil` | Additional CSS classes for the input |
 | `label_classes` | String | `nil` | Additional CSS classes for the label |
-| `data` | Hash | `{}` | ViewComponent-only data attributes for the input, including Stimulus targets and actions |
+| `data` | Hash | `{}` | Data attributes for the input, including Stimulus targets and actions |
 
 ---
 
@@ -80,9 +80,16 @@ The Rails Blocks installation CSS defines `primary`, `primary-content`, and `acc
 
 Keep status colors such as red or amber for validation and status UI. To customize the brand color, set the `--rb-primary`, `--rb-primary-content`, and related variables rather than adding numbered `primary-*` utilities.
 
-The ViewComponent accepts Stimulus data attributes directly:
+Both the shared partial and ViewComponent accept Stimulus data attributes directly:
 
 ```erb
+<%= render "shared/components/checkbox/checkbox",
+  label: "Select all",
+  data: {
+    checkbox_select_all_target: "selectAll",
+    action: "click->checkbox-select-all#toggleAll"
+  } %>
+
 <%= render Checkbox::Component.new(
   label: "Select all",
   data: {

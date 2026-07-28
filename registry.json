@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-07-27T08:20:14Z",
-  "version": "0.1.4",
+  "generated_at": "2026-07-28T09:26:07Z",
+  "version": "0.1.5",
   "source": "rails-blocks",
   "stimulus_controllers": {
     "type": "free",
@@ -40,8 +40,8 @@
       "tree_view_controller.js",
       "two_factor_controller.js"
     ],
-    "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/stimulus_controllers.zip",
-    "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/stimulus_controllers.zip.sha256"
+    "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/stimulus_controllers.zip",
+    "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/stimulus_controllers.zip.sha256"
   },
   "components": [
     {
@@ -65,10 +65,10 @@
       "markdown_url": "https://railsblocks.com/docs/accordion.md",
       "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/accordion/ACCORDION.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/accordion.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/accordion.zip.sha256",
-      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/accordion-stimulus.zip",
-      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/accordion-stimulus.zip.sha256"
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/accordion.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/accordion.zip.sha256",
+      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/accordion-stimulus.zip",
+      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/accordion-stimulus.zip.sha256"
     },
     {
       "slug": "alert",
@@ -88,8 +88,8 @@
       "markdown_url": "https://railsblocks.com/docs/alert.md",
       "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/alert/ALERT.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/alert.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/alert.zip.sha256",
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/alert.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/alert.zip.sha256",
       "stimulus_package_url": null,
       "stimulus_checksum_url": null
     },
@@ -115,10 +115,10 @@
       "markdown_url": "https://railsblocks.com/docs/animated-number.md",
       "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/animated_number/ANIMATED_NUMBER.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/animated_number.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/animated_number.zip.sha256",
-      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/animated_number-stimulus.zip",
-      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/animated_number-stimulus.zip.sha256"
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/animated_number.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/animated_number.zip.sha256",
+      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/animated_number-stimulus.zip",
+      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/animated_number-stimulus.zip.sha256"
     },
     {
       "slug": "autocomplete",
@@ -167,10 +167,10 @@
       "markdown_url": "https://railsblocks.com/docs/autogrow.md",
       "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/autogrow/AUTOGROW.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/autogrow.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/autogrow.zip.sha256",
-      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/autogrow-stimulus.zip",
-      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/autogrow-stimulus.zip.sha256"
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/autogrow.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/autogrow.zip.sha256",
+      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/autogrow-stimulus.zip",
+      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/autogrow-stimulus.zip.sha256"
     },
     {
       "slug": "avatar",
@@ -190,8 +190,8 @@
       "markdown_url": "https://railsblocks.com/docs/avatar.md",
       "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/avatar/AVATAR.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/avatar.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/avatar.zip.sha256",
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/avatar.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/avatar.zip.sha256",
       "stimulus_package_url": null,
       "stimulus_checksum_url": null
     },
@@ -213,8 +213,8 @@
       "markdown_url": "https://railsblocks.com/docs/badge.md",
       "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/badge/BADGE.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/badge.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/badge.zip.sha256",
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/badge.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/badge.zip.sha256",
       "stimulus_package_url": null,
       "stimulus_checksum_url": null
     },
@@ -239,10 +239,10 @@
       "markdown_url": "https://railsblocks.com/docs/banner.md",
       "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/banner/BANNER.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/banner.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/banner.zip.sha256",
-      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/banner-stimulus.zip",
-      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/banner-stimulus.zip.sha256"
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/banner.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/banner.zip.sha256",
+      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/banner-stimulus.zip",
+      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/banner-stimulus.zip.sha256"
     },
     {
       "slug": "breadcrumb",
@@ -263,8 +263,8 @@
       "markdown_url": "https://railsblocks.com/docs/breadcrumb.md",
       "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/breadcrumb/BREADCRUMB.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/breadcrumb.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/breadcrumb.zip.sha256",
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/breadcrumb.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/breadcrumb.zip.sha256",
       "stimulus_package_url": null,
       "stimulus_checksum_url": null
     },
@@ -286,8 +286,8 @@
       "markdown_url": "https://railsblocks.com/docs/buttons.md",
       "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/buttons/BUTTONS.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/buttons.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/buttons.zip.sha256",
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/buttons.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/buttons.zip.sha256",
       "stimulus_package_url": null,
       "stimulus_checksum_url": null
     },
@@ -309,8 +309,8 @@
       "markdown_url": "https://railsblocks.com/docs/card.md",
       "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/card/CARD.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/card.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/card.zip.sha256",
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/card.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/card.zip.sha256",
       "stimulus_package_url": null,
       "stimulus_checksum_url": null
     },
@@ -336,10 +336,10 @@
       "markdown_url": "https://railsblocks.com/docs/carousel.md",
       "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/carousel/CAROUSEL.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/carousel.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/carousel.zip.sha256",
-      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/carousel-stimulus.zip",
-      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/carousel-stimulus.zip.sha256"
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/carousel.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/carousel.zip.sha256",
+      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/carousel-stimulus.zip",
+      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/carousel-stimulus.zip.sha256"
     },
     {
       "slug": "checkbox",
@@ -359,8 +359,8 @@
       "markdown_url": "https://railsblocks.com/docs/checkbox.md",
       "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/checkbox/CHECKBOX.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/checkbox.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/checkbox.zip.sha256",
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/checkbox.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/checkbox.zip.sha256",
       "stimulus_package_url": null,
       "stimulus_checksum_url": null
     },
@@ -385,10 +385,10 @@
       "markdown_url": "https://railsblocks.com/docs/checkbox-select-all.md",
       "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/checkbox_select_all/CHECKBOX_SELECT_ALL.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/checkbox_select_all.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/checkbox_select_all.zip.sha256",
-      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/checkbox_select_all-stimulus.zip",
-      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/checkbox_select_all-stimulus.zip.sha256"
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/checkbox_select_all.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/checkbox_select_all.zip.sha256",
+      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/checkbox_select_all-stimulus.zip",
+      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/checkbox_select_all-stimulus.zip.sha256"
     },
     {
       "slug": "clipboard",
@@ -412,10 +412,10 @@
       "markdown_url": "https://railsblocks.com/docs/clipboard.md",
       "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/clipboard/CLIPBOARD.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/clipboard.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/clipboard.zip.sha256",
-      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/clipboard-stimulus.zip",
-      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/clipboard-stimulus.zip.sha256"
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/clipboard.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/clipboard.zip.sha256",
+      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/clipboard-stimulus.zip",
+      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/clipboard-stimulus.zip.sha256"
     },
     {
       "slug": "collapsible",
@@ -438,10 +438,10 @@
       "markdown_url": "https://railsblocks.com/docs/collapsible.md",
       "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/collapsible/COLLAPSIBLE.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/collapsible.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/collapsible.zip.sha256",
-      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/collapsible-stimulus.zip",
-      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/collapsible-stimulus.zip.sha256"
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/collapsible.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/collapsible.zip.sha256",
+      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/collapsible-stimulus.zip",
+      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/collapsible-stimulus.zip.sha256"
     },
     {
       "slug": "color_picker",
@@ -465,10 +465,10 @@
       "markdown_url": "https://railsblocks.com/docs/color-picker.md",
       "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/color_picker/COLOR_PICKER.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/color_picker.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/color_picker.zip.sha256",
-      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/color_picker-stimulus.zip",
-      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/color_picker-stimulus.zip.sha256"
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/color_picker.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/color_picker.zip.sha256",
+      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/color_picker-stimulus.zip",
+      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/color_picker-stimulus.zip.sha256"
     },
     {
       "slug": "combobox",
@@ -493,10 +493,10 @@
       "markdown_url": "https://railsblocks.com/docs/combobox.md",
       "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/combobox/COMBOBOX.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/combobox.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/combobox.zip.sha256",
-      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/combobox-stimulus.zip",
-      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/combobox-stimulus.zip.sha256"
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/combobox.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/combobox.zip.sha256",
+      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/combobox-stimulus.zip",
+      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/combobox-stimulus.zip.sha256"
     },
     {
       "slug": "command_palette",
@@ -540,10 +540,10 @@
       "markdown_url": "https://railsblocks.com/docs/confirmation.md",
       "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/confirmation/CONFIRMATION.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/confirmation.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/confirmation.zip.sha256",
-      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/confirmation-stimulus.zip",
-      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/confirmation-stimulus.zip.sha256"
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/confirmation.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/confirmation.zip.sha256",
+      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/confirmation-stimulus.zip",
+      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/confirmation-stimulus.zip.sha256"
     },
     {
       "slug": "context_menu",
@@ -617,10 +617,10 @@
       "markdown_url": "https://railsblocks.com/docs/date-picker.md",
       "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/date_picker/DATE_PICKER.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/date_picker.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/date_picker.zip.sha256",
-      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/date_picker-stimulus.zip",
-      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/date_picker-stimulus.zip.sha256"
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/date_picker.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/date_picker.zip.sha256",
+      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/date_picker-stimulus.zip",
+      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/date_picker-stimulus.zip.sha256"
     },
     {
       "slug": "dark_mode_switcher",
@@ -645,10 +645,10 @@
       "markdown_url": "https://railsblocks.com/docs/dark-mode-switcher.md",
       "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/dark_mode_switcher/DARK_MODE_SWITCHER.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/dark_mode_switcher.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/dark_mode_switcher.zip.sha256",
-      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/dark_mode_switcher-stimulus.zip",
-      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/dark_mode_switcher-stimulus.zip.sha256"
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/dark_mode_switcher.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/dark_mode_switcher.zip.sha256",
+      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/dark_mode_switcher-stimulus.zip",
+      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/dark_mode_switcher-stimulus.zip.sha256"
     },
     {
       "slug": "dock",
@@ -673,10 +673,10 @@
       "markdown_url": "https://railsblocks.com/docs/dock.md",
       "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/dock/DOCK.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/dock.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/dock.zip.sha256",
-      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/dock-stimulus.zip",
-      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/dock-stimulus.zip.sha256"
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/dock.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/dock.zip.sha256",
+      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/dock-stimulus.zip",
+      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/dock-stimulus.zip.sha256"
     },
     {
       "slug": "drawer",
@@ -747,10 +747,10 @@
       "markdown_url": "https://railsblocks.com/docs/emoji-picker.md",
       "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/emoji_picker/EMOJI_PICKER.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/emoji_picker.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/emoji_picker.zip.sha256",
-      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/emoji_picker-stimulus.zip",
-      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/emoji_picker-stimulus.zip.sha256"
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/emoji_picker.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/emoji_picker.zip.sha256",
+      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/emoji_picker-stimulus.zip",
+      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/emoji_picker-stimulus.zip.sha256"
     },
     {
       "slug": "feedback",
@@ -774,10 +774,10 @@
       "markdown_url": "https://railsblocks.com/docs/feedback.md",
       "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/feedback/FEEDBACK.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/feedback.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/feedback.zip.sha256",
-      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/feedback-stimulus.zip",
-      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/feedback-stimulus.zip.sha256"
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/feedback.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/feedback.zip.sha256",
+      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/feedback-stimulus.zip",
+      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/feedback-stimulus.zip.sha256"
     },
     {
       "slug": "forms",
@@ -799,10 +799,10 @@
       "markdown_url": "https://railsblocks.com/docs/forms.md",
       "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/forms/FORMS.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/forms.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/forms.zip.sha256",
-      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/forms-stimulus.zip",
-      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/forms-stimulus.zip.sha256"
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/forms.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/forms.zip.sha256",
+      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/forms-stimulus.zip",
+      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/forms-stimulus.zip.sha256"
     },
     {
       "slug": "infinite_scroll",
@@ -826,10 +826,10 @@
       "markdown_url": "https://railsblocks.com/docs/infinite-scroll.md",
       "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/infinite_scroll/INFINITE_SCROLL.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/infinite_scroll.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/infinite_scroll.zip.sha256",
-      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/infinite_scroll-stimulus.zip",
-      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/infinite_scroll-stimulus.zip.sha256"
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/infinite_scroll.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/infinite_scroll.zip.sha256",
+      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/infinite_scroll-stimulus.zip",
+      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/infinite_scroll-stimulus.zip.sha256"
     },
     {
       "slug": "kbd",
@@ -853,10 +853,10 @@
       "markdown_url": "https://railsblocks.com/docs/kbd.md",
       "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/kbd/KBD.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/kbd.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/kbd.zip.sha256",
-      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/kbd-stimulus.zip",
-      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/kbd-stimulus.zip.sha256"
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/kbd.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/kbd.zip.sha256",
+      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/kbd-stimulus.zip",
+      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/kbd-stimulus.zip.sha256"
     },
     {
       "slug": "lightbox",
@@ -880,10 +880,10 @@
       "markdown_url": "https://railsblocks.com/docs/lightbox.md",
       "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/lightbox/LIGHTBOX.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/lightbox.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/lightbox.zip.sha256",
-      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/lightbox-stimulus.zip",
-      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/lightbox-stimulus.zip.sha256"
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/lightbox.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/lightbox.zip.sha256",
+      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/lightbox-stimulus.zip",
+      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/lightbox-stimulus.zip.sha256"
     },
     {
       "slug": "loading_indicator",
@@ -903,8 +903,8 @@
       "markdown_url": "https://railsblocks.com/docs/loading-indicator.md",
       "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/loading_indicator/LOADING_INDICATOR.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/loading_indicator.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/loading_indicator.zip.sha256",
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/loading_indicator.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/loading_indicator.zip.sha256",
       "stimulus_package_url": null,
       "stimulus_checksum_url": null
     },
@@ -929,10 +929,10 @@
       "markdown_url": "https://railsblocks.com/docs/marquee.md",
       "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/marquee/MARQUEE.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/marquee.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/marquee.zip.sha256",
-      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/marquee-stimulus.zip",
-      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/marquee-stimulus.zip.sha256"
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/marquee.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/marquee.zip.sha256",
+      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/marquee-stimulus.zip",
+      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/marquee-stimulus.zip.sha256"
     },
     {
       "slug": "modal",
@@ -1001,10 +1001,10 @@
       "markdown_url": "https://railsblocks.com/docs/navbar.md",
       "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/navbar/NAVBAR.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/navbar.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/navbar.zip.sha256",
-      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/navbar-stimulus.zip",
-      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/navbar-stimulus.zip.sha256"
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/navbar.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/navbar.zip.sha256",
+      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/navbar-stimulus.zip",
+      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/navbar-stimulus.zip.sha256"
     },
     {
       "slug": "password",
@@ -1027,10 +1027,10 @@
       "markdown_url": "https://railsblocks.com/docs/password.md",
       "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/password/PASSWORD.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/password.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/password.zip.sha256",
-      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/password-stimulus.zip",
-      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/password-stimulus.zip.sha256"
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/password.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/password.zip.sha256",
+      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/password-stimulus.zip",
+      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/password-stimulus.zip.sha256"
     },
     {
       "slug": "pagination",
@@ -1052,8 +1052,8 @@
       "markdown_url": "https://railsblocks.com/docs/pagination.md",
       "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/pagination/PAGINATION.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/pagination.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/pagination.zip.sha256",
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/pagination.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/pagination.zip.sha256",
       "stimulus_package_url": null,
       "stimulus_checksum_url": null
     },
@@ -1079,10 +1079,10 @@
       "markdown_url": "https://railsblocks.com/docs/popover.md",
       "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/popover/POPOVER.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/popover.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/popover.zip.sha256",
-      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/popover-stimulus.zip",
-      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/popover-stimulus.zip.sha256"
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/popover.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/popover.zip.sha256",
+      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/popover-stimulus.zip",
+      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/popover-stimulus.zip.sha256"
     },
     {
       "slug": "radio",
@@ -1104,10 +1104,10 @@
       "markdown_url": "https://railsblocks.com/docs/radio.md",
       "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/radio/RADIO.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/radio.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/radio.zip.sha256",
-      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/radio-stimulus.zip",
-      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/radio-stimulus.zip.sha256"
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/radio.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/radio.zip.sha256",
+      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/radio-stimulus.zip",
+      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/radio-stimulus.zip.sha256"
     },
     {
       "slug": "scroll_area",
@@ -1130,10 +1130,10 @@
       "markdown_url": "https://railsblocks.com/docs/scroll-area.md",
       "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/scroll_area/SCROLL_AREA.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/scroll_area.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/scroll_area.zip.sha256",
-      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/scroll_area-stimulus.zip",
-      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/scroll_area-stimulus.zip.sha256"
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/scroll_area.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/scroll_area.zip.sha256",
+      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/scroll_area-stimulus.zip",
+      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/scroll_area-stimulus.zip.sha256"
     },
     {
       "slug": "select",
@@ -1158,10 +1158,10 @@
       "markdown_url": "https://railsblocks.com/docs/select.md",
       "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/select/SELECT.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/select.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/select.zip.sha256",
-      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/select-stimulus.zip",
-      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/select-stimulus.zip.sha256"
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/select.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/select.zip.sha256",
+      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/select-stimulus.zip",
+      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/select-stimulus.zip.sha256"
     },
     {
       "slug": "sidebar",
@@ -1185,10 +1185,10 @@
       "markdown_url": "https://railsblocks.com/docs/sidebar.md",
       "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/sidebar/SIDEBAR.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/sidebar.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/sidebar.zip.sha256",
-      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/sidebar-stimulus.zip",
-      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/sidebar-stimulus.zip.sha256"
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/sidebar.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/sidebar.zip.sha256",
+      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/sidebar-stimulus.zip",
+      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/sidebar-stimulus.zip.sha256"
     },
     {
       "slug": "skeleton",
@@ -1208,8 +1208,8 @@
       "markdown_url": "https://railsblocks.com/docs/skeleton.md",
       "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/skeleton/SKELETON.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/skeleton.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/skeleton.zip.sha256",
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/skeleton.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/skeleton.zip.sha256",
       "stimulus_package_url": null,
       "stimulus_checksum_url": null
     },
@@ -1275,8 +1275,8 @@
       "markdown_url": "https://railsblocks.com/docs/switch.md",
       "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/switch/SWITCH.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/switch.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/switch.zip.sha256",
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/switch.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/switch.zip.sha256",
       "stimulus_package_url": null,
       "stimulus_checksum_url": null
     },
@@ -1320,8 +1320,8 @@
       "markdown_url": "https://railsblocks.com/docs/table.md",
       "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/table/TABLE.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/table.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/table.zip.sha256",
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/table.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/table.zip.sha256",
       "stimulus_package_url": null,
       "stimulus_checksum_url": null
     },
@@ -1343,8 +1343,8 @@
       "markdown_url": "https://railsblocks.com/docs/testimonial.md",
       "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/testimonial/TESTIMONIAL.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/testimonial.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/testimonial.zip.sha256",
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/testimonial.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/testimonial.zip.sha256",
       "stimulus_package_url": null,
       "stimulus_checksum_url": null
     },
@@ -1369,10 +1369,10 @@
       "markdown_url": "https://railsblocks.com/docs/toast.md",
       "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/toast/TOAST.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/toast.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/toast.zip.sha256",
-      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/toast-stimulus.zip",
-      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/toast-stimulus.zip.sha256"
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/toast.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/toast.zip.sha256",
+      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/toast-stimulus.zip",
+      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/toast-stimulus.zip.sha256"
     },
     {
       "slug": "tooltip",
@@ -1396,10 +1396,10 @@
       "markdown_url": "https://railsblocks.com/docs/tooltip.md",
       "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/tooltip/TOOLTIP.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/tooltip.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/tooltip.zip.sha256",
-      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/tooltip-stimulus.zip",
-      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/tooltip-stimulus.zip.sha256"
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/tooltip.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/tooltip.zip.sha256",
+      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/tooltip-stimulus.zip",
+      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/tooltip-stimulus.zip.sha256"
     },
     {
       "slug": "tree_view",
@@ -1423,10 +1423,10 @@
       "markdown_url": "https://railsblocks.com/docs/tree-view.md",
       "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/tree_view/TREE_VIEW.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/tree_view.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/tree_view.zip.sha256",
-      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/tree_view-stimulus.zip",
-      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/tree_view-stimulus.zip.sha256"
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/tree_view.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/tree_view.zip.sha256",
+      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/tree_view-stimulus.zip",
+      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/tree_view-stimulus.zip.sha256"
     },
     {
       "slug": "two_factor",
@@ -1449,10 +1449,10 @@
       "markdown_url": "https://railsblocks.com/docs/two-factor.md",
       "public_markdown_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/components/two_factor/TWO_FACTOR.md",
       "upgrade_url": null,
-      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/two_factor.zip",
-      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/two_factor.zip.sha256",
-      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/two_factor-stimulus.zip",
-      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.4/two_factor-stimulus.zip.sha256"
+      "package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/two_factor.zip",
+      "checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/two_factor.zip.sha256",
+      "stimulus_package_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/two_factor-stimulus.zip",
+      "stimulus_checksum_url": "https://raw.githubusercontent.com/Rails-Blocks/components/main/packages/0.1.5/two_factor-stimulus.zip.sha256"
     }
   ]
 }
