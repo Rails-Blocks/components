@@ -328,6 +328,12 @@ export default class extends Controller {
     if (this.tooltipElement && this.tooltipElement.parentElement) {
       this.tooltipElement.remove();
     }
+
+    // Permanent elements reconnect after Turbo renders. Do not let the next
+    // connect() restore this connection's detached arrow before creating its own.
+    this.tooltipElement = null;
+    this.arrowContainer = null;
+    this.arrowElement = null;
   }
 
   async _updatePositionAndArrow() {

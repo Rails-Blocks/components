@@ -10,7 +10,7 @@ This repo is the source for the free Rails Blocks component files. You can read 
 - `components/` - docs, usage examples, unpacked ERB/ViewComponent source files, and package manifests for each free component.
 - `stylesheets/rails_blocks.css` - the Rails Blocks custom CSS used by the components.
 - `stimulus_controllers/` - Stimulus controllers used by the free components.
-- `packages/0.1.5/` - immutable zip packages and SHA256 checksums.
+- `packages/0.1.6/` - immutable zip packages and SHA256 checksums.
 
 ## Usage
 
