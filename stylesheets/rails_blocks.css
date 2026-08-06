@@ -163,13 +163,13 @@ option:hover {
   outline-color: var(--color-primary-content);
 }
 
-/* Default primary flips to white without overwriting a generated theme. */
+/* Default primary flips light without overwriting a generated theme. */
 .dark {
-  --color-primary: var(--rb-primary, var(--color-white));
-  --color-primary-hover: var(--rb-primary-hover, var(--color-neutral-200));
+  --color-primary: var(--rb-primary, var(--color-neutral-100));
+  --color-primary-hover: var(--rb-primary-hover, var(--color-white));
   --color-primary-content: var(--rb-primary-content, var(--color-white));
   --color-primary-foreground: var(--rb-primary-foreground, var(--color-neutral-900));
-  --color-accent: var(--rb-primary, var(--color-white));
+  --color-accent: var(--rb-primary, var(--color-neutral-100));
 }
 
 [type="checkbox"]:checked {
