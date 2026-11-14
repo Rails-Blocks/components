@@ -303,6 +303,12 @@ messageReceived() {
 | `drop` | Dull click and low thump | Dropping a dragged item into place |
 | `delete` | Falling brush and knock | Removing an item, clearing a field |
 | `step` | One struck note | Used by `sound#step` on sliders |
+| `send` | Air rising into a blip | Sending a message or a form that leaves the screen |
+| `coin` | Two bright notes, game-like | Points, streaks, small rewards |
+| `confetti` | A puff, then a scatter of bright blips | Celebrations that should stay light: a finished onboarding, a first post |
+| `key` | A keyboard key's thock and release (`key_down` / `key_up`) | Keypads, PIN entry, typing |
+| `shutter` | Two mechanical snaps | Screenshots, captures, saving an image |
+| `unlock` | A latch and a rising chirp | Unlocking, signing in, revealing a hidden field |
 
 Also accepted: the two halves of switches (`toggle_press_on`, `toggle_press_off`, `toggle_release_on`, `toggle_release_off`) and the aliases `toggle` (`toggle_on`), `chime` (`notification`), `droplet` (`pop`), `button` (`tap`), `dismiss` (`close`), and `remove` (`delete`). Dashes work in place of underscores (`toggle-on`). Unknown names are ignored silently.
 
@@ -320,9 +326,10 @@ Change one thing, listen, repeat. Name what is wrong, then reach for the matchin
 | Too long or lingering | `tune(recipe, { length: 0.7 })`. In a recipe: a shorter `decay`. Every ring decays exponentially and reaches -60 dB at its `decay`. |
 | Too short or clipped | `length` above 1, or a longer `decay`. Give whooshes a longer `attack` so they swell in. |
 | No weight, or too boomy | `tune(recipe, { body: 1.4 })` scales the knocks, thumps and low notes. For more weight than that, add a `Part.thud` (low-passed noise around 100 to 200 Hz) or a `Part.knock` under the click. |
-| Too snappy | `tune(recipe, { softness: 0.5 })`, 0 to 1, rounds every onset with a swell of up to 30 ms. |
-| Too plain | A material, each 0 to 1: `metal` adds a struck metal bar's out-of-tune overtones and resonant clicks, `glass` bright in-tune overtones with a slow shimmer, `ceramic` a struck cup's high, quickly damped overtones (a dry "tink"), `retro` crossfades the tones into square waves. |
+| Too shallow | `tune(recipe, { undertone: 0.5 })`, 0 to 1, puts a deep note under the first strike, like Cuelume's Press theme: a low sine with its partials that swells in under the click and rings on, an octave or more below the cue's lowest tone. Longer and louder as it rises. |
+| Too plain | A material, each 0 to 1, which replaces each note with a struck object: `metal` brittle, out-of-tune pings over a hard tick (at 1 no plain tone is left), `glass` a small bowl that rings on with a slow wobble, `ceramic` a fingernail on a plate (a high, very short tick), `wood` a knuckle on a block (a full, short tock), `plastic` a fingertip on a plastic case (a dull, hollow clack). A little goes a long way. `retro` crossfades the tones into square waves. |
 | Too dry or too distant | `tune(recipe, { room })`, or the cue's `room` option (1 is dry, 2 rings out). |
+| Notes too rushed or too far apart | `tune(recipe, { spacing: 1.3 })` scales the time between the parts of a cue (the notes of a run, a press and its release) without changing how long each one rings. |
 | Feels robotic when repeated | Give the cue a `vary` option, for example `{ pitch: 0.02, level: 0.1 }`. Leave it `null` for chords, where drift would put notes out of tune. |
 | Too loud or quiet next to the others | Its trim in `LEVELS`, in dB. Call `suggestLevel` for a suggestion (below), then trust your ears. |
 

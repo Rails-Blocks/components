@@ -44,13 +44,31 @@ import { Controller } from "@hotwired/stimulus";
 //   tone:      a sine. `glideTo` slides its pitch there, exponentially, over `glideTime`.
 //   bandpass / lowpass: filtered noise. For bandpass `q` is linear, for lowpass it is in dB.
 // `attack` is the straight swell in, `peak` the level, `offset` the start (seconds).
-const tone = (frequency, decay, peak, extra = {}) => ({ kind: "tone", frequency, attack: 0.003, decay, peak, offset: 0, ...extra });
-const noise = (kind, frequency, decay, peak, extra = {}) => ({ kind, frequency, q: 1, attack: 0.001, decay, peak, offset: 0, ...extra });
+const tone = (frequency, decay, peak, extra = {}) => ({
+  kind: "tone",
+  frequency,
+  attack: 0.003,
+  decay,
+  peak,
+  offset: 0,
+  ...extra,
+});
+const noise = (kind, frequency, decay, peak, extra = {}) => ({
+  kind,
+  frequency,
+  q: 1,
+  attack: 0.001,
+  decay,
+  peak,
+  offset: 0,
+  ...extra,
+});
 
 // The building blocks.
 const Part = {
   // A short knock: a sine that falls into its pitch.
-  knock: (f, decay, peak, at = 0) => tone(f * 1.6, decay, peak, { glideTo: f, glideTime: 0.018, attack: 0.001, offset: at }),
+  knock: (f, decay, peak, at = 0) =>
+    tone(f * 1.6, decay, peak, { glideTo: f, glideTime: 0.018, attack: 0.001, offset: at }),
   // A tight ring of noise.
   ring: (f, peak, q = 8, at = 0) => noise("bandpass", f, 0.0055, peak, { q, offset: at }),
   // A switch click: a tight ring over a softer, wider body below it.
@@ -63,16 +81,32 @@ const Part = {
   // The mallet meeting the bar: 3 ms of noise, low-passed at the mallet's hardness (felt ~1 kHz, hard ~3 kHz).
   contact: (hardness, peak, at = 0) => noise("lowpass", hardness, 0.0035, peak, { q: -3, offset: at }),
   // Struck bars. Each mode is one sine, and higher modes die sooner, as on any real bar.
-  glass: [[1, 1], [2, 0.2], [3, 0.06]], // A round, in-tune bar: only whole-number overtones (octave and twelfth), nothing metallic
-  mallet: [[1, 1], [4, 0.2]], // A marimba bar: a clean double octave on top, warm and in tune
+  glass: [
+    [1, 1],
+    [2, 0.2],
+    [3, 0.06],
+  ], // A round, in-tune bar: only whole-number overtones (octave and twelfth), nothing metallic
+  mallet: [
+    [1, 1],
+    [4, 0.2],
+  ], // A marimba bar: a clean double octave on top, warm and in tune
   struck: (f, decay, peak, modes, at = 0) =>
-    modes.filter(([ratio]) => f * ratio <= 5000).map(([ratio, level]) =>
-      tone(f * ratio, Math.max(0.028, decay / ratio ** 0.75), peak * level, { attack: 0.006, offset: at })),
+    modes
+      .filter(([ratio]) => f * ratio <= 5000)
+      .map(([ratio, level]) =>
+        tone(f * ratio, Math.max(0.028, decay / ratio ** 0.75), peak * level, { attack: 0.006, offset: at }),
+      ),
   // A deep note that swells in under a click and rings on, with its octave and faint upper partials.
   note: (f, decay, peak, at = 0) => {
     const attack = Math.min(0.11, decay / 2);
-    return [[1, 1, 1], [2, 0.9, 0.5], [3, 1, 0.04], [4, 0.73, 0.056]].map(([m, length, level]) =>
-      tone(f * m * 1.09, decay * length, peak * level, { glideTo: f * m, glideTime: 0.015, attack, offset: at }));
+    return [
+      [1, 1, 1],
+      [2, 0.9, 0.5],
+      [3, 1, 0.04],
+      [4, 0.73, 0.056],
+    ].map(([m, length, level]) =>
+      tone(f * m * 1.09, decay * length, peak * level, { glideTo: f * m, glideTime: 0.015, attack, offset: at }),
+    );
   },
 };
 
@@ -82,7 +116,13 @@ const RELEASE_GAP = 0.09; // Seconds between the press and the release of a comb
 
 // gain: level of the whole cue. release: layers played a moment later (the pointer coming up).
 // room: how much of it reaches the small room. vary: how much each play drifts (null: not at all).
-const cue = (gain, layers, { release = [], room = 1, vary = { pitch: 0, level: 0.08 } } = {}) => ({ gain, layers, release, room, vary });
+const cue = (gain, layers, { release = [], room = 1, vary = { pitch: 0, level: 0.08 } } = {}) => ({
+  gain,
+  layers,
+  release,
+  room,
+  vary,
+});
 
 // A variation of a cue, for re-voicing a sound without rebuilding it. Each option answers one
 // complaint you might have after listening:
@@ -91,18 +131,50 @@ const cue = (gain, layers, { release = [], room = 1, vary = { pitch: 0, level: 0
 //   length:     "too long / too short". Multiplies every ring. The rhythm of the notes stays the same.
 //   room:       "too dry / too distant". Multiplies how much reaches the small room.
 //   level:      "too loud / too quiet" next to the other sounds. Multiplies the cue's gain.
+//   spacing:    "too rushed / too far apart". Multiplies the time between the parts of a cue (the notes
+//               of a run, a press and its release), not how long each one rings.
 // And the character of the sound, each 0 (the default) to 1 unless noted:
 //   body:       "too thin / too boomy". Multiplies the low layers: knocks, thumps and low notes.
-//   softness:   "too snappy / too soft". Rounds every onset with a swell of up to 30 ms.
-//   metal:      "too plain / too clangy". Adds the out-of-tune overtones of a struck metal bar to every
-//               tone, rings them longer, and tightens the clicks into resonant pings.
-//   glass:      "too dull / too sparkly". Adds bright in-tune overtones with a slow shimmer (a twin
-//               tone a few cents away), like a wine glass.
-//   ceramic:    "too muted / too brittle". Adds the bright, out-of-tune overtones of a struck cup or
-//               tile, which die quickly, and damps the ring: a short, dry "tink".
+//   undertone:  "too shallow / too deep". The deep note of Cuelume's Press theme: a low sine with its
+//               octave and upper partials that swells in under the cue's first strike and rings on,
+//               an octave or more below its lowest tone (C2 when it has none). Longer and louder as it
+//               rises; at 1 it rings about 1.35 s.
+//   metal:      "too plain / too clangy". Brittle metal: every tone becomes a cluster of very narrow,
+//               out-of-tune pings (gone in 30-60 ms) over a hard 8.5 kHz tick, the sines fade out,
+//               low thumps drop away and the clicks move up and tighten. At 1 no plain tone is left.
+//   glass:      "too dull / too sparkly". A small glass bowl: the note rings on with a slow wobble while
+//               its overtones die at once.
+//   ceramic:    "too muted / too brittle". A fingernail on a plate: a high, very short plate ring under
+//               a sharp tick.
+//   wood:       "too hollow / too woody". A knuckle on a block: a full, short tock with a soft thump.
+//   plastic:    "too solid / too cheap". A fingertip on a plastic case: a dull clack, a hollow shell
+//               that barely rings, and the faint second knock of a thin wall flexing.
+//               The materials replace each note with that object, so a little goes a long way.
 //   retro:      "too modern / too chiptune". Crossfades the tones into square waves, like an 8-bit console.
 //   RECIPES.soft_tap = tune(RECIPES.tap, { length: 0.8, brightness: 0.85 }); // after RECIPES, plus a LEVELS entry
-export const tune = (recipe, { pitch = 0, brightness = 1, length = 1, room = 1, level = 1, body = 1, softness = 0, metal = 0, glass = 0, ceramic = 0, retro = 0 } = {}) => {
+// How loud each material's object is next to the note it replaces, so turning a material up keeps
+// the sound at about the same level.
+const [GLASS_GAIN, CERAMIC_GAIN, WOOD_GAIN, PLASTIC_GAIN] = [0.63, 0.65, 0.52, 0.8]; // Measured: each sat 2-6 dB above the note at 1
+
+export const tune = (
+  recipe,
+  {
+    pitch = 0,
+    brightness = 1,
+    length = 1,
+    room = 1,
+    level = 1,
+    spacing = 1,
+    body = 1,
+    undertone = 0,
+    metal = 0,
+    glass = 0,
+    ceramic = 0,
+    wood = 0,
+    plastic = 0,
+    retro = 0,
+  } = {},
+) => {
   const shift = 2 ** (pitch / 12);
   const retune = (layer) => {
     const factor = layer.kind === "tone" ? shift : brightness;
@@ -112,48 +184,321 @@ export const tune = (recipe, { pitch = 0, brightness = 1, length = 1, room = 1, 
       frequency: layer.frequency * factor,
       glideTo: layer.glideTo && layer.glideTo * factor,
       decay: layer.decay * length,
-      attack: layer.attack + softness * 0.03,
+      offset: layer.offset * spacing,
       peak: layer.peak * (low ? body : 1),
-      q: layer.kind === "bandpass" ? layer.q * (1 + metal * 3) : layer.q,
+      q: layer.kind === "bandpass" ? layer.q * (1 + metal * 2) : layer.q,
     };
   };
-  const character = (layers) => layers.map(retune).flatMap((layer) => {
-    if (layer.kind !== "tone") return [layer];
-    const partial = (ratio, peak, ring, extra = {}) => ({
-      ...layer, ...extra, frequency: layer.frequency * ratio, glideTo: layer.glideTo && layer.glideTo * ratio, peak: layer.peak * peak, decay: layer.decay * ring,
-    });
-    const added = [
-      // A free metal bar's modes: 2.76, 5.40 and 8.93 times the fundamental, none of them in tune.
-      ...[[2.76, 0.5], [5.4, 0.3], [8.93, 0.16]].map(([ratio, peak]) => partial(ratio, peak * metal, 1.4 / ratio ** 0.3)),
-      // Glass: its octave and double octave, and a twin 4 cents sharp that beats slowly against it.
-      ...[[2, 0.35, 1.2], [4, 0.14, 0.9], [2 ** (4 / 1200), 0.6, 1.3]].map(([ratio, peak, ring]) => partial(ratio, peak * glass, ring)),
-      // Ceramic: a thick plate's modes, high and quick to die, about 2.32, 4.25 and 6.63 times the fundamental.
-      ...[[2.32, 0.45], [4.25, 0.25], [6.63, 0.12]].map(([ratio, peak]) => partial(ratio, peak * ceramic, 0.45 / ratio ** 0.5)),
-      // Retro: a square wave at the same pitch, quieter than the sine it replaces (squares are loud).
-      partial(1, 0.35 * retro, 1, { wave: "square" }),
-    ].filter((extra) => extra.peak > 0 && extra.frequency <= 12000);
-    return [{ ...layer, peak: layer.peak * (1 - 0.75 * retro), decay: layer.decay * (1 - 0.35 * ceramic) }, ...added];
+  // Undertone: one deep note under the first strike of a set of (already tuned) layers, as loud as a
+  // quarter of that strike. Part.note swells it in and slides it into pitch, like Press does.
+  const deep = (layers) => {
+    if (!undertone || !layers.length) return [];
+    const at = Math.min(...layers.map((layer) => layer.offset));
+    const strike = layers.filter((layer) => layer.offset - at < 0.006);
+    const tones = strike.filter((layer) => layer.kind === "tone").map((layer) => layer.frequency);
+    let root = tones.length ? Math.min(...tones) : 65.41;
+    while (root > 131) root /= 2;
+    const strength = Math.max(...strike.map((layer) => layer.peak));
+    return Part.note(root, (0.35 + undertone) * length, 0.25 * strength * undertone, at);
+  };
+
+  // Materials (metal, glass, ceramic, wood) replace each struck note with a modelled object: the
+  // note's own sine fades out and the object's modes take over. Only the notes leading each strike
+  // get an object; their overtones (quieter tones at the same moment) just fade, so a note with four
+  // partials is one object, not four.
+  const hard = Math.min(1, metal + glass + ceramic + plastic * 0.6); // Hard materials thin out the low noise
+  const fade = (1 - 0.85 * metal) * (1 - glass) * (1 - ceramic) * (1 - wood) * (1 - plastic) * (1 - 0.75 * retro); // At 1, glass, ceramic and wood leave none of the note
+  const lifted = (frequency, floor) => {
+    let f = frequency;
+    while (f < floor) f *= 2; // Octaves up: a low knock still gets a high ping
+    return f;
+  };
+  // A struck object: [ratio, level] modes above f, the lowest ringing `ring` seconds and each higher
+  // one dying faster by ratio^damping (metal and glass keep their highs, ceramic and wood lose them).
+  const modes = (layer, f, amount, list, ring, damping) =>
+    list.map(([ratio, level]) => ({
+      kind: "tone",
+      frequency: f * ratio,
+      attack: 0.0006,
+      decay: Math.max(0.012, (ring * length) / ratio ** damping),
+      peak: layer.peak * level * amount,
+      offset: layer.offset,
+    }));
+  // The strike itself: one hard click, about a millisecond of high-passed noise.
+  const hit = (layer, frequency, peak, decay) => ({
+    kind: "highpass",
+    frequency,
+    q: 0.7,
+    attack: 0.0003,
+    decay,
+    peak: layer.peak * peak,
+    offset: layer.offset,
   });
-  return { ...recipe, gain: recipe.gain * level, room: recipe.room * room, layers: character(recipe.layers), release: character(recipe.release) };
+
+  const object = (layer) =>
+    [
+      // Metal: narrow rings of noise at a metal bar's out-of-tune modes, each gone in 30-60 ms, a
+      // hard tick, and one short sine so the cluster has a pitch.
+      ...(metal
+        ? [
+            ...[
+              [2.9, 1.1, 0.06],
+              [4.4, 0.8, 0.045],
+              [6.1, 0.55, 0.035],
+              [8.3, 0.35, 0.03],
+            ].map(([ratio, peak, ring]) => ({
+              kind: "bandpass",
+              frequency: lifted(layer.frequency, 900) * ratio,
+              q: 40,
+              attack: 0.0005,
+              decay: ring * length,
+              peak: layer.peak * peak * 7 * metal,
+              offset: layer.offset,
+            })),
+            {
+              kind: "bandpass",
+              frequency: 8500,
+              q: 8,
+              attack: 0.0005,
+              decay: 0.003,
+              peak: layer.peak * 2.4 * metal,
+              offset: layer.offset,
+            },
+            ...modes(
+              layer,
+              lifted(layer.frequency, 900) * 2.9,
+              0.3 * metal,
+              [[1, 1]],
+              Math.min(layer.decay / length, 0.08) * 0.6,
+              0,
+            ),
+          ]
+        : []),
+      // Glass: a small bowl struck with a chopstick. The lowest mode rings on with a slow wobble (a twin
+      // 0.8% sharp), everything above it is gone almost at once.
+      ...(glass
+        ? [
+            ...modes(
+              layer,
+              lifted(layer.frequency, 1000),
+              GLASS_GAIN * glass,
+              [
+                [1, 1],
+                [1.008, 0.5],
+                [2.7, 0.3],
+                [5, 0.1],
+              ],
+              0.5,
+              1.9,
+            ),
+            hit(layer, 3500, 1.2 * GLASS_GAIN * glass, 0.002),
+          ]
+        : []),
+      // Ceramic: a fingernail on a plate. A flat plate's modes (1 : 1.73 : 2.33 : 3.91) at 1.8-3.6 kHz,
+      // very short, under a sharp tick.
+      ...(ceramic
+        ? [
+            ...modes(
+              layer,
+              lifted(layer.frequency, 1800),
+              CERAMIC_GAIN * ceramic,
+              [
+                [1, 1],
+                [1.73, 0.55],
+                [2.33, 0.35],
+                [3.91, 0.15],
+              ],
+              0.07,
+              1.6,
+            ),
+            hit(layer, 6000, 2.2 * CERAMIC_GAIN * ceramic, 0.001),
+          ]
+        : []),
+      // Wood: a knuckle on a block. A full, short "tock" that drops a little in pitch, a soft thump under
+      // it, the block's modes dying fast, and a dull click.
+      ...(wood
+        ? (() => {
+            const f = lifted(layer.frequency, 700);
+            return [
+              {
+                kind: "tone",
+                frequency: f * 0.42,
+                glideTo: f * 0.38,
+                glideTime: 0.04,
+                attack: 0.0008,
+                decay: 0.06 * length,
+                peak: layer.peak * 1.6 * WOOD_GAIN * wood,
+                offset: layer.offset,
+              },
+              {
+                kind: "lowpass",
+                frequency: 350,
+                q: 0.7,
+                attack: 0.001,
+                decay: 0.05 * length,
+                peak: layer.peak * WOOD_GAIN * wood,
+                offset: layer.offset,
+              },
+              ...modes(
+                layer,
+                f,
+                WOOD_GAIN * wood,
+                [
+                  [1, 0.8],
+                  [1.73, 0.4],
+                  [2.33, 0.22],
+                  [3.91, 0.08],
+                ],
+                0.07,
+                1.3,
+              ),
+              hit(layer, 2500, 1.2 * WOOD_GAIN * wood, 0.002),
+            ];
+          })()
+        : []),
+      // Plastic: a light, hollow shell. A few out-of-tune modes (1 : 1.48 : 2.15 : 3.3) that all die in
+      // tens of milliseconds, a hollow resonance under them, a dull band-passed clack (not a bright
+      // tick), and a quieter second knock 4 ms later as the thin wall flexes back.
+      ...(plastic
+        ? (() => {
+            const f = Math.min(lifted(layer.frequency, 900), 1800);
+            const gain = PLASTIC_GAIN * plastic;
+            return [
+              ...modes(
+                layer,
+                f,
+                gain,
+                [
+                  [1, 1],
+                  [1.48, 0.6],
+                  [2.15, 0.4],
+                  [3.3, 0.2],
+                ],
+                0.035,
+                1,
+              ),
+              {
+                kind: "bandpass",
+                frequency: f * 0.8,
+                q: 6,
+                attack: 0.001,
+                decay: 0.03 * length,
+                peak: layer.peak * 1.4 * gain,
+                offset: layer.offset,
+              },
+              {
+                kind: "bandpass",
+                frequency: 3200,
+                q: 2,
+                attack: 0.0005,
+                decay: 0.004,
+                peak: layer.peak * 1.6 * gain,
+                offset: layer.offset,
+              },
+              {
+                kind: "bandpass",
+                frequency: 2600,
+                q: 3,
+                attack: 0.0005,
+                decay: 0.006,
+                peak: layer.peak * 0.6 * gain,
+                offset: layer.offset + 0.004,
+              },
+            ];
+          })()
+        : []),
+      // Retro: a square wave at the same pitch, quieter than the sine it replaces (squares are loud).
+      ...(retro ? [{ ...layer, wave: "square", peak: layer.peak * 0.35 * retro }] : []),
+    ].filter((extra) => extra.peak > 0 && extra.frequency <= 15000);
+
+  const character = (layers) => {
+    const tuned = layers.map(retune);
+    const tones = tuned.filter((layer) => layer.kind === "tone");
+    // A lead is a loud tone of its strike. Of two leads an octave apart (which materials would lift to
+    // the same pitch and stack in phase), only the louder one counts.
+    const octave = (a, b) => Math.abs(Math.log2(a / b) - Math.round(Math.log2(a / b))) < 0.015;
+    const leads = (layer) => {
+      const strike = tones.filter((other) => Math.abs(other.offset - layer.offset) < 0.006);
+      if (layer.peak < 0.6 * Math.max(...strike.map((other) => other.peak))) return false;
+      return !strike.some(
+        (other) =>
+          other !== layer &&
+          octave(other.frequency, layer.frequency) &&
+          (other.peak > layer.peak || (other.peak === layer.peak && tuned.indexOf(other) < tuned.indexOf(layer))),
+      );
+    };
+    return tuned.flatMap((layer) => {
+      if (layer.kind !== "tone") {
+        // Hard materials thin the noise: low thumps fade out, and metal moves the clicks up (and
+        // tightens them in retune above). Band-passed noise (clicks, air) stays, so a whoosh is kept.
+        if (!hard) return [layer];
+        const low = layer.kind === "lowpass";
+        const lift = low ? 1 : 1 + 0.5 * metal;
+        return [
+          {
+            ...layer,
+            frequency: layer.frequency * lift,
+            glideTo: layer.glideTo && layer.glideTo * lift,
+            peak: layer.peak * (low ? 1 - hard : 1),
+          },
+        ];
+      }
+      const extras = leads(layer)
+        ? object(layer)
+        : retro
+          ? [{ ...layer, wave: "square", peak: layer.peak * 0.35 * retro }]
+          : [];
+      return [{ ...layer, peak: layer.peak * fade }, ...extras];
+    });
+  };
+  return {
+    ...recipe,
+    gain: recipe.gain * level,
+    room: recipe.room * room,
+    releaseGap: (recipe.releaseGap ?? RELEASE_GAP) * spacing,
+    layers: [...character(recipe.layers), ...deep(character(recipe.layers))],
+    release: character(recipe.release),
+  };
 };
 
 // A switch thrown: the click and a firm knock, letting go with a lighter click. On sits two
 // semitones higher, off two lower. `press` and `release` choose which halves are played.
 const toggleCue = (on, press, release) => {
   const factor = 2 ** ((on ? 2 : -2) / 12);
-  const pitched = (layers) => layers.map((layer) => ({ ...layer, frequency: layer.frequency * factor, glideTo: layer.glideTo && layer.glideTo * factor }));
+  const pitched = (layers) =>
+    layers.map((layer) => ({
+      ...layer,
+      frequency: layer.frequency * factor,
+      glideTo: layer.glideTo && layer.glideTo * factor,
+    }));
   const down = pitched([...Part.click(PRESS_HZ, 0.245), Part.knock(330, 0.0389, 0.05)]);
   const up = pitched(Part.click(RELEASE_HZ, 0.1));
   return cue(0.0571, press ? down : up, { release: press && release ? up : [] });
 };
 
-const [C2, G3, A3, A2, C4, E4, G4, A4, Cs5, C5, E5, A5, E6] = [65.41, 196, 220, 110, 261.63, 329.63, 392, 440, 554.37, 523.25, 659.25, 880, 1318.51];
+const [C2, G3, A3, A2, C4, E4, G4, A4, Cs5, C5, E5, A5, E6] = [
+  65.41, 196, 220, 110, 261.63, 329.63, 392, 440, 554.37, 523.25, 659.25, 880, 1318.51,
+];
 
 // Cues with two halves: the part that belongs to the pointer going down and the part that belongs to
 // it coming back up. Played together they are the combined cue; played apart (`name_down` on
 // pointerdown, `name_up` on pointerup) each half lands exactly when the finger does.
-const TAP = { gain: 0.0431, down: [...Part.click(PRESS_HZ, 0.53), Part.knock(131, 0.07, 0.12), Part.thud(110, 0.045, 0.12)], up: Part.click(RELEASE_HZ, 0.28) };
-const CLICK = { gain: 0.0571, down: [...Part.click(PRESS_HZ, 0.245), Part.knock(330, 0.0389, 0.05)], up: Part.click(RELEASE_HZ, 0.1) };
+const TAP = {
+  gain: 0.0431,
+  down: [...Part.click(PRESS_HZ, 0.53), Part.knock(131, 0.07, 0.12), Part.thud(110, 0.045, 0.12)],
+  up: Part.click(RELEASE_HZ, 0.28),
+};
+// A keyboard key: a low, round "thock" as it bottoms out, a light click as it comes back up.
+const KEY = {
+  gain: 0.06,
+  down: [Part.thud(170, 0.045, 0.22), Part.knock(230, 0.035, 0.09), ...Part.click(2800, 0.14)],
+  up: Part.click(3600, 0.06),
+};
+const CLICK = {
+  gain: 0.0571,
+  down: [...Part.click(PRESS_HZ, 0.245), Part.knock(330, 0.0389, 0.05)],
+  up: Part.click(RELEASE_HZ, 0.1),
+};
 
 // Recipes. Edit these to re-voice your whole app in one place.
 export const RECIPES = {
@@ -170,14 +515,17 @@ export const RECIPES = {
   press: cue(0.0571, [...Part.click(PRESS_HZ, 0.245), Part.knock(330, 0.0389, 0.05)]),
   release: cue(0.0571, Part.click(RELEASE_HZ, 0.1)),
   // A detent: one light click over a small, high knock. A single tick, with no release.
-  tick: cue(0.442, [...Part.click(RELEASE_HZ, 0.12), Part.knock(700, 0.0196, 0.02)], { vary: { pitch: 0.02, level: 0.1 } }),
+  tick: cue(0.442, [...Part.click(RELEASE_HZ, 0.12), Part.knock(700, 0.0196, 0.02)], {
+    vary: { pitch: 0.02, level: 0.1 },
+  }),
   // A soft detent, a little lower: something opening.
   hover: cue(0.165, [...Part.click(4200, 0.1), Part.knock(520, 0.02, 0.02)], { vary: { pitch: 0.02, level: 0.1 } }),
   // One round bubble: a single sine whose pitch rises quickly as it closes, with a hint of body under it.
-  pop: cue(0.085, [
-    tone(420, 0.13, 0.55, { glideTo: 900, glideTime: 0.06, attack: 0.007 }),
-    Part.thud(250, 0.035, 0.07),
-  ], { vary: { pitch: 0.05, level: 0.1 } }),
+  pop: cue(
+    0.085,
+    [tone(420, 0.13, 0.55, { glideTo: 900, glideTime: 0.06, attack: 0.007 }), Part.thud(250, 0.035, 0.07)],
+    { vary: { pitch: 0.05, level: 0.1 } },
+  ),
   // Switches. toggle_* are both halves; the press and release halves are used by sound#togglePress.
   toggle_on: toggleCue(true, true, true),
   toggle_off: toggleCue(false, true, true),
@@ -186,49 +534,101 @@ export const RECIPES = {
   toggle_release_on: toggleCue(true, false, true),
   toggle_release_off: toggleCue(false, false, true),
   // Take saved: three warm marimba notes roll upward and land on the home note with its octave under it.
-  success: cue(0.07, [
-    ...Part.click(3600, 0.12), Part.contact(1400, 0.16), ...Part.struck(Cs5, 0.95, 0.08, Part.mallet),
-    Part.contact(1500, 0.16, 0.07), ...Part.struck(E5, 0.95, 0.075, Part.mallet, 0.07),
-    Part.contact(1600, 0.18, 0.14), ...Part.struck(A5, 1.4, 0.08, Part.mallet, 0.14), ...Part.struck(A4, 1.5, 0.05, Part.mallet, 0.14),
-  ], { room: 2, vary: null }),
+  success: cue(
+    0.07,
+    [
+      ...Part.click(3600, 0.12),
+      Part.contact(1400, 0.16),
+      ...Part.struck(Cs5, 0.95, 0.08, Part.mallet),
+      Part.contact(1500, 0.16, 0.07),
+      ...Part.struck(E5, 0.95, 0.075, Part.mallet, 0.07),
+      Part.contact(1600, 0.18, 0.14),
+      ...Part.struck(A5, 1.4, 0.08, Part.mallet, 0.14),
+      ...Part.struck(A4, 1.5, 0.05, Part.mallet, 0.14),
+    ],
+    { room: 2, vary: null },
+  ),
   // A low A with C an octave and a third above, over a soft thump.
-  error: cue(0.0708, [...Part.note(A2, 0.487, 0.12), ...Part.note(C5, 0.461, 0.04), Part.thud(200, 0.0545, 0.2, 0.01)], { vary: null }),
+  error: cue(
+    0.0708,
+    [...Part.note(A2, 0.487, 0.12), ...Part.note(C5, 0.461, 0.04), Part.thud(200, 0.0545, 0.2, 0.01)],
+    { vary: null },
+  ),
   // A new message: two round glass notes, low enough to stay soft at any volume.
-  notification: cue(0.07, [
-    Part.contact(1200, 0.1), ...Part.struck(A4, 0.8, 0.09, Part.glass),
-    Part.contact(1200, 0.1, 0.1), ...Part.struck(E5, 1, 0.08, Part.glass, 0.1),
-  ], { room: 2, vary: null }),
+  notification: cue(
+    0.07,
+    [
+      Part.contact(1200, 0.1),
+      ...Part.struck(A4, 0.8, 0.09, Part.glass),
+      Part.contact(1200, 0.1, 0.1),
+      ...Part.struck(E5, 1, 0.08, Part.glass, 0.1),
+    ],
+    { room: 2, vary: null },
+  ),
   // Finished: C, G and E struck at once, ringing long.
-  done: cue(0.102, [...Part.note(C4, 1.47, 0.072), ...Part.note(G4, 1.51, 0.06), ...Part.note(E5, 1.36, 0.045)], { room: 2, vary: null }),
+  done: cue(0.102, [...Part.note(C4, 1.47, 0.072), ...Part.note(G4, 1.51, 0.06), ...Part.note(E5, 1.36, 0.045)], {
+    room: 2,
+    vary: null,
+  }),
   // Connected: one long, warm G ringing into the room.
   ready: cue(0.0983, Part.note(G3, 1.78, 0.108), { room: 2, vary: null }),
   // On air: three notes swell in and open into a wide, bright chord.
-  bloom: cue(0.045, [...Part.note(A3, 1.6, 0.1), ...Part.note(E4, 1.5, 0.08, 0.06), ...Part.note(A4, 1.4, 0.065, 0.12)], { room: 2, vary: null }),
+  bloom: cue(
+    0.045,
+    [...Part.note(A3, 1.6, 0.1), ...Part.note(E4, 1.5, 0.08, 0.06), ...Part.note(A4, 1.4, 0.065, 0.12)],
+    { room: 2, vary: null },
+  ),
   // Sparkle: a quick run of six round notes up a pentatonic scale, ringing together, with a soft
   // celeste chord swelling in underneath so the run has something to sit on. In tune throughout:
   // whole-number overtones only and no pitch drift.
-  sparkle: cue(0.09, [
-    ...[523.25, 587.33, 659.25, 783.99, 880, 1046.5].flatMap((f, i) => Part.struck(f, 0.7, 0.06, Part.glass, i * 0.05)),
-    tone(523.25, 1.2, 0.035, { attack: 0.07 }), tone(783.99, 1.1, 0.025, { attack: 0.09, offset: 0.03 }),
-  ], { room: 2, vary: { pitch: 0, level: 0.06 } }),
+  sparkle: cue(
+    0.09,
+    [
+      ...[523.25, 587.33, 659.25, 783.99, 880, 1046.5].flatMap((f, i) =>
+        Part.struck(f, 0.7, 0.06, Part.glass, i * 0.05),
+      ),
+      tone(523.25, 1.2, 0.035, { attack: 0.07 }),
+      tone(783.99, 1.1, 0.025, { attack: 0.09, offset: 0.03 }),
+    ],
+    { room: 2, vary: { pitch: 0, level: 0.06 } },
+  ),
   // Glint: a round bell with its octave underneath for body, and its fifth struck a breath later.
-  glint: cue(0.09, [
-    ...Part.struck(783.99, 0.9, 0.07, Part.glass), ...Part.struck(1174.7, 0.9, 0.06, Part.glass, 0.02),
-    tone(392, 0.9, 0.05, { attack: 0.01 }),
-  ], { room: 2, vary: { pitch: 0, level: 0.06 } }),
+  glint: cue(
+    0.09,
+    [
+      ...Part.struck(783.99, 0.9, 0.07, Part.glass),
+      ...Part.struck(1174.7, 0.9, 0.06, Part.glass, 0.02),
+      tone(392, 0.9, 0.05, { attack: 0.01 }),
+    ],
+    { room: 2, vary: { pitch: 0, level: 0.06 } },
+  ),
   // Careful: two soft, equal knocks on one note. Attention without alarm, between a notification and an error.
-  warning: cue(0.07, [
-    Part.contact(1400, 0.12), ...Part.struck(E5, 0.35, 0.09, Part.mallet),
-    Part.contact(1400, 0.1, 0.13), ...Part.struck(E5, 0.45, 0.075, Part.mallet, 0.13),
-  ], { room: 1.5, vary: { pitch: 0, level: 0.06 } }),
+  warning: cue(
+    0.07,
+    [
+      Part.contact(1400, 0.12),
+      ...Part.struck(E5, 0.35, 0.09, Part.mallet),
+      Part.contact(1400, 0.1, 0.13),
+      ...Part.struck(E5, 0.45, 0.075, Part.mallet, 0.13),
+    ],
+    { room: 1.5, vary: { pitch: 0, level: 0.06 } },
+  ),
   // Copied: two tiny notes climbing. Short, bright, and it ends up.
-  copy: cue(0.08, [...Part.struck(783.99, 0.2, 0.07, Part.mallet), ...Part.struck(1046.5, 0.3, 0.06, Part.mallet, 0.05)], { room: 1, vary: { pitch: 0, level: 0.06 } }),
+  copy: cue(
+    0.08,
+    [...Part.struck(783.99, 0.2, 0.07, Part.mallet), ...Part.struck(1046.5, 0.3, 0.06, Part.mallet, 0.05)],
+    { room: 1, vary: { pitch: 0, level: 0.06 } },
+  ),
   // A soft whoosh: air that swells in, sweeps upward and fades away, with a little low body under it.
-  page: cue(0.1, [
-    Part.air(450, 1900, 0.34, 0.2, 0.13, 0, 0.8),
-    Part.air(900, 3400, 0.26, 0.05, 0.15, 0.04, 0.8),
-    Part.thud(220, 0.3, 0.05, 0.12),
-  ], { room: 1.5 }),
+  page: cue(
+    0.1,
+    [
+      Part.air(450, 1900, 0.34, 0.2, 0.13, 0, 0.8),
+      Part.air(900, 3400, 0.26, 0.05, 0.15, 0.04, 0.8),
+      Part.thud(220, 0.3, 0.05, 0.12),
+    ],
+    { room: 1.5 },
+  ),
   // A soft whoosh closing: the page sound in reverse, sweeping down and settling with a little thump.
   close: cue(0.1, [
     Part.air(1900, 450, 0.22, 0.18, 0.04, 0, 0.8),
@@ -236,7 +636,9 @@ export const RECIPES = {
     Part.thud(200, 0.08, 0.06, 0.004, 0.14),
   ]),
   // Set down in place: a dull click over a knock and a low thump. Heavier than a tap, with no release.
-  drop: cue(0.06, [...Part.click(2600, 0.2), Part.knock(196, 0.06, 0.1), Part.thud(140, 0.06, 0.16)], { vary: { pitch: 0.03, level: 0.1 } }),
+  drop: cue(0.06, [...Part.click(2600, 0.2), Part.knock(196, 0.06, 0.1), Part.thud(140, 0.06, 0.16)], {
+    vary: { pitch: 0.03, level: 0.1 },
+  }),
   // Swept away: a brush of air falling, with a low knock that drops in pitch under it.
   delete: cue(0.08, [
     Part.air(2400, 600, 0.12, 0.1, 0.008, 0, 1.2),
@@ -245,6 +647,71 @@ export const RECIPES = {
   ]),
   // One struck note. `sound#step` raises its pitch along a slider.
   step: cue(0.07, [Part.contact(1500, 0.14), ...Part.struck(A4, 0.18, 0.09, Part.mallet)]),
+  // A keyboard key, and its halves for pointerdown and pointerup (see KEY).
+  key: cue(KEY.gain, KEY.down, { release: KEY.up, vary: { pitch: 0.04, level: 0.12 } }),
+  key_down: cue(KEY.gain, KEY.down, { vary: { pitch: 0.04, level: 0.12 } }),
+  key_up: cue(KEY.gain, KEY.up, { vary: { pitch: 0.04, level: 0.12 } }),
+  // Sent: a quick rush of air rising away, landing on a small blip that slides up.
+  send: cue(
+    0.08,
+    [
+      Part.air(600, 2800, 0.16, 0.12, 0.03, 0, 1),
+      tone(880, 0.09, 0.05, { glideTo: 1320, glideTime: 0.05, attack: 0.004, offset: 0.1 }),
+    ],
+    { room: 1.3 },
+  ),
+  // A latch opening: two clicks, the second higher, then a short chirp rising out of it.
+  unlock: cue(
+    0.06,
+    [
+      ...Part.click(2400, 0.2),
+      Part.knock(300, 0.03, 0.06),
+      ...Part.click(3600, 0.16, 0.06),
+      tone(660, 0.09, 0.05, { glideTo: 990, glideTime: 0.06, attack: 0.004, offset: 0.08 }),
+    ],
+    { vary: { pitch: 0.02, level: 0.08 } },
+  ),
+  // A coin: two quick, bright glass notes a fourth apart, the second ringing on. Playful, game-like.
+  coin: cue(
+    0.07,
+    [
+      Part.contact(2500, 0.12),
+      ...Part.struck(987.77, 0.25, 0.07, Part.glass),
+      Part.contact(2600, 0.12, 0.08),
+      ...Part.struck(1318.51, 0.6, 0.07, Part.glass, 0.08),
+    ],
+    { room: 1.5, vary: null },
+  ),
+  // Confetti: a puff of air, then a scatter of tiny glass blips, high and in tune (a pentatonic
+  // spread), landing at uneven moments over 180 ms and getting lighter. A burst, not a melody.
+  confetti: cue(
+    0.08,
+    [
+      Part.air(1200, 3800, 0.12, 0.08, 0.004, 0, 1.2),
+      ...[
+        [1567.98, 0],
+        [2093, 0.025],
+        [1760, 0.05],
+        [2349.32, 0.08],
+        [1975.53, 0.11],
+        [2637.02, 0.14],
+        [2093, 0.175],
+      ].flatMap(([f, at], i) => Part.struck(f, 0.12, 0.05 - i * 0.004, Part.glass, at)),
+    ],
+    { room: 1.6, vary: { pitch: 0, level: 0.08 } },
+  ),
+  // A camera shutter: two mechanical snaps a breath apart, each a tight ring over a small thump.
+  shutter: cue(
+    0.07,
+    [
+      Part.ring(5000, 0.4, 3),
+      Part.thud(300, 0.03, 0.15),
+      Part.air(3000, 2000, 0.03, 0.08, 0.003),
+      Part.ring(4200, 0.35, 3, 0.07),
+      Part.thud(260, 0.03, 0.12, 0.001, 0.07),
+    ],
+    { vary: { pitch: 0.02, level: 0.08 } },
+  ),
 };
 
 // Loudness trim per sound, in dB. Measured so that presses and clicks peak around -20 dBFS (releases
@@ -253,14 +720,51 @@ export const RECIPES = {
 // call suggestLevel("name") from the browser console (or use the Sound lab on the docs page) for a
 // suggested trim, then listen.
 export const LEVELS = {
-  tap: 9.5, click: 13, press: 12, release: 18, tick: -1, hover: 2, pop: -4,
-  toggle_on: 8, toggle_off: 14, toggle_press_on: 12, toggle_press_off: 13, toggle_release_on: 13, toggle_release_off: 13.5,
-  success: 6, error: 5.7, notification: 8, done: 3.8, ready: 5, bloom: 6, sparkle: 4.5, glint: 4.5, warning: 11.4, copy: 12, page: 5, step: 7,
-  close: 2.5, drop: 9, delete: 6.5, // close sits with page, a little under the click target
+  tap: 9.5,
+  click: 13,
+  press: 12,
+  release: 18,
+  tick: -1,
+  hover: 2,
+  pop: -4,
+  toggle_on: 8,
+  toggle_off: 14,
+  toggle_press_on: 12,
+  toggle_press_off: 13,
+  toggle_release_on: 13,
+  toggle_release_off: 13.5,
+  success: 6,
+  error: 5.7,
+  notification: 8,
+  done: 3.8,
+  ready: 5,
+  bloom: 6,
+  sparkle: 4.5,
+  glint: 4.5,
+  warning: 11.4,
+  copy: 12,
+  page: 5,
+  step: 7,
+  close: 2.5,
+  drop: 9,
+  delete: 6.5, // close sits with page, a little under the click target
+  key: 11.5,
+  send: 13,
+  unlock: 13,
+  coin: 12,
+  shutter: 5,
+  confetti: 13.5,
 };
 
 // Other names that resolve to a recipe.
-const ALIASES = { toggle: "toggle_on", chime: "notification", droplet: "pop", button: "tap", dismiss: "close", remove: "delete" };
+const ALIASES = {
+  toggle: "toggle_on",
+  chime: "notification",
+  droplet: "pop",
+  button: "tap",
+  dismiss: "close",
+  remove: "delete",
+};
 
 const VARIATION_RING = 0.1; // ± how much each layer's ring length drifts per play
 const OUTPUT_GAIN = 5.8 * 2 * 0.5; // Cues are mixed quietly and boosted at the output; the 0.5 sets a medium overall level
@@ -363,7 +867,10 @@ export default class extends Controller {
     const cancel = () => finish(false);
     const timer = setTimeout(() => finish(true), TOUCH_SETTLE);
     const listen = (type, played) =>
-      window.addEventListener(type, (other) => other.pointerId === pointerId && finish(played), { capture: true, signal: abort.signal });
+      window.addEventListener(type, (other) => other.pointerId === pointerId && finish(played), {
+        capture: true,
+        signal: abort.signal,
+      });
 
     // Capture on window runs before the element's own pointerup, so the press always comes first.
     listen("pointerup", true);
@@ -511,7 +1018,9 @@ export default class extends Controller {
     const ends = event.type === "keydown" ? ["keyup", "blur"] : ["pointerup", "pointercancel"];
     ends.forEach((type) => window.addEventListener(type, forget, { signal: abort.signal }));
 
-    this.whenTouchSettles(event, () => this.emit(gesture.on ? "toggle_press_on" : "toggle_press_off", { source: input }));
+    this.whenTouchSettles(event, () =>
+      this.emit(gesture.on ? "toggle_press_on" : "toggle_press_off", { source: input }),
+    );
   }
 
   toggleRelease(event) {
@@ -529,7 +1038,9 @@ export default class extends Controller {
   // or the checkbox (or radio) of a label.
   switchOf(element) {
     if (isAriaToggle(element)) return element;
-    return element instanceof HTMLInputElement ? element : element.querySelector('input[type="checkbox"], input[type="radio"]');
+    return element instanceof HTMLInputElement
+      ? element
+      : element.querySelector('input[type="checkbox"], input[type="radio"]');
   }
 
   // data-action="change->sound#toggle" on a checkbox, or "click->sound#toggle" on a button
@@ -657,7 +1168,10 @@ export default class extends Controller {
     this.keyPress = keyPress;
     this.letGoOfKey = cancel;
     // Capture on window: the release plays before the keyup's own click and change.
-    window.addEventListener("keyup", (other) => other.key === key && finish(true), { capture: true, signal: abort.signal });
+    window.addEventListener("keyup", (other) => other.key === key && finish(true), {
+      capture: true,
+      signal: abort.signal,
+    });
     window.addEventListener("blur", cancel, { signal: abort.signal }); // The keyup will never come
   }
 
@@ -929,7 +1443,12 @@ export default class extends Controller {
         bar.animate(
           [
             { height: `${peak}px`, opacity: 1, offset: 0.3, easing: "cubic-bezier(0.33, 1, 0.68, 1)" },
-            { height: `${Math.round(peak * 0.45)}px`, opacity: 1, offset: 0.62, easing: "cubic-bezier(0.33, 1, 0.68, 1)" },
+            {
+              height: `${Math.round(peak * 0.45)}px`,
+              opacity: 1,
+              offset: 0.62,
+              easing: "cubic-bezier(0.33, 1, 0.68, 1)",
+            },
           ],
           { duration: 620, delay: index * 45, easing: "cubic-bezier(0.33, 1, 0.68, 1)" },
         );
@@ -949,7 +1468,9 @@ const memory = new Map();
 
 // A sound name as written (dashes allowed, aliases allowed) → its key in RECIPES.
 function resolve(name) {
-  const key = String(name ?? "").trim().replaceAll("-", "_");
+  const key = String(name ?? "")
+    .trim()
+    .replaceAll("-", "_");
   return ALIASES[key] || key;
 }
 
@@ -1101,17 +1622,21 @@ function voice(stage, recipe, level, pitch) {
   // The ring is long gone (-60 dB at `decay`, silence a moment later) before the nodes are freed.
   // An offline render keeps its nodes until it is done.
   if (!stage.offline) {
-    setTimeout(() => {
-      bus.disconnect();
-      send.disconnect();
-    }, (end + 0.3 - context.currentTime) * 1000);
+    setTimeout(
+      () => {
+        bus.disconnect();
+        send.disconnect();
+      },
+      (end + 0.3 - context.currentTime) * 1000,
+    );
   }
   return end;
 }
 
-// The press layers, then the release layers a moment later.
+// The press layers, then the release layers a moment later (tune's spacing stretches that moment).
 function layersOf(recipe) {
-  return [...recipe.layers, ...recipe.release.map((layer) => ({ ...layer, offset: layer.offset + RELEASE_GAP }))];
+  const gap = recipe.releaseGap ?? RELEASE_GAP;
+  return [...recipe.layers, ...recipe.release.map((layer) => ({ ...layer, offset: layer.offset + gap }))];
 }
 
 // One layer: a source, a filter if it is noise, and an envelope that swells in straight and
@@ -1227,7 +1752,10 @@ function roomResponse(context) {
     input[index] = smoothed;
   }
 
-  [[23.1, 29.7, 37.1, 41.1], [24.3, 31.9, 35.3, 43.7]].forEach((delays, channel) => {
+  [
+    [23.1, 29.7, 37.1, 41.1],
+    [24.3, 31.9, 35.3, 43.7],
+  ].forEach((delays, channel) => {
     const out = response.getChannelData(channel);
     const pre = Math.round(0.008 * rate);
 
