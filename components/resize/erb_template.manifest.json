@@ -1,0 +1,16 @@
+{
+  "component": "resize",
+  "implementation": "erb_template",
+  "files": [
+    {
+      "path": "resize/_resize_handle.html.erb",
+      "relative_path": "_resize_handle.html.erb",
+      "checksum": "9b39a64284fb45c7a70e133955286b351474f478b8f1a9e51068a2553ef71fd0"
+    },
+    {
+      "path": "resize/_resize.html.erb",
+      "relative_path": "_resize.html.erb",
+      "checksum": "ec719d27595964d7978c7fd7f1866af685f189092f9b0b14b5a2003ee4c04f52"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "component": "sound",
+  "implementation": "view_component",
+  "files": [
+    {
+      "path": "sound/component.rb",
+      "relative_path": "component.rb",
+      "checksum": "e562c1e88f0ae2b7c214490a74a8e10cca3c1dcbc27a5aa7f58cc20672e35892"
+    },
+    {
+      "path": "sound/component/mute_button_component.html.erb",
+      "relative_path": "component/mute_button_component.html.erb",
+      "checksum": "9ddca7987f580173bcfb5e9e0693cab532ab78fec7bf7cec961e681634d06778"
+    },
+    {
+      "path": "sound/component/mute_button_component.rb",
+      "relative_path": "component/mute_button_component.rb",
+      "checksum": "f294dc84bb0181905fee968cb0e5811223d14efb9b2a6f73c7c36e2dbb07c8a9"
+    }
+  ]
+}

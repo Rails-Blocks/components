@@ -1,0 +1,146 @@
+<%# ── 1. Docs layout with a collapsible sidebar. The toggle button is wired up automatically (aria-controls, aria-expanded). %>
+<% docs_sidebar = capture do %>
+  <div class="min-w-40 p-3">
+    <p class="px-2 pb-2 pt-1 text-[11px] font-medium text-neutral-400 dark:text-neutral-500">Getting started</p>
+    <ul class="space-y-px text-sm">
+      <% ["Introduction", "Installation", "Configuration", "Deploying"].each_with_index do |page, index| %>
+        <li>
+          <a href="#" <%= "aria-current=page" if index.zero? %>
+             class="block truncate rounded-md px-2 py-1.5 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-neutral-600 dark:focus-visible:outline-neutral-200 <%= index.zero? ? "bg-black/5 font-medium text-neutral-900 dark:bg-white/10 dark:text-white" : "text-neutral-600 hover:bg-black/5 hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-white/5 dark:hover:text-white" %>"><%= page %></a>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+<% docs_main = capture do %>
+  <div class="flex items-center gap-2 border-b border-black/5 px-3 py-2 dark:border-white/5">
+    <button type="button" data-action="resize#toggle" aria-label="Toggle sidebar"
+            class="flex size-7 shrink-0 items-center justify-center rounded-md text-neutral-500 transition-colors hover:bg-neutral-100 hover:text-neutral-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-600 dark:text-neutral-400 dark:hover:bg-neutral-600/50 dark:hover:text-white dark:focus-visible:outline-neutral-200">
+      <svg xmlns="http://www.w3.org/2000/svg" class="size-4" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="1.75" y="2.75" width="12.5" height="10.5" rx="2"/><path d="M6 2.75v10.5"/></svg>
+    </button>
+    <span class="truncate text-sm font-medium text-neutral-900 dark:text-white">Introduction</span>
+  </div>
+  <div class="space-y-3 p-5 text-sm leading-6 text-neutral-600 dark:text-neutral-400">
+    <p>Harbor is a deployment toolkit for Rails apps. Point it at a server, and it builds, ships and restarts your app with zero downtime.</p>
+    <p>Drag the sidebar past half of its minimum width and it snaps shut. Press Enter on the handle or use the button to bring it back.</p>
+  </div>
+<% end %>
+<%= render "shared/components/resize/resize",
+  classes: "h-80 w-[40rem] max-w-full rounded-xl border border-black/10 bg-white shadow-xs dark:border-white/10 dark:bg-neutral-900",
+  panels: [
+    { tag: :nav, default_size: 30, min_size: "160px", max_size: 45, collapsible: true,
+      handle_label: "Resize sidebar", classes: "bg-neutral-50 dark:bg-neutral-950/40",
+      html: { aria: { label: "Documentation" } }, content: docs_sidebar },
+    { tag: :main, min_size: 40, content: docs_main }
+  ] %>
+
+<%# ── 2. Query editor: a vertical group with a grip handle. %>
+<% query = capture do %>
+  <p class="shrink-0 border-b border-black/5 px-4 py-2 text-xs font-medium text-neutral-500 dark:border-white/5 dark:text-neutral-400">Query</p>
+  <pre class="min-h-0 flex-1 overflow-auto px-4 py-3 font-mono text-xs leading-5 text-neutral-700 dark:text-neutral-300">SELECT plan, COUNT(*) AS customers, SUM(mrr) AS mrr
+FROM subscriptions
+WHERE status = 'active'
+GROUP BY plan ORDER BY mrr DESC;</pre>
+<% end %>
+<% results = capture do %>
+  <p class="shrink-0 px-4 pb-1 pt-3 text-xs font-medium text-neutral-500 dark:text-neutral-400">Results</p>
+  <div class="min-h-0 flex-1 overflow-auto px-4 pb-3">
+    <table class="w-full text-left text-xs">
+      <thead class="text-neutral-500 dark:text-neutral-400">
+        <tr><th class="py-1.5 font-medium">plan</th><th class="py-1.5 text-right font-medium">customers</th><th class="py-1.5 text-right font-medium">mrr</th></tr>
+      </thead>
+      <tbody class="divide-y divide-black/5 tabular-nums text-neutral-800 dark:divide-white/5 dark:text-neutral-200">
+        <% [["Team", "412", "$40,376"], ["Business", "96", "$28,704"], ["Pro", "1,284", "$24,396"]].each do |plan, customers, mrr| %>
+          <tr><td class="py-1.5"><%= plan %></td><td class="py-1.5 text-right"><%= customers %></td><td class="py-1.5 text-right"><%= mrr %></td></tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% end %>
+<%= render "shared/components/resize/resize",
+  orientation: :vertical,
+  handle: :grip,
+  classes: "h-80 w-[40rem] max-w-full rounded-xl border border-black/10 bg-white shadow-xs dark:border-white/10 dark:bg-neutral-900",
+  panels: [
+    { default_size: 50, min_size: 25, handle_label: "Resize query and results", classes: "flex flex-col", content: query },
+    { min_size: 25, classes: "flex flex-col bg-neutral-50 dark:bg-neutral-950/40", content: results }
+  ] %>
+
+<%# ── 3. Mail app saved in a cookie: Rails renders the saved sizes, so nothing jumps on reload.
+       The sidebar collapses to a 52px icon rail; labels stay readable to screen readers (sr-only). %>
+<% mailboxes = capture do %>
+  <ul class="space-y-px p-2 text-sm">
+    <% [["Inbox", "M1.75 9.25 3.6 3.6a1.25 1.25 0 0 1 1.2-.85h6.4a1.25 1.25 0 0 1 1.2.85l1.85 5.65v2.75a1.25 1.25 0 0 1-1.25 1.25H3A1.25 1.25 0 0 1 1.75 12V9.25ZM1.75 9.25H5.5l.75 1.5h3.5l.75-1.5h3.75"],
+        ["Starred", "M8 1.75 9.9 5.9l4.35.5-3.2 3.05.85 4.3L8 11.6l-3.9 2.15.85-4.3-3.2-3.05 4.35-.5L8 1.75Z"],
+        ["Sent", "m14.25 1.75-6.5 6.5M14.25 1.75l-4.25 12.5-2.25-6-6-2.25 12.5-4.25Z"]].each_with_index do |(name, icon), index| %>
+      <li>
+        <a href="#" title="<%= name %>" <%= "aria-current=page" if index.zero? %>
+           class="flex items-center gap-2.5 rounded-md px-2 py-1.5 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-neutral-600 group-data-[collapsed]/sidebar:justify-center dark:focus-visible:outline-neutral-200 <%= index.zero? ? "bg-black/5 font-medium text-neutral-900 dark:bg-white/10 dark:text-white" : "text-neutral-600 hover:bg-black/5 hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-white/5 dark:hover:text-white" %>">
+          <svg xmlns="http://www.w3.org/2000/svg" class="size-4 shrink-0" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="<%= icon %>"/></svg>
+          <span class="truncate group-data-[collapsed]/sidebar:sr-only"><%= name %></span>
+        </a>
+      </li>
+    <% end %>
+  </ul>
+<% end %>
+<% messages = capture do %>
+  <ul class="h-full divide-y divide-black/5 overflow-y-auto dark:divide-white/5">
+    <% [["Maya Chen", "Q4 roadmap review", "9:41"], ["Stripe", "Your payout is on its way", "8:15"], ["Jonas Weber", "Re: Onboarding copy", "Tue"]].each_with_index do |(from, subject, time), index| %>
+      <li>
+        <a href="#" class="block px-4 py-3 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-neutral-600 dark:focus-visible:outline-neutral-200 <%= index.zero? ? "bg-neutral-50 dark:bg-white/5" : "hover:bg-neutral-50 dark:hover:bg-white/5" %>">
+          <span class="flex items-baseline justify-between gap-2"><span class="truncate text-sm font-medium text-neutral-900 dark:text-white"><%= from %></span><span class="shrink-0 text-xs tabular-nums text-neutral-400 dark:text-neutral-500"><%= time %></span></span>
+          <span class="block truncate text-sm text-neutral-600 dark:text-neutral-400"><%= subject %></span>
+        </a>
+      </li>
+    <% end %>
+  </ul>
+<% end %>
+<% reading_pane = capture do %>
+  <div class="h-full overflow-y-auto p-5">
+    <h3 class="text-base font-semibold text-neutral-900 dark:text-white">Q4 roadmap review</h3>
+    <p class="mt-0.5 text-xs text-neutral-500 dark:text-neutral-400">Maya Chen · Today at 9:41</p>
+    <p class="mt-4 text-sm leading-6 text-neutral-600 dark:text-neutral-400">Billing ships first, then the new onboarding, and search moves to January. Could everyone leave comments by Thursday?</p>
+  </div>
+<% end %>
+<%= render "shared/components/resize/resize",
+  storage_key: "mail:layout",
+  storage: :cookie,
+  classes: "h-80 w-[40rem] max-w-full rounded-xl border border-black/10 bg-white shadow-xs dark:border-white/10 dark:bg-neutral-900",
+  panels: [
+    { tag: :nav, default_size: 24, min_size: "150px", max_size: 32, collapsible: true, collapsed_size: "52px",
+      handle_label: "Resize mailboxes", classes: "group/sidebar bg-neutral-50 dark:bg-neutral-950/40",
+      html: { aria: { label: "Mailboxes" } }, content: mailboxes },
+    { default_size: 36, min_size: "180px", handle_label: "Resize message list", content: messages },
+    { tag: :article, min_size: 30, content: reading_pane }
+  ] %>
+
+<%# ── 4. Two cards with a floating pill handle in the gap. %>
+<% this_week = capture do %>
+  <div class="h-full overflow-hidden rounded-xl border border-black/10 bg-white p-5 shadow-xs dark:border-white/10 dark:bg-neutral-900">
+    <p class="text-xs font-medium text-neutral-500 dark:text-neutral-400">This week</p>
+    <p class="mt-1 text-2xl font-semibold tabular-nums tracking-tight text-neutral-900 dark:text-white">$12,480</p>
+    <p class="mt-1 truncate text-xs text-neutral-500 dark:text-neutral-400"><span class="font-medium text-emerald-600 dark:text-emerald-400">+8.2%</span> vs last week</p>
+    <div class="mt-4 flex h-16 items-end gap-1.5" aria-hidden="true">
+      <% [45, 60, 52, 78, 66, 88, 100].each_with_index do |height, day| %>
+        <span class="flex-1 rounded-sm <%= day == 6 ? "bg-neutral-900 dark:bg-white" : "bg-neutral-200 dark:bg-neutral-700" %>" style="height: <%= height %>%"></span>
+      <% end %>
+    </div>
+  </div>
+<% end %>
+<% top_products = capture do %>
+  <div class="h-full overflow-hidden rounded-xl border border-black/10 bg-white p-5 shadow-xs dark:border-white/10 dark:bg-neutral-900">
+    <p class="text-xs font-medium text-neutral-500 dark:text-neutral-400">Top products</p>
+    <ul class="mt-3 space-y-2 text-sm">
+      <% [["Linen overshirt", "$3,920"], ["Canvas weekender", "$2,745"], ["Merino sweater", "$2,310"]].each do |product, revenue| %>
+        <li class="flex items-center justify-between gap-3"><span class="truncate text-neutral-800 dark:text-neutral-200"><%= product %></span><span class="tabular-nums text-neutral-500 dark:text-neutral-400"><%= revenue %></span></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+<%= render "shared/components/resize/resize",
+  handle: :pill,
+  classes: "h-56 w-[40rem] max-w-full",
+  panels: [
+    { min_size: 30, handle_label: "Resize cards", content: this_week },
+    { min_size: 30, content: top_products }
+  ] %>

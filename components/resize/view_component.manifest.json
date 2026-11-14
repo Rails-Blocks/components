@@ -1,0 +1,16 @@
+{
+  "component": "resize",
+  "implementation": "view_component",
+  "files": [
+    {
+      "path": "resize/component.rb",
+      "relative_path": "component.rb",
+      "checksum": "7d40175de795f4488a20de86aa11f2eb11f28c9c9f2bad4fe83476f548821209"
+    },
+    {
+      "path": "resize/component.html.erb",
+      "relative_path": "component.html.erb",
+      "checksum": "946088a0ce921ddcf5e7f6a380e54f202ebd03aa69d4cd8fb931654fdcfe85fd"
+    }
+  ]
+}

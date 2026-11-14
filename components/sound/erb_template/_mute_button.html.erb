@@ -1,0 +1,37 @@
+<%#
+  Sound Mute Button
+  A button that mutes and unmutes every interface sound. The preference is global (shared by all
+  sound controllers) and remembered in localStorage. It works anywhere: it brings its own sound
+  controller, so it does not need to sit inside the sound partial.
+
+  Optional locals:
+    - label: String (default: "Mute sounds") - Accessible name, and the visible text when show_label is true
+    - show_label: Boolean (default: false) - Show the label next to the icon
+    - size: String (default: "md") - "sm", "md" or "lg"
+    - classes: String (default: nil) - Additional CSS classes for the button
+%>
+
+<% label = local_assigns.fetch(:label, "Mute sounds") %>
+<% show_label = local_assigns.fetch(:show_label, false) %>
+<% size = %w[sm md lg].include?(local_assigns[:size].to_s) ? local_assigns[:size].to_s : "md" %>
+<% classes = local_assigns[:classes] %>
+
+<% icon_classes = { "sm" => "size-3.5", "md" => "size-4", "lg" => "size-5" }.fetch(size) %>
+<% size_classes = if show_label
+  { "sm" => "px-2 py-1 text-xs", "md" => "px-2.5 py-1.5 text-sm", "lg" => "px-3 py-2 text-base" }.fetch(size)
+else
+  { "sm" => "size-7", "md" => "size-9", "lg" => "size-11" }.fetch(size)
+end %>
+
+<span data-controller="sound" class="group/sound inline-flex">
+  <button type="button"
+          class="flex shrink-0 items-center justify-center gap-1.5 rounded-lg bg-transparent font-medium whitespace-nowrap text-neutral-500 transition-all duration-100 ease-in-out select-none hover:bg-neutral-100 hover:text-neutral-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-600 aria-pressed:text-neutral-400 dark:text-neutral-400 dark:hover:bg-neutral-600/50 dark:hover:text-white dark:focus-visible:outline-neutral-200 dark:aria-pressed:text-neutral-500 <%= [size_classes, classes].compact.join(" ") %>"
+          data-sound-target="mute"
+          data-action="sound#toggleMute"
+          aria-pressed="false"
+          <% unless show_label %>aria-label="<%= label %>" title="<%= label %>"<% end %>>
+    <svg xmlns="http://www.w3.org/2000/svg" class="<%= icon_classes %> group-data-[sound-muted=true]/sound:hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5Z"></path><path d="M15.5 8.5a5 5 0 0 1 0 7"></path><path d="M18.5 5.5a9 9 0 0 1 0 13"></path></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" class="<%= icon_classes %> hidden group-data-[sound-muted=true]/sound:block" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5Z"></path><path d="m22 9-6 6"></path><path d="m16 9 6 6"></path></svg>
+    <% if show_label %><span><%= label %></span><% end %>
+  </button>
+</span>

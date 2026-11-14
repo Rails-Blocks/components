@@ -1,0 +1,12 @@
+<span data-controller="sound" class="group/sound inline-flex">
+  <button type="button"
+          class="<%= button_classes %>"
+          data-sound-target="mute"
+          data-action="sound#toggleMute"
+          aria-pressed="false"
+          <% unless show_label %>aria-label="<%= label %>" title="<%= label %>"<% end %>>
+    <svg xmlns="http://www.w3.org/2000/svg" class="<%= icon_classes %> group-data-[sound-muted=true]/sound:hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5Z"></path><path d="M15.5 8.5a5 5 0 0 1 0 7"></path><path d="M18.5 5.5a9 9 0 0 1 0 13"></path></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" class="<%= icon_classes %> hidden group-data-[sound-muted=true]/sound:block" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5Z"></path><path d="m22 9-6 6"></path><path d="m16 9 6 6"></path></svg>
+    <% if show_label %><span><%= label %></span><% end %>
+  </button>
+</span>

@@ -1,0 +1,20 @@
+<%= tag.div(**group_attributes) do %>
+  <% panels.each_with_index do |panel, index| %>
+    <% if index.positive? %>
+      <%= tag.div(**handle_attributes(index - 1)) do %>
+        <% if handle_style[:grip] %>
+          <span class="<%= handle_style[:grip] %>">
+            <% if horizontal? %>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-1.5" viewBox="0 0 6 14" fill="currentColor" aria-hidden="true"><circle cx="1" cy="3" r="1"/><circle cx="1" cy="7" r="1"/><circle cx="1" cy="11" r="1"/><circle cx="5" cy="3" r="1"/><circle cx="5" cy="7" r="1"/><circle cx="5" cy="11" r="1"/></svg>
+            <% else %>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-1.5 w-3.5" viewBox="0 0 14 6" fill="currentColor" aria-hidden="true"><circle cx="3" cy="1" r="1"/><circle cx="7" cy="1" r="1"/><circle cx="11" cy="1" r="1"/><circle cx="3" cy="5" r="1"/><circle cx="7" cy="5" r="1"/><circle cx="11" cy="5" r="1"/></svg>
+            <% end %>
+          </span>
+        <% elsif handle_style[:bar] %>
+          <span class="<%= handle_style[:bar] %>"></span>
+        <% end %>
+      <% end %>
+    <% end %>
+    <%= content_tag(panel_tag(index), **panel_attributes(index)) do %><%= panel %><% end %>
+  <% end %>
+<% end %>

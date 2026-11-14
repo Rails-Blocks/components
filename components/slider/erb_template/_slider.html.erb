@@ -1,0 +1,341 @@
+<%# Slider and range slider (requires slider_controller.js). Same options and markup as Slider::Component.
+
+    render "shared/components/slider/slider", name: "volume", value: 40, label: "Volume"
+    render "shared/components/slider/slider", form: f, attribute: %i[price_min price_max], label: "Price", max: 1200
+
+    Two values (or two names, or two attributes) make a range slider. The thumb positions are rendered
+    here, so the slider is drawn in place before JavaScript loads, and each thumb writes to a hidden
+    input that submits with the form.
+
+    Locals: name, value, form, attribute, min (0), max (100), step (1), large_step, min_distance,
+    label, hide_label, output (true), format (Intl.NumberFormat options), labels, marks, value_text,
+    tooltip (true / false / :auto), thumb_labels, hint, size (:sm / :md / :lg), variant (:default / :fluid),
+    orientation (:horizontal / :vertical), track_length ("h-40"), disabled, rubber_band, classes,
+    id, data (merged into the root), leading and trailing (HTML before and after the track, e.g. from capture). %>
+<%
+  min = local_assigns.fetch(:min, 0)
+  max = local_assigns.fetch(:max, 100)
+  step = local_assigns.fetch(:step, 1)
+  large_step = local_assigns[:large_step]
+  min_distance = local_assigns[:min_distance]
+  label = local_assigns[:label]
+  hide_label = local_assigns.fetch(:hide_label, false)
+  output = local_assigns.fetch(:output, true)
+  format = (local_assigns[:format] || {}).to_h.transform_keys(&:to_s)
+  labels = local_assigns[:labels]&.map(&:to_s)
+  marks = local_assigns.fetch(:marks, false)
+  value_text = local_assigns[:value_text]
+  thumb_labels = local_assigns[:thumb_labels]
+  hint = local_assigns[:hint]
+  track_length = local_assigns[:track_length]
+  disabled = local_assigns.fetch(:disabled, false)
+  classes = local_assigns[:classes]
+  leading = local_assigns[:leading]
+  trailing = local_assigns[:trailing]
+
+  pick = lambda do |option, given, allowed|
+    symbol = given.to_s.to_sym
+    raise ArgumentError, "slider partial #{option} must be one of #{allowed.map(&:inspect).join(', ')} (got #{given.inspect})" unless allowed.include?(symbol)
+
+    symbol
+  end
+  size = pick.call(:size, local_assigns.fetch(:size, :md), %i[sm md lg])
+  variant = pick.call(:variant, local_assigns.fetch(:variant, :default), %i[default fluid])
+  orientation = pick.call(:orientation, local_assigns.fetch(:orientation, :horizontal), %i[horizontal vertical])
+  tooltip = local_assigns.fetch(:tooltip, false)
+  tooltip = tooltip.to_sym if tooltip.is_a?(String) || tooltip.is_a?(Symbol)
+  raise ArgumentError, "slider partial tooltip must be true, false or :auto (got #{tooltip.inspect})" unless [false, true, :auto].include?(tooltip)
+  raise ArgumentError, "slider partial max (#{max}) must be greater than min (#{min})" unless max > min
+  raise ArgumentError, "slider partial step must be positive (got #{step})" unless step.positive?
+
+  fluid = variant == :fluid
+  vertical = orientation == :vertical
+  rubber_band = local_assigns[:rubber_band].nil? ? fluid : local_assigns[:rubber_band]
+  row = leading.present? || trailing.present?
+
+  # ── Names and values ──
+  if local_assigns[:form] && local_assigns[:attribute]
+    attributes = Array(local_assigns[:attribute])
+    names = attributes.map { |attr| form.field_name(attr) }
+    raw_values = local_assigns[:value].nil? ? attributes.map { |attr| form.object&.public_send(attr) if form.object.respond_to?(attr) } : Array(local_assigns[:value])
+  else
+    names = Array(local_assigns[:name]).compact.map(&:to_s)
+    raw_values = Array(local_assigns[:value])
+  end
+
+  decimals_of = ->(number) { number.to_s.split(".")[1].to_s.length }
+  decimals = [decimals_of.call(step), decimals_of.call(min)].max
+  # Snap to the step and clamp, like the controller does
+  snap = lambda do |number|
+    snapped = (min + (((number - min) / step.to_f).round * step)).clamp(min, max)
+    decimals.zero? ? snapped.round.to_i : snapped.round(decimals)
+  end
+  to_number = lambda do |raw|
+    next nil if raw.nil? || raw == ""
+
+    result = raw.is_a?(Numeric) ? raw : Float(raw.to_s, exception: false)
+    result && (result.to_f % 1).zero? ? result.to_i : result&.to_f
+  end
+  count = [raw_values.size, names.size, 1].max
+  raise ArgumentError, "slider partial takes one or two values (got #{count})" if count > 2
+
+  defaults = count == 2 ? [min, max] : [min]
+  values = Array.new(count) { |index| snap.call(to_number.call(raw_values[index]) || defaults[index]) }.sort
+  range = values.size == 2
+  raise ArgumentError, "slider partial :fluid is for a single value" if fluid && range
+  raise ArgumentError, "slider partial :fluid is horizontal only" if fluid && vertical
+  raise ArgumentError, "slider partial :fluid needs a label (it is drawn inside the bar)" if fluid && label.blank?
+
+  percent = ->(number) { ((number - min) * 100.0 / (max - min)).round(4) }
+
+  # ── First-paint text (the controller re-formats it with Intl.NumberFormat on connect) ──
+  currency_units = { "USD" => "$", "EUR" => "€", "GBP" => "£", "JPY" => "¥", "CAD" => "CA$", "AUD" => "A$" }
+  unit_suffixes = {
+    "percent" => "%", "degree" => "°", "celsius" => "°C", "fahrenheit" => "°F",
+    "kilobyte" => " kB", "megabyte" => " MB", "gigabyte" => " GB", "terabyte" => " TB",
+    "second" => " sec", "minute" => " min", "hour" => " hr", "day" => " days",
+    "meter" => " m", "kilometer" => " km", "kilogram" => " kg", "pixel" => " px"
+  }
+  format_number = lambda do |number|
+    style = format["style"]
+    currency = format["currency"].to_s.upcase
+    default_digits = (%w[JPY KRW].include?(currency) ? 0 : 2) if style == "currency"
+    max_digits = format["maximumFractionDigits"] || default_digits || [decimals_of.call(step), 3].min
+    min_digits = format["minimumFractionDigits"] || [default_digits || 0, max_digits].min
+    amount = style == "percent" ? number * 100 : number
+
+    text = ActiveSupport::NumberHelper.number_to_rounded(amount.abs, precision: max_digits, delimiter: ",", strip_insignificant_zeros: min_digits < max_digits)
+    if min_digits.positive?
+      whole, fraction = text.split(".")
+      text = "#{whole}.#{fraction.to_s.ljust(min_digits, '0')}"
+    end
+    text = case style
+           when "currency" then "#{currency_units.fetch(currency, "#{currency} ")}#{text}"
+           when "percent" then "#{text}%"
+           when "unit" then "#{text}#{unit_suffixes.fetch(format['unit'].to_s, " #{format['unit']}")}"
+           else text
+           end
+    sign = if amount.negative? && format["signDisplay"] != "never" then "-"
+           elsif amount.positive? && %w[always exceptZero].include?(format["signDisplay"]) then "+"
+           else ""
+           end
+    "#{sign}#{text}"
+  end
+  display = lambda do |number|
+    step_label = labels[((number - min) / step.to_f).round] if labels.present?
+    step_label || format_number.call(number)
+  end
+  output_text = values.map { |number| display.call(number) }.join(" – ")
+
+  # ── Ids and accessible names ──
+  dom_key = "slider-#{SecureRandom.hex(4)}"
+  label_id = "#{dom_key}-label"
+  hint_id = "#{dom_key}-hint"
+  thumb_aria = lambda do |index|
+    aria = {}
+    if range
+      aria[:label] = Array(thumb_labels)[index] || (index.zero? ? "Minimum" : "Maximum")
+    elsif label.present?
+      aria[:labelledby] = label_id
+    end
+    aria[:describedby] = hint_id if hint.present?
+    aria[:valuenow] = values[index]
+    aria
+  end
+  label_row = (label.present? && !hide_label && !fluid) || (output && !fluid && !vertical)
+  show_marks = marks && labels.present? && labels.size > 1 && !vertical && !fluid
+
+  # ── Classes (full class names, so Tailwind sees them) ──
+  sizes = {
+    sm: { thumb: "size-4", track: "h-4", rail: "h-1", pad: "px-2", rail_inset: "-inset-x-2", fill_start: "-start-2", marks: "mx-2",
+          v_track: "w-4", v_rail: "w-1", v_pad: "py-2", v_rail_inset: "-inset-y-2", v_fill_start: "-bottom-2" },
+    md: { thumb: "size-5", track: "h-5", rail: "h-1.5", pad: "px-2.5", rail_inset: "-inset-x-2.5", fill_start: "-start-2.5", marks: "mx-2.5",
+          v_track: "w-5", v_rail: "w-1.5", v_pad: "py-2.5", v_rail_inset: "-inset-y-2.5", v_fill_start: "-bottom-2.5" },
+    lg: { thumb: "size-6", track: "h-6", rail: "h-2", pad: "px-3", rail_inset: "-inset-x-3", fill_start: "-start-3", marks: "mx-3",
+          v_track: "w-6", v_rail: "w-2", v_pad: "py-3", v_rail_inset: "-inset-y-3", v_fill_start: "-bottom-3" }
+  }.fetch(size)
+
+  track_common = "relative cursor-pointer group-data-[disabled]/slider:cursor-not-allowed group-data-[disabled]/slider:opacity-50"
+  track_classes = if vertical
+                    [track_common, sizes[:v_track], track_length.presence || "h-40", "touch-pan-x", sizes[:v_pad], "before:absolute before:-inset-x-3 before:inset-y-0"].join(" ")
+                  else
+                    [track_common, sizes[:track], "touch-pan-y", sizes[:pad], "before:absolute before:-inset-y-3 before:inset-x-0", ("min-w-0 flex-1" if row)].compact.join(" ")
+                  end
+  rail_colors = "rounded-full bg-neutral-200 dark:bg-neutral-700 forced-colors:forced-color-adjust-none forced-colors:bg-[GrayText]"
+  rail_classes = if vertical
+                   "absolute #{sizes[:v_rail_inset]} left-1/2 #{sizes[:v_rail]} -translate-x-1/2 #{rail_colors}"
+                 else
+                   "absolute #{sizes[:rail_inset]} top-1/2 #{sizes[:rail]} -translate-y-1/2 #{rail_colors}"
+                 end
+  fill_colors = "bg-neutral-800 dark:bg-neutral-100 group-data-[jumping]/slider:[transition:inset_200ms_cubic-bezier(0.23,1,0.32,1)] " \
+                "forced-colors:forced-color-adjust-none forced-colors:bg-[Highlight] forced-colors:group-data-[disabled]/slider:bg-[GrayText]"
+  fill_classes = if vertical
+                   "absolute #{range ? "bottom-[var(--slider-start)]" : "#{sizes[:v_fill_start]} rounded-b-full"} top-[calc(100%-var(--slider-end))] left-1/2 #{sizes[:v_rail]} -translate-x-1/2 #{fill_colors}"
+                 else
+                   "absolute #{range ? "start-[var(--slider-start)]" : "#{sizes[:fill_start]} rounded-s-full"} end-[calc(100%-var(--slider-end))] top-1/2 #{sizes[:rail]} -translate-y-1/2 #{fill_colors}"
+                 end
+  thumb_position = vertical ? "bottom-[var(--slider-position)] left-1/2 -translate-x-1/2 translate-y-1/2" : "start-[var(--slider-position)] top-1/2 -translate-x-1/2 -translate-y-1/2 rtl:translate-x-1/2"
+  thumb_classes = "group/thumb absolute #{thumb_position} #{sizes[:thumb]} cursor-grab rounded-full outline-0 outline-offset-2 outline-neutral-600 " \
+                  "data-[active]:cursor-grabbing data-[focus-visible]:outline-2 group-data-[jumping]/slider:[transition:inset_200ms_cubic-bezier(0.23,1,0.32,1)] " \
+                  "group-data-[disabled]/slider:cursor-not-allowed dark:outline-neutral-200 forced-colors:outline-[CanvasText]"
+  # The knob scales on hover and press; the thumb around it (and a tooltip) does not.
+  knob_classes = "block size-full rounded-full bg-white shadow-[0_1px_3px_rgb(0_0_0/0.25),0_0_0_1px_rgb(0_0_0/0.08)] " \
+                 "transition-[scale,box-shadow] duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover/thumb:scale-110 " \
+                 "group-data-[active]/thumb:scale-95 group-data-[active]/thumb:shadow-[0_1px_3px_rgb(0_0_0/0.25),0_0_0_1px_rgb(0_0_0/0.08),0_0_0_6px_rgb(0_0_0/0.08)] " \
+                 "dark:group-data-[active]/thumb:shadow-[0_1px_3px_rgb(0_0_0/0.25),0_0_0_1px_rgb(0_0_0/0.08),0_0_0_6px_rgb(255_255_255/0.14)] " \
+                 "group-data-[disabled]/slider:scale-100 motion-reduce:transition-none " \
+                 "forced-colors:forced-color-adjust-none forced-colors:bg-[CanvasText] forced-colors:group-data-[disabled]/slider:bg-[GrayText]"
+  tooltip_visibility = if tooltip == :auto
+                         "opacity-0 transition-opacity duration-150 ease-out pointer-fine:group-hover/thumb:opacity-100 " \
+                           "group-data-[active]/thumb:opacity-100 group-data-[focus-visible]/thumb:opacity-100 motion-reduce:transition-none"
+                       else
+                         ""
+                       end
+  tooltip_classes = "pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 rounded-md bg-neutral-900 px-1.5 py-1 text-center " \
+                    "text-xs font-medium whitespace-nowrap text-white tabular-nums shadow-sm dark:bg-white dark:text-neutral-900 " \
+                    "forced-colors:border forced-colors:border-[CanvasText] #{tooltip_visibility}".strip
+  mark_alignment = lambda do |index|
+    if index.zero? then ""
+    elsif index == labels.size - 1 then "-translate-x-full rtl:translate-x-full"
+    else "-translate-x-1/2 rtl:translate-x-1/2"
+    end
+  end
+
+  # ── Root element ──
+  slider_data = {}
+  slider_data[:slider_min_value] = min unless min.zero?
+  slider_data[:slider_max_value] = max unless max == 100
+  slider_data[:slider_step_value] = step unless step == 1
+  slider_data[:slider_large_step_value] = large_step if large_step
+  slider_data[:slider_min_distance_value] = min_distance if min_distance
+  slider_data[:slider_orientation_value] = "vertical" if vertical
+  slider_data[:slider_disabled_value] = true if disabled
+  slider_data[:slider_rubber_band_value] = true if rubber_band
+  slider_data[:slider_format_value] = format.to_json if format.present?
+  slider_data[:slider_labels_value] = labels.to_json if labels.present?
+  slider_data[:slider_value_text_value] = value_text if value_text.present?
+  user_data = (local_assigns[:data] || {}).dup
+  controllers = ["slider", user_data.delete(:controller)].compact.join(" ")
+
+  root = {}
+  root[:id] = local_assigns[:id] if local_assigns[:id].present?
+  root[:class] = ["group/slider", vertical ? "flex w-10 flex-col items-center gap-2" : "w-full", classes].compact_blank.join(" ")
+  root[:style] = "--slider-start: #{range ? percent.call(values.first) : 0}%; --slider-end: #{percent.call(values.last)}%"
+  root[:data] = slider_data.merge(user_data).merge(controller: controllers)
+  root["data-disabled"] = "" if disabled
+  if range
+    root[:role] = "group"
+    root[:"aria-labelledby"] = label_id if label.present?
+  end
+%>
+<%= tag.div(**root) do %>
+  <% if fluid %>
+    <%# Fluid: the fill is the handle, and the label and value invert as the fill passes under them %>
+    <% track = capture do %>
+      <div data-slider-target="track" class="relative h-11 cursor-grab touch-pan-y overflow-hidden rounded-xl bg-neutral-200/70 px-3 [transform:scaleX(calc(1+var(--slider-stretch,0)))_scaleY(calc(1-var(--slider-stretch,0)*0.6))] transition-transform duration-300 ease-[cubic-bezier(0.34,1.4,0.64,1)] outline-offset-2 outline-neutral-600 has-[[data-focus-visible]]:outline-2 group-data-[dragging]/slider:cursor-grabbing group-data-[dragging]/slider:transition-none group-data-[overshoot=max]/slider:origin-left group-data-[overshoot=min]/slider:origin-right group-data-[disabled]/slider:cursor-not-allowed group-data-[disabled]/slider:opacity-50 motion-reduce:transition-none dark:bg-neutral-800 dark:outline-neutral-200 forced-colors:forced-color-adjust-none forced-colors:bg-[GrayText] forced-colors:outline-[CanvasText] <%= "min-w-0 flex-1" if row %>">
+        <div class="relative h-full">
+          <div class="absolute inset-y-0 -start-3 end-[calc(100%-var(--slider-end)-0.75rem)] bg-neutral-900 group-data-[jumping]/slider:[transition:inset_200ms_cubic-bezier(0.23,1,0.32,1)] dark:bg-white forced-colors:forced-color-adjust-none forced-colors:bg-[Highlight]"></div>
+          <div data-slider-target="thumb" style="--slider-position: <%= percent.call(values.first) %>%" <%= tag.attributes(aria: thumb_aria.call(0)) %> class="absolute inset-y-0 start-[var(--slider-position)] flex w-6 -translate-x-1/2 items-center justify-center outline-none group-data-[jumping]/slider:[transition:inset_200ms_cubic-bezier(0.23,1,0.32,1)] rtl:translate-x-1/2">
+            <span class="h-4 w-0.5 rounded-full bg-white opacity-0 transition-[opacity,height] duration-200 ease-out group-hover/slider:opacity-50 group-has-[[data-focus-visible]]/slider:opacity-50 group-data-[dragging]/slider:h-5 group-data-[dragging]/slider:opacity-80 dark:bg-neutral-900"></span>
+          </div>
+        </div>
+        <div class="pointer-events-none absolute inset-0 flex items-center justify-between gap-3 px-4 text-sm font-medium text-white mix-blend-difference">
+          <span id="<%= label_id %>" class="truncate <%= "sr-only" if hide_label %>"><%= label %></span>
+          <% if output %>
+            <output data-slider-target="output" class="ms-auto tabular-nums"><%= output_text %></output>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
+  <% elsif vertical %>
+    <% track = capture do %>
+      <div data-slider-target="track" class="<%= track_classes %>">
+        <div class="relative h-full">
+          <div class="<%= rail_classes %>"></div>
+          <div class="<%= fill_classes %>"></div>
+          <% values.each_with_index do |thumb_value, index| %>
+            <div data-slider-target="thumb" style="--slider-position: <%= percent.call(thumb_value) %>%" <%= tag.attributes(aria: thumb_aria.call(index)) %> class="<%= thumb_classes %>">
+              <span class="<%= knob_classes %>"></span>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
+  <% else %>
+    <% track = capture do %>
+      <%# The horizontal padding (half a thumb) keeps the thumb inside the track at 0% and 100% %>
+      <div data-slider-target="track" class="<%= track_classes %>">
+        <div class="relative h-full">
+          <div class="<%= rail_classes %>"></div>
+          <div class="<%= fill_classes %>"></div>
+          <% values.each_with_index do |thumb_value, index| %>
+            <div data-slider-target="thumb" style="--slider-position: <%= percent.call(thumb_value) %>%" <%= tag.attributes(aria: thumb_aria.call(index)) %> class="<%= thumb_classes %>">
+              <span class="<%= knob_classes %>"></span>
+              <% if tooltip %>
+                <%# An output inside a thumb shows that thumb's value %>
+                <span class="<%= tooltip_classes %>">
+                  <span data-slider-target="output" class="block min-w-[3ch]"><%= display.call(thumb_value) %></span>
+                  <span class="absolute top-full left-1/2 -mt-1 size-2 -translate-x-1/2 rotate-45 rounded-[1px] bg-neutral-900 dark:bg-white"></span>
+                </span>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+
+  <% if vertical %>
+    <% if output %>
+      <output data-slider-target="output" class="text-xs tabular-nums text-neutral-500 dark:text-neutral-400"><%= output_text %></output>
+    <% end %>
+    <%= track %>
+    <% if label.present? %>
+      <span id="<%= label_id %>" class="<%= hide_label ? "sr-only" : "text-xs text-neutral-500 dark:text-neutral-400" %>"><%= label %></span>
+    <% end %>
+  <% else %>
+    <% if label_row %>
+      <div class="<%= tooltip ? "mb-10" : "mb-2" %> flex items-baseline justify-between gap-3">
+        <% if label.present? %>
+          <span id="<%= label_id %>" class="<%= hide_label ? "sr-only" : "text-sm font-medium text-neutral-900 dark:text-neutral-100" %>" data-action="click->slider#focus"><%= label %></span>
+        <% end %>
+        <% if output && !tooltip %>
+          <output data-slider-target="output" class="ms-auto text-sm tabular-nums text-neutral-500 dark:text-neutral-400"><%= output_text %></output>
+        <% end %>
+      </div>
+    <% elsif label.present? && !fluid %>
+      <span id="<%= label_id %>" class="sr-only"><%= label %></span>
+    <% end %>
+
+    <% if row %>
+      <div class="flex items-center gap-2">
+        <%= leading %>
+        <%= track %>
+        <%= trailing %>
+      </div>
+    <% else %>
+      <%= track %>
+    <% end %>
+
+    <% if show_marks %>
+      <%# Step labels: click one to jump straight to it. Below 16rem only the first and last show, so they never overlap %>
+      <div class="@container/marks relative <%= sizes[:marks] %> mt-2 h-5" aria-hidden="true">
+        <% labels.each_with_index do |mark, index| %>
+          <% mark_value = min + (index * step) %>
+          <button type="button" tabindex="-1" data-slider-target="tick" data-value="<%= mark_value %>" <%= "data-active" if mark_value <= values.last && (!range || mark_value >= values.first) %> data-action="click->slider#set" data-slider-value-param="<%= mark_value %>" class="absolute top-0 <%= mark_alignment.call(index) %> <%= "hidden @3xs/marks:block" unless index.zero? || index == labels.size - 1 %> cursor-pointer rounded-sm px-1 text-xs text-neutral-400 hover:text-neutral-900 data-[active]:text-neutral-700 group-data-[disabled]/slider:pointer-events-none dark:text-neutral-500 dark:hover:text-white dark:data-[active]:text-neutral-200" style="inset-inline-start: <%= (index * 100.0 / (labels.size - 1)).round(4) %>%"><%= mark %></button>
+        <% end %>
+      </div>
+    <% end %>
+  <% end %>
+
+  <% if hint.present? %>
+    <p id="<%= hint_id %>" class="mt-2 text-xs text-neutral-500 dark:text-neutral-400"><%= hint %></p>
+  <% end %>
+
+  <%# One hidden input per thumb, in the same order. They submit with the form %>
+  <% names.each_with_index do |input_name, index| %>
+    <input type="hidden" name="<%= input_name %>" value="<%= values[index] %>" data-slider-target="input"<%= " disabled" if disabled %>>
+  <% end %>
+<% end %>

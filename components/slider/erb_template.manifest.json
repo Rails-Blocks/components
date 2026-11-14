@@ -1,0 +1,11 @@
+{
+  "component": "slider",
+  "implementation": "erb_template",
+  "files": [
+    {
+      "path": "slider/_slider.html.erb",
+      "relative_path": "_slider.html.erb",
+      "checksum": "5070dc0511865e53323b897007be1ad5d8e86534fdab5de64d17bc64c4c4c0b9"
+    }
+  ]
+}

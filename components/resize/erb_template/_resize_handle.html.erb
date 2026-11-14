@@ -1,0 +1,40 @@
+<%#
+  Resize handle — goes between two data-resize-target="panel" elements inside a
+  data-controller="resize" group. Needs the `resize` Stimulus controller.
+
+  Required locals:
+    - label: Accessible name, e.g. "Resize sidebar"
+
+  Optional locals:
+    - orientation: :horizontal (default, panels side by side) or :vertical (stacked).
+      Must match the group's data-resize-orientation-value.
+    - style: :line (default, 1px line), :grip (line with a visible grip) or :pill (floating pill for panels with a gap)
+    - classes: Extra classes for the handle
+%>
+<% orientation = local_assigns.fetch(:orientation, :horizontal).to_sym %>
+<% style = local_assigns.fetch(:style, :line).to_sym %>
+<% horizontal = orientation != :vertical %>
+<%
+  handle_classes =
+    case style
+    when :grip
+      horizontal ? "group/handle relative z-10 w-px shrink-0 cursor-col-resize touch-none bg-black/10 outline-none transition-colors duration-150 ease-out hover:bg-black/20 focus-visible:bg-neutral-900 data-[dragging]:bg-neutral-900 motion-reduce:transition-none after:absolute after:inset-y-0 after:-left-2 after:-right-2 pointer-coarse:after:-left-5 pointer-coarse:after:-right-5 dark:bg-white/10 dark:hover:bg-white/25 dark:focus-visible:bg-white dark:data-[dragging]:bg-white" : "group/handle relative z-10 h-px w-full shrink-0 cursor-row-resize touch-none bg-black/10 outline-none transition-colors duration-150 ease-out hover:bg-black/20 focus-visible:bg-neutral-900 data-[dragging]:bg-neutral-900 motion-reduce:transition-none after:absolute after:inset-x-0 after:-top-2 after:-bottom-2 pointer-coarse:after:-top-5 pointer-coarse:after:-bottom-5 dark:bg-white/10 dark:hover:bg-white/25 dark:focus-visible:bg-white dark:data-[dragging]:bg-white"
+    when :pill
+      horizontal ? "group/handle relative z-10 flex w-4 shrink-0 cursor-col-resize touch-none items-center justify-center outline-none after:absolute after:inset-y-0 after:-left-1 after:-right-1 pointer-coarse:after:-left-3 pointer-coarse:after:-right-3" : "group/handle relative z-10 flex h-4 w-full shrink-0 cursor-row-resize touch-none items-center justify-center outline-none after:absolute after:inset-x-0 after:-top-1 after:-bottom-1 pointer-coarse:after:-top-3 pointer-coarse:after:-bottom-3"
+    else
+      horizontal ? "relative z-10 w-px shrink-0 cursor-col-resize touch-none bg-black/10 outline-none before:absolute before:inset-y-0 before:-left-px before:-right-px before:bg-neutral-400 before:opacity-0 before:transition-opacity before:duration-150 after:absolute after:inset-y-0 after:-left-1.5 after:-right-1.5 hover:before:opacity-100 hover:before:delay-150 focus-visible:before:delay-0 data-[dragging]:before:delay-0 focus-visible:before:bg-neutral-900 focus-visible:before:opacity-100 data-[dragging]:before:bg-neutral-900 data-[dragging]:before:opacity-100 pointer-coarse:after:-left-5 pointer-coarse:after:-right-5 dark:bg-white/10 dark:before:bg-neutral-500 dark:focus-visible:before:bg-white dark:data-[dragging]:before:bg-white" : "relative z-10 h-px w-full shrink-0 cursor-row-resize touch-none bg-black/10 outline-none before:absolute before:inset-x-0 before:-top-px before:-bottom-px before:bg-neutral-400 before:opacity-0 before:transition-opacity before:duration-150 after:absolute after:inset-x-0 after:-top-1.5 after:-bottom-1.5 hover:before:opacity-100 hover:before:delay-150 focus-visible:before:delay-0 data-[dragging]:before:delay-0 focus-visible:before:bg-neutral-900 focus-visible:before:opacity-100 data-[dragging]:before:bg-neutral-900 data-[dragging]:before:opacity-100 pointer-coarse:after:-top-5 pointer-coarse:after:-bottom-5 dark:bg-white/10 dark:before:bg-neutral-500 dark:focus-visible:before:bg-white dark:data-[dragging]:before:bg-white"
+    end
+%>
+<div data-resize-target="handle" role="separator" tabindex="0" aria-label="<%= label %>" class="<%= [handle_classes, local_assigns[:classes]].compact.join(" ") %>">
+  <% if style == :grip %>
+    <span class="absolute left-1/2 top-1/2 flex <%= horizontal ? "h-7 w-3.5" : "h-3.5 w-7" %> -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-black/10 bg-white text-neutral-400 shadow-xs transition-[color,border-color,scale] duration-150 ease-out group-hover/handle:border-black/20 group-hover/handle:text-neutral-700 group-focus-visible/handle:border-neutral-900 group-focus-visible/handle:text-neutral-900 group-data-[dragging]/handle:scale-110 group-data-[dragging]/handle:border-neutral-900 group-data-[dragging]/handle:text-neutral-900 motion-reduce:transition-none dark:border-white/15 dark:bg-neutral-800 dark:text-neutral-500 dark:group-hover/handle:border-white/30 dark:group-hover/handle:text-neutral-200 dark:group-focus-visible/handle:border-white dark:group-focus-visible/handle:text-white dark:group-data-[dragging]/handle:border-white dark:group-data-[dragging]/handle:text-white">
+      <% if horizontal %>
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-1.5" viewBox="0 0 6 14" fill="currentColor" aria-hidden="true"><circle cx="1" cy="3" r="1"/><circle cx="1" cy="7" r="1"/><circle cx="1" cy="11" r="1"/><circle cx="5" cy="3" r="1"/><circle cx="5" cy="7" r="1"/><circle cx="5" cy="11" r="1"/></svg>
+      <% else %>
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-1.5 w-3.5" viewBox="0 0 14 6" fill="currentColor" aria-hidden="true"><circle cx="3" cy="1" r="1"/><circle cx="7" cy="1" r="1"/><circle cx="11" cy="1" r="1"/><circle cx="3" cy="5" r="1"/><circle cx="7" cy="5" r="1"/><circle cx="11" cy="5" r="1"/></svg>
+      <% end %>
+    </span>
+  <% elsif style == :pill %>
+    <span class="<%= horizontal ? "h-8 w-1 transition-[height,background-color] group-hover/handle:h-12 group-focus-visible/handle:h-12 group-data-[dragging]/handle:h-16" : "h-1 w-8 transition-[width,background-color] group-hover/handle:w-12 group-focus-visible/handle:w-12 group-data-[dragging]/handle:w-16" %> rounded-full bg-neutral-300 duration-200 ease-out group-hover/handle:bg-neutral-400 group-focus-visible/handle:bg-neutral-900 group-data-[dragging]/handle:bg-neutral-900 motion-reduce:transition-none dark:bg-neutral-600 dark:group-hover/handle:bg-neutral-400 dark:group-focus-visible/handle:bg-white dark:group-data-[dragging]/handle:bg-white"></span>
+  <% end %>
+</div>

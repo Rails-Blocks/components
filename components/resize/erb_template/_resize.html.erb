@@ -1,0 +1,107 @@
+<%#
+  Resize group — resizable panels with handles inserted between them.
+  Needs the `resize` Stimulus controller. Same options as Resize::Component.
+
+  Required locals:
+    - panels: Array of hashes, one per panel (at least two). Each takes:
+        content:        HTML for the panel, e.g. from `capture do … end`
+        default_size:   30 (percent) or "240px". Panels without one share the rest
+        min_size / max_size / collapsed_size: percent or "px"
+        collapsible:    true to let the panel snap closed
+        handle_label:   aria-label of the handle after this panel (default "Resize panels")
+        id, tag (:div, :nav, :main…), classes, html (extra attributes)
+
+  Optional locals:
+    - orientation: :horizontal (default) or :vertical
+    - handle: :line (default), :grip or :pill
+    - storage_key: Save the layout under this key (unique per layout)
+    - storage: :local (default, localStorage) or :cookie (saved sizes rendered on the server)
+    - keyboard_step: Percent per arrow key press (default 5)
+    - handle_classes: Extra classes for every handle
+    - classes: Classes for the group. Give it a height
+    - html: Extra attributes for the group
+%>
+<%
+  orientation = local_assigns.fetch(:orientation, :horizontal).to_sym
+  handle = local_assigns.fetch(:handle, :line).to_sym
+  storage = local_assigns.fetch(:storage, :local).to_sym
+  storage_key = local_assigns[:storage_key].presence
+  html = local_assigns.fetch(:html, {})
+  panels = Array(local_assigns.fetch(:panels))
+  horizontal = orientation == :horizontal
+
+  raise ArgumentError, "orientation must be one of horizontal, vertical" unless %i[horizontal vertical].include?(orientation)
+  raise ArgumentError, "handle must be one of line, grip, pill" unless %i[line grip pill].include?(handle)
+  raise ArgumentError, "storage must be one of local, cookie" unless %i[local cookie].include?(storage)
+  raise ArgumentError, "the resize partial needs at least two panels" if panels.size < 2
+  allowed = %i[content default_size min_size max_size collapsed_size collapsible handle_label id tag classes html]
+  panels.each do |panel|
+    unknown = panel.keys - allowed
+    raise ArgumentError, "unknown panel option(s): #{unknown.join(', ')}" if unknown.any?
+  end
+
+  # First-render sizes: percentages from default_size; pixel sizes share the rest until JS connects.
+  given = panels.map { |panel| (value = panel[:default_size]).nil? || value.to_s.strip.end_with?("px") ? nil : Float(value.to_s, exception: false) }
+  share = given.count(&:nil?).positive? ? [100 - given.compact.sum, 0].max / given.count(&:nil?).to_f : 0
+  sizes = given.map { |size| size || share }
+  collapsed = Array.new(panels.size, false)
+
+  # A layout saved in a cookie is rendered right away, if it matches these panels.
+  # The fingerprint is the controller's `signature`: a saved layout is ignored once the size options change.
+  if storage_key && storage == :cookie
+    fingerprint = panels.map do |panel|
+      [panel[:default_size], panel[:min_size], panel[:max_size], (panel[:collapsible] ? "" : nil), panel[:collapsed_size]]
+        .map { |value| value.nil? ? "-" : value.to_s }.join(",")
+    end.join("|")
+    hash = 5381
+    fingerprint.each_codepoint { |code| hash = ((hash << 5) + hash + code) & 0xFFFFFFFF }
+
+    saved = begin
+      JSON.parse(request.cookies[storage_key.gsub(/[^\w-]/, "_")].to_s)
+    rescue JSON::ParserError
+      nil
+    end
+    if saved.is_a?(Hash) && saved["sizes"].is_a?(Array) && saved["collapsed"].is_a?(Array) &&
+       saved["sizes"].size == panels.size && saved["collapsed"].size == panels.size &&
+       saved["sizes"].all? { |size| size.is_a?(Numeric) && size.finite? } &&
+       (saved["v"].nil? || saved["v"] == hash.to_s(36))
+      sizes = saved["sizes"]
+      collapsed = saved["collapsed"].each_with_index.map { |value, i| value == true && panels[i][:collapsible].present? }
+    end
+  end
+
+  group_data = { controller: "resize" }
+  group_data[:resize_orientation_value] = "vertical" unless horizontal
+  group_data[:resize_storage_key_value] = storage_key if storage_key
+  group_data[:resize_storage_value] = "cookie" if storage_key && storage == :cookie
+  group_data[:resize_keyboard_step_value] = local_assigns[:keyboard_step] if local_assigns[:keyboard_step]
+  group_class = ["flex", ("flex-col" unless horizontal), ("overflow-hidden" unless handle == :pill), local_assigns[:classes], html[:class]].compact.join(" ")
+%>
+<%= tag.div(**html.merge(class: group_class, data: group_data.merge(html[:data] || {}))) do %>
+  <% panels.each_with_index do |panel, index| %>
+    <% if index.positive? %>
+      <%= render "shared/components/resize/resize_handle",
+        label: panels[index - 1][:handle_label] || "Resize panels",
+        orientation: orientation,
+        style: handle,
+        classes: local_assigns[:handle_classes] %>
+    <% end %>
+    <%
+      panel_html = panel[:html] || {}
+      panel_data = { resize_target: "panel" }
+      panel_data[:resize_default_size] = panel[:default_size] unless panel[:default_size].nil?
+      panel_data[:resize_min_size] = panel[:min_size] unless panel[:min_size].nil?
+      panel_data[:resize_max_size] = panel[:max_size] unless panel[:max_size].nil?
+      panel_data[:resize_collapsible] = "" if panel[:collapsible]
+      panel_data[:resize_collapsed_size] = panel[:collapsed_size] unless panel[:collapsed_size].nil?
+      panel_attributes = panel_html.merge(
+        id: panel[:id] || panel_html[:id],
+        style: ["flex: #{format('%.3f', sizes[index].to_f).sub(/\.?0+\z/, '')} 1 0px", panel_html[:style]].compact.join("; "),
+        class: [horizontal ? "min-w-0" : "min-h-0", ("overflow-hidden" unless handle == :pill), panel[:classes], panel_html[:class]].compact.join(" "),
+        data: panel_data.merge(panel_html[:data] || {})
+      )
+      panel_attributes[:"data-collapsed"] = "" if collapsed[index]
+    %>
+    <%= content_tag(panel[:tag] || :div, panel[:content], **panel_attributes.compact) %>
+  <% end %>
+<% end %>

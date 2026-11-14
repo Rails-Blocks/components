@@ -1,0 +1,61 @@
+<!-- Buttons with sound: data-sound="name" on any element inside the wrapper -->
+<%= render Sound::Component.new(classes: "flex flex-wrap gap-2") do %>
+  <button type="button" data-sound="tap" class="flex items-center justify-center gap-1.5 rounded-lg border border-neutral-400/30 bg-neutral-800 px-3.5 py-2 text-sm font-medium whitespace-nowrap text-white shadow-sm transition-all duration-100 ease-in-out select-none hover:bg-neutral-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-600 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-white dark:text-neutral-800 dark:hover:bg-neutral-100 dark:focus-visible:outline-neutral-200">Publish</button>
+  <button type="button" data-sound="success" class="flex items-center justify-center gap-1.5 rounded-lg border border-black/10 bg-white/90 px-3.5 py-2 text-sm font-medium whitespace-nowrap text-neutral-800 shadow-xs transition-all duration-100 ease-in-out select-none hover:bg-neutral-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-600 disabled:cursor-not-allowed disabled:opacity-50 dark:border-white/10 dark:bg-neutral-700/50 dark:text-neutral-50 dark:hover:bg-neutral-700/75 dark:focus-visible:outline-neutral-200">Save</button>
+  <button type="button" data-sound="pop" class="flex items-center justify-center gap-1.5 rounded-lg border border-black/10 bg-white/90 px-3.5 py-2 text-sm font-medium whitespace-nowrap text-neutral-800 shadow-xs transition-all duration-100 ease-in-out select-none hover:bg-neutral-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-600 disabled:cursor-not-allowed disabled:opacity-50 dark:border-white/10 dark:bg-neutral-700/50 dark:text-neutral-50 dark:hover:bg-neutral-700/75 dark:focus-visible:outline-neutral-200">Add item</button>
+<% end %>
+
+<!-- A quieter section with a softer default sound: an empty data-sound uses it -->
+<%= render Sound::Component.new(
+  name: "click",
+  volume: 0.5,
+  classes: "flex gap-2"
+) do %>
+  <button type="button" data-sound class="flex items-center justify-center gap-1.5 rounded-lg border border-black/10 bg-white/90 px-3.5 py-2 text-sm font-medium whitespace-nowrap text-neutral-800 shadow-xs transition-all duration-100 ease-in-out select-none hover:bg-neutral-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-600 disabled:cursor-not-allowed disabled:opacity-50 dark:border-white/10 dark:bg-neutral-700/50 dark:text-neutral-50 dark:hover:bg-neutral-700/75 dark:focus-visible:outline-neutral-200">Previous</button>
+  <button type="button" data-sound class="flex items-center justify-center gap-1.5 rounded-lg border border-black/10 bg-white/90 px-3.5 py-2 text-sm font-medium whitespace-nowrap text-neutral-800 shadow-xs transition-all duration-100 ease-in-out select-none hover:bg-neutral-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-600 disabled:cursor-not-allowed disabled:opacity-50 dark:border-white/10 dark:bg-neutral-700/50 dark:text-neutral-50 dark:hover:bg-neutral-700/75 dark:focus-visible:outline-neutral-200">Next</button>
+<% end %>
+
+<!-- Switches and sliders: data-sound on the checkbox, or on the Slider component's hidden input (requires the Slider component) -->
+<%= render Sound::Component.new(classes: "flex max-w-xs flex-col gap-4") do %>
+  <label class="group flex cursor-pointer items-center justify-between gap-4">
+    <span class="text-sm font-medium text-neutral-900 dark:text-neutral-50">Notifications</span>
+    <span class="relative shrink-0">
+      <input type="checkbox" role="switch" class="peer sr-only" data-sound>
+      <span class="block h-6 w-10 rounded-full border border-black/10 bg-neutral-200 transition-all duration-150 ease-in-out group-hover:bg-[#dcdcdb] peer-checked:border-white/10 peer-checked:bg-[#404040] peer-checked:group-hover:bg-neutral-600 peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-neutral-600 dark:border-white/10 dark:bg-neutral-700 dark:group-hover:bg-neutral-600 dark:peer-checked:border-black/20 dark:peer-checked:bg-neutral-50 dark:peer-checked:group-hover:bg-neutral-100 dark:peer-focus-visible:outline-neutral-200"></span>
+      <span class="absolute top-[3px] left-[3px] size-[18px] rounded-full bg-white shadow-sm transition-all duration-150 ease-in-out peer-checked:translate-x-4 rtl:peer-checked:-translate-x-4 dark:bg-neutral-200 dark:peer-checked:bg-neutral-800"></span>
+    </span>
+  </label>
+  <%# The Slider component: data-sound on its hidden input plays a rising note per step %>
+  <% label_id = "sound_slider_label_#{SecureRandom.hex(4)}" %>
+  <div class="group/slider w-full" data-controller="slider" data-slider-min-value="0" data-slider-max-value="10" data-slider-step-value="1" style="--slider-end: 50%">
+    <div class="mb-2 flex items-baseline justify-between">
+      <span id="<%= label_id %>" class="text-sm font-medium text-neutral-900 dark:text-neutral-100" data-action="click->slider#focus">Volume</span>
+      <output data-slider-target="output" class="text-sm tabular-nums text-neutral-500 dark:text-neutral-400">5</output>
+    </div>
+    <div data-slider-target="track" class="relative h-5 cursor-pointer touch-pan-y px-2.5 before:absolute before:-inset-y-3 before:inset-x-0">
+      <div class="relative h-full">
+        <div class="absolute -inset-x-2.5 top-1/2 h-1.5 -translate-y-1/2 rounded-full bg-neutral-200 dark:bg-neutral-700 forced-colors:forced-color-adjust-none forced-colors:bg-[GrayText]"></div>
+        <div class="absolute -start-2.5 end-[calc(100%-var(--slider-end))] top-1/2 h-1.5 -translate-y-1/2 rounded-s-full bg-neutral-800 dark:bg-neutral-100 group-data-[jumping]/slider:[transition:inset_200ms_cubic-bezier(0.23,1,0.32,1)] forced-colors:forced-color-adjust-none forced-colors:bg-[Highlight]"></div>
+        <div data-slider-target="thumb" aria-labelledby="<%= label_id %>" style="--slider-position: 50%" class="absolute start-[var(--slider-position)] top-1/2 size-5 -translate-x-1/2 -translate-y-1/2 rtl:translate-x-1/2 cursor-grab rounded-full bg-white shadow-[0_1px_3px_rgb(0_0_0/0.25),0_0_0_1px_rgb(0_0_0/0.08)] transition-[scale,box-shadow] duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-110 data-[active]:scale-95 data-[active]:cursor-grabbing data-[active]:shadow-[0_1px_3px_rgb(0_0_0/0.25),0_0_0_1px_rgb(0_0_0/0.08),0_0_0_6px_rgb(0_0_0/0.08)] dark:data-[active]:shadow-[0_1px_3px_rgb(0_0_0/0.25),0_0_0_1px_rgb(0_0_0/0.08),0_0_0_6px_rgb(255_255_255/0.14)] outline-0 outline-offset-2 outline-neutral-600 data-[focus-visible]:outline-2 dark:outline-neutral-200 group-data-[jumping]/slider:transition-[inset,scale,box-shadow] forced-colors:forced-color-adjust-none forced-colors:bg-[CanvasText] forced-colors:outline-[CanvasText]"></div>
+      </div>
+    </div>
+    <input type="hidden" name="volume" value="5" data-slider-target="input" data-sound>
+  </div>
+<% end %>
+
+<!-- A message in a Turbo Stream: plays once as it appears -->
+<%= render Sound::Component.new(
+  tag: :li,
+  play_on_connect: "notification",
+  classes: "list-none text-sm text-neutral-700 dark:text-neutral-200"
+) do %>
+  Maya: Can you review the pricing page today?
+<% end %>
+
+<!-- Mute buttons: icon only, or with a visible label -->
+<%= render Sound::Component::MuteButtonComponent.new %>
+
+<%= render Sound::Component::MuteButtonComponent.new(
+  label: "Mute interface sounds",
+  show_label: true
+) %>

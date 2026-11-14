@@ -1,0 +1,16 @@
+{
+  "component": "slider",
+  "implementation": "view_component",
+  "files": [
+    {
+      "path": "slider/component.rb",
+      "relative_path": "component.rb",
+      "checksum": "fa976490df63c5e6b1cb9d18c9e81ef3afddb0640d7a6b7a1a83d68016360bf2"
+    },
+    {
+      "path": "slider/component.html.erb",
+      "relative_path": "component.html.erb",
+      "checksum": "ea40f096711967519fbdd36d925d92d19b19f551ad07000bb653d98304fd2732"
+    }
+  ]
+}

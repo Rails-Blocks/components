@@ -1,0 +1,113 @@
+<%# The wrapper only gives these examples a width: a slider fills its container %>
+<div class="w-80 max-w-full space-y-8">
+<!-- Basic slider: a hidden input named "volume" submits the value -->
+<%= render Slider::Component.new(name: "volume", value: 40, label: "Volume") %>
+
+<!-- In a form: the form builder makes the name ("campaign[budget]").
+     With form_with model: @campaign, leave out value: and it is read from @campaign.budget -->
+<%= form_with scope: :campaign, url: "#" do |f| %>
+  <%= render Slider::Component.new(
+    form: f,
+    attribute: :budget,
+    value: 600,
+    label: "Monthly budget",
+    min: 100,
+    max: 2000,
+    step: 50,
+    format: { style: "currency", currency: "USD", maximumFractionDigits: 0 }
+  ) %>
+<% end %>
+
+<!-- Range slider: two attributes (or two names and two values) -->
+<%= form_with scope: :search, url: "#", method: :get do |f| %>
+  <%= render Slider::Component.new(
+    form: f,
+    attribute: %i[price_min price_max],
+    value: [250, 700],
+    label: "Price per night",
+    max: 1200,
+    step: 50,
+    min_distance: 50,
+    thumb_labels: ["Minimum price", "Maximum price"],
+    format: { style: "currency", currency: "USD", maximumFractionDigits: 0 }
+  ) %>
+<% end %>
+
+<!-- Named steps with clickable marks under the track -->
+<%= render Slider::Component.new(
+  name: "export[quality]",
+  value: 2,
+  max: 4,
+  labels: %w[Draft Good High Ultra Lossless],
+  marks: true,
+  label: "Export quality"
+) %>
+
+<!-- Value tooltip above the thumb (:auto shows it on hover, focus and drag only) -->
+<%= render Slider::Component.new(
+  name: "affiliate[commission]",
+  value: 12.5,
+  max: 30,
+  step: 0.5,
+  tooltip: :auto,
+  format: { style: "unit", unit: "percent", minimumFractionDigits: 1, maximumFractionDigits: 1 },
+  label: "Affiliate commission"
+) %>
+
+<!-- Buttons before and after the track. They sit inside the controller, so slider actions work, and they dim at the ends of the range -->
+<%= render Slider::Component.new(name: "volume", value: 60, label: "Volume", hide_label: true, output: false) do |slider| %>
+  <% slider.with_leading do %>
+    <button type="button" aria-label="Lower volume" data-action="click->slider#decrement" data-slider-amount-param="10"
+            class="flex size-8 select-none items-center justify-center rounded-lg hover:bg-neutral-100 group-data-[at-min]/slider:opacity-40 dark:hover:bg-neutral-800">−</button>
+  <% end %>
+  <% slider.with_trailing do %>
+    <button type="button" aria-label="Raise volume" data-action="click->slider#increment" data-slider-amount-param="10"
+            class="flex size-8 select-none items-center justify-center rounded-lg hover:bg-neutral-100 group-data-[at-max]/slider:opacity-40 dark:hover:bg-neutral-800">+</button>
+  <% end %>
+<% end %>
+
+<!-- Vertical, with a unit for screen readers -->
+<%= render Slider::Component.new(
+  name: "equalizer[60]",
+  value: 6,
+  min: -12,
+  max: 12,
+  orientation: :vertical,
+  track_length: "h-36",
+  format: { signDisplay: "exceptZero" },
+  value_text: "{value} decibels",
+  label: "60 Hz"
+) %>
+
+<!-- Fluid: a thick bar with the label inside that stretches when pulled past an end -->
+<%= render Slider::Component.new(
+  name: "display[brightness]",
+  value: 70,
+  label: "Brightness",
+  variant: :fluid,
+  format: { style: "unit", unit: "percent" }
+) %>
+
+<!-- Small, disabled, with a hint linked by aria-describedby -->
+<%= render Slider::Component.new(
+  name: "storage_limit",
+  value: 10,
+  max: 50,
+  size: :sm,
+  disabled: true,
+  hint: "Upgrade to Pro to raise your storage limit.",
+  label: "Storage limit"
+) %>
+
+<!-- Large, with extra attributes on the root. Listen to slider:input or slider:change from your own controller with data: { action: ... } -->
+<%= render Slider::Component.new(
+  name: "seats",
+  value: 5,
+  min: 1,
+  max: 50,
+  size: :lg,
+  label: "Seats",
+  id: "seats_slider",
+  data: { turbo_permanent: true }
+) %>
+</div>

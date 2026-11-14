@@ -1,0 +1,110 @@
+<%= tag.div(**root_options) do %>
+  <% if fluid? %>
+    <%# Fluid: the fill is the handle, and the label and value invert as the fill passes under them %>
+    <% track = capture do %>
+      <div data-slider-target="track" class="relative h-11 cursor-grab touch-pan-y overflow-hidden rounded-xl bg-neutral-200/70 px-3 [transform:scaleX(calc(1+var(--slider-stretch,0)))_scaleY(calc(1-var(--slider-stretch,0)*0.6))] transition-transform duration-300 ease-[cubic-bezier(0.34,1.4,0.64,1)] outline-offset-2 outline-neutral-600 has-[[data-focus-visible]]:outline-2 group-data-[dragging]/slider:cursor-grabbing group-data-[dragging]/slider:transition-none group-data-[overshoot=max]/slider:origin-left group-data-[overshoot=min]/slider:origin-right group-data-[disabled]/slider:cursor-not-allowed group-data-[disabled]/slider:opacity-50 motion-reduce:transition-none dark:bg-neutral-800 dark:outline-neutral-200 forced-colors:forced-color-adjust-none forced-colors:bg-[GrayText] forced-colors:outline-[CanvasText] <%= "min-w-0 flex-1" if row? %>">
+        <div class="relative h-full">
+          <div class="absolute inset-y-0 -start-3 end-[calc(100%-var(--slider-end)-0.75rem)] bg-neutral-900 group-data-[jumping]/slider:[transition:inset_200ms_cubic-bezier(0.23,1,0.32,1)] dark:bg-white forced-colors:forced-color-adjust-none forced-colors:bg-[Highlight]"></div>
+          <div data-slider-target="thumb" style="--slider-position: <%= percent(@values.first) %>%" <%= tag.attributes(aria: thumb_aria(0)) %> class="absolute inset-y-0 start-[var(--slider-position)] flex w-6 -translate-x-1/2 items-center justify-center outline-none group-data-[jumping]/slider:[transition:inset_200ms_cubic-bezier(0.23,1,0.32,1)] rtl:translate-x-1/2">
+            <span class="h-4 w-0.5 rounded-full bg-white opacity-0 transition-[opacity,height] duration-200 ease-out group-hover/slider:opacity-50 group-has-[[data-focus-visible]]/slider:opacity-50 group-data-[dragging]/slider:h-5 group-data-[dragging]/slider:opacity-80 dark:bg-neutral-900"></span>
+          </div>
+        </div>
+        <div class="pointer-events-none absolute inset-0 flex items-center justify-between gap-3 px-4 text-sm font-medium text-white mix-blend-difference">
+          <span id="<%= label_id %>" class="truncate <%= "sr-only" if @hide_label %>"><%= @label %></span>
+          <% if @output %>
+            <output data-slider-target="output" class="ms-auto tabular-nums"><%= output_text %></output>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
+  <% elsif vertical? %>
+    <% track = capture do %>
+      <div data-slider-target="track" class="<%= track_classes %>">
+        <div class="relative h-full">
+          <div class="<%= rail_classes %>"></div>
+          <div class="<%= fill_classes %>"></div>
+          <% @values.each_with_index do |value, index| %>
+            <div data-slider-target="thumb" style="--slider-position: <%= percent(value) %>%" <%= tag.attributes(aria: thumb_aria(index)) %> class="<%= thumb_classes %>">
+              <span class="<%= knob_classes %>"></span>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
+  <% else %>
+    <% track = capture do %>
+      <%# The horizontal padding (half a thumb) keeps the thumb inside the track at 0% and 100% %>
+      <div data-slider-target="track" class="<%= track_classes %>">
+        <div class="relative h-full">
+          <div class="<%= rail_classes %>"></div>
+          <div class="<%= fill_classes %>"></div>
+          <% @values.each_with_index do |value, index| %>
+            <div data-slider-target="thumb" style="--slider-position: <%= percent(value) %>%" <%= tag.attributes(aria: thumb_aria(index)) %> class="<%= thumb_classes %>">
+              <span class="<%= knob_classes %>"></span>
+              <% if @tooltip %>
+                <%# An output inside a thumb shows that thumb's value %>
+                <span class="<%= tooltip_classes %>">
+                  <span data-slider-target="output" class="block min-w-[3ch]"><%= display(value) %></span>
+                  <span class="absolute top-full left-1/2 -mt-1 size-2 -translate-x-1/2 rotate-45 rounded-[1px] bg-neutral-900 dark:bg-white"></span>
+                </span>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+
+  <% if vertical? %>
+    <% if @output %>
+      <output data-slider-target="output" class="text-xs tabular-nums text-neutral-500 dark:text-neutral-400"><%= output_text %></output>
+    <% end %>
+    <%= track %>
+    <% if @label.present? %>
+      <span id="<%= label_id %>" class="<%= @hide_label ? "sr-only" : "text-xs text-neutral-500 dark:text-neutral-400" %>"><%= @label %></span>
+    <% end %>
+  <% else %>
+    <% if label_row? %>
+      <div class="<%= @tooltip ? "mb-10" : "mb-2" %> flex items-baseline justify-between gap-3">
+        <% if @label.present? %>
+          <span id="<%= label_id %>" class="<%= label_classes %>" data-action="click->slider#focus"><%= @label %></span>
+        <% end %>
+        <% if @output && !@tooltip %>
+          <output data-slider-target="output" class="ms-auto text-sm tabular-nums text-neutral-500 dark:text-neutral-400"><%= output_text %></output>
+        <% end %>
+      </div>
+    <% elsif @label.present? && !fluid? %>
+      <span id="<%= label_id %>" class="sr-only"><%= @label %></span>
+    <% end %>
+
+    <% if row? %>
+      <div class="flex items-center gap-2">
+        <%= leading %>
+        <%= track %>
+        <%= trailing %>
+      </div>
+    <% else %>
+      <%= track %>
+    <% end %>
+
+    <% if show_marks? %>
+      <%# Step labels: click one to jump straight to it. Below 16rem only the first and last show, so they never overlap %>
+      <div class="@container/marks relative <%= sizes[:marks] %> mt-2 h-5" aria-hidden="true">
+        <% @labels.each_with_index do |mark, index| %>
+          <button type="button" tabindex="-1" data-slider-target="tick" data-value="<%= @min + (index * @step) %>" <%= "data-active" if @min + (index * @step) <= @values.last && (!range? || @min + (index * @step) >= @values.first) %> data-action="click->slider#set" data-slider-value-param="<%= @min + (index * @step) %>" class="absolute top-0 <%= mark_alignment(index) %> <%= "hidden @3xs/marks:block" unless index.zero? || index == @labels.size - 1 %> cursor-pointer rounded-sm px-1 text-xs text-neutral-400 hover:text-neutral-900 data-[active]:text-neutral-700 group-data-[disabled]/slider:pointer-events-none dark:text-neutral-500 dark:hover:text-white dark:data-[active]:text-neutral-200" style="inset-inline-start: <%= mark_position(index) %>%"><%= mark %></button>
+        <% end %>
+      </div>
+    <% end %>
+  <% end %>
+
+  <% if @hint.present? %>
+    <p id="<%= hint_id %>" class="mt-2 text-xs text-neutral-500 dark:text-neutral-400"><%= @hint %></p>
+  <% end %>
+
+  <%# One hidden input per thumb, in the same order. They submit with the form %>
+  <% @names.each_with_index do |input_name, index| %>
+    <input type="hidden" name="<%= input_name %>" value="<%= @values[index] %>" data-slider-target="input"<%= " disabled" if disabled? %>>
+  <% end %>
+<% end %>

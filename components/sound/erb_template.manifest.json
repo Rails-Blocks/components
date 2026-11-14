@@ -1,0 +1,16 @@
+{
+  "component": "sound",
+  "implementation": "erb_template",
+  "files": [
+    {
+      "path": "sound/_mute_button.html.erb",
+      "relative_path": "_mute_button.html.erb",
+      "checksum": "b9c1eee854e69f09e4b2741a4d39e45585dcbfe5817be742436decbf902c067a"
+    },
+    {
+      "path": "sound/_sound.html.erb",
+      "relative_path": "_sound.html.erb",
+      "checksum": "5510f220b14552c476808fe1fa9dae050c712bed9384d5a93d2319d1febd4942"
+    }
+  ]
+}

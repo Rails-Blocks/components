@@ -1,0 +1,36 @@
+<%#
+  Sound Component
+  Wraps content in the sound Stimulus controller. Inside it, any element can play a sound with
+  data-sound="name" (or with sound#… actions). Put one around your whole layout for app-wide
+  sounds, or around a section to give it its own default sound or volume.
+
+  Optional locals:
+    - tag: Symbol (default: :div) - The wrapper element, e.g. :div, :section, :li
+    - name: String (default: "tap") - Default sound for elements with an empty data-sound
+    - volume: Float (default: 1) - Volume for this wrapper, 0 to 1, multiplied with the global volume
+    - respect_motion: Boolean (default: true) - Start muted for people who prefer reduced motion, until they unmute
+    - play_on_connect: String (default: nil) - A sound played once when the element appears, e.g. in a Turbo Stream
+    - classes: String (default: nil) - Additional CSS classes for the wrapper
+    - html_options: Hash (default: {}) - Other HTML attributes for the wrapper (id, aria, data, …)
+%>
+
+<% tag_name = local_assigns.fetch(:tag, :div) %>
+<% name = local_assigns.fetch(:name, "tap").to_s %>
+<% volume = local_assigns.fetch(:volume, 1).to_f.clamp(0.0, 1.0) %>
+<% respect_motion = local_assigns.fetch(:respect_motion, true) %>
+<% play_on_connect = local_assigns[:play_on_connect].to_s.presence %>
+<% classes = local_assigns[:classes] %>
+<% html_options = local_assigns.fetch(:html_options, {}) %>
+
+<% extra_data = (html_options[:data] || {}).dup %>
+<% sound_data = { controller: [extra_data.delete(:controller), "sound"].compact.join(" ") } %>
+<% sound_data[:sound_name_value] = name unless name == "tap" %>
+<% sound_data[:sound_volume_value] = volume if volume < 1 %>
+<% sound_data[:sound_respect_motion_value] = "false" unless respect_motion %>
+<% sound_data[:sound_play_on_connect_value] = play_on_connect if play_on_connect %>
+
+<%= content_tag tag_name,
+  (yield if block_given?),
+  **html_options.except(:data, :class),
+  class: ["group/sound", classes, html_options[:class]].compact.join(" "),
+  data: extra_data.merge(sound_data) %>
