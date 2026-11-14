@@ -84,6 +84,23 @@ const RELEASE_GAP = 0.09; // Seconds between the press and the release of a comb
 // room: how much of it reaches the small room. vary: how much each play drifts (null: not at all).
 const cue = (gain, layers, { release = [], room = 1, vary = { pitch: 0, level: 0.08 } } = {}) => ({ gain, layers, release, room, vary });
 
+// A variation of a cue, for re-voicing a sound without rebuilding it. Each option answers one
+// complaint you might have after listening:
+//   pitch:      "too high / too low". Semitones for the tones, so notes stay in tune with each other.
+//   brightness: "too harsh / too muffled". Multiplies the noise filter frequencies (1.2 is sharper).
+//   length:     "too long / too short". Multiplies every ring. The rhythm of the notes stays the same.
+//   room:       "too dry / too distant". Multiplies how much reaches the small room.
+//   level:      "too loud / too quiet" next to the other sounds. Multiplies the cue's gain.
+//   RECIPES.soft_tap = tune(RECIPES.tap, { length: 0.8, brightness: 0.85 }); // after RECIPES, plus a LEVELS entry
+export const tune = (recipe, { pitch = 0, brightness = 1, length = 1, room = 1, level = 1 } = {}) => {
+  const shift = 2 ** (pitch / 12);
+  const retune = (layer) => {
+    const factor = layer.kind === "tone" ? shift : brightness;
+    return { ...layer, frequency: layer.frequency * factor, glideTo: layer.glideTo && layer.glideTo * factor, decay: layer.decay * length };
+  };
+  return { ...recipe, gain: recipe.gain * level, room: recipe.room * room, layers: recipe.layers.map(retune), release: recipe.release.map(retune) };
+};
+
 // A switch thrown: the click and a firm knock, letting go with a lighter click. On sits two
 // semitones higher, off two lower. `press` and `release` choose which halves are played.
 const toggleCue = (on, press, release) => {
@@ -103,7 +120,7 @@ const TAP = { gain: 0.0431, down: [...Part.click(PRESS_HZ, 0.53), Part.knock(131
 const CLICK = { gain: 0.0571, down: [...Part.click(PRESS_HZ, 0.245), Part.knock(330, 0.0389, 0.05)], up: Part.click(RELEASE_HZ, 0.1) };
 
 // Recipes. Edit these to re-voice your whole app in one place.
-const RECIPES = {
+export const RECIPES = {
   // A tap: a firmer, brighter click over a short low thump, and a clear release. Like the tap cue
   // it is modelled on, but with no long note ringing after it: it is over when the finger lifts.
   tap: cue(TAP.gain, TAP.down, { release: TAP.up }),
@@ -176,25 +193,44 @@ const RECIPES = {
     Part.air(900, 3400, 0.26, 0.05, 0.15, 0.04, 0.8),
     Part.thud(220, 0.3, 0.05, 0.12),
   ], { room: 1.5 }),
+  // A soft whoosh closing: the page sound in reverse, sweeping down and settling with a little thump.
+  close: cue(0.1, [
+    Part.air(1900, 450, 0.22, 0.18, 0.04, 0, 0.8),
+    Part.air(3400, 900, 0.16, 0.045, 0.05, 0.02, 0.8),
+    Part.thud(200, 0.08, 0.06, 0.004, 0.14),
+  ]),
+  // Set down in place: a dull click over a knock and a low thump. Heavier than a tap, with no release.
+  drop: cue(0.06, [...Part.click(2600, 0.2), Part.knock(196, 0.06, 0.1), Part.thud(140, 0.06, 0.16)], { vary: { pitch: 0.03, level: 0.1 } }),
+  // Swept away: a brush of air falling, with a low knock that drops in pitch under it.
+  delete: cue(0.08, [
+    Part.air(2400, 600, 0.12, 0.1, 0.008, 0, 1.2),
+    Part.knock(160, 0.08, 0.1, 0.015),
+    Part.thud(120, 0.05, 0.08, 0.001, 0.015),
+  ]),
   // One struck note. `sound#step` raises its pitch along a slider.
   step: cue(0.07, [Part.contact(1500, 0.14), ...Part.struck(A4, 0.18, 0.09, Part.mallet)]),
 };
 
 // Loudness trim per sound, in dB. Measured so that presses and clicks peak around -20 dBFS (releases
 // a little lighter) and notes around -16, which is what makes a click feel as present as a chime.
-// After changing a recipe, render it in an OfflineAudioContext and nudge the number.
-const LEVELS = {
+// Some sit off target on purpose: hover is quieter, tap firmer. After adding or changing a recipe,
+// call suggestLevel("name") from the browser console (or use the Sound lab on the docs page) for a
+// suggested trim, then listen.
+export const LEVELS = {
   tap: 9.5, click: 13, press: 12, release: 18, tick: -1, hover: 2, pop: -4,
   toggle_on: 8, toggle_off: 14, toggle_press_on: 12, toggle_press_off: 13, toggle_release_on: 13, toggle_release_off: 13.5,
   success: 6, error: 5.7, notification: 8, done: 3.8, ready: 5, bloom: 6, sparkle: 4.5, glint: 4.5, warning: 11.4, copy: 12, page: 5, step: 7,
+  close: 2.5, drop: 9, delete: 6.5, // close sits with page, a little under the click target
 };
 
 // Other names that resolve to a recipe.
-const ALIASES = { toggle: "toggle_on", chime: "notification", droplet: "pop", button: "tap" };
+const ALIASES = { toggle: "toggle_on", chime: "notification", droplet: "pop", button: "tap", dismiss: "close", remove: "delete" };
 
 const VARIATION_RING = 0.1; // ± how much each layer's ring length drifts per play
 const OUTPUT_GAIN = 5.8 * 2 * 0.5; // Cues are mixed quietly and boosted at the output; the 0.5 sets a medium overall level
 const ROOM_SEND = 0.08;
+const LEVEL_TARGETS = { click: -20, note: -16 }; // Peak dBFS each kind of sound is trimmed to (see LEVELS)
+const LONG_RING = 0.1; // Seconds: a sound with a tone ringing this long or longer is trimmed as a note
 
 const STORAGE_KEY = "sound"; // → localStorage "sound:muted" and "sound:volume"
 const CHANGE_EVENT = "sound:change"; // fired on window when mute or volume changes
@@ -260,8 +296,9 @@ export default class extends Controller {
   // data-action="sound#play" data-sound-name-param="success"
   // Optional: data-sound-volume-param="0.5" (0–1), data-sound-pitch-param="1.25" (1 = unchanged)
   // Also callable from other controllers: this.soundOutlet.play("success", { volume: 0.5, pitch: 1.25 })
+  // or with a recipe instead of a name, and its loudness trim in dB: play(tune(…), { trim: 9 })
   play(event, options = {}) {
-    if (typeof event === "string") return this.emit(event, options);
+    if (typeof event === "string" || event?.layers) return this.emit(event, options);
     if (event?.repeat || this.isDisabled(event?.currentTarget)) return; // Holding a key down plays once
 
     const params = { volume: event?.params?.volume, pitch: event?.params?.pitch, source: event?.currentTarget };
@@ -787,14 +824,17 @@ export default class extends Controller {
 
   // ---- Playback --------------------------------------------------------------------------
 
-  emit(name, { volume, pitch, source } = {}) {
+  emit(name, { volume, pitch, source, trim } = {}) {
     if (this.muted) return;
 
-    const key = String(name || this.nameValue)
-      .trim()
-      .replaceAll("-", "_");
+    const custom = name?.layers ? name : null; // A recipe passed in directly (the Sound lab)
+    const key = custom
+      ? "custom"
+      : String(name || this.nameValue)
+          .trim()
+          .replaceAll("-", "_");
     const resolved = resolve(key);
-    const recipe = RECIPES[resolved];
+    const recipe = custom || RECIPES[resolved];
     if (!recipe) return; // Unknown names are ignored quietly
 
     // The same cue twice within 35 ms is never intentional (two listeners reacting to one gesture),
@@ -803,8 +843,8 @@ export default class extends Controller {
     if (now - (lastEmittedAt[resolved] ?? -Infinity) < 35) return;
     lastEmittedAt[resolved] = now;
     const gain = Number.isFinite(parseFloat(volume)) ? parseFloat(volume) : 1; // 0 means silent, not "unset"
-    const trim = 10 ** ((LEVELS[resolved] ?? LEVELS[resolved.replace(/_(down|up)$/, "")] ?? 0) / 20); // See LEVELS; a half uses its cue's trim
-    const level = clamp(this.globalVolume * this.volumeValue * gain) * trim * lightness(resolved);
+    const decibels = Number.isFinite(parseFloat(trim)) ? parseFloat(trim) : trimOf(resolved);
+    const level = clamp(this.globalVolume * this.volumeValue * gain) * 10 ** (decibels / 20) * lightness(resolved);
     if (level === 0) return;
 
     // Autoplay rules: no sound before the first click or key press. The sound is dropped,
@@ -877,6 +917,11 @@ function resolve(name) {
   return ALIASES[key] || key;
 }
 
+// A sound's loudness trim in dB (see LEVELS). A half uses its cue's trim.
+function trimOf(name) {
+  return LEVELS[name] ?? LEVELS[String(name).replace(/_(down|up)$/, "")] ?? 0;
+}
+
 // ---- Synth ---------------------------------------------------------------------------------
 
 const lastPlayedAt = {};
@@ -891,26 +936,24 @@ function lightness(name) {
 }
 
 const synth = {
-  context: null,
-  master: null,
-  room: null,
-  noise: null,
+  stage: null,
 
   // Returns false when nothing could be played (blocked autoplay, no Web Audio).
   play(recipe, level, pitch) {
     if (navigator.userActivation && !navigator.userActivation.hasBeenActive) return false;
 
-    const context = this.open();
-    if (!context) return false;
+    const stage = this.open();
+    if (!stage) return false;
 
+    const { context } = stage;
     if (context.state === "running") {
-      this.voice(context, recipe, level, pitch);
+      voice(stage, recipe, level, pitch);
     } else {
       // A browser can hold resume() until the next gesture. A sound that was meant for an earlier
       // moment is dropped then, so it never plays late.
       const requested = performance.now();
       context.resume().then(
-        () => performance.now() - requested < STALE_AFTER && this.voice(context, recipe, level, pitch),
+        () => performance.now() - requested < STALE_AFTER && voice(stage, recipe, level, pitch),
         () => {},
       );
     }
@@ -918,10 +961,8 @@ const synth = {
   },
 
   // One shared AudioContext, created lazily on the first gesture.
-  //   cue → master → 40 Hz high-pass → soft clip → speakers
-  //   cue → small room → master
   open() {
-    if (this.context) return this.context;
+    if (this.stage) return this.stage;
 
     const Context = window.AudioContext || window.webkitAudioContext;
     if (!Context) return null;
@@ -935,129 +976,195 @@ const synth = {
     }
 
     try {
-      this.context = new Context({ latencyHint: "interactive" });
+      this.stage = outputStage(new Context({ latencyHint: "interactive" }));
     } catch {
       return null;
     }
-
-    const context = this.context;
-
-    this.master = context.createGain();
-    this.master.gain.value = OUTPUT_GAIN;
-
-    // The output stage: a subsonic cut, then a soft clip above 0.7 instead of a hard ceiling.
-    const subsonic = context.createBiquadFilter();
-    subsonic.type = "highpass";
-    subsonic.frequency.value = 40;
-    subsonic.Q.value = -3;
-
-    // Rolls the top end off gently so bright cues stay round at high volume.
-    const round = context.createBiquadFilter();
-    round.type = "lowpass";
-    round.frequency.value = 7000;
-    round.Q.value = 0.5;
-
-    const clip = context.createWaveShaper();
-    const curve = new Float32Array(2048);
-    for (let index = 0; index < curve.length; index++) {
-      const x = (index / (curve.length - 1)) * 2 - 1;
-      const over = Math.abs(x) - 0.7;
-      curve[index] = over > 0 ? Math.sign(x) * (0.7 + over - (over * over) / 0.6) : x;
-    }
-    clip.curve = curve;
-
-    this.master.connect(subsonic).connect(round).connect(clip).connect(context.destination);
-
-    this.room = context.createConvolver();
-    this.room.normalize = false;
-    this.room.buffer = roomResponse(context);
-    this.room.connect(this.master);
-
-    // Two seconds of white noise, shared by every noise layer.
-    this.noise = context.createBuffer(1, context.sampleRate * 2, context.sampleRate);
-    const data = this.noise.getChannelData(0);
-    for (let index = 0; index < data.length; index++) data[index] = Math.random() * 2 - 1;
-
-    return context;
+    return this.stage;
   },
+};
 
-  voice(context, recipe, level, pitch) {
-    const start = context.currentTime + 0.005;
-    const nudge = (amount) => 1 + (Math.random() * 2 - 1) * amount;
-    const vary = recipe.vary;
-    const strikePitch = vary ? nudge(vary.pitch) : 1;
-    const strikeForce = vary ? nudge(vary.level) : 1;
-    const shift = Number.isFinite(pitch) ? Math.min(4, Math.max(0.25, pitch)) : 1; // The `pitch` param moves notes, not noise
+// The output stage every cue plays through, on a live or an offline context:
+//   cue → master → 40 Hz high-pass → soft clip → speakers
+//   cue → small room → master
+function outputStage(context) {
+  const master = context.createGain();
+  master.gain.value = OUTPUT_GAIN;
 
-    const bus = context.createGain();
-    bus.gain.value = recipe.gain * level;
-    bus.connect(this.master);
+  // A subsonic cut, then a soft clip above 0.7 instead of a hard ceiling.
+  const subsonic = context.createBiquadFilter();
+  subsonic.type = "highpass";
+  subsonic.frequency.value = 40;
+  subsonic.Q.value = -3;
 
-    const send = context.createGain();
-    send.gain.value = ROOM_SEND * recipe.room;
-    bus.connect(send).connect(this.room);
+  // Rolls the top end off gently so bright cues stay round at high volume.
+  const round = context.createBiquadFilter();
+  round.type = "lowpass";
+  round.frequency.value = 7000;
+  round.Q.value = 0.5;
 
-    const layers = [...recipe.layers, ...recipe.release.map((layer) => ({ ...layer, offset: layer.offset + RELEASE_GAP }))];
-    let end = start;
+  const clip = context.createWaveShaper();
+  const curve = new Float32Array(2048);
+  for (let index = 0; index < curve.length; index++) {
+    const x = (index / (curve.length - 1)) * 2 - 1;
+    const over = Math.abs(x) - 0.7;
+    curve[index] = over > 0 ? Math.sign(x) * (0.7 + over - (over * over) / 0.6) : x;
+  }
+  clip.curve = curve;
 
-    layers.forEach((source) => {
-      const layer = { ...source };
-      if (vary) {
-        // Only the ring varies per layer. The pitch of every layer moves together (strikePitch), so
-        // a note and its overtones, and the notes of a run, always stay in tune with each other.
-        layer.decay *= nudge(VARIATION_RING);
-      }
-      const factor = layer.kind === "tone" ? strikePitch * shift : strikePitch * strikeForce; // Louder noise is brighter
-      layer.frequency *= factor;
-      if (layer.glideTo) layer.glideTo *= factor;
-      layer.peak *= strikeForce;
+  master.connect(subsonic).connect(round).connect(clip).connect(context.destination);
 
-      end = Math.max(end, this.layer(context, bus, layer, start + layer.offset));
-    });
+  const room = context.createConvolver();
+  room.normalize = false;
+  room.buffer = roomResponse(context);
+  room.connect(master);
 
-    // The ring is long gone (-60 dB at `decay`, silence a moment later) before the nodes are freed.
+  // Two seconds of white noise, shared by every noise layer.
+  const noise = context.createBuffer(1, context.sampleRate * 2, context.sampleRate);
+  const data = noise.getChannelData(0);
+  for (let index = 0; index < data.length; index++) data[index] = Math.random() * 2 - 1;
+
+  return { context, master, room, noise };
+}
+
+// Plays a cue on a stage. Returns the time its last layer has rung out.
+function voice(stage, recipe, level, pitch) {
+  const { context, master, room } = stage;
+  const start = context.currentTime + 0.005;
+  const nudge = (amount) => 1 + (Math.random() * 2 - 1) * amount;
+  const vary = recipe.vary;
+  const strikePitch = vary ? nudge(vary.pitch) : 1;
+  const strikeForce = vary ? nudge(vary.level) : 1;
+  const shift = Number.isFinite(pitch) ? Math.min(4, Math.max(0.25, pitch)) : 1; // The `pitch` param moves notes, not noise
+
+  const bus = context.createGain();
+  bus.gain.value = recipe.gain * level;
+  bus.connect(master);
+
+  const send = context.createGain();
+  send.gain.value = ROOM_SEND * recipe.room;
+  bus.connect(send).connect(room);
+
+  let end = start;
+
+  layersOf(recipe).forEach((source) => {
+    const layer = { ...source };
+    if (vary) {
+      // Only the ring varies per layer. The pitch of every layer moves together (strikePitch), so
+      // a note and its overtones, and the notes of a run, always stay in tune with each other.
+      layer.decay *= nudge(VARIATION_RING);
+    }
+    const factor = layer.kind === "tone" ? strikePitch * shift : strikePitch * strikeForce; // Louder noise is brighter
+    layer.frequency *= factor;
+    if (layer.glideTo) layer.glideTo *= factor;
+    layer.peak *= strikeForce;
+
+    end = Math.max(end, playLayer(stage, bus, layer, start + layer.offset));
+  });
+
+  // The ring is long gone (-60 dB at `decay`, silence a moment later) before the nodes are freed.
+  // An offline render keeps its nodes until it is done.
+  if (!stage.offline) {
     setTimeout(() => {
       bus.disconnect();
       send.disconnect();
     }, (end + 0.3 - context.currentTime) * 1000);
-  },
+  }
+  return end;
+}
 
-  // One layer: a source, a filter if it is noise, and an envelope that swells in straight and
-  // rings out exponentially, reaching -60 dB at `decay` (setTargetAtTime with tau = decay / (3 ln 10)).
-  layer(context, destination, layer, at) {
-    const { kind, frequency, glideTo, attack, decay, peak } = layer;
-    const glideTime = layer.glideTime ?? attack + decay;
-    const finish = at + attack + decay + 0.05;
-    const amp = context.createGain();
+// The press layers, then the release layers a moment later.
+function layersOf(recipe) {
+  return [...recipe.layers, ...recipe.release.map((layer) => ({ ...layer, offset: layer.offset + RELEASE_GAP }))];
+}
 
-    amp.gain.setValueAtTime(0, at);
-    amp.gain.linearRampToValueAtTime(peak, at + attack);
-    amp.gain.setTargetAtTime(0, at + attack, decay / (3 * Math.LN10));
-    amp.connect(destination);
+// One layer: a source, a filter if it is noise, and an envelope that swells in straight and
+// rings out exponentially, reaching -60 dB at `decay` (setTargetAtTime with tau = decay / (3 ln 10)).
+function playLayer({ context, noise }, destination, layer, at) {
+  const { kind, frequency, glideTo, attack, decay, peak } = layer;
+  const glideTime = layer.glideTime ?? attack + decay;
+  const finish = at + attack + decay + 0.05;
+  const amp = context.createGain();
 
-    if (kind === "tone") {
-      const oscillator = context.createOscillator();
-      oscillator.frequency.setValueAtTime(frequency, at);
-      if (glideTo) oscillator.frequency.exponentialRampToValueAtTime(glideTo, at + glideTime);
-      oscillator.connect(amp);
-      oscillator.start(at);
-      oscillator.stop(finish);
-    } else {
-      const source = context.createBufferSource();
-      const filter = context.createBiquadFilter();
-      source.buffer = this.noise;
-      filter.type = kind;
-      filter.Q.value = layer.q;
-      filter.frequency.setValueAtTime(frequency, at);
-      if (glideTo) filter.frequency.exponentialRampToValueAtTime(glideTo, at + glideTime);
-      source.connect(filter).connect(amp);
-      source.start(at, Math.random() * 1.5); // A different slice each time, so the texture never repeats
-      source.stop(finish);
+  amp.gain.setValueAtTime(0, at);
+  amp.gain.linearRampToValueAtTime(peak, at + attack);
+  amp.gain.setTargetAtTime(0, at + attack, decay / (3 * Math.LN10));
+  amp.connect(destination);
+
+  if (kind === "tone") {
+    const oscillator = context.createOscillator();
+    oscillator.frequency.setValueAtTime(frequency, at);
+    if (glideTo) oscillator.frequency.exponentialRampToValueAtTime(glideTo, at + glideTime);
+    oscillator.connect(amp);
+    oscillator.start(at);
+    oscillator.stop(finish);
+  } else {
+    const source = context.createBufferSource();
+    const filter = context.createBiquadFilter();
+    source.buffer = noise;
+    filter.type = kind;
+    filter.Q.value = layer.q;
+    filter.frequency.setValueAtTime(frequency, at);
+    if (glideTo) filter.frequency.exponentialRampToValueAtTime(glideTo, at + glideTime);
+    source.connect(filter).connect(amp);
+    source.start(at, Math.random() * 1.5); // A different slice each time, so the texture never repeats
+    source.stop(finish);
+  }
+
+  return finish;
+}
+
+// ---- Measuring -----------------------------------------------------------------------------
+
+// Renders a sound offline, with no variation, and returns its peak level in dBFS at full volume,
+// with its LEVELS trim applied (or `trim`, in dB). Pass a name or a recipe. The noise differs on
+// every render, so it renders five times and returns the middle peak. For setting LEVELS (see
+// suggestLevel); nothing calls it while your app plays sounds.
+export async function measure(sound, { trim } = {}) {
+  const name = typeof sound === "string" ? resolve(sound) : null;
+  const recipe = name ? RECIPES[name] : sound;
+  const Offline = window.OfflineAudioContext || window.webkitOfflineAudioContext;
+  if (!recipe?.layers || !Offline) return null;
+
+  const rate = 48000;
+  const length = Math.max(...layersOf(recipe).map((layer) => layer.offset + layer.attack + layer.decay)) + 0.5;
+  const level = 10 ** ((Number.isFinite(trim) ? trim : trimOf(name)) / 20);
+
+  const peaks = [];
+  for (let run = 0; run < 5; run++) {
+    const context = new Offline(2, Math.ceil(rate * length), rate);
+    voice({ ...outputStage(context), offline: true }, { ...recipe, vary: null }, level, 1);
+    const rendered = await context.startRendering();
+    let peak = 0;
+    for (let channel = 0; channel < rendered.numberOfChannels; channel++) {
+      for (const sample of rendered.getChannelData(channel)) peak = Math.max(peak, Math.abs(sample));
     }
+    peaks.push(peak);
+  }
+  const middle = peaks.sort((a, b) => a - b)[2];
+  return middle > 0 ? 20 * Math.log10(middle) : -Infinity;
+}
 
-    return finish;
-  },
-};
+// Measures a sound and returns the trim (rounded to 0.5 dB) that brings it to its target in
+// LEVEL_TARGETS: { kind, peak, target, trim }. A suggestion: some sounds sit off target on purpose.
+export async function suggestLevel(sound, { trim } = {}) {
+  const name = typeof sound === "string" ? resolve(sound) : null;
+  const recipe = name ? RECIPES[name] : sound;
+  if (!recipe?.layers) return null;
+
+  const current = Number.isFinite(trim) ? trim : trimOf(name);
+  const peak = await measure(recipe, { trim: current });
+  if (!Number.isFinite(peak)) return null;
+
+  const kind = kindOf(recipe);
+  const target = LEVEL_TARGETS[kind];
+  return { kind, peak, target, trim: Math.round((current + target - peak) * 2) / 2 };
+}
+
+// "note" when a tone rings on (chimes, chords, a bubble), "click" for presses, ticks and whooshes.
+function kindOf(recipe) {
+  return layersOf(recipe).some((layer) => layer.kind === "tone" && layer.decay >= LONG_RING) ? "note" : "click";
+}
 
 // The small room: 8 ms to the first reflection, highs damped above
 // 3.5 kHz, four damped feedback delays per ear, gone in about a quarter of a second. Rendered

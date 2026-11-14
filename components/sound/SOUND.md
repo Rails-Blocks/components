@@ -299,11 +299,46 @@ messageReceived() {
 | `glint` | Bell and its fifth | Unlocks, upgrades, small rewards |
 | `copy` | Rising pair | Copied to clipboard |
 | `page` | Soft whoosh | Opening a panel or moving between steps |
+| `close` | Whoosh closing, settling | Closing a panel, a drawer, or a modal |
+| `drop` | Dull click and low thump | Dropping a dragged item into place |
+| `delete` | Falling brush and knock | Removing an item, clearing a field |
 | `step` | One struck note | Used by `sound#step` on sliders |
 
-Also accepted: the two halves of switches (`toggle_press_on`, `toggle_press_off`, `toggle_release_on`, `toggle_release_off`) and the aliases `toggle` (`toggle_on`), `chime` (`notification`), `droplet` (`pop`), and `button` (`tap`). Dashes work in place of underscores (`toggle-on`). Unknown names are ignored silently.
+Also accepted: the two halves of switches (`toggle_press_on`, `toggle_press_off`, `toggle_release_on`, `toggle_release_off`) and the aliases `toggle` (`toggle_on`), `chime` (`notification`), `droplet` (`pop`), `button` (`tap`), `dismiss` (`close`), and `remove` (`delete`). Dashes work in place of underscores (`toggle-on`). Unknown names are ignored silently.
 
 To change a sound or add one, edit its entry in `RECIPES` near the top of the controller and give it a loudness trim in `LEVELS`.
+
+### Tuning a sound
+
+Change one thing, listen, repeat. Name what is wrong, then reach for the matching knob:
+
+| What you hear | What to change |
+| ------------- | -------------- |
+| Too high or too low | `tune(recipe, { pitch })` in semitones. Notes move together, so chords stay in tune. In a recipe: the tone frequencies, or the note constants (`A4`, `E5`). |
+| Too harsh or thin | `tune(recipe, { brightness: 0.8 })`. In a recipe: a lower `Part.click` / `Part.ring` frequency, or a lower bandpass `q` (wider, softer). |
+| Too muffled or dull | `brightness` above 1, a higher click frequency, or a harder mallet (`Part.contact` at 2000 to 3000 Hz instead of 1000 to 1500). |
+| Too long or lingering | `tune(recipe, { length: 0.7 })`. In a recipe: a shorter `decay`. Every ring decays exponentially and reaches -60 dB at its `decay`. |
+| Too short or clipped | `length` above 1, or a longer `decay`. Give whooshes a longer `attack` so they swell in. |
+| No weight, too light | Add a `Part.thud` (low-passed noise around 100 to 200 Hz) or a `Part.knock` under the click. |
+| Too dry or too distant | `tune(recipe, { room })`, or the cue's `room` option (1 is dry, 2 rings out). |
+| Feels robotic when repeated | Give the cue a `vary` option, for example `{ pitch: 0.02, level: 0.1 }`. Leave it `null` for chords, where drift would put notes out of tune. |
+| Too loud or quiet next to the others | Its trim in `LEVELS`, in dB. Call `suggestLevel` for a suggestion (below), then trust your ears. |
+
+`tune` makes a variation of an existing cue without rebuilding it. Add the result after `RECIPES`, with its own trim:
+
+```javascript
+RECIPES.soft_tap = tune(RECIPES.tap, { length: 0.8, brightness: 0.85 });
+LEVELS.soft_tap = 9.5;
+```
+
+The Sound lab on the [Sound docs page](https://railsblocks.com/docs/sound#sound-lab) has the same knobs as sliders. It plays the result through your mute and volume settings, measures its level, and gives you the lines to paste.
+
+To check a level, render the sound offline from the browser console on any page that loads the controller. `suggestLevel` measures its peak and suggests a trim: presses, clicks, and whooshes aim for -20 dBFS and ringing notes for -16. A few sounds sit off target on purpose (release halves, `hover`, and `step` are lighter, `tap` is firmer), so treat the suggestion as a starting point.
+
+```javascript
+const { suggestLevel } = await import("controllers/sound_controller");
+await suggestLevel("drop"); // { kind: "click", peak: -20.3, target: -20, trim: 9.5 }
+```
 
 ---
 
@@ -468,6 +503,9 @@ end
 - **Incoming messages**: render each message with `data-controller="sound" data-sound-play-on-connect-value="notification"` (see `_12_incoming_messages.html.erb`), or dispatch `sound:play` from the controller that receives it, together with a visible toast or badge.
 - **Copy buttons**: `data-sound="copy"` on the Clipboard button.
 - **Preferences page**: `_8_sound_preferences.html.erb`.
+- **Drawers, modals, and slideovers**: `page` when they open and `close` when they close.
+- **Sortable lists and drag and drop**: `drop` when the item lands in place, `delete` when it is removed.
+- **Re-voicing a sound**: when asked to make a sound softer, shorter, lower, and so on, use the Tuning a sound table: change one knob at a time, prefer `tune(...)` over rewriting the recipe, and give any new recipe a trim in `LEVELS` (`suggestLevel("name")` suggests one).
 
 ### Common Mistakes
 
@@ -482,4 +520,6 @@ end
 - Do not combine `data-sound` with `sound#…` actions on the same element: the sound would be wired twice.
 - Do not put `data-sound-play-on-connect-value` on an element rendered with the initial page and expect a sound: browsers block audio until the user interacts.
 - Do not use `sound#play` on `pointerdown` for buttons that also need keyboard sounds without adding `keydown.enter` and `keydown.space` actions.
+- Do not add a recipe without a `LEVELS` entry: the sound levels spec fails, and the sound will sit too loud or too quiet next to the others.
+- Do not use `vary` with pitch drift on chords or runs of notes. Leave it `null` so the notes stay in tune.
 - Do not store mute or volume yourself. Use the `mute` and `volume` targets: the controller saves and syncs them.
