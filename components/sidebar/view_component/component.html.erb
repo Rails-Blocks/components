@@ -25,7 +25,7 @@
             <!-- Collapsed Nav Items -->
             <div class="mt-1.5 sm:mt-2 flex w-full flex-col items-start">
               <% items.each do |item| %>
-                <a href="<%= item.href %>" aria-label="<%= item.label %>" data-controller="tooltip" data-tooltip-content="<%= item.label %>" data-tooltip-placement-value="right" data-tooltip-arrow="true" data-tooltip-animation-value="fade origin" data-tooltip-size-value="small" class="<%= item.collapsed_item_classes %>">
+                <a <%= tag.attributes(href: (item.href unless item.disabled), aria: { label: item.label, current: ("page" if item.active), disabled: ("true" if item.disabled) }) %> data-controller="tooltip" data-tooltip-content="<%= item.label %>" data-tooltip-placement-value="right" data-tooltip-arrow="true" data-tooltip-animation-value="fade origin" data-tooltip-size-value="small" class="<%= item.collapsed_item_classes %>">
                   <% if item.icon? %>
                     <%= item.icon.html_safe %>
                   <% else %>

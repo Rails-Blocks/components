@@ -31,9 +31,9 @@
   end
 %>
 
-<a href="<%= url %>" class="rounded-full" <%= tag.attributes(data: data_attrs) %>>
+<a href="<%= url %>" class="relative rounded-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-600 dark:focus-visible:outline-neutral-300" aria-label="<%= tooltip %>" <%= tag.attributes(data: data_attrs) %>>
   <div class="<%= icon_box_classes %>">
-    <div class="flex items-center justify-center *:size-full" style="width: 50%; height: 50%">
+    <div class="flex items-center justify-center *:size-full" style="width: 50%; height: 50%" aria-hidden="true">
       <%= raw(icon) if icon.present? %>
     </div>
   </div>

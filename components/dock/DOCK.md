@@ -5,12 +5,14 @@ macOS-style dock/taskbar with magnification animation, tooltips, and mobile resp
 ## Features
 
 - Magnification effect on hover (icons grow when mouse approaches)
-- Tooltips with optional keyboard hotkeys
-- Mobile-responsive with expandable menu
+- Tooltips with optional keyboard hotkeys, shown on hover and keyboard focus
+- Mobile-responsive with expandable menu and frosted backdrop glow
 - Active state highlighting
 - Position variants (bottom, top)
 - Style variants (default, rounded, pill)
 - Keyboard hotkey support
+- Works as a `data-turbo-permanent` dock that persists across Turbo visits
+- Respects `prefers-reduced-motion` (magnification is turned off)
 
 ## Implementation Options
 
@@ -27,14 +29,12 @@ macOS-style dock/taskbar with magnification animation, tooltips, and mobile resp
 This component requires:
 
 - **Motion** library for animations (`import { animate, transform, spring, stagger } from "motion"`)
-- **Floating UI** for tooltip positioning (`import { computePosition, offset, flip, shift } from "@floating-ui/dom"`)
 
-Ensure these are available in your importmap or bundler:
+Tooltips are anchored with CSS, so no positioning library is needed. Ensure Motion is available in your importmap or bundler:
 
-```js
-// config/importmap.rb
-pin "motion", to: "https://cdn.jsdelivr.net/npm/motion@11.11.9/+esm"
-pin "@floating-ui/dom", to: "https://cdn.jsdelivr.net/npm/@floating-ui/dom@1.6.10/+esm"
+```ruby
+# config/importmap.rb
+pin "motion", to: "https://cdn.jsdelivr.net/npm/motion@14.14.0/+esm"
 ```
 
 ---
@@ -51,8 +51,18 @@ This controller has no configurable values.
 | ------ | -------- | ----------- |
 | `icon` | Yes | Each dock item anchor (for hover animation) |
 | `mobileMenu` | No | Container for mobile expanded menu |
-| `mobileButton` | No | Toggle button for mobile menu |
-| `tooltip` | No | Tooltip element (auto-created) |
+| `mobileButton` | No | Toggle button for mobile menu (`aria-expanded` is kept in sync) |
+| `mobileGlow` | No | Frosted backdrop that blooms behind the open mobile menu |
+
+### Data Attributes (on each `icon`)
+
+| Attribute | Description |
+| --------- | ----------- |
+| `data-tooltip` | Tooltip text |
+| `data-tooltip-hotkey` | Optional hotkey shown as a badge in the tooltip |
+| `data-tooltip-placement` | `top` (default) or `bottom` |
+
+The controller creates one shared tooltip and appends it inside the hovered icon anchor, so each icon anchor needs `relative`.
 
 ### Actions
 
@@ -78,7 +88,7 @@ Copy the code block into your view and customize as needed.
 <div class="flex w-fit mx-auto items-center justify-center" data-controller="dock">
   <div class="mx-auto hidden h-16 items-end gap-4 rounded-2xl bg-neutral-50 px-4 pb-3 md:flex dark:bg-neutral-950 border border-neutral-200/50 dark:border-neutral-600/50">
     <% menu_items.each do |item| %>
-      <a href="<%= item[:url] %>" class="rounded-full" data-dock-target="icon" data-tooltip="<%= item[:tooltip] %>" data-tooltip-placement="top" data-tooltip-hotkey="<%= item[:hotkey] %>">
+      <a href="<%= item[:url] %>" class="relative rounded-full" aria-label="<%= item[:tooltip] %>" data-dock-target="icon" data-tooltip="<%= item[:tooltip] %>" data-tooltip-placement="top" data-tooltip-hotkey="<%= item[:hotkey] %>">
         <div class="size-10 relative flex aspect-square items-center justify-center rounded-full border border-neutral-200/50 dark:border-neutral-600/50 text-neutral-500 dark:text-neutral-300 bg-neutral-200 dark:bg-neutral-800">
           <div class="flex items-center justify-center *:size-full" style="width: 50%; height: 50%">
             <%= raw(item[:svg]) %>
@@ -97,6 +107,20 @@ Copy the code block into your view and customize as needed.
 **Active item:** Add active classes: `text-neutral-50 dark:text-neutral-800 bg-neutral-800 dark:bg-neutral-100`.
 
 **Without hotkeys:** Remove `data-tooltip-hotkey` and hotkey controller attributes.
+
+**Mobile glow:** Add `<div class="pointer-events-none absolute ... hidden" data-dock-target="mobileGlow"></div>` before the mobile menu (see the full example for the classes). It is optional; the controller skips it when missing.
+
+### Persistent Page Dock (Turbo)
+
+For a site-wide dock, render it once in your layout, fix it to the viewport and mark it permanent so it isn't re-rendered (and doesn't flicker) on Turbo visits. The full-screen fixed wrapper is also the positioning context for the mobile menu, toggle and glow:
+
+```erb
+<div id="dock" data-turbo-permanent class="fixed inset-0 z-40 flex items-end justify-center pb-5 pointer-events-none *:pointer-events-auto">
+  <%= render "shared/components/dock/dock", items: dock_items %>
+</div>
+```
+
+The controller sets itself up once in `initialize()`, highlights the destination as soon as a visit starts, and blurs the clicked icon after the new page loads so no stray focus ring is left behind.
 
 ---
 
@@ -219,10 +243,12 @@ Copy the code block into your view and customize as needed.
 
 ## Accessibility
 
-- Tooltips provide labels for icon-only items
-- Keyboard hotkeys for quick navigation
-- Focus states on interactive elements
-- Proper anchor semantics for navigation
+- Icon-only links carry an `aria-label`; icons are `aria-hidden`
+- The active link gets `aria-current="page"`
+- Tooltips show on hover and on keyboard focus
+- The mobile toggle is a real `<button>` with `aria-label` and `aria-expanded`
+- Desktop and mobile menus are `<nav aria-label="Dock">` landmarks
+- Magnification is disabled under `prefers-reduced-motion`
 
 ---
 
@@ -230,7 +256,9 @@ Copy the code block into your view and customize as needed.
 
 **Magnification not working:** Ensure Motion library is properly imported and the `data-dock-target="icon"` attribute is on each item anchor.
 
-**Tooltips not positioning:** Check that Floating UI is imported and the tooltip element exists in the DOM.
+**Tooltips misplaced:** Make sure each `data-dock-target="icon"` anchor has the `relative` class, since the tooltip is positioned inside it.
+
+**Magnification jumps or is offset:** The controller assumes 40px icons at rest (`ICON_REST_SIZE`). If you change the icon size, update the constants at the top of the controller.
 
 **Mobile menu not animating:** Verify `data-dock-target="mobileMenu"` and `data-dock-target="mobileButton"` are present.
 

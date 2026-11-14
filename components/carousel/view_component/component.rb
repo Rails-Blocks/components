@@ -90,7 +90,7 @@ module Carousel
     end
 
     def viewport_classes
-      base = "overflow-hidden outline-hidden mx-4 sm:mx-6 md:mx-8 cursor-grab active:cursor-grabbing"
+      base = "overflow-hidden outline-hidden opacity-0 motion-safe:transition-opacity motion-safe:duration-300 mx-4 sm:mx-6 md:mx-8 cursor-grab active:cursor-grabbing"
       height_class = @axis == "y" ? (@height || "h-96") : ""
       edge_fade_class = show_gradients? ? edge_fade_mask_class : ""
       [base, height_class, edge_fade_class].reject(&:empty?).join(" ")

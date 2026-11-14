@@ -5,6 +5,17 @@
   --color-primary-content: var(--rb-primary-content, var(--color-neutral-800));
   --color-primary-foreground: var(--rb-primary-foreground, var(--color-white));
   --color-accent: var(--rb-primary, var(--color-neutral-800));
+
+  /* Marker shimmer: slides a text-clipped gradient. Override the speed with [--marker-shimmer-duration:3s]. */
+  --animate-marker-shimmer: marker-shimmer var(--marker-shimmer-duration, 1.8s) linear infinite;
+  @keyframes marker-shimmer {
+    from {
+      background-position: 100% 0;
+    }
+    to {
+      background-position: 0% 0;
+    }
+  }
 }
 
 :root {
@@ -296,7 +307,7 @@ select[multiple][data-controller="select"] {
 }
 
 .ts-dropdown-content {
-  @apply py-1.5 space-y-0.5;
+  @apply py-1.5;
   max-height: 240px;
   scroll-behavior: auto;
 }
@@ -469,18 +480,18 @@ select[multiple][data-controller="select"] {
 }
 
 .ts-dropdown .create {
-  @apply mx-1.5 cursor-default rounded-md px-2.5 py-2 text-sm dark:text-neutral-400;
+  @apply mx-1.5 cursor-default rounded-md border border-white px-2.5 py-2 text-sm dark:border-neutral-800 dark:text-neutral-400;
 }
 
 .ts-dropdown [data-selectable].option,
 .ts-dropdown .no-results {
-  @apply mx-1.5 cursor-default rounded-md px-2.5 py-2 text-sm;
+  @apply mx-1.5 cursor-default rounded-md border border-white px-2.5 py-2 text-sm dark:border-neutral-800;
 }
 
 .ts-dropdown .option,
 .ts-dropdown [data-disabled],
 .ts-dropdown [data-disabled] [data-selectable].option {
-  @apply mx-1.5 cursor-not-allowed rounded-md px-2.5 py-2 text-sm;
+  @apply mx-1.5 cursor-not-allowed rounded-md border border-white px-2.5 py-2 text-sm dark:border-neutral-800;
 }
 
 .ts-dropdown [data-selectable].option,
@@ -693,26 +704,6 @@ em-emoji-picker {
     --color-border: rgba(255, 255, 255, 0.1);
     --color-border-over: rgba(255, 255, 255, 0.2);
   }
-}
-
-/* Shoelace Neutral styles */
-:root {
-  --sl-color-primary-50: var(--sl-color-neutral-50) !important;
-  --sl-color-primary-100: var(--sl-color-neutral-100) !important;
-  --sl-color-primary-200: var(--sl-color-neutral-200) !important;
-  --sl-color-primary-300: var(--sl-color-neutral-300) !important;
-  --sl-color-primary-400: var(--sl-color-neutral-400) !important;
-  --sl-color-primary-500: var(--sl-color-neutral-500) !important;
-  --sl-color-primary-600: var(--sl-color-neutral-600) !important;
-  --sl-color-primary-700: var(--sl-color-neutral-700) !important;
-  --sl-color-primary-800: var(--sl-color-neutral-800) !important;
-  --sl-color-primary-900: var(--sl-color-neutral-900) !important;
-  --sl-color-primary-950: var(--sl-color-neutral-950) !important;
-
-  --sl-input-focus-ring-color: hsla(0, 0%, 81%, 0.4) !important;
-
-  --sl-border-radius-medium: 0.5rem !important;
-  --sl-border-radius-large: 0.75rem !important;
 }
 
 /* air-datepicker */
@@ -1153,21 +1144,45 @@ em-emoji-picker {
   }
 }
 
-/* Toast Notifications */
+/* Toast Notifications
+ * Each toast is pinned to the container edge and every movement is a transform,
+ * so the stack animates on the compositor and transitions retarget mid-flight
+ * (a toast removed while another is entering never jumps). */
 .toast-item {
   @apply absolute w-full left-0 select-none;
   z-index: var(--toast-z-index, 100);
+  touch-action: none; /* vertical swipes dismiss the toast instead of scrolling the page */
 
-  /* Position based on data attributes */
-  top: var(--toast-top, auto);
-  bottom: var(--toast-bottom, auto);
   transform: var(--toast-transform, translateY(0));
   scale: var(--toast-scale, 100%);
   opacity: var(--toast-opacity, 1);
 
-  /* Separate transitions for better control - like Sonner */
-  transition: transform 400ms ease, opacity 400ms ease, scale 400ms ease, top 400ms ease, bottom 400ms ease,
-    height 200ms ease;
+  /* Sonner-style timing: a touch slower than typical UI, with plain `ease` */
+  transition:
+    transform 400ms ease,
+    opacity 400ms ease,
+    scale 400ms ease,
+    translate 400ms ease,
+    height 400ms ease;
+}
+
+.toast-item[data-position*="top"] {
+  top: 0;
+}
+
+.toast-item[data-position*="bottom"] {
+  bottom: 0;
+}
+
+/* While a pointer drags the toast, `translate` follows it with no delay */
+.toast-item[data-swiping="true"] {
+  transition-property: transform, opacity, scale, height;
+}
+
+/* A swiped-away toast keeps its momentum: fast and decelerating */
+.toast-item[data-swipe-out="true"] {
+  transition-duration: 200ms;
+  transition-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 /* Initial hidden state for enter animation */
@@ -1190,13 +1205,13 @@ em-emoji-picker {
   pointer-events: none;
 }
 
-/* In stacked mode, removed toasts should slide away */
+/* In stacked mode, removed toasts drift toward the screen edge they came from */
 .toast-item[data-removed="true"][data-expanded="false"][data-position*="bottom"] {
-  transform: translateY(calc(var(--toast-index) * 14px + 5%));
+  transform: translateY(calc(var(--toast-index) * -14px + 25%));
 }
 
 .toast-item[data-removed="true"][data-expanded="false"][data-position*="top"] {
-  transform: translateY(calc(-1 * (var(--toast-index) * 14px + 5%)));
+  transform: translateY(calc(var(--toast-index) * 14px - 25%));
 }
 
 /* Overflow toasts (removed due to limit) slide in opposite direction */
@@ -1210,46 +1225,30 @@ em-emoji-picker {
   scale: 78%;
 }
 
-/* Pointer events based on visibility */
 .toast-item[data-visible="false"] {
   pointer-events: none;
 }
 
-/* Expanded mode styles */
+/* Expanded mode: each toast moves to its own offset in the list */
 .toast-item[data-expanded="true"] {
   --toast-scale: 100%;
   height: var(--initial-height);
 }
 
 .toast-item[data-expanded="true"][data-position*="bottom"] {
-  --toast-top: auto;
-  --toast-bottom: var(--toast-offset, 0px);
-  --toast-transform: translateY(0);
+  --toast-transform: translateY(calc(-1 * var(--toast-offset, 0px)));
 }
 
 .toast-item[data-expanded="true"][data-position*="top"] {
-  --toast-top: var(--toast-offset, 0px);
-  --toast-bottom: auto;
-  --toast-transform: translateY(0);
+  --toast-transform: translateY(var(--toast-offset, 0px));
 }
 
 /* Stacked mode styles */
 .toast-item[data-expanded="false"][data-front="true"] {
   --toast-scale: 100%;
   --toast-opacity: 1;
+  --toast-transform: translateY(0);
   height: var(--initial-height);
-}
-
-.toast-item[data-expanded="false"][data-front="true"][data-position*="bottom"] {
-  --toast-top: auto;
-  --toast-bottom: 0px;
-  --toast-transform: translateY(0);
-}
-
-.toast-item[data-expanded="false"][data-front="true"][data-position*="top"] {
-  --toast-top: 0px;
-  --toast-bottom: auto;
-  --toast-transform: translateY(0);
 }
 
 /* Non-front toasts in stack - Sonner approach */
@@ -1262,33 +1261,32 @@ em-emoji-picker {
 }
 
 .toast-item[data-expanded="false"]:not([data-front="true"])[data-position*="bottom"] {
-  --toast-top: auto;
-  --toast-bottom: 0px;
   --toast-transform: translateY(calc(-1 * var(--toast-index) * 14px));
   justify-content: flex-start; /* Content at top, bottom gets cut */
 }
 
 .toast-item[data-expanded="false"]:not([data-front="true"])[data-position*="top"] {
-  --toast-top: 0px;
-  --toast-bottom: auto;
   --toast-transform: translateY(calc(var(--toast-index) * 14px));
   justify-content: flex-end; /* Content at bottom, top gets cut */
 }
 
-/* Hidden toasts (beyond 3rd) */
+/* Hidden toasts (beyond the limit) */
 .toast-item[data-expanded="false"][data-visible="false"] {
   --toast-opacity: 0;
   --toast-scale: 82%;
 }
 
 .toast-item[data-expanded="false"][data-visible="false"][data-position*="bottom"] {
-  --toast-top: auto;
-  --toast-bottom: -200px;
-  --toast-transform: translateY(0);
+  --toast-transform: translateY(200px);
 }
 
 .toast-item[data-expanded="false"][data-visible="false"][data-position*="top"] {
-  --toast-top: -200px;
-  --toast-bottom: auto;
-  --toast-transform: translateY(0);
+  --toast-transform: translateY(-200px);
+}
+
+/* Reduced motion: toasts fade in place; stack changes and swipes snap */
+@media (prefers-reduced-motion: reduce) {
+  .toast-item {
+    transition: opacity 200ms ease;
+  }
 }

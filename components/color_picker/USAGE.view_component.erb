@@ -1,51 +1,65 @@
-<%# Enhanced color picker %>
+<%# Basic color picker %>
 <%= render ColorPicker::Component.new(
-  id: "enhanced_color",
-  label: "Brand Color",
-  value: "#3b82f6",
-  format: :hex
+  id: "brand_color",
+  label: "Brand color",
+  value: "#3b82f6"
 ) %>
 
-<%# Color picker with opacity %>
+<%# With swatches %>
 <%= render ColorPicker::Component.new(
-  id: "opacity_color",
-  label: "Background Color",
-  value: "#f5a623ff",
+  id: "theme_color",
+  label: "Theme color",
+  value: "#8b5cf6",
+  swatches: ["#ede9fe", "#c4b5fd", "#8b5cf6", "#6d28d9", "#ef4444", "#f59e0b", "#10b981", "#3b82f6"]
+) %>
+
+<%# Color wheel (hue angle + saturation radius) with a brightness slider %>
+<%= render ColorPicker::Component.new(id: "wheel_color", label: "Wheel color", value: "#ec4899", area: :wheel) %>
+
+<%# Hue / saturation area with a brightness slider %>
+<%= render ColorPicker::Component.new(id: "theme_hs_color", label: "Theme color", value: "#f97316", area: :hs) %>
+
+<%# Hue / brightness area with a saturation slider %>
+<%= render ColorPicker::Component.new(id: "hv_color", label: "Accent color", value: "#14b8a6", area: :hv) %>
+
+<%# Hue only (saturation and brightness stay fixed) %>
+<%= render ColorPicker::Component.new(id: "tag_hue", label: "Tag hue", value: "oklch(65% 0.17 260)", area: :none, sliders: [:hue]) %>
+
+<%# Sliders only: hue, saturation, brightness, and opacity %>
+<%= render ColorPicker::Component.new(id: "layer_color", label: "Layer color", value: "#8b5cf6cc", area: :none, opacity: true) %>
+
+<%# Classic area with extra sliders %>
+<%= render ColorPicker::Component.new(id: "pro_color", label: "Fill", value: "#3b82f6", sliders: [:hue, :saturation, :brightness]) %>
+
+<%# Inline picker (no dropdown) %>
+<%= render ColorPicker::Component.new(
+  id: "accent_color",
+  label: "Accent color",
+  value: "rgb(16, 185, 129)",
+  format: :rgb,
+  inline: true
+) %>
+
+<%# With opacity (8-digit hex output) %>
+<%= render ColorPicker::Component.new(
+  id: "overlay_color",
+  label: "Overlay color",
+  value: "#f5a623cc",
   opacity: true,
   no_format_toggle: true
 ) %>
 
 <%# Format variations %>
-<%= render ColorPicker::Component.new(
-  id: "rgb_color",
-  label: "RGB Format",
-  value: "rgb(80, 227, 194)",
-  format: :rgb
-) %>
+<%= render ColorPicker::Component.new(id: "hsl_color", label: "HSL color", value: "hsl(290, 87%, 47%)", format: :hsl, size: :small) %>
+<%= render ColorPicker::Component.new(id: "hsv_color", label: "HSV color", value: "hsv(55, 89%, 97%)", format: :hsv, size: :large) %>
+<%= render ColorPicker::Component.new(id: "oklch_color", label: "OKLCH color", value: "oklch(70% 0.2 150)", format: :oklch) %>
 
-<%= render ColorPicker::Component.new(
-  id: "hsl_color",
-  label: "HSL Format",
-  value: "hsl(290, 87%, 47%)",
-  format: :hsl
-) %>
-
-<%= render ColorPicker::Component.new(
-  id: "hsv_color",
-  label: "HSV Format",
-  value: "hsv(55, 89%, 97%)",
-  format: :hsv
-) %>
-
-<%# Custom swatches with form submission %>
+<%# Form submission with a brand palette %>
 <%= render ColorPicker::Component.new(
   id: "brand_palette",
   name: "settings[brand_color]",
-  label: "Brand Color",
+  label: "Brand color",
   value: "#4a5568",
-  show_swatches: true,
-  swatches: [
-    "#1a202c", "#2d3748", "#4a5568", "#718096",
-    "#fed7d7", "#fc8181", "#f56565", "#e53e3e"
-  ]
+  uppercase: true,
+  swatches: ["#1a202c", "#2d3748", "#4a5568", "#718096", "#e53e3e", "#c53030", "#3182ce", "#805ad5"]
 ) %>

@@ -75,6 +75,18 @@ The controller has no required targets - it operates on the native `<select>` el
 | ------ | ----- | ----------- |
 | `clearInput` | Public method | Clears selection and search |
 
+### Events
+
+| Event | Description |
+| ----- | ----------- |
+| `select:ready` | Dispatched on the `<select>` once Tom Select is set up, e.g. `data-action="select:ready->form#sync"` |
+
+### Remote Loading Behavior
+
+- With `dropdownInput: true` (or `disableTyping: true`), the first page is preloaded and the dropdown opens on click.
+- With `dropdownInput: false` and typing enabled, the control is search-first: nothing is fetched until the user types, and the dropdown opens with the results.
+- Results keep the order returned by the server.
+
 ---
 
 ## Plain ERB

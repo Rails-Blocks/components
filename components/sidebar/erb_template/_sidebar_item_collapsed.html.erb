@@ -5,7 +5,7 @@
 <% disabled ||= false %>
 
 <%
-  base_classes = "flex h-8 w-8.5 items-center justify-center rounded-lg"
+  base_classes = "flex h-9 w-8.5 items-center justify-center rounded-lg border-y-2 border-transparent bg-clip-padding"
   state_classes = if disabled
                     "text-neutral-400 cursor-not-allowed opacity-50 dark:text-neutral-500"
                   elsif active
@@ -16,7 +16,7 @@
   classes = [base_classes, state_classes].join(" ")
 %>
 
-<a href="<%= href %>" aria-label="<%= label %>" data-controller="tooltip" data-tooltip-content="<%= label %>" data-tooltip-placement-value="right" data-tooltip-arrow="true" data-tooltip-animation-value="fade origin" data-tooltip-size-value="small" class="<%= classes %>">
+<a <%= tag.attributes(href: (href unless disabled), aria: { label: label, current: ("page" if active), disabled: ("true" if disabled) }) %> data-controller="tooltip" data-tooltip-content="<%= label %>" data-tooltip-placement-value="right" data-tooltip-arrow="true" data-tooltip-animation-value="fade origin" data-tooltip-size-value="small" class="<%= classes %>">
   <% if icon.present? %>
     <%= icon.html_safe %>
   <% else %>

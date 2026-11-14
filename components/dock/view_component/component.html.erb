@@ -1,22 +1,24 @@
 <div class="<%= wrapper_classes %>" <%= tag.attributes(controller_data) %>>
   <%# Desktop dock %>
-  <div class="<%= dock_container_classes %>">
+  <nav aria-label="Dock" class="<%= dock_container_classes %>">
     <% items.each do |item| %>
       <%= item %>
     <% end %>
-  </div>
+  </nav>
 
   <% if show_mobile? %>
+    <div class="<%= mobile_glow_classes %>" data-dock-target="mobileGlow"></div>
+
     <%# Mobile menu (expanded items) %>
-    <div class="<%= mobile_menu_classes %>" data-dock-target="mobileMenu">
+    <nav aria-label="Dock" class="<%= mobile_menu_classes %>" data-dock-target="mobileMenu">
       <% items.each do |item| %>
         <%= item.render_mobile %>
       <% end %>
-    </div>
+    </nav>
 
     <%# Mobile toggle button %>
-    <div class="absolute right-5 bottom-5 block md:hidden" data-action="click->dock#toggleMobile">
-      <button data-dock-target="mobileButton" class="<%= mobile_button_classes %>">
+    <div class="absolute right-5 bottom-5 block md:hidden">
+      <button type="button" data-dock-target="mobileButton" data-action="click->dock#toggleMobile" aria-expanded="false" aria-label="Menu" class="<%= mobile_button_classes %>">
         <%= chevron_svg %>
       </button>
     </div>

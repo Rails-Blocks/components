@@ -103,76 +103,151 @@ Ensure `toast_controller.js` is in your `app/javascript/controllers/` directory 
 Add the following CSS to your stylesheet for proper toast animations:
 
 ```css
-/* Toast animations */
+/* Toast Notifications
+ * Each toast is pinned to the container edge and every movement is a transform,
+ * so the stack animates on the compositor and transitions retarget mid-flight
+ * (a toast removed while another is entering never jumps). */
 .toast-item {
-  position: absolute;
-  left: 0;
-  right: 0;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  z-index: var(--toast-z-index, 0);
+  @apply absolute w-full left-0 select-none;
+  z-index: var(--toast-z-index, 100);
+  touch-action: none; /* vertical swipes dismiss the toast instead of scrolling the page */
+
+  transform: var(--toast-transform, translateY(0));
+  scale: var(--toast-scale, 100%);
+  opacity: var(--toast-opacity, 1);
+
+  /* Sonner-style timing: a touch slower than typical UI, with plain `ease` */
+  transition:
+    transform 400ms ease,
+    opacity 400ms ease,
+    scale 400ms ease,
+    translate 400ms ease,
+    height 400ms ease;
 }
 
-/* Mount animation */
+.toast-item[data-position*="top"] {
+  top: 0;
+}
+
+.toast-item[data-position*="bottom"] {
+  bottom: 0;
+}
+
+/* While a pointer drags the toast, `translate` follows it with no delay */
+.toast-item[data-swiping="true"] {
+  transition-property: transform, opacity, scale, height;
+}
+
+/* A swiped-away toast keeps its momentum: fast and decelerating */
+.toast-item[data-swipe-out="true"] {
+  transition-duration: 200ms;
+  transition-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* Initial hidden state for enter animation */
 .toast-item[data-mounted="false"] {
   opacity: 0;
 }
-.toast-item[data-mounted="false"][data-position^="top"] {
-  transform: translateY(-100%);
-}
-.toast-item[data-mounted="false"][data-position^="bottom"] {
+
+.toast-item[data-mounted="false"][data-position*="bottom"] {
   transform: translateY(100%);
 }
-.toast-item[data-mounted="true"] {
-  opacity: 1;
+
+.toast-item[data-mounted="false"][data-position*="top"] {
+  transform: translateY(-100%);
 }
 
-/* Remove animation */
+/* Removed state for exit animation */
 .toast-item[data-removed="true"] {
   opacity: 0;
+  scale: 95%;
   pointer-events: none;
 }
-.toast-item[data-removed="true"][data-position^="top"] {
-  transform: translateY(-100%);
-}
-.toast-item[data-removed="true"][data-position^="bottom"] {
-  transform: translateY(100%);
+
+/* In stacked mode, removed toasts drift toward the screen edge they came from */
+.toast-item[data-removed="true"][data-expanded="false"][data-position*="bottom"] {
+  transform: translateY(calc(var(--toast-index) * -14px + 25%));
 }
 
-/* Stacked mode (default) */
-.toast-item[data-expanded="false"][data-visible="true"] {
-  transform: translateY(calc(var(--toast-index, 0) * 8px)) scale(calc(1 - var(--toast-index, 0) * 0.05));
-}
-.toast-item[data-expanded="false"][data-visible="false"] {
-  opacity: 0;
-  transform: translateY(calc(var(--toast-index, 0) * 8px)) scale(0.9);
+.toast-item[data-removed="true"][data-expanded="false"][data-position*="top"] {
+  transform: translateY(calc(var(--toast-index) * 14px - 25%));
 }
 
-/* Expanded mode */
-.toast-item[data-expanded="true"][data-position^="top"] {
-  transform: translateY(var(--toast-offset, 0));
-}
-.toast-item[data-expanded="true"][data-position^="bottom"] {
-  transform: translateY(calc(var(--toast-offset, 0) * -1));
+/* Overflow toasts (removed due to limit) slide in opposite direction */
+.toast-item[data-removed="true"][data-overflow="true"][data-expanded="false"][data-position*="bottom"] {
+  transform: translateY(calc(-1 * (var(--toast-index) * 14px + 25%)));
+  scale: 78%;
 }
 
-/* Height transition for stacked mode */
-.toast-item[data-expanded="false"] > span {
-  height: var(--front-toast-height, auto);
+.toast-item[data-removed="true"][data-overflow="true"][data-expanded="false"][data-position*="top"] {
+  transform: translateY(calc(var(--toast-index) * 14px + 25%));
+  scale: 78%;
+}
+
+.toast-item[data-visible="false"] {
+  pointer-events: none;
+}
+
+/* Expanded mode: each toast moves to its own offset in the list */
+.toast-item[data-expanded="true"] {
+  --toast-scale: 100%;
+  height: var(--initial-height);
+}
+
+.toast-item[data-expanded="true"][data-position*="bottom"] {
+  --toast-transform: translateY(calc(-1 * var(--toast-offset, 0px)));
+}
+
+.toast-item[data-expanded="true"][data-position*="top"] {
+  --toast-transform: translateY(var(--toast-offset, 0px));
+}
+
+/* Stacked mode styles */
+.toast-item[data-expanded="false"][data-front="true"] {
+  --toast-scale: 100%;
+  --toast-opacity: 1;
+  --toast-transform: translateY(0);
+  height: var(--initial-height);
+}
+
+/* Non-front toasts in stack - Sonner approach */
+.toast-item[data-expanded="false"]:not([data-front="true"]) {
+  height: var(--front-toast-height);
   overflow: hidden;
-}
-.toast-item[data-expanded="false"][data-front="true"] > span,
-.toast-item[data-expanded="true"] > span {
-  height: auto;
-  overflow: visible;
+  --toast-scale: calc(100% - (var(--toast-index) * 6%));
+  display: flex;
+  flex-direction: column;
 }
 
-/* Hide content for non-front stacked toasts */
-.toast-item[data-expanded="false"][data-front="false"] > span > div {
-  opacity: 0;
+.toast-item[data-expanded="false"]:not([data-front="true"])[data-position*="bottom"] {
+  --toast-transform: translateY(calc(-1 * var(--toast-index) * 14px));
+  justify-content: flex-start; /* Content at top, bottom gets cut */
 }
-.toast-item[data-expanded="false"][data-front="true"] > span > div,
-.toast-item[data-expanded="true"] > span > div {
-  opacity: 1;
+
+.toast-item[data-expanded="false"]:not([data-front="true"])[data-position*="top"] {
+  --toast-transform: translateY(calc(var(--toast-index) * 14px));
+  justify-content: flex-end; /* Content at bottom, top gets cut */
+}
+
+/* Hidden toasts (beyond the limit) */
+.toast-item[data-expanded="false"][data-visible="false"] {
+  --toast-opacity: 0;
+  --toast-scale: 82%;
+}
+
+.toast-item[data-expanded="false"][data-visible="false"][data-position*="bottom"] {
+  --toast-transform: translateY(200px);
+}
+
+.toast-item[data-expanded="false"][data-visible="false"][data-position*="top"] {
+  --toast-transform: translateY(-200px);
+}
+
+/* Reduced motion: toasts fade in place; stack changes and swipes snap */
+@media (prefers-reduced-motion: reduce) {
+  .toast-item {
+    transition: opacity 200ms ease;
+  }
 }
 ```
 

@@ -5,12 +5,12 @@
     {
       "path": "color_picker/component.rb",
       "relative_path": "component.rb",
-      "checksum": "d593e48b25d2bce759a01ea8b7b3143e857e4dd39d24e4be79cd198d4cba0590"
+      "checksum": "9d4806734883b4c3db4b53134aea7c15f0f033704e500f001b48965348ba48ef"
     },
     {
       "path": "color_picker/component.html.erb",
       "relative_path": "component.html.erb",
-      "checksum": "14553ad60fa110bfe7a865aaa64c4728b4d95d60999c787f573966e2efa31ff1"
+      "checksum": "c0b98471bacfc0dd5535212f62a0fdd5d1c753a52b1b2da9a76f2ebab506d872"
     }
   ]
 }

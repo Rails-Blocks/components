@@ -1,45 +1,72 @@
-<%# Enhanced color picker (example3) %>
+<%# Basic color picker %>
 <%= render "shared/components/color_picker/color_picker",
-  id: "enhanced_color",
-  label: "Brand Color",
-  value: "#3b82f6",
-  format: "hex" %>
+  label: "Brand color",
+  value: "#3b82f6"
+%>
 
-<%# Color picker with opacity %>
+<%# With swatches %>
 <%= render "shared/components/color_picker/color_picker",
-  id: "opacity_color",
-  label: "Background Color",
-  value: "#f5a623ff",
+  label: "Theme color",
+  value: "#8b5cf6",
+  swatches: ["#ede9fe", "#c4b5fd", "#8b5cf6", "#6d28d9", "#ef4444", "#f59e0b", "#10b981", "#3b82f6"]
+%>
+
+<%# Color wheel (hue angle + saturation radius) with a brightness slider %>
+<%= render "shared/components/color_picker/color_picker",
+  label: "Wheel color",
+  value: "#ec4899",
+  area: "wheel"
+%>
+
+<%# Hue / saturation area with a brightness slider %>
+<%= render "shared/components/color_picker/color_picker",
+  label: "Theme color",
+  value: "#f97316",
+  area: "hs"
+%>
+
+<%# Hue only (saturation and brightness stay fixed) %>
+<%= render "shared/components/color_picker/color_picker",
+  label: "Tag hue",
+  value: "oklch(65% 0.17 260)",
+  area: "none",
+  sliders: ["hue"]
+%>
+
+<%# Sliders only: hue, saturation, brightness, and opacity %>
+<%= render "shared/components/color_picker/color_picker",
+  label: "Layer color",
+  value: "#8b5cf6cc",
+  area: "none",
+  opacity: true
+%>
+
+<%# Inline picker (no dropdown) %>
+<%= render "shared/components/color_picker/color_picker",
+  label: "Accent color",
+  value: "rgb(16, 185, 129)",
+  format: "rgb",
+  inline: true
+%>
+
+<%# With opacity (8-digit hex output) %>
+<%= render "shared/components/color_picker/color_picker",
+  label: "Overlay color",
+  value: "#f5a623cc",
   opacity: true,
-  no_format_toggle: true %>
+  no_format_toggle: true
+%>
 
 <%# Format variations %>
-<%= render "shared/components/color_picker/color_picker",
-  id: "rgb_color",
-  label: "RGB Format",
-  value: "rgb(80, 227, 194)",
-  format: "rgb" %>
+<%= render "shared/components/color_picker/color_picker", label: "HSL color", value: "hsl(290, 87%, 47%)", format: "hsl", size: "small" %>
+<%= render "shared/components/color_picker/color_picker", label: "HSV color", value: "hsv(55, 89%, 97%)", format: "hsv", size: "large" %>
+<%= render "shared/components/color_picker/color_picker", label: "OKLCH color", value: "oklch(70% 0.2 150)", format: "oklch" %>
 
+<%# Form submission with a brand palette %>
 <%= render "shared/components/color_picker/color_picker",
-  id: "hsl_color",
-  label: "HSL Format",
-  value: "hsl(290, 87%, 47%)",
-  format: "hsl" %>
-
-<%= render "shared/components/color_picker/color_picker",
-  id: "hsv_color",
-  label: "HSV Format",
-  value: "hsv(55, 89%, 97%)",
-  format: "hsv" %>
-
-<%# Custom swatches with form submission %>
-<%= render "shared/components/color_picker/color_picker",
-  id: "brand_palette",
   name: "settings[brand_color]",
-  label: "Brand Color",
+  label: "Brand color",
   value: "#4a5568",
-  show_swatches: true,
-  swatches: [
-    "#1a202c", "#2d3748", "#4a5568", "#718096",
-    "#fed7d7", "#fc8181", "#f56565", "#e53e3e"
-  ] %>
+  uppercase: true,
+  swatches: ["#1a202c", "#2d3748", "#4a5568", "#718096", "#e53e3e", "#c53030", "#3182ce", "#805ad5"]
+%>

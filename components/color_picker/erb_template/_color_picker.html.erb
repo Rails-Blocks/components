@@ -1,19 +1,26 @@
 <%
-# Color Picker Component - Shoelace Shared Partial
+# Color Picker Component - Shared Partial (Tailwind CSS + Stimulus + Floating UI)
 #
-# @param id [String] Unique identifier for the picker
+# @param id [String] Unique identifier for the trigger button (panel uses "#{id}_panel")
 # @param name [String] Optional hidden input name for form submissions
-# @param value [String] Initial color value (hex/rgb/hsl/hsv)
-# @param label [String] Shoelace label text
-# @param format [String] Output format: "hex", "rgb", "hsl", "hsv"
-# @param size [String] Picker size: "small", "medium", "large"
-# @param opacity [Boolean] Enable alpha channel
-# @param no_format_toggle [Boolean] Hide Shoelace format toggle
-# @param swatches [Array<String>, String] Array or semicolon-separated list of swatches
-# @param show_value [Boolean] Show selected value text
-# @param show_swatches [Boolean] Render custom swatch buttons below picker
-# @param disabled [Boolean] Disable picker
-# @param required [Boolean] Mark picker as required
+# @param value [String] Initial color value (hex, rgb, hsl, hsv, oklch, or any CSS color)
+# @param label [String] Accessible label for the trigger and panel
+# @param format [String] Output format: "hex", "rgb", "hsl", "hsv", "oklch"
+# @param size [String] Picker size (trigger + panel): "small", "medium", "large"
+# @param area [String] 2D area type: "sv" (saturation/brightness), "hs" (hue/saturation), "hv" (hue/brightness), "wheel", or "none"
+# @param sliders [Array<String>] Sliders to show: "hue", "saturation", "brightness" (defaults to what the area leaves out)
+# @param opacity [Boolean] Enable the alpha channel slider
+# @param no_format_toggle [Boolean] Hide the format toggle button
+# @param no_eye_dropper [Boolean] Hide the EyeDropper button
+# @param uppercase [Boolean] Output uppercase values
+# @param inline [Boolean] Render the panel inline instead of in a dropdown
+# @param placement [String] Dropdown placement (Floating UI), e.g. "bottom-start"
+# @param sheet_below [Integer] Below this viewport width (px) the dropdown opens as a bottom sheet; 0 disables
+# @param native [String] "auto" uses the system picker on iPhone/iPad, "true" always where supported, "false" never
+# @param swatches [Array<String>, String] Array or semicolon-separated list of swatches shown in the panel
+# @param show_value [Boolean] Show selected value text next to the trigger
+# @param disabled [Boolean] Disable the picker
+# @param required [Boolean] Accepted for form-builder compatibility. A color picker always holds a value, so it never blocks submission
 # @param classes [String] Additional wrapper classes
 
 id ||= "color_picker_#{SecureRandom.hex(4)}"
@@ -22,87 +29,175 @@ value ||= "#3b82f6"
 label ||= "Color"
 format ||= "hex"
 size ||= "medium"
+placement = placement.to_s
+placement = "bottom-start" unless %w[top top-start top-end right right-start right-end bottom bottom-start bottom-end left left-start left-end].include?(placement)
+sheet_below = local_assigns.fetch(:sheet_below, 640).to_i
+native = local_assigns.fetch(:native, "auto").to_s
+native = "auto" unless %w[auto true false].include?(native)
 opacity = local_assigns.fetch(:opacity, false)
 no_format_toggle = local_assigns.fetch(:no_format_toggle, false)
+no_eye_dropper = local_assigns.fetch(:no_eye_dropper, false)
+uppercase = local_assigns.fetch(:uppercase, false)
+inline = local_assigns.fetch(:inline, false)
 show_value = local_assigns.fetch(:show_value, true)
-show_swatches = local_assigns.fetch(:show_swatches, false)
 disabled = local_assigns.fetch(:disabled, false)
 required = local_assigns.fetch(:required, false)
 classes ||= nil
 
-default_swatches = [
-  "#1a202c", "#2d3748", "#4a5568", "#718096",
-  "#a0aec0", "#cbd5e0", "#e2e8f0", "#f7fafc",
-  "#fed7d7", "#fc8181", "#f56565", "#e53e3e"
-]
-swatches = local_assigns.key?(:swatches) ? local_assigns[:swatches] : default_swatches
-swatches = swatches.split(";").map(&:strip) if swatches.is_a?(String)
-swatches = Array(swatches).compact.map(&:to_s).map(&:strip).reject(&:blank?)
+swatches = local_assigns.fetch(:swatches, [])
+swatches = swatches.split(";") if swatches.is_a?(String)
+# Colors are written into style attributes, so only plain color syntax is accepted (hex,
+# rgb()/hsl()/oklch(), names). This stops CSS injection from user-supplied values and swatches.
+safe_color = %r{\A[#\w\s(),.%/+-]+\z}
+swatches = Array(swatches).compact.map(&:to_s).map(&:strip).select { |color| color.match?(safe_color) }
+value = "#3b82f6" unless value.to_s.strip.match?(safe_color)
+value = value.to_s.strip
 
-valid_formats = %w[hex rgb hsl hsv]
-format = "hex" unless valid_formats.include?(format.to_s)
+format = "hex" unless %w[hex rgb hsl hsv oklch].include?(format.to_s)
 
-valid_sizes = %w[small medium large]
-size = "medium" unless valid_sizes.include?(size.to_s)
+area = local_assigns.fetch(:area, "sv").to_s
+area = "sv" unless %w[sv hs hv wheel none].include?(area)
+default_sliders = { "sv" => %w[hue], "hs" => %w[brightness], "hv" => %w[saturation], "wheel" => %w[brightness], "none" => %w[hue saturation brightness] }
+sliders = local_assigns[:sliders].nil? ? default_sliders[area] : Array(local_assigns[:sliders]).map(&:to_s) & %w[hue saturation brightness]
+slider_labels = { "hue" => "Hue", "saturation" => "Saturation", "brightness" => "Brightness" }
+slider_max = { "hue" => 360, "saturation" => 100, "brightness" => 100 }
+area_label = { "sv" => "Saturation and brightness", "hs" => "Hue and saturation", "hv" => "Hue and brightness", "wheel" => "Hue and saturation" }[area]
 
-wrapper_classes = ["inline-flex flex-col gap-3", classes].compact.reject(&:blank?).join(" ")
-swatch_button_base_classes = "size-8 rounded-md border border-black/15 dark:border-white/20 transition-transform hover:scale-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-600 dark:focus-visible:outline-neutral-200 ring-2 ring-offset-2 dark:ring-offset-neutral-900 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+sizes = {
+  "small" => { trigger: "size-7", panel: "w-56 space-y-2.5 p-2.5", grid: "h-32", sliders: "space-y-2.5", track: "h-2.5", handle: "size-3.5", preview: "size-7", control: "h-7", format: "w-10", square: "w-7", swatches: "gap-1.5 pt-2.5" },
+  "medium" => { trigger: "size-9", panel: "w-64 space-y-3 p-3", grid: "h-40", sliders: "space-y-3", track: "h-3", handle: "size-4", preview: "size-8", control: "h-8", format: "w-11", square: "w-8", swatches: "gap-1.5 pt-3" },
+  "large" => { trigger: "size-11", panel: "w-72 space-y-3.5 p-3.5", grid: "h-48", sliders: "space-y-3.5", track: "h-3.5", handle: "size-[18px]", preview: "size-9", control: "h-9", format: "w-12", square: "w-9", swatches: "gap-2 pt-3.5" }
+}
+sz = sizes[size.to_s] || sizes["medium"]
+
+wrapper_classes = ["group/picker relative inline-flex items-center gap-3", classes].compact.reject(&:blank?).join(" ")
+panel_id = "#{id}_panel"
 %>
 
 <div class="<%= wrapper_classes %>"
-     data-controller="shoelace-color-picker"
-     data-shoelace-color-picker-default-value-value="<%= value %>">
-  <sl-color-picker
+     data-controller="color-picker"
+     data-color-picker-value-value="<%= value %>"
+     data-color-picker-format-value="<%= format %>"
+     data-color-picker-opacity-value="<%= opacity %>"
+     data-color-picker-uppercase-value="<%= uppercase %>"
+     data-color-picker-inline-value="<%= inline %>"
+     data-color-picker-disabled-value="<%= disabled %>"
+     data-color-picker-placement-value="<%= placement %>"
+     data-color-picker-area-value="<%= area %>"
+     data-color-picker-sheet-below-value="<%= sheet_below %>"
+     data-color-picker-native-value="<%= native %>"
+     <%= "data-disabled" if disabled %>
+     data-action="keydown.esc->color-picker#closeOnEscape">
+  <% unless inline %>
+  <button
+    type="button"
     id="<%= id %>"
-    label="<%= label %>"
-    value="<%= value %>"
-    format="<%= format %>"
-    size="<%= size %>"
-    data-shoelace-color-picker-target="picker"
-    data-action="sl-change->shoelace-color-picker#change"
-    <% if swatches.present? %>swatches="<%= swatches.join("; ") %>"<% end %>
-    <%= "opacity" if opacity %>
-    <%= "no-format-toggle" if no_format_toggle %>
-    <%= "disabled" if disabled %>
-    <%= "required" if required %>
-  ></sl-color-picker>
-
-  <% if name.present? %>
-    <input
-      type="hidden"
-      name="<%= name %>"
-      value="<%= value %>"
-      data-shoelace-color-picker-target="input"
-      <%= "disabled" if disabled %>
-    >
+    class="<%= sz[:trigger] %> relative shrink-0 rounded-full border border-black/10 bg-white p-0.5 shadow-xs transition-[border-color,box-shadow] duration-150 ease-out hover:border-black/25 aria-expanded:border-black/25 aria-expanded:ring-4 aria-expanded:ring-black/5 disabled:pointer-events-none disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-600 dark:focus-visible:outline-neutral-200 dark:border-white/15 dark:bg-neutral-800 dark:hover:border-white/30 dark:aria-expanded:border-white/30 dark:aria-expanded:ring-white/10"
+    aria-label="<%= label %>"
+    aria-haspopup="dialog"
+    aria-expanded="false"
+    aria-controls="<%= panel_id %>"
+    data-color-picker-target="trigger"
+    data-action="color-picker#toggle" <%= "disabled" if disabled %>
+  >
+    <span class="relative block size-full overflow-hidden rounded-full bg-[repeating-conic-gradient(#e5e5e5_0%_25%,#fff_0%_50%)] bg-size-[8px_8px] dark:bg-[repeating-conic-gradient(#404040_0%_25%,#262626_0%_50%)]">
+      <span class="absolute inset-0 rounded-[inherit] shadow-[inset_0_0_0_1px_rgb(0_0_0/0.1)] dark:shadow-[inset_0_0_0_1px_rgb(255_255_255/0.1)]" style="background-color: <%= value %>;" data-color-picker-target="triggerSwatch"></span>
+    </span>
+  </button>
   <% end %>
 
-  <% if show_value %>
-    <div class="flex items-center gap-2 text-sm text-neutral-600 dark:text-neutral-400">
-      <span>Value:</span>
-      <code
-        class="rounded bg-neutral-100 px-2 py-1 font-mono text-xs text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300"
-        data-shoelace-color-picker-target="value"
-      ><%= value %></code>
+  <div
+    id="<%= panel_id %>"
+    class="<%= sz[:panel] %> <%= inline ? "overflow-clip rounded-xl border border-black/10 bg-white text-neutral-900 dark:border-white/10 dark:bg-neutral-800 dark:text-neutral-100 shadow-xs" : "absolute top-0 left-0 m-0 overflow-clip group/panel data-sheet:rounded-b-none data-sheet:rounded-t-2xl data-sheet:border-x-0 data-sheet:border-b-0 data-sheet:pt-9 data-sheet:shadow-2xl data-sheet:scale-100 data-sheet:opacity-100 data-sheet:translate-y-full data-sheet:data-[state=open]:translate-y-0 data-sheet:duration-250 data-sheet:ease-[cubic-bezier(0.32,0.72,0,1)] data-sheet:data-[state=open]:duration-400 data-sheet:data-[state=open]:ease-[cubic-bezier(0.32,0.72,0,1)] data-sheet:backdrop:bg-black/40 dark:data-sheet:backdrop:bg-black/60 data-sheet:backdrop:opacity-0 data-sheet:data-[state=open]:backdrop:opacity-100 data-sheet:backdrop:transition-opacity data-sheet:backdrop:duration-250 data-sheet:data-[state=open]:backdrop:duration-400 data-sheet:backdrop:ease-out motion-reduce:data-sheet:translate-y-0 motion-reduce:data-sheet:opacity-0 motion-reduce:data-sheet:data-[state=open]:opacity-100 motion-reduce:data-sheet:duration-200 motion-reduce:data-sheet:data-[state=open]:duration-200 rounded-xl border border-black/10 bg-white text-neutral-900 dark:border-white/10 dark:bg-neutral-800 dark:text-neutral-100 shadow-lg shadow-black/10 opacity-0 scale-96 transition-[opacity,scale,translate] duration-150 ease-out data-[state=open]:scale-100 data-[state=open]:opacity-100 data-[state=open]:duration-200 data-[state=open]:ease-[cubic-bezier(0.23,1,0.32,1)] motion-reduce:scale-100 dark:shadow-black/40" %>"
+    role="<%= inline ? "group" : "dialog" %>"
+    aria-label="<%= label %>"
+    <% unless inline %>popover="manual" tabindex="-1" data-state="closed"<% end %>
+    data-color-picker-target="panel"
+  >
+    <% unless inline %>
+    <%# Grab handle, shown only when the panel opens as a bottom sheet on small screens: drag down or tap to close %>
+    <button type="button" class="group/handle absolute inset-x-0 top-0 hidden h-9 cursor-grab touch-none justify-center pt-2.5 outline-none group-data-sheet/panel:flex active:cursor-grabbing" aria-label="Close" data-color-picker-target="sheetHandle" data-action="pointerdown->color-picker#startSheetDrag click->color-picker#dismiss">
+      <span class="h-1.5 w-10 rounded-full bg-neutral-300 transition-[background-color,width] duration-150 ease-out group-hover/handle:bg-neutral-400 group-focus-visible/handle:outline-2 group-focus-visible/handle:outline-offset-2 group-focus-visible/handle:outline-neutral-600 group-data-dragging/handle:w-12 group-data-dragging/handle:bg-neutral-400 dark:bg-neutral-600 dark:group-hover/handle:bg-neutral-500 dark:group-focus-visible/handle:outline-neutral-200 dark:group-data-dragging/handle:bg-neutral-500"></span>
+    </button>
+    <% end %>
+
+    <% unless area == "none" %>
+    <%# Color area (wheel = hue angle + saturation radius) %>
+    <div class="group/track relative <%= area == "wheel" ? "aspect-square rounded-full" : "#{sz[:grid]} rounded-lg group-data-sheet/panel:h-48" %> cursor-crosshair touch-none <%= area == "sv" ? "bg-[linear-gradient(to_top,#000,transparent),linear-gradient(to_right,#fff,transparent)]" : "bg-neutral-200 dark:bg-neutral-700" %> select-none shadow-[inset_0_0_0_1px_rgb(0_0_0/0.08)] dark:shadow-[inset_0_0_0_1px_rgb(255_255_255/0.08)] data-dragging:cursor-none group-data-disabled/picker:pointer-events-none group-data-disabled/picker:opacity-50" data-color-picker-target="grid" data-action="pointerdown->color-picker#startGridDrag">
+      <div class="pointer-events-none absolute inset-0 opacity-0 group-data-ready/picker:opacity-100" data-color-picker-target="gridThumb">
+        <span class="<%= sz[:handle] %> absolute left-0 block -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-white shadow-[0_0_0_1px_rgb(0_0_0/0.12),0_1px_3px_rgb(0_0_0/0.25)] outline-none transition-[scale,box-shadow] duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] focus-visible:shadow-[0_0_0_1px_rgb(0_0_0/0.12),0_0_0_4px_rgb(0_0_0/0.18)] motion-reduce:transition-none dark:focus-visible:shadow-[0_0_0_1px_rgb(0_0_0/0.12),0_0_0_4px_rgb(255_255_255/0.3)] pointer-events-none group-data-dragging/track:scale-125" role="slider" tabindex="0" aria-label="<%= area_label %>" aria-valuemin="0" aria-valuemax="100" data-color-picker-target="gridHandle" data-action="keydown->color-picker#gridKeydown"></span>
+      </div>
     </div>
-  <% end %>
+    <% end %>
 
-  <% if show_swatches && swatches.present? %>
-    <div class="flex flex-wrap gap-2">
+    <div class="flex items-center gap-3">
+      <div class="flex-1 <%= sz[:sliders] %>">
+        <% sliders.each do |slider| %>
+        <div class="<%= sz[:track] %> group/track relative cursor-pointer data-dragging:cursor-grabbing touch-none rounded-full select-none before:absolute before:inset-x-0 before:-inset-y-2 group-data-disabled/picker:pointer-events-none group-data-disabled/picker:opacity-50 <%= slider == "hue" ? "bg-[linear-gradient(to_right,#f00_0%,#ff0_17%,#0f0_33%,#0ff_50%,#00f_67%,#f0f_83%,#f00_100%)]" : "bg-[linear-gradient(to_right,#000,#fff)]" %> shadow-[inset_0_0_0_1px_rgb(0_0_0/0.08)] dark:shadow-[inset_0_0_0_1px_rgb(255_255_255/0.08)]" data-color-picker-target="<%= slider %>" data-action="pointerdown->color-picker#start<%= slider.capitalize %>Drag">
+          <div class="pointer-events-none absolute inset-0 opacity-0 group-data-ready/picker:opacity-100" data-color-picker-target="<%= slider %>Thumb">
+            <span class="<%= sz[:handle] %> absolute left-0 block -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-white shadow-[0_0_0_1px_rgb(0_0_0/0.12),0_1px_3px_rgb(0_0_0/0.25)] outline-none transition-[scale,box-shadow] duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] focus-visible:shadow-[0_0_0_1px_rgb(0_0_0/0.12),0_0_0_4px_rgb(0_0_0/0.18)] motion-reduce:transition-none dark:focus-visible:shadow-[0_0_0_1px_rgb(0_0_0/0.12),0_0_0_4px_rgb(255_255_255/0.3)] top-1/2 pointer-events-auto cursor-grab hover:shadow-[0_0_0_1px_rgb(0_0_0/0.12),0_1px_3px_rgb(0_0_0/0.25),0_0_0_4px_rgb(0_0_0/0.06)] group-data-dragging/track:cursor-grabbing group-data-dragging/track:shadow-[0_0_0_1px_rgb(0_0_0/0.12),0_1px_3px_rgb(0_0_0/0.25),0_0_0_6px_rgb(0_0_0/0.08)] dark:hover:shadow-[0_0_0_1px_rgb(0_0_0/0.12),0_1px_3px_rgb(0_0_0/0.25),0_0_0_4px_rgb(255_255_255/0.1)] dark:group-data-dragging/track:shadow-[0_0_0_1px_rgb(0_0_0/0.12),0_1px_3px_rgb(0_0_0/0.25),0_0_0_6px_rgb(255_255_255/0.14)]" role="slider" tabindex="0" aria-label="<%= slider_labels[slider] %>" aria-valuemin="0" aria-valuemax="<%= slider_max[slider] %>" aria-orientation="horizontal" data-color-picker-target="<%= slider %>Handle" data-action="keydown-><%= "color-picker##{slider}Keydown" %>"></span>
+          </div>
+        </div>
+        <% end %>
+        <% if opacity %>
+        <%# Opacity %>
+        <div class="<%= sz[:track] %> group/track relative cursor-pointer data-dragging:cursor-grabbing touch-none rounded-full select-none before:absolute before:inset-x-0 before:-inset-y-2 group-data-disabled/picker:pointer-events-none group-data-disabled/picker:opacity-50 bg-[linear-gradient(to_right,var(--alpha-from,transparent),var(--alpha-to,var(--alpha-color,#000))),repeating-conic-gradient(#e5e5e5_0%_25%,#fff_0%_50%)] bg-size-[100%_100%,8px_8px] shadow-[inset_0_0_0_1px_rgb(0_0_0/0.08)] dark:shadow-[inset_0_0_0_1px_rgb(255_255_255/0.08)] dark:bg-[linear-gradient(to_right,var(--alpha-from,transparent),var(--alpha-to,var(--alpha-color,#fff))),repeating-conic-gradient(#404040_0%_25%,#262626_0%_50%)]" data-color-picker-target="alpha" data-action="pointerdown->color-picker#startAlphaDrag">
+          <div class="pointer-events-none absolute inset-0 opacity-0 group-data-ready/picker:opacity-100" data-color-picker-target="alphaThumb">
+            <span class="<%= sz[:handle] %> absolute left-0 block -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-white shadow-[0_0_0_1px_rgb(0_0_0/0.12),0_1px_3px_rgb(0_0_0/0.25)] outline-none transition-[scale,box-shadow] duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] focus-visible:shadow-[0_0_0_1px_rgb(0_0_0/0.12),0_0_0_4px_rgb(0_0_0/0.18)] motion-reduce:transition-none dark:focus-visible:shadow-[0_0_0_1px_rgb(0_0_0/0.12),0_0_0_4px_rgb(255_255_255/0.3)] top-1/2 pointer-events-auto cursor-grab hover:shadow-[0_0_0_1px_rgb(0_0_0/0.12),0_1px_3px_rgb(0_0_0/0.25),0_0_0_4px_rgb(0_0_0/0.06)] group-data-dragging/track:cursor-grabbing group-data-dragging/track:shadow-[0_0_0_1px_rgb(0_0_0/0.12),0_1px_3px_rgb(0_0_0/0.25),0_0_0_6px_rgb(0_0_0/0.08)] dark:hover:shadow-[0_0_0_1px_rgb(0_0_0/0.12),0_1px_3px_rgb(0_0_0/0.25),0_0_0_4px_rgb(255_255_255/0.1)] dark:group-data-dragging/track:shadow-[0_0_0_1px_rgb(0_0_0/0.12),0_1px_3px_rgb(0_0_0/0.25),0_0_0_6px_rgb(255_255_255/0.14)]" role="slider" tabindex="0" aria-label="Opacity" aria-valuemin="0" aria-valuemax="100" aria-orientation="horizontal" data-color-picker-target="alphaHandle" data-action="keydown->color-picker#alphaKeydown"></span>
+          </div>
+        </div>
+        <% end %>
+      </div>
+
+      <%# Preview (click to copy) %>
+      <button type="button" class="group/preview relative <%= sz[:preview] %> shrink-0 overflow-hidden rounded-full bg-[repeating-conic-gradient(#e5e5e5_0%_25%,#fff_0%_50%)] bg-size-[8px_8px] dark:bg-[repeating-conic-gradient(#404040_0%_25%,#262626_0%_50%)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-600 dark:focus-visible:outline-neutral-200" aria-label="Copy color value" title="Copy" data-color-picker-target="preview" data-action="color-picker#copy">
+        <span class="absolute inset-0 grid place-items-center rounded-[inherit] text-white shadow-[inset_0_0_0_1px_rgb(0_0_0/0.1)] group-data-[contrast=dark]/preview:text-neutral-900 dark:shadow-[inset_0_0_0_1px_rgb(255_255_255/0.1)]" style="background-color: <%= value %>;" data-color-picker-target="previewSwatch">
+          <span class="col-start-1 row-start-1 grid place-items-center transition-[opacity,scale,filter] duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] group-data-copied/preview:scale-50 group-data-copied/preview:opacity-0 group-data-copied/preview:blur-[2px]">
+            <svg xmlns="http://www.w3.org/2000/svg" class="size-4 opacity-0 transition-opacity duration-150 group-hover/preview:opacity-100 group-focus-visible/preview:opacity-100" viewBox="0 0 18 18" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"><rect x="5.75" y="5.75" width="10.5" height="10.5" rx="2"></rect><path d="M12.25 5.75V3.75c0-1.105-.895-2-2-2h-6.5c-1.105 0-2 .895-2 2v6.5c0 1.105.895 2 2 2h2"></path></g></svg>
+          </span>
+          <svg xmlns="http://www.w3.org/2000/svg" class="col-start-1 row-start-1 size-4 scale-50 opacity-0 blur-[2px] transition-[opacity,scale,filter] duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] group-data-copied/preview:scale-100 group-data-copied/preview:opacity-100 group-data-copied/preview:blur-none" viewBox="0 0 18 18" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.5 9.5l3.5 3.5 7.5-8"></path></svg>
+        </span>
+      </button>
+    </div>
+
+    <%# Value, format, eyedropper %>
+    <div class="flex items-center gap-1.5">
+      <input type="text" class="<%= sz[:control] %> min-w-0 flex-1 rounded-md border border-black/10 bg-white px-2 font-mono text-xs text-neutral-800 shadow-xs outline-none transition-[border-color,box-shadow] duration-150 ease-out pointer-coarse:text-base focus:border-neutral-400 focus:ring-3 focus:ring-neutral-900/5 disabled:opacity-50 aria-invalid:border-red-400 aria-invalid:ring-3 aria-invalid:ring-red-500/15 dark:border-white/10 dark:bg-neutral-900/40 dark:text-neutral-100 dark:focus:border-neutral-500 dark:focus:ring-white/10 dark:aria-invalid:border-red-400/70" value="<%= value %>" spellcheck="false" autocomplete="off" autocapitalize="off" aria-label="<%= label %> value" data-color-picker-target="textField" data-action="input->color-picker#textInput change->color-picker#textCommit keydown.enter->color-picker#textCommit" <%= "disabled" if disabled %>>
+      <% if !no_format_toggle %>
+      <button type="button" class="<%= sz[:control] %> <%= sz[:format] %> grid shrink-0 place-items-center rounded-md border border-black/10 bg-white text-neutral-600 shadow-xs transition-[background-color,color] duration-150 ease-out hover:bg-neutral-50 hover:text-neutral-900 disabled:pointer-events-none disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-600 dark:focus-visible:outline-neutral-200 dark:border-white/10 dark:bg-neutral-700/50 dark:text-neutral-300 dark:hover:bg-neutral-700 dark:hover:text-white text-[11px] font-semibold tracking-wide" aria-label="Change color format" title="Change format" data-color-picker-target="formatButton" data-action="color-picker#cycleFormat" <%= "disabled" if disabled %>><%= format.upcase %></button>
+      <% end %>
+      <% if !no_eye_dropper %>
+      <button type="button" class="<%= sz[:control] %> <%= sz[:square] %> grid shrink-0 place-items-center rounded-md border border-black/10 bg-white text-neutral-600 shadow-xs transition-[background-color,color] duration-150 ease-out hover:bg-neutral-50 hover:text-neutral-900 disabled:pointer-events-none disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-600 dark:focus-visible:outline-neutral-200 dark:border-white/10 dark:bg-neutral-700/50 dark:text-neutral-300 dark:hover:bg-neutral-700 dark:hover:text-white" aria-label="Pick a color from the screen" title="Eyedropper" data-color-picker-target="eyeDropper" data-action="color-picker#pickFromScreen" <%= "disabled" if disabled %>>
+        <svg xmlns="http://www.w3.org/2000/svg" class="size-4" viewBox="0 0 18 18" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"><path d="M9.235,5.735L3.128,11.842c-.837,.837-.837,2.194,0,3.03,.837,.837,2.194,.837,3.03,0l6.107-6.107"></path><line x1="3.128" y1="14.872" x2="1.75" y2="16.25"></line><path fill="currentColor" d="M12.265,8.765l2.857-2.857c.837-.837,.837-2.194,0-3.03-.837-.837-2.194-.837-3.03,0l-2.857,2.857"></path><line x1="7.75" y1="4.25" x2="13.75" y2="10.25"></line></g></svg>
+      </button>
+      <% end %>
+    </div>
+
+    <% if swatches.present? %>
+    <%# Swatches %>
+    <div class="grid grid-cols-8 <%= sz[:swatches] %> border-t border-black/5 dark:border-white/10" role="group" aria-label="Swatches">
       <% swatches.each do |color| %>
-        <% selected_classes = color.casecmp?(value.to_s) ? "ring-neutral-500 dark:ring-neutral-400" : "ring-transparent" %>
         <button
           type="button"
-          class="<%= "#{swatch_button_base_classes} #{selected_classes}" %>"
-          style="background-color: <%= color %>;"
+          class="aspect-square rounded-md shadow-[inset_0_0_0_1px_rgb(0_0_0/0.1)] outline-offset-2 transition-[box-shadow] duration-150 ease-out disabled:pointer-events-none aria-pressed:shadow-[inset_0_0_0_1px_rgb(0_0_0/0.1),0_0_0_1px_#fff,0_0_0_3px_#171717] aria-pressed:outline-offset-4 focus-visible:outline-2 focus-visible:outline-neutral-500 motion-reduce:transition-none dark:shadow-[inset_0_0_0_1px_rgb(255_255_255/0.12)] dark:aria-pressed:shadow-[inset_0_0_0_1px_rgb(255_255_255/0.12),0_0_0_1px_rgb(0_0_0/0.7),0_0_0_3px_#fff]"
+          style="background-color: <%= color %>; color: <%= color %>;"
+          title="<%= color %>"
+          aria-label="<%= color %>"
+          aria-pressed="false"
           data-color="<%= color %>"
-          data-shoelace-color-picker-target="swatch"
-          data-action="click->shoelace-color-picker#selectSwatch"
-          aria-label="Pick <%= color %>"
-          aria-pressed="<%= color.casecmp?(value.to_s) ? "true" : "false" %>"
-          <%= "disabled" if disabled %>
+          data-color-picker-target="swatch"
+          data-action="color-picker#selectSwatch" <%= "disabled" if disabled %>
         ></button>
       <% end %>
     </div>
+    <% end %>
+  </div>
+
+  <% if name.present? %>
+  <input type="hidden" name="<%= name %>" value="<%= value %>" data-color-picker-target="input" <%= "disabled" if disabled %>>
+  <% end %>
+
+  <% if show_value && !inline %>
+  <code class="rounded-md bg-neutral-100 px-2 py-1 font-mono text-xs text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300" data-color-picker-target="value"><%= value %></code>
   <% end %>
 </div>

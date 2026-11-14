@@ -134,8 +134,8 @@ Copy the code block from `app/views/components/sidebar/` into your view and cust
 | `href` | String | `"#"` | Link URL |
 | `icon` | String | `nil` | SVG icon HTML |
 | `shortcut` | String | `nil` | Keyboard shortcut (e.g., "⌘1") |
-| `active` | Boolean | `false` | Currently active |
-| `disabled` | Boolean | `false` | Disabled state |
+| `active` | Boolean | `false` | Currently active (adds `aria-current="page"`) |
+| `disabled` | Boolean | `false` | Disabled state (renders without `href` and with `aria-disabled="true"`) |
 | `badge` | String | `nil` | Badge text (count, price) |
 | `classes` | String | `nil` | Additional item classes |
 
@@ -217,8 +217,8 @@ Copy the code block from `app/views/components/sidebar/` into your view and cust
 | `href` | String | `"#"` | Link URL |
 | `icon` | String | `nil` | SVG icon HTML |
 | `shortcut` | String | `nil` | Keyboard shortcut |
-| `active` | Boolean | `false` | Currently active |
-| `disabled` | Boolean | `false` | Disabled state |
+| `active` | Boolean | `false` | Currently active (adds `aria-current="page"`) |
+| `disabled` | Boolean | `false` | Disabled state (renders without `href` and with `aria-disabled="true"`) |
 | `badge` | String | `nil` | Badge text |
 | `classes` | String | `nil` | Additional classes |
 

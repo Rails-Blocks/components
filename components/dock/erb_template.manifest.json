@@ -5,17 +5,17 @@
     {
       "path": "dock/_dock_item.html.erb",
       "relative_path": "_dock_item.html.erb",
-      "checksum": "212375401740579eb7983be8a7753ca7d861456bfbc1ae6a9600d482fcd49c33"
+      "checksum": "03514932aacbd8ca026eac0b4164a49f50d85f9506d469e2d5895cbe8f0a93f5"
     },
     {
       "path": "dock/_dock.html.erb",
       "relative_path": "_dock.html.erb",
-      "checksum": "eb0fc4f5efd1d8d40dadf0bca3e6e507c707712bad9b38d967cbb9cd449fd267"
+      "checksum": "e480b43752b3b5c11da1f3d192902f838565a7594989b7d9cc7d503e2a035d4b"
     },
     {
       "path": "dock/_dock_item_mobile.html.erb",
       "relative_path": "_dock_item_mobile.html.erb",
-      "checksum": "c83d48819a1d6f08f2942d59dfb1985a6e8521119ad5067b30874bfd078eb3cf"
+      "checksum": "aa4604825711f5cc4a17754cad1923cb01bf8d9d269b471108585a7b5b4e10b5"
     }
   ]
 }

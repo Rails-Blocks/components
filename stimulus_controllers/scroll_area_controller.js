@@ -170,6 +170,12 @@ export default class extends Controller {
     }
 
     const onMouseMove = (e) => {
+      // No button held any more (released outside the window): end the drag instead of following hover.
+      if ((e.buttons & 1) === 0) {
+        onMouseUp(e);
+        return;
+      }
+
       const currentPos = isVertical ? e.clientY : e.clientX;
       const delta = currentPos - startPos;
       const scrollDelta = (delta / maxThumbTravel) * maxScrollableDistance;
@@ -206,15 +212,24 @@ export default class extends Controller {
       cleanup();
     };
 
+    // Switching windows mid-drag can swallow the mouseup.
+    const onWindowBlur = () => {
+      this.isDragging = false;
+      this.setHovering(false);
+      cleanup();
+    };
+
     const cleanup = () => {
       document.removeEventListener("mousemove", onMouseMove);
       document.removeEventListener("mouseup", onMouseUp);
       document.removeEventListener("contextmenu", onContextMenu);
+      window.removeEventListener("blur", onWindowBlur);
     };
 
     document.addEventListener("mousemove", onMouseMove);
     document.addEventListener("mouseup", onMouseUp);
     document.addEventListener("contextmenu", onContextMenu);
+    window.addEventListener("blur", onWindowBlur);
   }
 
   // Update methods

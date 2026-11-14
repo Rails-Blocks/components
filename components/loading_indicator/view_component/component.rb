@@ -39,12 +39,6 @@ module LoadingIndicator
     end
 
     def dot_classes(index)
-      case index
-      when 0 then "animation-delay: 0ms;"
-      when 1 then "animation-delay: 150ms;"
-      when 2 then "animation-delay: 300ms;"
-      else ""
-      end
       opacity = case index
                 when 0 then ""
                 when 1 then "opacity-80"
@@ -68,14 +62,7 @@ module LoadingIndicator
       end
     end
 
-    def bar_classes(index)
-      case index
-      when 0 then "animation-delay: 0ms;"
-      when 1 then "animation-delay: 100ms;"
-      when 2 then "animation-delay: 200ms;"
-      when 3 then "animation-delay: 300ms;"
-      else ""
-      end
+    def bar_classes(_index)
       [
         bar_size_classes,
         bar_color_classes,

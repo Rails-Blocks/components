@@ -132,7 +132,6 @@ export default class extends Controller {
     const root = document.documentElement;
 
     root.classList.toggle("dark", dark);
-    root.classList.toggle("sl-theme-dark", dark);
     root.style.colorScheme = palette;
     root.dataset.theme = palette;
   }

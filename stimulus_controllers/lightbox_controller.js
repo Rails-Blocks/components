@@ -22,7 +22,7 @@ export default class extends Controller {
     if (!document.querySelector('link[href*="photoswipe.css"]')) {
       const link = document.createElement("link");
       link.rel = "stylesheet";
-      link.href = "https://cdn.jsdelivr.net/npm/photoswipe@5.4.3/dist/photoswipe.css";
+      link.href = "https://cdn.jsdelivr.net/npm/photoswipe@5.4.4/dist/photoswipe.css";
       document.head.appendChild(link);
     }
   }

@@ -10,12 +10,12 @@
     {
       "path": "sidebar/component/item_component.html.erb",
       "relative_path": "component/item_component.html.erb",
-      "checksum": "7384dc95b990a4f0b7f2e44765ebc46a675cd6a04bfbeca6de38e85e7e44cc56"
+      "checksum": "b581714a20bd64471684099f8d32bbb1e5fb5a343e397347bb6346d869ed3100"
     },
     {
       "path": "sidebar/component/item_component.rb",
       "relative_path": "component/item_component.rb",
-      "checksum": "6b7b951cd0d9503b944424cdc6653af6dee5000876405fd2e250c866920d24a4"
+      "checksum": "c90415d4cf09a442858c9367cd478e69f12107773b96c29a9d0448b3c6f09602"
     },
     {
       "path": "sidebar/component/section_component.html.erb",
@@ -25,22 +25,22 @@
     {
       "path": "sidebar/component/section_item_component.html.erb",
       "relative_path": "component/section_item_component.html.erb",
-      "checksum": "4a79a7b4a07b0da84556aee825f643a0525597b49b5a803c53f8ab4d61cdc5e1"
+      "checksum": "07c8b3e13c1902e5f622be6c925d59cbdb07e250943ed6d75f0966f1f11ea974"
     },
     {
       "path": "sidebar/component/section_component.rb",
       "relative_path": "component/section_component.rb",
-      "checksum": "2700a02c2916aaf4c9bc58715a9fba8c1495d7e9d3b1162027e48e6e09a0bcea"
+      "checksum": "7824c5c76abaaa168f7c6ab4ecfc79de0ac7a9e8c0d39b2cef1adab92b4dca33"
     },
     {
       "path": "sidebar/component/section_item_component.rb",
       "relative_path": "component/section_item_component.rb",
-      "checksum": "03239bac3a063a6a428357c5d387157663a81302fcf1184cb0a0505bf3ef9e10"
+      "checksum": "90bdb41ebfd8680a14bc88a4c8b811d0157582437af4dbc2f07864203b4a9c93"
     },
     {
       "path": "sidebar/component.html.erb",
       "relative_path": "component.html.erb",
-      "checksum": "3947d63a71b3aada79083df545ceda3d889ea062a9fdfaac5c3bad2c66a07b3d"
+      "checksum": "2db444f4bb9e2037605eb9d3dbd93f1bb11697efbf3fc7e7aa3ba2c426144c57"
     }
   ]
 }

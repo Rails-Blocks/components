@@ -32,7 +32,7 @@ The lightbox component requires PhotoSwipe 5. Add it to your importmap:
 
 ```ruby
 # config/importmap.rb
-pin "photoswipe", to: "https://cdn.jsdelivr.net/npm/photoswipe@5.4.3/dist/photoswipe.esm.min.js"
+pin "photoswipe", to: "https://cdn.jsdelivr.net/npm/photoswipe@5.4.4/dist/photoswipe.esm.min.js"
 ```
 
 The CSS is loaded automatically by the Stimulus controller from the CDN.

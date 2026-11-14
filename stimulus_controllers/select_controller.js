@@ -59,6 +59,7 @@ export default class extends Controller {
     this.#setupTouchPrelock();
 
     this.element.style.visibility = "visible";
+    this.dispatch("ready");
   }
 
   disconnect() {
@@ -84,7 +85,8 @@ export default class extends Controller {
 
     return {
       ...baseOptions,
-      preload: true,
+      // Search-first controls only open once the user types, so an empty-query preload is never shown.
+      preload: !this.#shouldSearchBeforeOpen(),
       ...(this.virtualScrollValue ? this.#getVirtualScrollConfig() : this.#getCustomScrollConfig()),
     };
   }
@@ -126,11 +128,17 @@ export default class extends Controller {
       item: renderItem,
       option_create: (data, escape) =>
         `<div class="create">${escape(this.createTextValue)} <strong>${escape(data.input)}</strong>&hellip;</div>`,
-      loading_more: () => this.#renderLoadingMore(),
+      loading: () => this.#renderLoadingMore(),
+      // While a search is in flight the "loading" template already shows; the virtual scroll
+      // plugin would append "loading_more" too when the query has a cached next page.
+      loading_more: () => (this.select?.loading ? null : this.#renderLoadingMore()),
       no_more_results: () =>
         `<div class="no-more-results py-2 text-center text-sm text-neutral-500 dark:text-neutral-400">${this.noMoreResultsTextValue}</div>`,
-      no_results: (data, escape) =>
-        `<div class="no-results">${escape(this.noSearchResultsTextValue)} "${escape(data.input)}"</div>`,
+      no_results: (data, escape) => {
+        // TomSelect debounces remote searches, and until that load starts it would report no results.
+        if (this.#isRemoteSearchPending(data.input)) return this.#renderLoadingMore();
+        return `<div class="no-results">${escape(this.noSearchResultsTextValue)} "${escape(data.input)}"</div>`;
+      },
     };
   }
 
@@ -139,6 +147,8 @@ export default class extends Controller {
       valueField: this.valueFieldValue,
       labelField: this.labelFieldValue,
       searchField: this.labelFieldValue,
+      // Server results are relevance-ranked; keep their order instead of re-scoring client-side
+      sortField: [{ field: "$order", direction: "asc" }],
       firstUrl: (query) => this.#buildApiUrl(this.urlValue, query, 1),
       load: this.#virtualScrollLoad.bind(this),
       shouldLoadMore: this.#shouldLoadMore.bind(this),
@@ -150,6 +160,8 @@ export default class extends Controller {
       valueField: this.valueFieldValue,
       labelField: this.labelFieldValue,
       searchField: this.labelFieldValue,
+      // Server results are relevance-ranked; keep their order instead of re-scoring client-side
+      sortField: [{ field: "$order", direction: "asc" }],
       load: this.#customScrollLoad.bind(this),
     };
   }
@@ -330,6 +342,8 @@ export default class extends Controller {
   }
 
   #markFlaggedItem(value) {
+    // Deferred calls can land after a Turbo swap disconnected the select.
+    if (!this.select) return;
     const option = this.select.options[value];
     if (option?.$option?.dataset?.flag === "true") {
       // Find the item element and add the data-flag attribute
@@ -1180,6 +1194,8 @@ export default class extends Controller {
   #shouldSearchBeforeOpen() {
     // For async controls using the main input (no dropdown_input plugin), default to
     // a "type first, then open results" UX unless explicitly overridden.
+    // A control the user cannot type into has to open on click instead.
+    if (this.disableTypingValue) return false;
     return this.hasUrlValue && !this.dropdownInputValue && !this.#hasExplicitOpenOnMouseDownSetting();
   }
 
@@ -1587,25 +1603,30 @@ export default class extends Controller {
     const scrollUpBtn = createButton("up", "top-0");
     const scrollDownBtn = createButton("down", "bottom-0");
 
-    const scrollSpeed = 4; // Pixels per frame for smooth scrolling
+    const scrollSpeed = 240; // Pixels per second (preserves the original 60Hz speed).
 
     const setupScrollButton = (btn, direction) => {
       let isScrolling = false;
       let animationId = null;
+      let lastFrameTime = null;
 
-      const smoothScroll = () => {
+      const smoothScroll = (timestamp) => {
         if (!isScrolling || !this.select?.dropdown_content) return;
 
-        const scrollAmount = direction === "up" ? -scrollSpeed : scrollSpeed;
+        const dt = lastFrameTime === null ? 0 : Math.min(0.05, Math.max(0, (timestamp - lastFrameTime) / 1000));
+        lastFrameTime = timestamp;
+        const scrollAmount = (direction === "up" ? -scrollSpeed : scrollSpeed) * dt;
         this.select.dropdown_content.scrollTop += scrollAmount;
 
         animationId = requestAnimationFrame(smoothScroll);
       };
 
       const startScroll = () => {
+        if (isScrolling) return;
         isScrolling = true;
+        lastFrameTime = null;
         btn.style.opacity = "0.7";
-        smoothScroll();
+        animationId = requestAnimationFrame(smoothScroll);
       };
 
       const stopScroll = () => {
@@ -1861,7 +1882,7 @@ export default class extends Controller {
     if (optionData) {
       return `<div class='${itemClass}'>
         ${optionData.icon || ""}
-        <span>${escape(optionData.name)}</span>
+        <span class='line-clamp-1'>${escape(optionData.name)}</span>
       </div>`;
     }
 
@@ -1925,6 +1946,11 @@ export default class extends Controller {
 
   #renderWithTemplate(template, data, escape) {
     return template.replace(/\{\{(\w+)\}\}/g, (match, field) => (data[field] ? escape(data[field]) : ""));
+  }
+
+  #isRemoteSearchPending(query) {
+    if (!this.hasUrlValue || !this.select || query == null) return false;
+    return !Object.prototype.hasOwnProperty.call(this.select.loadedSearches, query);
   }
 
   #renderLoadingMore() {

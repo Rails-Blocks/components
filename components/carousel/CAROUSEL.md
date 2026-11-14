@@ -19,8 +19,8 @@ Image and content slider powered by Embla Carousel with drag support, keyboard n
 The carousel requires the Embla Carousel library. Add to your `config/importmap.rb`:
 
 ```ruby
-pin "embla-carousel", to: "https://ga.jspm.io/npm:embla-carousel@8.0.0/embla-carousel.esm.js"
-pin "embla-carousel-wheel-gestures", to: "https://ga.jspm.io/npm:embla-carousel-wheel-gestures@8.0.0/embla-carousel-wheel-gestures.esm.js"
+pin "embla-carousel", to: "https://cdn.jsdelivr.net/npm/embla-carousel@8.6.0/+esm"
+pin "embla-carousel-wheel-gestures", to: "https://cdn.jsdelivr.net/npm/embla-carousel-wheel-gestures@8.1.0/+esm"
 ```
 
 Ensure the Stimulus controller is at `app/javascript/controllers/carousel_controller.js`.
@@ -72,7 +72,7 @@ Copy the code block into your view and customize as needed.
 <section class="overflow-hidden w-full max-w-4xl mx-auto" data-controller="carousel"
   data-carousel-dots-value="true"
   data-carousel-buttons-value="true">
-  <div class="overflow-hidden outline-hidden mx-8 cursor-grab active:cursor-grabbing" data-carousel-target="viewport">
+  <div class="overflow-hidden outline-hidden opacity-0 motion-safe:transition-opacity motion-safe:duration-300 mx-8 cursor-grab active:cursor-grabbing" data-carousel-target="viewport">
     <div class="flex">
       <div class="mr-4 flex-shrink-0 flex-grow-0 basis-1/2 min-w-0 p-8 text-center rounded-xl border border-neutral-200 bg-neutral-50 dark:bg-neutral-800 dark:border-neutral-700 select-none">
         Slide 1

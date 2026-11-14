@@ -38,7 +38,7 @@ module Dock
       end
 
       def mobile_item_classes
-        base = "opacity-0 px-3 no-underline gap-2 w-fit size-10 flex items-center justify-center rounded-full border border-neutral-200/50 dark:border-neutral-600/50"
+        base = "will-change-transform opacity-0 px-3 no-underline gap-2 w-fit size-10 flex items-center justify-center rounded-full border border-neutral-400/50 dark:border-neutral-500/50 shadow-[0_1px_2px_rgb(0_0_0/0.06),0_8px_20px_-6px_rgb(0_0_0/0.22)] dark:shadow-[0_1px_2px_rgb(0_0_0/0.4),0_8px_20px_-6px_rgb(0_0_0/0.6)]"
         state_class = if @active
                         "text-neutral-50 dark:text-neutral-800 hover:text-neutral-50 dark:hover:text-neutral-800 bg-neutral-800 dark:bg-neutral-100 active:bg-neutral-700 dark:active:bg-neutral-200"
                       else

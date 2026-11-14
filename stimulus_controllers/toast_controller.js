@@ -1,5 +1,9 @@
 import { Controller } from "@hotwired/stimulus";
 
+const TOAST_EXIT_DURATION_MS = 400; // Matches the .toast-item exit transition
+const SWIPE_DISTANCE_THRESHOLD = 45; // px dragged before a release dismisses
+const SWIPE_VELOCITY_THRESHOLD = 0.11; // px/ms: a quick flick dismisses regardless of distance
+
 // Connects to data-controller="toast"
 export default class extends Controller {
   static targets = ["container"];
@@ -20,6 +24,9 @@ export default class extends Controller {
     this.defaultMountParent = this.element?.parentNode || null;
     this.defaultMountNextSibling = this.element?.nextSibling || null;
     this.hoverZonePadding = 10;
+    this.autoDismissTimers = {};
+    this.hovering = false;
+    this.swipe = null;
 
     this.registerController();
     this.activatePrimaryIfNeeded();
@@ -53,11 +60,7 @@ export default class extends Controller {
   disconnect() {
     this.unregisterController();
 
-    // Clear all auto-dismiss timers
-    if (this.autoDismissTimers) {
-      Object.values(this.autoDismissTimers).forEach((timer) => clearTimeout(timer));
-      this.autoDismissTimers = {};
-    }
+    this.clearAllTimers();
 
     // Clean up all toasts from the DOM
     this.clearAllToasts();
@@ -164,11 +167,7 @@ export default class extends Controller {
       this.expanded = false;
     }
 
-    // Clear all timers
-    if (this.autoDismissTimers) {
-      Object.values(this.autoDismissTimers).forEach((timer) => clearTimeout(timer));
-      this.autoDismissTimers = {};
-    }
+    this.clearAllTimers();
 
     this.hideGlobalHostIfIdle();
   }
@@ -221,19 +220,56 @@ export default class extends Controller {
     });
   }
 
+  // Auto-dismiss timers pause while the user is reading (hovering the stack, swiping)
+  // and while the tab is hidden, then resume with the time that was left.
   scheduleAutoDismiss(toastId) {
-    if (!this.autoDismissTimers) {
-      this.autoDismissTimers = {};
-    }
+    this.clearTimer(toastId);
+    this.autoDismissTimers[toastId] = { remaining: this.autoDismissDurationValue, timeout: null, startedAt: 0 };
+    if (!this.timersPaused) this.startTimer(toastId);
+  }
 
-    if (this.autoDismissTimers[toastId]) {
-      clearTimeout(this.autoDismissTimers[toastId]);
-    }
+  startTimer(toastId) {
+    const timer = this.autoDismissTimers[toastId];
+    if (!timer || timer.timeout) return;
 
-    this.autoDismissTimers[toastId] = setTimeout(() => {
-      this.removeToast(toastId);
+    timer.startedAt = Date.now();
+    timer.timeout = setTimeout(() => {
       delete this.autoDismissTimers[toastId];
-    }, this.autoDismissDurationValue);
+      this.removeToast(toastId);
+    }, timer.remaining);
+  }
+
+  pauseTimer(toastId) {
+    const timer = this.autoDismissTimers[toastId];
+    if (!timer?.timeout) return;
+
+    clearTimeout(timer.timeout);
+    timer.timeout = null;
+    timer.remaining = Math.max(0, timer.remaining - (Date.now() - timer.startedAt));
+  }
+
+  clearTimer(toastId) {
+    const timer = this.autoDismissTimers[toastId];
+    if (timer?.timeout) clearTimeout(timer.timeout);
+    delete this.autoDismissTimers[toastId];
+  }
+
+  clearAllTimers() {
+    Object.keys(this.autoDismissTimers || {}).forEach((toastId) => this.clearTimer(toastId));
+    this.autoDismissTimers = {};
+  }
+
+  get timersPaused() {
+    return this.hovering || Boolean(this.swipe) || document.visibilityState === "hidden";
+  }
+
+  syncTimers() {
+    const ids = Object.keys(this.autoDismissTimers);
+    if (this.timersPaused) {
+      ids.forEach((toastId) => this.pauseTimer(toastId));
+    } else {
+      ids.forEach((toastId) => this.startTimer(toastId));
+    }
   }
 
   createToastElement(toast) {
@@ -248,13 +284,14 @@ export default class extends Controller {
     li.dataset.visible = "true";
     li.dataset.front = "false";
     li.dataset.index = "0";
+    li.addEventListener("pointerdown", (event) => this.handleSwipeStart(event, toast.id));
 
     if (!toast.description) {
       li.classList.add("toast-no-description");
     }
 
     const span = document.createElement("span");
-    span.className = `relative flex flex-col items-start shadow-xs w-full transition-all duration-200 bg-white border border-neutral-200 dark:border-neutral-700 dark:bg-neutral-800 rounded-lg sm:rounded-xl sm:max-w-xs group ${
+    span.className = `relative flex flex-col items-start shadow-xs w-full transition-colors duration-200 bg-white border border-neutral-200 dark:border-neutral-700 dark:bg-neutral-800 rounded-lg sm:rounded-xl sm:max-w-xs group ${
       toast.html ? "p-0" : "p-4"
     }`;
     span.style.transitionTimingFunction = "cubic-bezier(0.4, 0, 0.2, 1)";
@@ -294,7 +331,7 @@ export default class extends Controller {
     // Add close button
     const closeBtn = document.createElement("span");
     const hasActions = toast.action || toast.secondaryAction;
-    closeBtn.className = `absolute right-0 p-1.5 mr-2.5 text-neutral-400 duration-100 ease-in-out rounded-full cursor-pointer hover:bg-neutral-50 dark:hover:bg-neutral-700 hover:text-neutral-500 dark:hover:text-neutral-300 ${
+    closeBtn.className = `absolute right-0 p-1.5 mr-2.5 text-neutral-400 transition-colors duration-100 ease-out rounded-full cursor-pointer hover:bg-neutral-50 active:bg-neutral-100 dark:hover:bg-neutral-700 dark:active:bg-neutral-600 hover:text-neutral-500 active:text-neutral-600 dark:hover:text-neutral-300 dark:active:text-neutral-200 ${
       !toast.description && !toast.html && !hasActions ? "top-1/2 -translate-y-1/2" : "top-0 mt-2.5"
     }`;
     closeBtn.innerHTML = `<svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>`;
@@ -392,11 +429,11 @@ export default class extends Controller {
       toastEl.dataset.overflow = "true";
     }
 
-    // Clear auto-dismiss timer
-    if (this.autoDismissTimers && this.autoDismissTimers[id]) {
-      clearTimeout(this.autoDismissTimers[id]);
-      delete this.autoDismissTimers[id];
-    }
+    this.clearTimer(id);
+
+    // Let the rest of the stack close the gap right away, while this toast fades out,
+    // instead of holding its place until the exit animation has finished.
+    this.updateAllToasts();
 
     // Wait for exit animation to complete
     setTimeout(() => {
@@ -417,11 +454,11 @@ export default class extends Controller {
       // Schedule auto-dismiss for newly visible toast
       if (this.toasts.length >= this.limitValue) {
         const newlyVisibleToast = this.toasts[this.limitValue - 1];
-        if (newlyVisibleToast && !this.autoDismissTimers[newlyVisibleToast.id]) {
+        if (newlyVisibleToast && !newlyVisibleToast.removed && !this.autoDismissTimers[newlyVisibleToast.id]) {
           this.scheduleAutoDismiss(newlyVisibleToast.id);
         }
       }
-    }, 400); // Match the exit animation duration (400ms)
+    }, TOAST_EXIT_DURATION_MS);
   }
 
   updateAllToasts() {
@@ -485,7 +522,8 @@ export default class extends Controller {
 
         // In stacked mode, set all toasts to front toast height for uniform appearance
         if (!this.expanded) {
-          const frontHeight = this.heights[0]?.height || 0;
+          const frontToast = this.toasts.find((t) => !t.removed);
+          const frontHeight = this.heights.find((h) => h.toastId === frontToast?.id)?.height || 0;
           toastEl.style.setProperty("--front-toast-height", `${frontHeight}px`);
         } else {
           toastEl.style.removeProperty("--front-toast-height");
@@ -497,7 +535,7 @@ export default class extends Controller {
 
       // Update container height immediately and after transitions complete
       this.updateContainerHeight();
-      setTimeout(() => this.updateContainerHeight(), 400);
+      setTimeout(() => this.updateContainerHeight(), TOAST_EXIT_DURATION_MS);
     });
   }
 
@@ -597,6 +635,7 @@ export default class extends Controller {
     this.boundPointerMove = this.handleGlobalPointerMove.bind(this);
     this.boundPointerLeave = this.handleGlobalPointerLeave.bind(this);
     this.boundHandleDialogStateChange = this.handleDialogStateChange.bind(this);
+    this.boundSyncTimers = this.syncTimers.bind(this);
 
     window.addEventListener("toast-show", this.boundHandleToastShow);
     window.addEventListener("set-toasts-layout", this.boundHandleLayoutChange);
@@ -604,6 +643,7 @@ export default class extends Controller {
     window.addEventListener("pointerleave", this.boundPointerLeave);
     window.addEventListener("blur", this.boundPointerLeave);
     document.addEventListener("turbo:before-cache", this.boundBeforeCache);
+    document.addEventListener("visibilitychange", this.boundSyncTimers);
     this.startDialogStateObserver();
   }
 
@@ -627,6 +667,10 @@ export default class extends Controller {
 
     if (this.boundBeforeCache) {
       document.removeEventListener("turbo:before-cache", this.boundBeforeCache);
+    }
+
+    if (this.boundSyncTimers) {
+      document.removeEventListener("visibilitychange", this.boundSyncTimers);
     }
 
     this.stopDialogStateObserver();
@@ -717,12 +761,13 @@ export default class extends Controller {
 
     if (!this.globalHost || typeof this.globalHost.showPopover !== "function") return;
 
+    // Hiding and re-showing an open host would reset every toast's running transition
+    // (the host goes display:none for a moment). Moving the host into a newly opened
+    // dialog already closes it, so a closed host is the only one that needs showing.
     try {
-      if (this.globalHost.matches(":popover-open")) {
-        this.globalHost.hidePopover();
-      }
+      if (this.globalHost.matches(":popover-open")) return;
     } catch {
-      // Ignore popover close errors.
+      // Ignore popover state errors.
     }
 
     try {
@@ -735,8 +780,9 @@ export default class extends Controller {
   hideGlobalHostIfIdle() {
     if (!this.globalHost || typeof this.globalHost.hidePopover !== "function") return;
 
-    const hasActiveToasts = this.toasts.some((toast) => !toast.removed);
-    if (hasActiveToasts) return;
+    // Removed toasts stay in the list until their exit animation has finished; hiding the
+    // host before then would cut that animation short and make them vanish instantly.
+    if (this.toasts.length > 0) return;
 
     try {
       if (this.globalHost.matches(":popover-open")) {
@@ -771,8 +817,7 @@ export default class extends Controller {
 
     this.mountToGlobalHost();
 
-    const hasActiveToasts = this.toasts.some((toast) => !toast.removed);
-    if (hasActiveToasts) {
+    if (this.toasts.length > 0) {
       this.ensureGlobalHostVisible();
     } else {
       this.hideGlobalHostIfIdle();
@@ -797,12 +842,138 @@ export default class extends Controller {
     }
 
     const inHoverZone = this.isInHoverZone(event.clientX, event.clientY);
+    this.setHovering(inHoverZone);
     this.setExpandedState(inHoverZone);
   }
 
   handleGlobalPointerLeave() {
     if (!this.isPrimaryController) return;
+    this.setHovering(false);
     this.setExpandedState(false);
+  }
+
+  setHovering(hovering) {
+    if (this.hovering === hovering) return;
+    this.hovering = hovering;
+    this.syncTimers();
+  }
+
+  // Swipe toward the screen edge to dismiss. Dragging the other way meets growing
+  // resistance instead of a hard stop. A quick flick is enough; no distance needed.
+  handleSwipeStart(event, toastId) {
+    if (this.swipe || event.button > 0) return; // ignore extra fingers mid-drag
+    if (event.target.closest("button, a, input, textarea, select, [data-toast-id]")) return;
+
+    const toast = this.toasts.find((t) => t.id === toastId);
+    const toastEl = document.getElementById(toastId);
+    if (!toast || toast.removed || !toastEl) return;
+
+    this.swipe = {
+      toastId,
+      toastEl,
+      pointerId: event.pointerId,
+      startY: event.clientY,
+      startTime: performance.now(),
+      direction: toastEl.dataset.position?.includes("bottom") ? 1 : -1,
+      distance: 0,
+      moved: false,
+    };
+    this.interacting = true;
+    this.syncTimers();
+
+    this.boundSwipeMove ||= this.handleSwipeMove.bind(this);
+    this.boundSwipeEnd ||= this.handleSwipeEnd.bind(this);
+    toastEl.addEventListener("pointermove", this.boundSwipeMove);
+    toastEl.addEventListener("pointerup", this.boundSwipeEnd);
+    toastEl.addEventListener("pointercancel", this.boundSwipeEnd);
+    // A release we never hear about (outside the window, another app) springs the toast back.
+    this.boundSwipeMissed ||= this.cancelSwipe.bind(this);
+    toastEl.addEventListener("lostpointercapture", this.boundSwipeMissed);
+    window.addEventListener("blur", this.boundSwipeMissed);
+    try {
+      toastEl.setPointerCapture(event.pointerId);
+    } catch {
+      // Pointer capture is optional; listeners still work while over the toast.
+    }
+  }
+
+  handleSwipeMove(event) {
+    const swipe = this.swipe;
+    if (!swipe || event.pointerId !== swipe.pointerId) return;
+
+    // No button held any more: the release was missed, so stop following the pointer.
+    if ((event.pointerType === "mouse" || event.pointerType === "pen") && (event.buttons & 1) === 0) {
+      this.cancelSwipe(event);
+      return;
+    }
+
+    const deltaY = event.clientY - swipe.startY;
+    const towardEdge = deltaY * swipe.direction;
+    if (!swipe.moved && Math.abs(deltaY) < 3) return;
+
+    // Toward the edge: follow the pointer 1:1. Away from it: damped, the further the slower.
+    const damped = towardEdge >= 0 ? towardEdge : -Math.sqrt(-towardEdge) * 2;
+    swipe.distance = damped;
+    swipe.moved = true;
+
+    swipe.toastEl.dataset.swiping = "true";
+    swipe.toastEl.style.translate = `0 ${damped * swipe.direction}px`;
+  }
+
+  handleSwipeEnd(event) {
+    const swipe = this.swipe;
+    if (!swipe || event.pointerId !== swipe.pointerId) return;
+
+    const { toastEl, toastId, distance, startTime, direction } = swipe;
+    toastEl.removeEventListener("pointermove", this.boundSwipeMove);
+    toastEl.removeEventListener("pointerup", this.boundSwipeEnd);
+    toastEl.removeEventListener("pointercancel", this.boundSwipeEnd);
+    toastEl.removeEventListener("lostpointercapture", this.boundSwipeMissed);
+    window.removeEventListener("blur", this.boundSwipeMissed);
+    try {
+      toastEl.releasePointerCapture(swipe.pointerId);
+    } catch {
+      // Already released.
+    }
+
+    this.swipe = null;
+    this.interacting = false;
+    delete toastEl.dataset.swiping;
+
+    const velocity = distance / Math.max(performance.now() - startTime, 1);
+    const shouldDismiss =
+      event.type !== "pointercancel" &&
+      distance > 0 &&
+      (distance >= SWIPE_DISTANCE_THRESHOLD || velocity > SWIPE_VELOCITY_THRESHOLD);
+
+    if (shouldDismiss) {
+      // Continue in the swipe direction, past the edge, from where the finger let go.
+      toastEl.dataset.swipeOut = "true";
+      toastEl.style.translate = `0 ${direction * (toastEl.offsetHeight + distance)}px`;
+      this.removeToast(toastId);
+    } else {
+      toastEl.style.translate = ""; // springs back via the translate transition
+    }
+
+    // Collapse the stack if the pointer was released outside it.
+    if (!this.isInHoverZone(event.clientX, event.clientY)) {
+      this.setHovering(false);
+      this.setExpandedState(false);
+    }
+    this.syncTimers();
+  }
+
+  // Ends the swipe as a cancel (springs back, never dismisses).
+  cancelSwipe(event) {
+    const swipe = this.swipe;
+    if (!swipe) return;
+
+    this.handleSwipeEnd({
+      type: "pointercancel",
+      pointerId: swipe.pointerId,
+      clientX: event?.clientX ?? -Infinity,
+      clientY: event?.clientY ?? -Infinity,
+    });
   }
 
   isInHoverZone(clientX, clientY) {

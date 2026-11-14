@@ -53,6 +53,9 @@ export default class extends Controller {
     this.embla.on("select", this.updateControls);
     this.embla.on("reInit", this.updateControls);
 
+    // Slides render hidden (opacity-0) so they don't jump when Embla applies its alignment
+    this.viewportTarget.classList.remove("opacity-0");
+
     // Safari compatibility: Ensure viewport is ready for focus
     requestAnimationFrame(() => {
       if (this.viewportTarget && !this.viewportTarget.getAttribute("aria-label")) {

@@ -89,8 +89,6 @@ The supported variants are `segmented` (default), `cycle`, and `cycle_icon`.
 
 The `theme` localStorage key contains `light` or `dark`. System mode removes the key, allowing the controller to follow the operating-system preference. The resolved palette is exposed through `data-theme="light|dark"`, the root `dark` class, and the CSS `color-scheme` property.
 
-The controller also mirrors dark mode to the root `sl-theme-dark` class for compatibility with Shoelace-backed controls. Remove that class toggle from `paintDocument` if your application does not need it.
-
 The Theme Builder is a separate concern: it configures semantic design tokens in an isolated preview and does not read or write this light/dark preference.
 
 ---

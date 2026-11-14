@@ -1,5 +1,5 @@
 <div class="w-full group relative flex items-center">
-  <a href="<%= href %>" class="<%= item_classes %>">
+  <a <%= tag.attributes(href: (href unless disabled), aria: { current: ("page" if active), disabled: ("true" if disabled) }) %> class="<%= item_classes %>">
     <div class="flex min-w-0 items-center gap-1.5">
       <% if icon? %>
         <div class="flex items-center justify-center group-disabled:opacity-50 group-data-disabled:opacity-50">
@@ -11,7 +11,7 @@
       </div>
     </div>
     <% if badge? %>
-      <div class="mr-auto text-xs text-neutral-500 dark:text-neutral-400"><%= badge %></div>
+      <div class="shrink-0 text-xs tabular-nums text-neutral-500 dark:text-neutral-400"><%= badge %></div>
     <% end %>
   </a>
   <button class="absolute right-0 hidden group-hover:flex size-8 rounded-md items-center justify-center text-neutral-500 dark:text-neutral-400 hover:bg-neutral-100 focus-visible:bg-neutral-100 focus:outline-hidden disabled:cursor-not-allowed disabled:opacity-50 dark:hover:bg-neutral-700/50 dark:focus-visible:bg-neutral-700/50">

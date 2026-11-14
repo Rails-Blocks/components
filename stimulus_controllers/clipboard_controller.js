@@ -1,6 +1,11 @@
 import { Controller } from "@hotwired/stimulus";
 import { computePosition, offset, flip, shift, arrow, autoUpdate } from "@floating-ui/dom";
 
+const ENTER_EASE = "cubic-bezier(0.23, 1, 0.32, 1)"; // Strong ease-out: content lands fast, then settles
+const RESIZE_EASE = "cubic-bezier(0.32, 0.72, 0, 1)";
+const WIDTH_DURATION_MS = 240;
+const TOOLTIP_FADE_MS = 150; // Matches the tooltip's duration-150 transition
+
 export default class extends Controller {
   static values = {
     successMessage: { type: String, default: "Copied!" }, // Success message to show when text is copied
@@ -9,6 +14,7 @@ export default class extends Controller {
     tooltipPlacement: { type: String, default: "top" }, // Placement(s) of the tooltip, e.g., "top", "top-start", "top-end", "bottom", "bottom-start", "bottom-end", "left", "left-start", "left-end", "right", "right-start", "right-end"
     tooltipOffset: { type: Number, default: 8 }, // Offset of the tooltip
     tooltipDuration: { type: Number, default: 2000 }, // Duration of the tooltip
+    source: String, // CSS selector of an element whose text is copied when there is no data-clipboard-text (e.g. "#answer-42")
   };
 
   static targets = ["copyContent", "copiedContent"];
@@ -34,18 +40,31 @@ export default class extends Controller {
       this.element.removeEventListener("click", this.boundCopyTextToClipboard);
     }
     clearTimeout(this.copiedStateTimeout);
+    clearTimeout(this.revertTimeout);
+    clearTimeout(this.revealTimeout);
     clearTimeout(this.hideTooltipTimeout);
     clearTimeout(this.finalizeHideTooltipTimeout);
+    this._finishSwap();
     this._removeTooltipDOM(); // This also handles cleanupAutoUpdate
   }
 
   handleSuccess(e) {
-    if (this.hasCopyContentTarget && this.hasCopiedContentTarget) {
-      this.showCopiedState();
-    }
-    if (this.showTooltipValue) {
-      this._showFloatingTooltip(this.successMessageValue);
-    }
+    clearTimeout(this.revealTimeout);
+    const resizing = this.showCopiedState();
+
+    // While the button resizes, wait for it to settle so the tooltip appears centred on its new width.
+    this.revealTimeout = setTimeout(
+      () => {
+        if (this.showTooltipValue) {
+          this._showFloatingTooltip(this.successMessageValue);
+        }
+        if (this.hasCopyContentTarget && this.hasCopiedContentTarget) {
+          clearTimeout(this.copiedStateTimeout);
+          this.copiedStateTimeout = setTimeout(() => this._revertCopiedState(), this.tooltipDurationValue);
+        }
+      },
+      resizing ? WIDTH_DURATION_MS : 0,
+    );
     // if (e && typeof e.clearSelection === "function") {  Removed e.clearSelection()
     //   e.clearSelection();
     // }
@@ -57,23 +76,135 @@ export default class extends Controller {
     }
   }
 
+  // Swaps "copy" for "copied" with a blur crossfade while the button resizes, then swaps back
+  // once the tooltip has faded out. Returns true when the button is resizing.
   showCopiedState() {
-    if (this.hasCopyContentTarget && this.hasCopiedContentTarget) {
-      this.copyContentTarget.classList.add("hidden");
-      this.copiedContentTarget.classList.remove("hidden");
-      clearTimeout(this.copiedStateTimeout);
-      this.copiedStateTimeout = setTimeout(() => {
-        if (this.hasCopyContentTarget && this.hasCopiedContentTarget) {
-          // Check targets still exist
-          this.copyContentTarget.classList.remove("hidden");
-          this.copiedContentTarget.classList.add("hidden");
-        }
-      }, this.tooltipDurationValue);
+    if (!this.hasCopyContentTarget || !this.hasCopiedContentTarget) return false;
+
+    clearTimeout(this.copiedStateTimeout);
+    clearTimeout(this.revertTimeout);
+    return this._swapContent(this.copyContentTarget, this.copiedContentTarget);
+  }
+
+  _revertCopiedState() {
+    if (!this.hasCopyContentTarget || !this.hasCopiedContentTarget) return;
+
+    // The tooltip's own timer hides it at this same moment; wait out its fade before swapping back,
+    // so it never slides along with the shrinking button.
+    this._hideFloatingTooltip();
+    this.revertTimeout = setTimeout(
+      () => this._swapContent(this.copiedContentTarget, this.copyContentTarget),
+      this.showTooltipValue ? TOOLTIP_FADE_MS : 0,
+    );
+  }
+
+  _swapContent(from, to) {
+    if (from.classList.contains("hidden") && !to.classList.contains("hidden")) return false;
+
+    this._finishSwap();
+    const element = this.element;
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    const elementRect = element.getBoundingClientRect();
+    const fromRect = from.getBoundingClientRect();
+
+    from.classList.add("hidden");
+    to.classList.remove("hidden");
+
+    // Reduced motion keeps a plain fade: no blur, scale or resize.
+    if (reduceMotion) {
+      this.swapAnimations = [to.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 150, easing: "ease-out" })];
+      return false;
     }
+
+    // Incoming content comes into focus. The blur bridges the two states so the eye reads one
+    // change rather than two overlapping labels.
+    this.swapAnimations = [
+      to.animate(
+        [
+          { opacity: 0, filter: "blur(2px)", transform: "scale(0.95)" },
+          { opacity: 1, filter: "blur(0)", transform: "none" },
+        ],
+        { duration: 220, easing: ENTER_EASE, delay: 40, fill: "backwards" },
+      ),
+    ];
+
+    // Outgoing content stays where it was, out of the flow, and blurs away.
+    if (getComputedStyle(element).position === "static") element.style.position = "relative";
+    from.classList.remove("hidden");
+    Object.assign(from.style, {
+      position: "absolute",
+      left: `${fromRect.left - elementRect.left - element.clientLeft}px`,
+      top: `${fromRect.top - elementRect.top - element.clientTop}px`,
+      width: `${fromRect.width}px`,
+      height: `${fromRect.height}px`,
+      margin: "0",
+      pointerEvents: "none",
+    });
+    this.outgoing = from;
+    const outAnimation = from.animate(
+      [
+        { opacity: 1, filter: "blur(0)", transform: "none" },
+        { opacity: 0, filter: "blur(2px)", transform: "scale(0.95)" },
+      ],
+      { duration: 140, easing: "ease-out", fill: "forwards" },
+    );
+    outAnimation.finished.then(() => this._releaseOutgoing(from), () => {});
+    this.swapAnimations.push(outAnimation);
+
+    // The button grows or shrinks to its new width instead of jumping.
+    const toWidth = element.getBoundingClientRect().width;
+    if (Math.abs(toWidth - elementRect.width) < 1) return false;
+
+    this.previousOverflow = element.style.overflow;
+    element.style.overflow = "hidden";
+    const widthAnimation = element.animate([{ width: `${elementRect.width}px` }, { width: `${toWidth}px` }], {
+      duration: WIDTH_DURATION_MS,
+      easing: RESIZE_EASE,
+    });
+    this.widthAnimation = widthAnimation;
+    const restoreOverflow = () => {
+      if (this.widthAnimation !== widthAnimation) return;
+      element.style.overflow = this.previousOverflow;
+      this.widthAnimation = null;
+    };
+    widthAnimation.finished.then(restoreOverflow, restoreOverflow);
+    return true;
+  }
+
+  // Jumps a running swap to its end state (another click, a revert, or disconnect).
+  _finishSwap() {
+    this.swapAnimations?.forEach((animation) => animation.cancel());
+    this.swapAnimations = null;
+    if (this.widthAnimation) {
+      this.element.style.overflow = this.previousOverflow;
+      this.widthAnimation.cancel();
+      this.widthAnimation = null;
+    }
+    if (this.outgoing) this._releaseOutgoing(this.outgoing);
+  }
+
+  // Puts the faded-out content back in the flow, hidden.
+  _releaseOutgoing(element) {
+    if (this.outgoing !== element) return;
+    element.getAnimations().forEach((animation) => animation.cancel());
+    element.classList.add("hidden");
+    ["position", "left", "top", "width", "height", "margin", "pointerEvents"].forEach((property) => {
+      element.style[property] = "";
+    });
+    this.outgoing = null;
+  }
+
+  // Text of the element matched by data-clipboard-source-value, so long or streamed content
+  // does not have to be duplicated in an attribute.
+  _sourceText() {
+    if (!this.hasSourceValue) return undefined;
+    const source = document.querySelector(this.sourceValue);
+    return source ? source.innerText.trim() : undefined;
   }
 
   async _copyTextToClipboard() {
-    const textToCopy = this.element.dataset.clipboardText || this.element.getAttribute("data-clipboard-text");
+    const textToCopy = this.element.dataset.clipboardText ?? this._sourceText();
     if (textToCopy === null || typeof textToCopy === "undefined") {
       console.warn("No text to copy. Missing data-clipboard-text attribute on element:", this.element);
       this.handleError({ message: "No text to copy specified." }); // Pass a mock error object or just the message
@@ -93,7 +224,7 @@ export default class extends Controller {
     if (!this.tooltipElement) {
       this.tooltipElement = document.createElement("div");
       this.tooltipElement.className =
-        "tooltip-content pointer-events-none shadow-sm border rounded-lg border-white/10 absolute bg-[#333333] text-white text-sm py-1 px-2 z-[1000] opacity-0 transition-opacity duration-150";
+        "tooltip-content pointer-events-none shadow-sm border rounded-lg border-white/10 absolute bg-[#333333] text-white text-sm py-1 px-2 z-[1000] opacity-0";
       // Example: this.tooltipElement.style.maxWidth = `${this.maxWidthValue}px`; // If you add a maxWidthValue
 
       const messageSpan = document.createElement("span");
@@ -112,6 +243,9 @@ export default class extends Controller {
       this.tooltipElement.appendChild(this.arrowContainer);
 
       this.tooltipElement.style.visibility = "hidden";
+      // Fades and grows in slightly from the side facing the button (origin set while positioning).
+      this.tooltipElement.style.transition = `opacity ${TOOLTIP_FADE_MS}ms ease-out, transform ${TOOLTIP_FADE_MS}ms ${ENTER_EASE}`;
+      this.tooltipElement.style.transform = this._tooltipHiddenTransform();
     }
 
     const messageSpan = this.tooltipElement.querySelector("[data-tooltip-message-span]");
@@ -205,6 +339,7 @@ export default class extends Controller {
           const { x: arrowX, y: arrowY } = middlewareData.arrow;
           const basePlacement = placement.split("-")[0];
           const staticSide = { top: "bottom", right: "left", bottom: "top", left: "right" }[basePlacement];
+          this.tooltipElement.style.transformOrigin = staticSide;
 
           // Apply appropriate padding based on placement direction
           this.arrowContainer.classList.remove("px-1", "py-1");
@@ -254,6 +389,7 @@ export default class extends Controller {
       if (this.tooltipElement) {
         this.tooltipElement.classList.remove("opacity-0");
         this.tooltipElement.classList.add("opacity-100");
+        this.tooltipElement.style.transform = "none";
       }
     });
 
@@ -269,6 +405,7 @@ export default class extends Controller {
 
     this.tooltipElement.classList.remove("opacity-100");
     this.tooltipElement.classList.add("opacity-0");
+    this.tooltipElement.style.transform = this._tooltipHiddenTransform();
     this._cleanupObservers();
 
     clearTimeout(this.finalizeHideTooltipTimeout);
@@ -277,5 +414,9 @@ export default class extends Controller {
         this.tooltipElement.style.visibility = "hidden";
       }
     }, 150); // Transition duration (duration-150)
+  }
+
+  _tooltipHiddenTransform() {
+    return window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "none" : "scale(0.97)";
   }
 }

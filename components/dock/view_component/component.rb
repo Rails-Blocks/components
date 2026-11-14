@@ -40,7 +40,7 @@ module Dock
     end
 
     def dock_container_classes
-      base = "mx-auto hidden h-16 gap-4 bg-neutral-50 px-4 md:flex dark:bg-neutral-950 border border-neutral-200/50 dark:border-neutral-600/50"
+      base = "mx-auto hidden h-16 gap-4 bg-neutral-50 px-4 md:flex dark:bg-neutral-950 border border-neutral-200/50 dark:border-neutral-600/50 shadow-sm"
       position_class = position_bottom? ? "items-end pb-3" : "items-start pt-3"
 
       variant_class = case @variant
@@ -60,7 +60,12 @@ module Dock
     end
 
     def mobile_button_classes
-      "flex h-10 w-10 items-center justify-center border border-neutral-200/50 rounded-full bg-neutral-50 dark:bg-neutral-800 dark:border-neutral-600/50"
+      "flex size-10 items-center justify-center rounded-full border border-neutral-400/50 dark:border-neutral-500/50 text-neutral-500 dark:text-neutral-400 bg-neutral-50 dark:bg-neutral-950 shadow-[0_1px_2px_rgb(0_0_0/0.06),0_4px_12px_-2px_rgb(0_0_0/0.14)] aria-expanded:shadow-[0_2px_4px_rgb(0_0_0/0.08),0_14px_32px_-6px_rgb(0_0_0/0.3)] dark:shadow-[0_1px_2px_rgb(0_0_0/0.4),0_8px_20px_-6px_rgb(0_0_0/0.6)] dark:aria-expanded:shadow-[0_2px_4px_rgb(0_0_0/0.5),0_14px_32px_-6px_rgb(0_0_0/0.8)] transition-[box-shadow,scale] duration-300 ease-out active:scale-92 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-600 dark:focus-visible:outline-neutral-300"
+    end
+
+    # Frosted glow behind the open mobile menu, fading out from the bottom-right corner
+    def mobile_glow_classes
+      "pointer-events-none absolute -right-8 -bottom-8 hidden md:hidden w-[calc(min(34rem,120vw)+2rem)] h-[calc(min(40rem,85dvh)+2rem)] origin-bottom-right opacity-0 will-change-transform backdrop-blur-[6px] bg-[radial-gradient(farthest-side_at_100%_100%,rgb(250_250_250/0.94)_0%,rgb(250_250_250/0.8)_55%,rgb(250_250_250/0)_100%)] dark:bg-[radial-gradient(farthest-side_at_100%_100%,rgb(23_23_23/0.94)_0%,rgb(23_23_23/0.8)_55%,rgb(23_23_23/0)_100%)] [mask-image:radial-gradient(farthest-side_at_100%_100%,#000_55%,transparent_100%)]"
     end
 
     def controller_data
@@ -73,7 +78,7 @@ module Dock
 
     def chevron_svg
       <<~SVG.html_safe
-        <svg class="size-5 rotate-0 text-neutral-500 dark:text-neutral-400" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18"><g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" stroke="currentColor"><polyline points="2.75 11.5 9 5.25 15.25 11.5"></polyline></g></svg>
+        <svg class="size-5 rotate-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18"><g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" stroke="currentColor"><polyline points="2.75 11.5 9 5.25 15.25 11.5"></polyline></g></svg>
       SVG
     end
   end
