@@ -319,7 +319,9 @@ Change one thing, listen, repeat. Name what is wrong, then reach for the matchin
 | Too muffled or dull | `brightness` above 1, a higher click frequency, or a harder mallet (`Part.contact` at 2000 to 3000 Hz instead of 1000 to 1500). |
 | Too long or lingering | `tune(recipe, { length: 0.7 })`. In a recipe: a shorter `decay`. Every ring decays exponentially and reaches -60 dB at its `decay`. |
 | Too short or clipped | `length` above 1, or a longer `decay`. Give whooshes a longer `attack` so they swell in. |
-| No weight, too light | Add a `Part.thud` (low-passed noise around 100 to 200 Hz) or a `Part.knock` under the click. |
+| No weight, or too boomy | `tune(recipe, { body: 1.4 })` scales the knocks, thumps and low notes. For more weight than that, add a `Part.thud` (low-passed noise around 100 to 200 Hz) or a `Part.knock` under the click. |
+| Too snappy | `tune(recipe, { softness: 0.5 })`, 0 to 1, rounds every onset with a swell of up to 30 ms. |
+| Too plain | A material, each 0 to 1: `metal` adds a struck metal bar's out-of-tune overtones and resonant clicks, `glass` bright in-tune overtones with a slow shimmer, `ceramic` a struck cup's high, quickly damped overtones (a dry "tink"), `retro` crossfades the tones into square waves. |
 | Too dry or too distant | `tune(recipe, { room })`, or the cue's `room` option (1 is dry, 2 rings out). |
 | Feels robotic when repeated | Give the cue a `vary` option, for example `{ pitch: 0.02, level: 0.1 }`. Leave it `null` for chords, where drift would put notes out of tune. |
 | Too loud or quiet next to the others | Its trim in `LEVELS`, in dB. Call `suggestLevel` for a suggestion (below), then trust your ears. |

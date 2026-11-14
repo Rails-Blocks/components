@@ -91,14 +91,50 @@ const cue = (gain, layers, { release = [], room = 1, vary = { pitch: 0, level: 0
 //   length:     "too long / too short". Multiplies every ring. The rhythm of the notes stays the same.
 //   room:       "too dry / too distant". Multiplies how much reaches the small room.
 //   level:      "too loud / too quiet" next to the other sounds. Multiplies the cue's gain.
+// And the character of the sound, each 0 (the default) to 1 unless noted:
+//   body:       "too thin / too boomy". Multiplies the low layers: knocks, thumps and low notes.
+//   softness:   "too snappy / too soft". Rounds every onset with a swell of up to 30 ms.
+//   metal:      "too plain / too clangy". Adds the out-of-tune overtones of a struck metal bar to every
+//               tone, rings them longer, and tightens the clicks into resonant pings.
+//   glass:      "too dull / too sparkly". Adds bright in-tune overtones with a slow shimmer (a twin
+//               tone a few cents away), like a wine glass.
+//   ceramic:    "too muted / too brittle". Adds the bright, out-of-tune overtones of a struck cup or
+//               tile, which die quickly, and damps the ring: a short, dry "tink".
+//   retro:      "too modern / too chiptune". Crossfades the tones into square waves, like an 8-bit console.
 //   RECIPES.soft_tap = tune(RECIPES.tap, { length: 0.8, brightness: 0.85 }); // after RECIPES, plus a LEVELS entry
-export const tune = (recipe, { pitch = 0, brightness = 1, length = 1, room = 1, level = 1 } = {}) => {
+export const tune = (recipe, { pitch = 0, brightness = 1, length = 1, room = 1, level = 1, body = 1, softness = 0, metal = 0, glass = 0, ceramic = 0, retro = 0 } = {}) => {
   const shift = 2 ** (pitch / 12);
   const retune = (layer) => {
     const factor = layer.kind === "tone" ? shift : brightness;
-    return { ...layer, frequency: layer.frequency * factor, glideTo: layer.glideTo && layer.glideTo * factor, decay: layer.decay * length };
+    const low = layer.kind === "lowpass" ? layer.frequency < 600 : layer.frequency < 400;
+    return {
+      ...layer,
+      frequency: layer.frequency * factor,
+      glideTo: layer.glideTo && layer.glideTo * factor,
+      decay: layer.decay * length,
+      attack: layer.attack + softness * 0.03,
+      peak: layer.peak * (low ? body : 1),
+      q: layer.kind === "bandpass" ? layer.q * (1 + metal * 3) : layer.q,
+    };
   };
-  return { ...recipe, gain: recipe.gain * level, room: recipe.room * room, layers: recipe.layers.map(retune), release: recipe.release.map(retune) };
+  const character = (layers) => layers.map(retune).flatMap((layer) => {
+    if (layer.kind !== "tone") return [layer];
+    const partial = (ratio, peak, ring, extra = {}) => ({
+      ...layer, ...extra, frequency: layer.frequency * ratio, glideTo: layer.glideTo && layer.glideTo * ratio, peak: layer.peak * peak, decay: layer.decay * ring,
+    });
+    const added = [
+      // A free metal bar's modes: 2.76, 5.40 and 8.93 times the fundamental, none of them in tune.
+      ...[[2.76, 0.5], [5.4, 0.3], [8.93, 0.16]].map(([ratio, peak]) => partial(ratio, peak * metal, 1.4 / ratio ** 0.3)),
+      // Glass: its octave and double octave, and a twin 4 cents sharp that beats slowly against it.
+      ...[[2, 0.35, 1.2], [4, 0.14, 0.9], [2 ** (4 / 1200), 0.6, 1.3]].map(([ratio, peak, ring]) => partial(ratio, peak * glass, ring)),
+      // Ceramic: a thick plate's modes, high and quick to die, about 2.32, 4.25 and 6.63 times the fundamental.
+      ...[[2.32, 0.45], [4.25, 0.25], [6.63, 0.12]].map(([ratio, peak]) => partial(ratio, peak * ceramic, 0.45 / ratio ** 0.5)),
+      // Retro: a square wave at the same pitch, quieter than the sine it replaces (squares are loud).
+      partial(1, 0.35 * retro, 1, { wave: "square" }),
+    ].filter((extra) => extra.peak > 0 && extra.frequency <= 12000);
+    return [{ ...layer, peak: layer.peak * (1 - 0.75 * retro), decay: layer.decay * (1 - 0.35 * ceramic) }, ...added];
+  });
+  return { ...recipe, gain: recipe.gain * level, room: recipe.room * room, layers: character(recipe.layers), release: character(recipe.release) };
 };
 
 // A switch thrown: the click and a firm knock, letting go with a lighter click. On sits two
@@ -229,7 +265,7 @@ const ALIASES = { toggle: "toggle_on", chime: "notification", droplet: "pop", bu
 const VARIATION_RING = 0.1; // ± how much each layer's ring length drifts per play
 const OUTPUT_GAIN = 5.8 * 2 * 0.5; // Cues are mixed quietly and boosted at the output; the 0.5 sets a medium overall level
 const ROOM_SEND = 0.08;
-const LEVEL_TARGETS = { click: -20, note: -16 }; // Peak dBFS each kind of sound is trimmed to (see LEVELS)
+export const LEVEL_TARGETS = { click: -20, note: -16 }; // Peak dBFS each kind of sound is trimmed to (see LEVELS)
 const LONG_RING = 0.1; // Seconds: a sound with a tone ringing this long or longer is trimmed as a note
 
 const STORAGE_KEY = "sound"; // → localStorage "sound:muted" and "sound:volume"
@@ -1093,6 +1129,7 @@ function playLayer({ context, noise }, destination, layer, at) {
 
   if (kind === "tone") {
     const oscillator = context.createOscillator();
+    oscillator.type = layer.wave || "sine";
     oscillator.frequency.setValueAtTime(frequency, at);
     if (glideTo) oscillator.frequency.exponentialRampToValueAtTime(glideTo, at + glideTime);
     oscillator.connect(amp);
@@ -1121,20 +1158,10 @@ function playLayer({ context, noise }, destination, layer, at) {
 // every render, so it renders five times and returns the middle peak. For setting LEVELS (see
 // suggestLevel); nothing calls it while your app plays sounds.
 export async function measure(sound, { trim } = {}) {
-  const name = typeof sound === "string" ? resolve(sound) : null;
-  const recipe = name ? RECIPES[name] : sound;
-  const Offline = window.OfflineAudioContext || window.webkitOfflineAudioContext;
-  if (!recipe?.layers || !Offline) return null;
-
-  const rate = 48000;
-  const length = Math.max(...layersOf(recipe).map((layer) => layer.offset + layer.attack + layer.decay)) + 0.5;
-  const level = 10 ** ((Number.isFinite(trim) ? trim : trimOf(name)) / 20);
-
   const peaks = [];
   for (let run = 0; run < 5; run++) {
-    const context = new Offline(2, Math.ceil(rate * length), rate);
-    voice({ ...outputStage(context), offline: true }, { ...recipe, vary: null }, level, 1);
-    const rendered = await context.startRendering();
+    const rendered = await render(sound, { trim });
+    if (!rendered) return null;
     let peak = 0;
     for (let channel = 0; channel < rendered.numberOfChannels; channel++) {
       for (const sample of rendered.getChannelData(channel)) peak = Math.max(peak, Math.abs(sample));
@@ -1143,6 +1170,23 @@ export async function measure(sound, { trim } = {}) {
   }
   const middle = peaks.sort((a, b) => a - b)[2];
   return middle > 0 ? 20 * Math.log10(middle) : -Infinity;
+}
+
+// Renders a sound offline at full volume, with no variation, and returns the AudioBuffer (or null
+// without Web Audio). Pass a name or a recipe, and `trim` in dB to override its LEVELS trim. Used by
+// measure() and by the Sound lab's waveform.
+export async function render(sound, { trim } = {}) {
+  const name = typeof sound === "string" ? resolve(sound) : null;
+  const recipe = name ? RECIPES[name] : sound;
+  const Offline = window.OfflineAudioContext || window.webkitOfflineAudioContext;
+  if (!recipe?.layers || !Offline) return null;
+
+  const rate = 48000;
+  const length = Math.max(...layersOf(recipe).map((layer) => layer.offset + layer.attack + layer.decay)) + 0.5;
+  const level = 10 ** ((Number.isFinite(trim) ? trim : trimOf(name)) / 20);
+  const context = new Offline(2, Math.ceil(rate * length), rate);
+  voice({ ...outputStage(context), offline: true }, { ...recipe, vary: null }, level, 1);
+  return context.startRendering();
 }
 
 // Measures a sound and returns the trim (rounded to 0.5 dB) that brings it to its target in
@@ -1162,7 +1206,7 @@ export async function suggestLevel(sound, { trim } = {}) {
 }
 
 // "note" when a tone rings on (chimes, chords, a bubble), "click" for presses, ticks and whooshes.
-function kindOf(recipe) {
+export function kindOf(recipe) {
   return layersOf(recipe).some((layer) => layer.kind === "tone" && layer.decay >= LONG_RING) ? "note" : "click";
 }
 
