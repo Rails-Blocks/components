@@ -120,7 +120,7 @@ For a site-wide dock, render it once in your layout, fix it to the viewport and 
 </div>
 ```
 
-The controller sets itself up once in `initialize()`, highlights the destination as soon as a visit starts, and blurs the clicked icon after the new page loads so no stray focus ring is left behind.
+The controller sets itself up once in `initialize()`, highlights the destination as soon as a visit starts, and blurs the clicked icon after the new page loads so no stray focus ring is left behind. The tooltip of the clicked icon stays put through the visit: hover and focus events fired while Turbo moves the dock into the new page are ignored, so it doesn't fade out and back in.
 
 ---
 

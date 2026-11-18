@@ -198,19 +198,50 @@ export default class extends Controller {
 
   // One shared tooltip that moves into whichever icon is hovered. CSS anchors it above (or
   // below) the icon, so it follows the icon as it grows without any per-frame positioning.
+  //
+  // It shows while an icon is hovered or keyboard-focused. Turbo moving the permanent dock into the next
+  // page blurs and refocuses the clicked icon, and turbo:load then blurs it for good. The pointer
+  // never left, so those don't count: events during the swap are ignored, and a blur only hides
+  // the tooltip once the icon isn't hovered either.
   initTooltips() {
     this.tooltip = document.createElement("div");
     this.tooltip.setAttribute("role", "tooltip");
+    this.hoveredIcon = null;
+    this.focusedIcon = null;
+    this.tooltipIcon = null;
+    this.isRendering = false;
+
+    const track = (icon, key, value) => {
+      if (this.isRendering) return;
+      this[key] = value ? icon : this[key] === icon ? null : this[key];
+      this.syncTooltip();
+    };
 
     this.iconTargets.forEach((icon) => {
-      icon.addEventListener("mouseenter", () => this.showTooltip(icon));
-      icon.addEventListener("mouseleave", () => this.hideTooltip());
-      icon.addEventListener("focus", () => this.showTooltip(icon));
-      icon.addEventListener("blur", () => this.hideTooltip());
+      icon.addEventListener("mouseenter", () => track(icon, "hoveredIcon", true));
+      icon.addEventListener("mouseleave", () => track(icon, "hoveredIcon", false));
+      // Keyboard focus only: a click focuses the link too, and that shouldn't hold the tooltip open.
+      icon.addEventListener("focus", () => track(icon, "focusedIcon", icon.matches(":focus-visible")));
+      icon.addEventListener("blur", () => track(icon, "focusedIcon", false));
     });
+
+    document.addEventListener("turbo:before-render", () => (this.isRendering = true));
+    document.addEventListener("turbo:render", () => (this.isRendering = false));
+  }
+
+  syncTooltip() {
+    const icon = this.hoveredIcon || this.focusedIcon;
+    if (icon) {
+      this.showTooltip(icon);
+    } else {
+      this.hideTooltip();
+    }
   }
 
   showTooltip(icon) {
+    if (this.tooltipIcon === icon) return;
+    this.tooltipIcon = icon;
+
     const label = icon.dataset.tooltip;
     if (!label) return;
 
@@ -231,6 +262,8 @@ export default class extends Controller {
   }
 
   hideTooltip() {
+    if (!this.tooltipIcon) return;
+    this.tooltipIcon = null;
     animate(this.tooltip, { opacity: 0 }, { duration: 0.1 });
   }
 
